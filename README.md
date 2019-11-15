@@ -1,2 +1,2 @@
 # izooto
-Push notification service
+App notification service
