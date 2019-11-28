@@ -10,16 +10,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.izooto.IZootoNotificationMessagereceiver;
-import com.izooto.IZootoViewListener;
-import com.izooto.NotificationEventManager;
+import com.izooto.NotificationHelperListener;
 import com.izooto.Payload;
+import com.izooto.iZooto;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class MainActivity extends AppCompatActivity  implements IZootoNotificationMessagereceiver,IZootoViewListener
+public class MainActivity extends AppCompatActivity  implements NotificationHelperListener
 {
 
     private static String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
@@ -30,18 +29,14 @@ public class MainActivity extends AppCompatActivity  implements IZootoNotificati
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-      //  iZooto.initialize(this).setMessageListenr(this).build();
+        iZooto.initialize(this).setNotificationReceiveListener(this).build();
 
 
     }
 
 
 
-    @Override
-    public void notificationReceived(Payload payload) {
-        //Log.e("PayLoad",payload.getLedColor());
-       // NotificationEventManager.manageNotification(payload);
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -102,8 +97,17 @@ public class MainActivity extends AppCompatActivity  implements IZootoNotificati
     }
 
 
+
+
     @Override
-    public void ViewCount(int count) {
-        Log.e("Amit","amit");
+    public void onNotificationReceived(Payload payload) {
+        Log.e("Received",payload.getTitle());
+
+    }
+
+    @Override
+    public void onNotificationView(String s) {
+        Log.e("NotificationClicked","amit");
+
     }
 }

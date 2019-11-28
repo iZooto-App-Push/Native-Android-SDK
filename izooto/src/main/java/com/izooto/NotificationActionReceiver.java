@@ -23,14 +23,20 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         getBundleData(context, intent);
         mUrl.replace("{BROWSERKEYID}", PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
         getBundleData(context, intent);
-       // iZooto.checkActionType(true);
+         iZooto.notificationClicked();
 
         if (inApp == 1)
             WebViewActivity.startActivity(context, mUrl);
         else {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-            browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(browserIntent);
+            try {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(browserIntent);
+            }
+            catch (Exception ex)
+            {
+                Log.e("ex",ex.toString());
+            }
         }
 
     }

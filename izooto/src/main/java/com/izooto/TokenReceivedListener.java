@@ -9,4 +9,6 @@ public interface TokenReceivedListener {
      * @param token device token
      */
     void onTokenReceived(String token);
+    void onUpdatedToken(String token);
+
 }

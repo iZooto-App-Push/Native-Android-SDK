@@ -3,28 +3,20 @@ package com.izooto;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 public class iZooto {
 
@@ -59,7 +51,7 @@ public class iZooto {
                     mEncryptionKey = bundle.getString(AppConstant.IZOOTO_ENCRYPTION_KEY);
                 }
                 if (bundle.containsKey(AppConstant.IZOOTO_APP_ID)) {
-                    mIzooToAppId = 40493;//bundle.getInt(AppConstant.IZOOTO_APP_ID);//40493
+                    mIzooToAppId = bundle.getInt(AppConstant.IZOOTO_APP_ID);//40493
                 }
                 if (mIzooToAppId == 0) {
                     Lg.e(AppConstant.APP_NAME_TAG, "IZooTo App Id is missing.");
@@ -187,53 +179,49 @@ public class iZooto {
             });
 
         }
+        else
+        {
+           if(mBuilder!=null && mBuilder.mTokenReceivedListener!=null) {
+               mBuilder.mTokenReceivedListener.onUpdatedToken(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+           }
+
+        }
     }
 
     public static void processNotificationReceived(Payload payload) {
-        NotificationEventManager.manageNotification(payload);
-       // mBuilder.iZootoNotificationMessagereceiver.notificationReceived(payload);
-
+      if(payload!=null) {
+          NotificationEventManager.manageNotification(payload);
+      }
 
     }
-    public static void checkActionType(boolean action)
+    public static void notificationView(Payload payload)
     {
-        Log.e("Hello","Hello");
-        sendImpression();
+        if(payload!=null)
+        {
+            if(mBuilder!=null && mBuilder.mNotificationHelper!=null)
+            {
+                mBuilder.mNotificationHelper.onNotificationReceived(payload);
+            }
+        }
     }
 
-    private static void sendImpression() {
-        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+    public static void notificationClicked()
+    {
 
-        String api_url = "?pid=" + mIzooToAppId   +
-                "&cid=9730232" + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=1531474585288" +"&op=view";
-      Log.e("IMPression",RestClient.IMPRESSION_URL+api_url);
-        RestClient.postRequest(RestClient.IMPRESSION_URL + api_url, new RestClient.ResponseHandler() {
-
-            @Override
-            void onFailure(int statusCode, String response, Throwable throwable) {
-                super.onFailure(statusCode, response, throwable);
-
+            if(mBuilder!=null && mBuilder.mNotificationHelper!=null)
+            {
+                mBuilder.mNotificationHelper.onNotificationView("1");
             }
-
-            @Override
-            void onSuccess(String response) {
-                super.onSuccess(response);
-
-
-            }
-
-
-        });
-
 
     }
+
+
 
 
     public static class Builder {
         Context mContext;
         private TokenReceivedListener mTokenReceivedListener;
-        private IZootoNotificationMessagereceiver iZootoNotificationMessagereceiver;
-        public IZootoViewListener viewListener;
+        private NotificationHelperListener mNotificationHelper;
 
         private Builder(Context context) {
             mContext = context;
@@ -243,16 +231,11 @@ public class iZooto {
             mTokenReceivedListener = listener;
             return this;
         }
+        public Builder setNotificationReceiveListener(NotificationHelperListener notificationHelper) {
+            mNotificationHelper = notificationHelper;
+            return this;
+        }
 
-        public Builder setMessageListenr(IZootoNotificationMessagereceiver iZootoNotificationMessagereceiver1) {
-            iZootoNotificationMessagereceiver = iZootoNotificationMessagereceiver1;
-            return this;
-        }
-        public Builder setViewListener(IZootoViewListener iZootoViewListener)
-        {
-            viewListener=iZootoViewListener;
-            return this;
-        }
 
 
         public void build() {
@@ -261,7 +244,7 @@ public class iZooto {
 
     }
 // send event
-    public static void SendEvent(String eventName, Object data) {
+    public static void SendEvent(String eventName, HashMap<String,String> data) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String database = data.toString();
         String encodeData = "";
@@ -301,7 +284,7 @@ public class iZooto {
         }
     }
     // send puser properties
-    public static void SetUserProfile(Object object)
+    public static void sendUserProfile(HashMap<String,String> object)
     {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String database = object.toString();

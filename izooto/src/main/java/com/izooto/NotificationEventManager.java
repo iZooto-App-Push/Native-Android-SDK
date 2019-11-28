@@ -138,7 +138,7 @@ public class NotificationEventManager {
                         PendingIntent.FLAG_ONE_SHOT);
                 notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId)
                         .setContentTitle(payload.getTitle())
-                        .setSmallIcon(R.drawable.irctc_icon)
+                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                         .setContentText(payload.getMessage())
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
@@ -218,6 +218,8 @@ public class NotificationEventManager {
                         @Override
                         void onSuccess(String response) {
                             super.onSuccess(response);
+                            if(payload!=null)
+                            iZooto.notificationView(payload);
 
                         }
                     });
@@ -230,6 +232,7 @@ public class NotificationEventManager {
                 link = "";
                 link1 = "";
                 link2 = "";
+                iZooto.notificationClicked();
 
 
             }

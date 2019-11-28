@@ -27,6 +27,10 @@ public class AppController extends Application implements TokenReceivedListener
 
     }
 
+    @Override
+    public void onUpdatedToken(String token) {
+        Log.e("UpdatedToken",token);
+    }
 
 
 }
