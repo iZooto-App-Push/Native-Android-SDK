@@ -243,7 +243,7 @@ public class iZooto {
         }
 
     }
-// send event
+// send events  with event name and event data
     public static void SendEvent(String eventName, HashMap<String,String> data) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String database = data.toString();
@@ -283,7 +283,7 @@ public class iZooto {
 
         }
     }
-    // send puser properties
+    // send user properties
     public static void sendUserProfile(HashMap<String,String> object)
     {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
