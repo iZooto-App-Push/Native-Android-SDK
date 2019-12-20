@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -58,7 +59,7 @@ public class iZooto {
                 } else if (mEncryptionKey == null || mEncryptionKey.isEmpty()) {
                     Lg.e(AppConstant.APP_NAME_TAG, "IZooTo Encryption key is missing.");
                 } else {
-                    Lg.i("IZooTo Encryption key: ", mEncryptionKey);
+                   // Lg.i("IZooTo Encryption key: ", mEncryptionKey);
                     Lg.i("IZooTo App Id: ", mIzooToAppId + "");
                     RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId + ".js", new RestClient.ResponseHandler() {
 
@@ -71,12 +72,14 @@ public class iZooto {
                         void onSuccess(String response) {
                             super.onSuccess(response);
                             try {
-                               // Log.e("iZootoResponse", response);
+                              //  Log.e("iZootoResponse", response);
                                 JSONObject jsonObject = new JSONObject(Util.decrypt(mEncryptionKey, response));
                                 Lg.i("jsonObject: ", jsonObject.toString());
                                 senderId = jsonObject.getString("senderId");
                                 String appId = jsonObject.getString("appId");
                                 String apiKey = jsonObject.getString("apiKey");
+                                Log.e("SenderID",senderId);
+
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
                                 } else {
@@ -143,6 +146,7 @@ public class iZooto {
             String api_url = "app.php?s=" + 2 + "&pid=" + mIzooToAppId + "&btype=" + 9 + "&dtype=" + 3 + "&tz=" + System.currentTimeMillis() + "&bver=" + appVersion +
                     "&os=" + 4 + "&allowed=" + 1 + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&check=1.0";
             //mIzooToAppId
+
             try {
                 String deviceName = URLEncoder.encode(Util.getDeviceName(), "utf-8");
                 String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, "utf-8");

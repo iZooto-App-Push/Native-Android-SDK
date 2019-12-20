@@ -6,10 +6,10 @@ android {
 
     compileSdkVersion 29
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 18
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -139,9 +139,13 @@ task wrapper(type: Wrapper) {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+   // implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+   // implementation 'com.google.firebase:firebase-messaging:17.6.0'
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'org.testng:testng:6.9.6'
 }
