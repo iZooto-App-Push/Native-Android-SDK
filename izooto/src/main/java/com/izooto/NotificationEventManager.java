@@ -132,6 +132,7 @@ public class NotificationEventManager {
                 if (payload.getInapp() == 1)
                     intent = WebViewActivity.createIntent(iZooto.appContext, link);
                 else
+
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                 Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 PendingIntent pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,

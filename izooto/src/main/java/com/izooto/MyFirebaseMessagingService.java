@@ -18,7 +18,6 @@ package com.izooto;
 
 import android.os.Handler;
 import android.os.Looper;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;

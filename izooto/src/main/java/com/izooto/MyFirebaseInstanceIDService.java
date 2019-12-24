@@ -21,7 +21,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 import org.json.JSONException;
