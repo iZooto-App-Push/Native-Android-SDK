@@ -18,7 +18,6 @@ package com.izooto;
 
 import android.os.Handler;
 import android.os.Looper;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -30,7 +29,7 @@ import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMsgService";
+    private static final String TAG = "iZooto";
     Payload payload = null;
 
     /**
@@ -45,8 +44,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             if (remoteMessage.getData().size() > 0) {
                 Map<String, String> data = remoteMessage.getData();
-                Log.d(TAG, "Message data payload: " + data);
-                handleNow(remoteMessage.getData());
+                Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+                handleNow(data);
 
             } else {
                 Log.d(TAG, "Message data payload: " + "no notification");

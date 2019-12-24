@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -15,7 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-public class WebViewActivity extends AppCompatActivity   {
+public class WebViewActivity extends AppCompatActivity {
 
     private WebView mWebView;
     private ProgressBar mProgressBar;
@@ -55,6 +56,7 @@ public class WebViewActivity extends AppCompatActivity   {
         WebSettings settings = mWebView.getSettings();
         settings.setLoadWithOverviewMode(true);
         settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
         settings.setLoadsImagesAutomatically(true);
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setVerticalScrollBarEnabled(false);

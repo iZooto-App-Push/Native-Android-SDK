@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -18,7 +19,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class MainActivity extends AppCompatActivity  implements NotificationHelperListener
+public class MainActivity extends AppCompatActivity implements NotificationHelperListener
 {
 
     private static String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity  implements NotificationHelp
 
     @Override
     public void onNotificationView(String s) {
-        Log.e("NotificationClicked","amit");
+        Log.e("NotificationClicked","");
 
     }
 }

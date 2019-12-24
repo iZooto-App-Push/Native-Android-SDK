@@ -4,8 +4,15 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 
 public class PreferenceUtil {
@@ -73,10 +80,34 @@ public class PreferenceUtil {
     }
 
     public String getTokenStringData(String key) {
-        String refreshedToken = mSpref.getString(key, "");
-        if (refreshedToken == null || refreshedToken.length() == 0)
-            refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        return refreshedToken;
+//        String refreshedToken = mSpref.getString(key, "");
+//        if (refreshedToken == null || refreshedToken.length() == 0)
+//            refreshedToken = FirebaseInstanceId.getInstance().getToken();
+//        return refreshedToken;
+        final String[] refreshedToken = {mSpref.getString(key, "")};
+
+        if (refreshedToken[0] == null || refreshedToken[0].length() == 0) {
+
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                return;
+                            }
+
+                            // Get new Instance ID token
+                            String token = task.getResult().getToken();
+                            refreshedToken[0] = token;
+
+                        }
+                    });
+        }
+        return refreshedToken[0];
+
+
+
     }
 
     public void setBooleanData(String key, boolean value) {
