@@ -1,4 +1,4 @@
-# izooto
+t# izooto
 App notification service
 
 
@@ -16,14 +16,14 @@ Inside defaultConfig{} tag :
 
       manifestPlaceholders = [
                izooto_enc_key: "b07dfa9d56fc64df”
-               izooto_app_id : "41882" 
+               izooto_app_id : "izotot_app_id" 
        ]
 	
 
 	Inside dependancies{} tag :
 
 implementation project(path: ':izooto-release')
-implementation 'com.google.firebase:firebase-messaging:18.0.0'
+implementation 'com.google.firebase:firebase-messaging:20.0.1'
 
 Once done, go to File → Project Structure and :
 
