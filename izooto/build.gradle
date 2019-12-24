@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
+
+
 android {
 
     compileSdkVersion 29
@@ -25,26 +27,27 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
+
 }
 
 ext {
-    bintrayRepo = 'izooto'
-    bintrayName = 'notification-sdk'
+    bintrayRepo = 'datability'
+    bintrayName = 'iZooto-android-sdk'
     publishedGroupId = 'com.izooto'
-    libraryName = 'notification-sdk'
-    artifact = 'notification-sdk' //This artifact name should be the same with library module name
+    libraryName = 'android-sdk'
+    artifact = 'android-sdk' //This artifact name should be the same with library module name
     libraryDescription = 'A push notification service which integrates with your app seamlessly'
 
-    siteUrl = 'https://github.com/jayantb/izooto'
-    gitUrl = 'https://github.com/jayantb/izooto.git'
-    libraryVersion = '1.0.1'
+    siteUrl = 'https://github.com/amit6061/iZooto-android-sdk'
+    gitUrl = 'https://github.com/amit6061/iZooto-android-sdk.git'
+    libraryVersion = '1.0.3'
 
-    developerId = 'izooto'
-    developerName = 'jayant'
-    developerEmail = 'jayant@datability.co'
+    developerId = 'amit6061'
+    developerName = 'amit'
+    developerEmail = 'amit@datability.co'
     organization = 'izooto' // if you push to organization's repository.
     licenseName = 'The Apache Software License, Version 2.0'  //Example for license
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
