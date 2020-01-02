@@ -1,8 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-
-
+apply plugin: 'maven-publish'
 
 android {
 
@@ -11,7 +10,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 29
         versionCode 3
-        versionName "1.0.3"
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -29,13 +28,18 @@ buildscript {
     dependencies {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+
     }
 
 }
 
+
+
+
+
 ext {
-    bintrayRepo = 'datability'
-    bintrayName = 'iZooto-android-sdk'
+    bintrayRepo = 'iZooto-android-sdk'
+    bintrayName = 'com.izooto'
     publishedGroupId = 'com.izooto'
     libraryName = 'android-sdk'
     artifact = 'android-sdk' //This artifact name should be the same with library module name
@@ -43,7 +47,7 @@ ext {
 
     siteUrl = 'https://github.com/amit6061/iZooto-android-sdk'
     gitUrl = 'https://github.com/amit6061/iZooto-android-sdk.git'
-    libraryVersion = '1.0.3'
+    libraryVersion = '1.0.1'
 
     developerId = 'amit6061'
     developerName = 'amit'
@@ -133,6 +137,9 @@ bintray {
             desc = libraryDescription
         }
     }
+}
+subprojects {
+    tasks.withType(Javadoc).all { enabled = false }
 }
 
 task wrapper(type: Wrapper) {
