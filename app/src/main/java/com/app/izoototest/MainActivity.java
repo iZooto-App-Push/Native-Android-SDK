@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
 
     @Override
     public void onNotificationView(String s) {
-        Log.e("NotificationClicked","");
+        Log.e("NotificationClicked",s);
 
     }
 }

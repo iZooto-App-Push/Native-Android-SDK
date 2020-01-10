@@ -21,6 +21,7 @@ public class RestClient {
     public static final String EVENT_URL="https://et.izooto.com/evt";
     public static final String PROPERTIES_URL="https://prp.izooto.com/prp";
     public static final String IMPRESSION_URL="https://impr.izooto.com/imp";
+    public static  final String NOTIFICATIONCLICK="https://clk.izooto.com/clk";
 
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;

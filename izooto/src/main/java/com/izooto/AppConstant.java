@@ -21,4 +21,7 @@ public interface AppConstant {
     String DEVICE_REGISTRATION_TIMESTAMP = "deviceRegistrationTimeStamp";
     String KEY_IN_APP = "keyInApp";
     String EVENT_URL="https://et.izooto.com/";
+    String  KEY_IN_CID = "cid";
+    String KEY_IN_RID = "rid";
+
 }

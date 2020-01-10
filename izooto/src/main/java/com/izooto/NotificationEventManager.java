@@ -15,6 +15,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
+import android.util.Log;
+
 import androidx.annotation.RequiresApi;
 
 import org.json.JSONException;
@@ -68,6 +70,7 @@ public class NotificationEventManager {
             payload.setAct1link(getParsedvalue(jsonObject, payload.getAct1link()));
             payload.setAct2name(getParsedvalue(jsonObject, payload.getAct2name()));
             payload.setAct2link(getParsedvalue(jsonObject, payload.getAct2link()));
+
             showNotification(payload);
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,10 +136,24 @@ public class NotificationEventManager {
                     intent = WebViewActivity.createIntent(iZooto.appContext, link);
                 else
 
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+              //  intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
+
                 Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                PendingIntent pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
+                intent.putExtra(AppConstant.KEY_WEB_URL, link);
+                intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, 100);
+                intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
+                intent.putExtra(AppConstant.KEY_IN_CID,payload.getId());
+                intent.putExtra(AppConstant.KEY_IN_RID,payload.getRid());
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
                         PendingIntent.FLAG_ONE_SHOT);
+
+                        //  PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+//                PendingIntent pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
+//                        PendingIntent.FLAG_ONE_SHOT);
 
                 notificationBuilder = new Notification.Builder(iZooto.appContext, channelId)
                         .setContentTitle(payload.getTitle())
@@ -148,7 +165,9 @@ public class NotificationEventManager {
                         .setStyle(new Notification.BigTextStyle().bigText(payload.getMessage()))
                         .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND).setVibrate(new long[]{1000, 1000})
                         .setSound(defaultSoundUri)
+                        //.setOngoing(true)
                         .setAutoCancel(true);
+
 
                 if(payload.getLedColor()!=null && !payload.getLedColor().isEmpty())
                     notificationBuilder.setColor(Color.parseColor(payload.getLedColor()));
@@ -163,6 +182,7 @@ public class NotificationEventManager {
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
 //                    notificationBuilder.setColor(ContextCompat.getColor(iZooto.appContext, R.color.colorPrimary));
 
+
                 NotificationManager notificationManager =
                         (NotificationManager) iZooto.appContext.getSystemService(Context.NOTIFICATION_SERVICE);
                 int notificaitionId = (int) System.currentTimeMillis();
@@ -173,6 +193,9 @@ public class NotificationEventManager {
                     btn1.putExtra(AppConstant.KEY_WEB_URL, link1);
                     btn1.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificaitionId);
                     btn1.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
+                    btn1.putExtra(AppConstant.KEY_IN_CID,payload.getId());
+                    btn1.putExtra(AppConstant.KEY_IN_RID,payload.getRid());
+
                     PendingIntent pendingIntent1 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT);
                     Notification.Action action1 =
                             new Notification.Action.Builder(
@@ -189,6 +212,8 @@ public class NotificationEventManager {
                     btn2.putExtra(AppConstant.KEY_WEB_URL, link2);
                     btn2.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificaitionId);
                     btn2.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
+                    btn2.putExtra(AppConstant.KEY_IN_CID,payload.getId());
+                    btn2.putExtra(AppConstant.KEY_IN_RID,payload.getRid());
                     PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT);
                     Notification.Action action2 =
                             new Notification.Action.Builder(
@@ -241,10 +266,11 @@ public class NotificationEventManager {
                 link = "";
                 link1 = "";
                 link2 = "";
-                iZooto.notificationClicked();
+               // iZooto.notificationClicked();
 
 
             }
+
         };
 
 

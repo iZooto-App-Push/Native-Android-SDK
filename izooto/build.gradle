@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
+apply plugin: 'android-maven'
 
 android {
 
@@ -10,7 +10,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 29
         versionCode 3
-        versionName "1.0.1"
+        versionName "1.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -24,6 +24,8 @@ android {
 buildscript {
     repositories {
         jcenter()
+        mavenLocal()
+
     }
     dependencies {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
@@ -31,10 +33,17 @@ buildscript {
 
     }
 
+
 }
 
 
-
+install {
+    repositories.mavenInstaller {
+        pom.groupId = 'com.izooto'
+        pom.version = '1.0.4'
+        pom.artifactId = 'android-sdk'
+    }
+}
 
 
 ext {
@@ -47,7 +56,7 @@ ext {
 
     siteUrl = 'https://github.com/amit6061/iZooto-android-sdk'
     gitUrl = 'https://github.com/amit6061/iZooto-android-sdk.git'
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.0.3'
 
     developerId = 'amit6061'
     developerName = 'amit'
