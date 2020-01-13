@@ -15,9 +15,9 @@ class Global {
     static def POM_SCM_DEV_CONNECTION = 'scm:git:https://github.com/iZootoNotifcation/android-sdk'
     static def POM_LICENCE_NAME = 'MIT License'
     static def POM_LICENCE_URL = 'https://raw.githubusercontent.com'
-    static def POM_LICENCE_DIST = 'repo'
+    static def POM_LICENCE_DIST = 'iZootoNotifcation'
     static def POM_DEVELOPER_ID = 'iZooto'
-    static def POM_DEVELOPER_NAME = 'Amit Kumar Gupta Kasten'
+    static def POM_DEVELOPER_NAME = 'Amit Kumar Gupta'
     static def SNAPSHOT_REPOSITORY_URL = 'https://oss.sonatype.org/content/repositories/snapshots'
     static def RELEASE_REPOSITORY_URL = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
 }
