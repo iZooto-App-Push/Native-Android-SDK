@@ -40,7 +40,7 @@ import java.util.Map;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "iZooto";
-    Payload payload = null;
+      Payload payload = null;
 
     /**
      * Called when message is received.
@@ -106,9 +106,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    private void handleNow(final Map<String, String> data) {
+    public void handleNow(final Map<String, String> data) {
+
         Log.d(TAG, "Short lived task is done.");
         try {
+
             JSONObject payloadObj = new JSONObject(data.get("campaignDetails"));
             if (payloadObj.optLong("created_on") > PreferenceUtil.getInstance(this).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
                 payload = new Payload();
