@@ -1,10 +1,19 @@
 package com.app.izoototest;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 
 import android.util.Base64;
 import android.util.Log;
@@ -14,6 +23,8 @@ import android.view.MenuItem;
 import com.izooto.NotificationHelperListener;
 import com.izooto.Payload;
 import com.izooto.iZooto;
+
+import java.util.Random;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -110,5 +121,8 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
     public void onNotificationView(String s) {
         Log.e("NotificationClicked",s);
 
+        //sendNotification();
+
     }
+
 }

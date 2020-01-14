@@ -198,6 +198,7 @@ public class iZooto {
       }
 
     }
+
     public static void notificationView(Payload payload)
     {
         if(payload!=null)

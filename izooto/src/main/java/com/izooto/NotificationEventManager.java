@@ -131,13 +131,15 @@ public class NotificationEventManager {
                 Notification.Builder notificationBuilder = null;
               //  NotificationCompat.Builder notificationBuilder = null;
                 Intent intent = null;
-
-                if (payload.getInapp() == 1)
-                    intent = WebViewActivity.createIntent(iZooto.appContext, link);
-                else
-
-              //  intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                if (payload.getInapp() == 1) {
+                    Log.e("INAPP",""+payload.getInapp());
+                   // intent = WebViewActivity.createIntent(iZooto.appContext, link);
                     intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
+
+                }
+                else
+                    intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
+                //intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
 
                 Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 intent.putExtra(AppConstant.KEY_WEB_URL, link);
@@ -145,6 +147,8 @@ public class NotificationEventManager {
                 intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
                 intent.putExtra(AppConstant.KEY_IN_CID,payload.getId());
                 intent.putExtra(AppConstant.KEY_IN_RID,payload.getRid());
+                intent.putExtra(AppConstant.KEY_IN_BUTOON,0);
+
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
                         PendingIntent.FLAG_ONE_SHOT);
@@ -195,6 +199,8 @@ public class NotificationEventManager {
                     btn1.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
                     btn1.putExtra(AppConstant.KEY_IN_CID,payload.getId());
                     btn1.putExtra(AppConstant.KEY_IN_RID,payload.getRid());
+                    btn1.putExtra(AppConstant.KEY_IN_BUTOON,1);
+
 
                     PendingIntent pendingIntent1 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT);
                     Notification.Action action1 =
@@ -214,6 +220,7 @@ public class NotificationEventManager {
                     btn2.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
                     btn2.putExtra(AppConstant.KEY_IN_CID,payload.getId());
                     btn2.putExtra(AppConstant.KEY_IN_RID,payload.getRid());
+                    btn2.putExtra(AppConstant.KEY_IN_BUTOON,2);
                     PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT);
                     Notification.Action action2 =
                             new Notification.Action.Builder(
@@ -295,7 +302,6 @@ public class NotificationEventManager {
             }
         });
     }
-
 
     private static String getFinalUrl(Payload payload) {
         byte[] data = new byte[0];

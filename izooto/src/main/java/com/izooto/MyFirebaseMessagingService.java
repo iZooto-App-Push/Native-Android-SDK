@@ -40,7 +40,8 @@ import java.util.Map;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "iZooto";
-      Payload payload = null;
+     private  Payload payload = null;
+     private String deppLink= null;
 
     /**
      * Called when message is received.
@@ -50,7 +51,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [START receive_message]
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
         try {
             if (remoteMessage.getData().size() > 0) {
                 Map<String, String> data = remoteMessage.getData();
@@ -106,7 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    public void handleNow(final Map<String, String> data) {
+    public   void handleNow(final Map<String, String> data) {
 
         Log.d(TAG, "Short lived task is done.");
         try {
@@ -130,7 +130,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 payload.setAct1link(payloadObj.optString("act1link"));
                 payload.setAct2name(payloadObj.optString("act2name"));
                 payload.setAct2link(payloadObj.optString("act2link"));
-                payload.setInapp(payloadObj.optInt("inapp"));
+              //  payload.setInapp(payloadObj.optInt("inapp"));
+                payload.setInapp(1);
+
                 payload.setTrayicon(payloadObj.optString("trayicon"));
                 payload.setSmallIconAccentColor(payloadObj.optString("iconcolor"));
                 payload.setSound(payloadObj.optString("sound"));
@@ -142,7 +144,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 payload.setCollapseId(payloadObj.optString("collapseID"));
                 payload.setPriority(payloadObj.optInt("priority"));
                 payload.setRawPayload(payloadObj.optString("rawData"));
-
+                payload.setDeeplink(payloadObj.optString("deeplink"));
+               // deppLink = payloadObj.optString("deeplink");
 
 
             } else return;
@@ -158,8 +161,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
-
-                iZooto.processNotificationReceived(payload);
+                    iZooto.processNotificationReceived(payload);
             } // This is your code
         };
         mainHandler.post(myRunnable);

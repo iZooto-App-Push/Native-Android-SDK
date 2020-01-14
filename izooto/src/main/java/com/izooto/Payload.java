@@ -59,6 +59,7 @@ public class Payload {
     public String collapseId;
     public int priority;
     public String rawPayload;
+    public String deeplink;
 
 
 
@@ -289,5 +290,13 @@ public class Payload {
 
     public void setRawPayload(String rawPayload) {
         this.rawPayload = rawPayload;
+    }
+    public  void  setDeeplink(String deeplink)
+    {
+        this.deeplink=deeplink;
+    }
+    public  String getDeeplink()
+    {
+        return deeplink;
     }
 }

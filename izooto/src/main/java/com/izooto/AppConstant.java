@@ -23,5 +23,6 @@ public interface AppConstant {
     String EVENT_URL="https://et.izooto.com/";
     String  KEY_IN_CID = "cid";
     String KEY_IN_RID = "rid";
+    String KEY_IN_BUTOON="btn";
 
 }

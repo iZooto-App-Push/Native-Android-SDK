@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'android-maven'
-apply from: 'maven-push.gradle'
 
 android {
 
@@ -10,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 29
-        versionCode 3
-        versionName "1.0.4"
+        versionCode 4
+        versionName "1.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -38,26 +37,26 @@ buildscript {
 }
 
 
-install {
-    repositories.mavenInstaller {
-        pom.groupId = 'com.izooto'
-        pom.version = '1.0.4'
-        pom.artifactId = 'android-sdk'
-    }
-}
+//install {
+//    repositories.mavenInstaller {
+//        pom.groupId = 'com.izooto'
+//        pom.version = '1.0.4'
+//        pom.artifactId = 'android-sdk'
+//    }
+//}
 
 
 ext {
     bintrayRepo = 'iZooto-android-sdk'
     bintrayName = 'com.izooto'
-    publishedGroupId = 'com.izooto'
-    libraryName = 'com.izooto'
-    artifact = 'com.izooto' //This artifact name should be the same with library module name
+    publishedGroupId = 'com/izooto'
+    libraryName = 'android-sdk'
+    artifact = 'android-sdk' //This artifact name should be the same with library module name
     libraryDescription = 'A push notification service which integrates with your app seamlessly'
 
     siteUrl = 'https://github.com/iZootoNotifcation/android-sdk'
     gitUrl = 'https://github.com/iZootoNotifcation/android-sdk'
-    libraryVersion = '1.0.3'
+    libraryVersion = '1.0.5'
 
     developerId = 'iZootoNotifcation'
     developerName = 'amit'
