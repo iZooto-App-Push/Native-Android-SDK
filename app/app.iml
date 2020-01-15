@@ -126,6 +126,5 @@
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:2.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:2.0.0@aar" level="project" />
     <orderEntry type="module" module-name="izooto" />
-    <orderEntry type="module" module-name="izooto" />
   </component>
 </module>
