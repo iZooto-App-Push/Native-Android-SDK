@@ -1,2 +1,0 @@
-include ':app', ':izooto-android-sdk'
-rootProject.name='Imagedata'
