@@ -43,9 +43,6 @@ public class Payload {
     // add new payload data
 
 
-
-
-
     public String smallIconAccentColor;
 
     public String sound;
@@ -60,10 +57,14 @@ public class Payload {
     public int priority;
     public String rawPayload;
     public String deeplink;
+    public String type_input_to_payload;
+    public String dropdown_text;
+    public String validation;
+    public String editbox_title;
+    public String type;
 
 
-
-//////////////////////////////////////////////
+    //////////////////////////////////////////////
     public int getInapp() {
         return inapp;
     }
@@ -209,7 +210,6 @@ public class Payload {
     }
 
 
-
     public String getSmallIconAccentColor() {
         return smallIconAccentColor;
     }
@@ -217,7 +217,6 @@ public class Payload {
     public void setSmallIconAccentColor(String smallIconAccentColor) {
         this.smallIconAccentColor = smallIconAccentColor;
     }
-
 
 
     public String getSound() {
@@ -291,12 +290,53 @@ public class Payload {
     public void setRawPayload(String rawPayload) {
         this.rawPayload = rawPayload;
     }
-    public  void  setDeeplink(String deeplink)
-    {
-        this.deeplink=deeplink;
+
+    public void setDeeplink(String deeplink) {
+        this.deeplink = deeplink;
     }
-    public  String getDeeplink()
-    {
+
+    public String getDeeplink() {
         return deeplink;
     }
+
+    public String getType_input_to_payload() {
+        return type_input_to_payload;
+    }
+
+    public void setType_input_to_payload(String type_input_to_payload) {
+        this.type_input_to_payload = type_input_to_payload;
+    }
+
+    public String getDropdown_text() {
+        return dropdown_text;
+    }
+
+    public void setDropdown_text(String dropdown_text) {
+        this.dropdown_text = dropdown_text;
+    }
+
+    public String getValidation() {
+        return validation;
+    }
+
+    public void setValidation(String validation) {
+        this.validation = validation;
+    }
+
+    public String getEditbox_title() {
+        return editbox_title;
+    }
+
+    public void setEditbox_title(String editbox_title) {
+        this.editbox_title = editbox_title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

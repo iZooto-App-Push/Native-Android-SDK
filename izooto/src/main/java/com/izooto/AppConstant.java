@@ -24,5 +24,7 @@ public interface AppConstant {
     String  KEY_IN_CID = "cid";
     String KEY_IN_RID = "rid";
     String KEY_IN_BUTOON="btn";
+    String KEY_IN_DEEP="deeplink";
+    String KEY_IN_PHONE ="call";
 
 }

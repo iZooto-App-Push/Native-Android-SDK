@@ -16,6 +16,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private  String cid;
     private int btncount;
     private String api_url;
+    private String deeplink;
+    private String phoneNumber;
 
 
     @Override
@@ -31,13 +33,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             if (btncount!=0) {
                 api_url = "?pid=" + iZooto.mIzooToAppId + "&ver=" + appVersion +
                         "&cid=" + cid + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + rid + "&op=click&btn=" + btncount;
-                Log.e("CliclURL", api_url);
             }
             else
             {
                 api_url = "?pid=" + iZooto.mIzooToAppId + "&ver=" + appVersion +
                         "&cid=" + cid + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + rid + "&op=click";
-                Log.e("CliclURL", api_url);
 
             }
             RestClient.postRequest(RestClient.NOTIFICATIONCLICK+api_url, new RestClient.ResponseHandler() {
@@ -63,13 +63,37 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
 
 
-        if (inApp == 1)
+        if (inApp == 1 && phoneNumber.equalsIgnoreCase("No"))
             WebViewActivity.startActivity(context, mUrl);
         else {
             try {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(browserIntent);
+
+                if(deeplink.equalsIgnoreCase("deeplink")) {
+                    iZooto.HandleDeepLink(mUrl);
+                    Log.e("DeeplInk",deeplink);
+
+                }
+                else
+                {
+                   if(phoneNumber.equalsIgnoreCase("No")) {
+                       Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                       browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                       context.startActivity(browserIntent);
+                   }
+                   else
+                   {
+                       Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
+                      browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                       context.startActivity(browserIntent);
+
+                   }
+                }
+
+//                 Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:555-1212"));
+//                 browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                 context.startActivity(browserIntent);
+
+
             }
             catch (Exception ex)
             {
@@ -92,6 +116,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 cid = tempBundle.getString(AppConstant.KEY_IN_CID);
              if(tempBundle.containsKey(AppConstant.KEY_IN_BUTOON))
                  btncount = tempBundle.getInt(AppConstant.KEY_IN_BUTOON);
+             if(tempBundle.containsKey(AppConstant.KEY_IN_DEEP))
+                 deeplink = tempBundle.getString(AppConstant.KEY_IN_DEEP);
+             if(tempBundle.containsKey(AppConstant.KEY_IN_PHONE))
+                 phoneNumber=tempBundle.getString(AppConstant.KEY_IN_PHONE);
 
             if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
                 NotificationManager notificationManager =

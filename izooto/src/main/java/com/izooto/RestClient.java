@@ -62,7 +62,7 @@ public class RestClient {
 
         try {
             if (url.contains("https:") || url.contains("http:") || url.contains("impr.izooto.com")) {
-                Lg.d(AppConstant.APP_NAME_TAG, "IZooTo RestClient: Making request to: " + url);
+               // Lg.d(AppConstant.APP_NAME_TAG, "IZooTo RestClient: Making request to: " + url);
                 con = (HttpURLConnection) new URL(url).openConnection();
 
             } else {
@@ -90,7 +90,7 @@ public class RestClient {
 
             if (jsonBody != null) {
                 String strJsonBody = jsonBody.toString();
-                Lg.d(AppConstant.APP_NAME_TAG, "IZooTo RestClient: " + method + " SEND JSON: " + strJsonBody);
+               // Lg.d(AppConstant.APP_NAME_TAG, "IZooTo RestClient: " + method + " SEND JSON: " + strJsonBody);
 
                 byte[] sendBytes = strJsonBody.getBytes("UTF-8");
                 con.setFixedLengthStreamingMode(sendBytes.length);
@@ -112,7 +112,7 @@ public class RestClient {
                 scanner = new Scanner(inputStream, "UTF-8");
                 json = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
                 scanner.close();
-                Lg.d(AppConstant.APP_NAME_TAG, method + " RECEIVED JSON: " + json);
+               // Lg.d(AppConstant.APP_NAME_TAG, method + " RECEIVED JSON: " + json);
                 if (responseHandler != null) {
                     callResponseHandlerOnSuccess(responseHandler, json);
                    // Log.e("IM",url);
@@ -121,14 +121,14 @@ public class RestClient {
 
                 }
                 else
-                    Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: ResponseHandler is not attached for the Request: "  + url);
+                    Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: ResponseHandler is not attached for the Request: "  );
               //  Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: ResponseHandler is not attached for the Request: " + BASE_URL + url);
 
             } else {
                 if (url.equals("https://cdn.izooto.com/app/app_27179.js"))
                     Lg.d(AppConstant.APP_NAME_TAG, "IZooTo RestClient: Request Successful: ");
                 else
-                    Lg.d(AppConstant.APP_NAME_TAG, "IZooTo RestClient: Request Failed: " + BASE_URL);
+                    Lg.d(AppConstant.APP_NAME_TAG, "IZooTo RestClient: Request Failed: " );
                 inputStream = con.getErrorStream();
                 if (inputStream == null)
                     inputStream = con.getInputStream();
@@ -137,9 +137,9 @@ public class RestClient {
                     scanner = new Scanner(inputStream, "UTF-8");
                     json = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
                     scanner.close();
-                    Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: " + method + " RECEIVED JSON: " + json);
+                    Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient:  RECEIVED JSON: " );
                 } else
-                    Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: " + method + " HTTP Code: " + httpResponse + " No response body!");
+                    Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient:");
 
                 if (responseHandler != null) {
                     callResponseHandlerOnFailure(responseHandler, httpResponse, json, null);
@@ -147,7 +147,7 @@ public class RestClient {
 
                 }
                 else
-                    Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: ResponseHandler is not attached for the Request: " + BASE_URL);
+                    Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: ResponseHandler is not attached for the Request: " );
 
             }
         } catch (Throwable t) {
@@ -159,7 +159,7 @@ public class RestClient {
             if (responseHandler != null)
                 callResponseHandlerOnFailure(responseHandler, httpResponse, null, t);
             else
-                Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: ResponseHandler is not attached for the Request: " + BASE_URL);
+                Lg.w(AppConstant.APP_NAME_TAG, "IZooTo RestClient: ResponseHandler is not attached for the Request: " );
         } finally {
             if (con != null)
                 con.disconnect();

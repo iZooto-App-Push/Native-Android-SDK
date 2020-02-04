@@ -35,7 +35,6 @@ public class FCMTokenGenerator implements TokenGenerator {
                     }
 
                 } catch (Exception e) {
-                    e.printStackTrace();
                     if (callback != null)
                         callback.failure(e.getMessage());
                 }

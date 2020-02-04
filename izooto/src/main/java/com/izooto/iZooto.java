@@ -25,6 +25,7 @@ public class iZooto {
     private static String senderId, mEncryptionKey;
     public static int mIzooToAppId;
     public static Builder mBuilder;
+    public static int icon;
 
 
     public static void setSenderId(String senderId) {
@@ -74,19 +75,16 @@ public class iZooto {
                             try {
                               //  Log.e("iZootoResponse", response);
                                 JSONObject jsonObject = new JSONObject(Util.decrypt(mEncryptionKey, response));
-                                Lg.i("jsonObject: ", jsonObject.toString());
                                 senderId = jsonObject.getString("senderId");
                                 String appId = jsonObject.getString("appId");
                                 String apiKey = jsonObject.getString("apiKey");
-                                Log.e("SenderID",senderId);
-
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
                                 } else {
                                     Lg.e(AppConstant.APP_NAME_TAG, appContext.getString(R.string.something_wrong_fcm_sender_id));
                                 }
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                Lg.e(AppConstant.APP_NAME_TAG,e.toString());
                             }
                         }
                     });
@@ -221,12 +219,22 @@ public class iZooto {
     }
 
 
+        public  static  void HandleDeepLink(String url)
+            {
+                 if(mBuilder!=null && mBuilder.mDeeplink!=null)
+                    {
+                      if(url!=null)
+                         mBuilder.mDeeplink.onHandleDeepLink(url);
 
+                    }
+
+                }
 
     public static class Builder {
         Context mContext;
         private TokenReceivedListener mTokenReceivedListener;
         private NotificationHelperListener mNotificationHelper;
+        private iZootoDeepLinkListener mDeeplink;
 
         private Builder(Context context) {
             mContext = context;
@@ -238,6 +246,11 @@ public class iZooto {
         }
         public Builder setNotificationReceiveListener(NotificationHelperListener notificationHelper) {
             mNotificationHelper = notificationHelper;
+            return this;
+        }
+        public Builder setDeepLinkListener(iZootoDeepLinkListener deeplink)
+        {
+            mDeeplink = deeplink;
             return this;
         }
 
@@ -327,5 +340,10 @@ public class iZooto {
 
 
         }
+    }
+
+    public static void setIcon(int icon1)
+    {
+        icon=icon1;
     }
 }
