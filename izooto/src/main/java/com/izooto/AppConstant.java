@@ -2,13 +2,10 @@ package com.izooto;
 
 
 public interface AppConstant {
-
     String APP_NAME_TAG = "IZooTo";
     String FCM_DEVICE_TOKEN = "deviceToken";
     String IZOOTO_SENDER_ID_KEY = "izooto_sender_id";
     String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";
-
-
     String UPDATE_DEVICE_TOKEN = "https://aevents.izooto.com/izooto/api.php";
     String IZOOTO_ENCRYPTION_KEY = "izooto_enc_key";
     String IZOOTO_APP_ID = "izooto_app_id";
