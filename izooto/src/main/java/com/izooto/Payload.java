@@ -40,19 +40,13 @@ public class Payload {
     private String act2link;
     private int inapp;
     private String trayicon;
-    // add new payload data
-
-
     public String smallIconAccentColor;
-
     public String sound;
     public String ledColor;
     public int lockScreenVisibility = 1;
     public String groupKey;
     public String groupMessage;
-
     public String fromProjectNumber;
-
     public String collapseId;
     public int priority;
     public String rawPayload;
@@ -62,8 +56,9 @@ public class Payload {
     public String validation;
     public String editbox_title;
     public String type;
-
-
+    public boolean isAndroid;
+    public boolean isiOS;
+    public  boolean isWeb;
     //////////////////////////////////////////////
     public int getInapp() {
         return inapp;

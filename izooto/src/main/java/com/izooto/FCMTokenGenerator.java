@@ -31,7 +31,7 @@ public class FCMTokenGenerator implements TokenGenerator {
                         if (callback != null)
                             callback.complete(token);
                     } else {
-                        callback.failure("Unable to generate FCM token, there may be something wrong with sender id");
+                        callback.failure(AppConstant.FCMERROR);
                     }
 
                 } catch (Exception e) {
@@ -42,7 +42,6 @@ public class FCMTokenGenerator implements TokenGenerator {
         }).start();
 
     }
-
     private void initFireBaseApp(final String senderId, final String apiKey, final String appId) {
         if (firebaseApp != null)
             return;
@@ -53,7 +52,7 @@ public class FCMTokenGenerator implements TokenGenerator {
                         .setApplicationId(appId)
                         .setApiKey(apiKey)
                         .build();
-        firebaseApp = FirebaseApp.initializeApp(iZooto.appContext, firebaseOptions, "IZOOTO");
-        Lg.d("firebase app name: ", firebaseApp.getName());
+        firebaseApp = FirebaseApp.initializeApp(iZooto.appContext, firebaseOptions, AppConstant.SDKNAME);
+        Lg.d(AppConstant.FCMNAME, firebaseApp.getName());
     }
 }
