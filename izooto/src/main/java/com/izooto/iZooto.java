@@ -184,7 +184,7 @@ public class iZooto {
         else
         {
            if(mBuilder!=null && mBuilder.mTokenReceivedListener!=null) {
-               mBuilder.mTokenReceivedListener.onUpdatedToken(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+               mBuilder.mTokenReceivedListener.onTokenReceived(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
            }
 
         }
