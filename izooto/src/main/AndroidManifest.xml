@@ -41,9 +41,9 @@
         </service>
 
 
-        <meta-data
-            android:name="izooto_enc_key"
-            android:value="${izooto_enc_key}" />
+<!--        <meta-data-->
+<!--            android:name="izooto_enc_key"-->
+<!--            android:value="${izooto_enc_key}" />-->
 
         <meta-data
             android:name="izooto_app_id"

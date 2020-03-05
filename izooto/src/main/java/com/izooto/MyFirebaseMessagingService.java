@@ -27,40 +27,33 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
 import androidx.core.app.NotificationCompat;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
 import org.json.JSONObject;
-
 import java.util.Map;
-
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-     private static final String TAG = "iZooto";
-     private  Payload payload = null;
-     private String deppLink= null;
+    private static final String TAG = "iZooto";
+    private  Payload payload = null;
+    private String deppLink= null;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         try {
             if (remoteMessage.getData().size() > 0) {
                 Map<String, String> data = remoteMessage.getData();
-                Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+                Log.d(AppConstant.APP_NAME_TAG, AppConstant.PAYLOAD + remoteMessage.getData());
                 handleNow(data);
 
-            } else {
-                Log.d(TAG, "Message data payload: " + "no notification");
             }
             if (remoteMessage.getNotification() != null) {
                 sendNotification(remoteMessage);
-                Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                Log.d(AppConstant.APP_NAME_TAG, AppConstant.PAYLOAD + remoteMessage.getNotification().getBody());
             }
         }
         catch (Exception ex)
         {
-            Log.e("Exception ex",ex.toString());
+            Log.e(AppConstant.FIREBASEEXCEPTION,ex.toString());
         }
 
 
@@ -101,42 +94,42 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public   void handleNow(final Map<String, String> data) {
 
-        Log.d(TAG, "Short lived task is done.");
+        Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);
         try {
 
-            JSONObject payloadObj = new JSONObject(data.get("campaignDetails"));
-            if (payloadObj.optLong("created_on") > PreferenceUtil.getInstance(this).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
+            JSONObject payloadObj = new JSONObject(data.get(AppConstant.CAMPNAME));
+            if (payloadObj.optLong(AppConstant.CREATEDON) > PreferenceUtil.getInstance(this).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
                 payload = new Payload();
-                payload.setFetchURL(payloadObj.optString("fetchURL"));
-                payload.setKey(payloadObj.optString("key"));
-                payload.setId(payloadObj.optString("id"));
-                payload.setRid(payloadObj.optString("rid"));
-                payload.setLink(payloadObj.optString("link"));
-                payload.setTitle(payloadObj.optString("title"));
-                payload.setMessage(payloadObj.optString("message"));
-                payload.setIcon(payloadObj.optString("icon"));
-                payload.setReqInt(payloadObj.optInt("reqInt"));
-                payload.setTag(payloadObj.optString("tag"));
-                payload.setBanner(payloadObj.optString("banner"));
-                payload.setAct_num(payloadObj.optInt("act_num"));
-                payload.setAct1name(payloadObj.optString("act1name"));
-                payload.setAct1link(payloadObj.optString("act1link"));
-                payload.setAct2name(payloadObj.optString("act2name"));
-                payload.setAct2link(payloadObj.optString("act2link"));
-               // payload.setInapp(payloadObj.optInt("inapp"));
-                 payload.setInapp(1);
-                payload.setTrayicon(payloadObj.optString("trayicon"));
-                payload.setSmallIconAccentColor(payloadObj.optString("iconcolor"));
-                payload.setSound(payloadObj.optString("sound"));
-                payload.setLedColor(payloadObj.optString("ledColor"));
-                payload.setLockScreenVisibility(payloadObj.optInt("visibility"));
-                payload.setGroupKey(payloadObj.optString("gKey"));
-                payload.setGroupMessage(payloadObj.optString("gMessage"));
-                payload.setFromProjectNumber(payloadObj.optString("projectNumber"));
-                payload.setCollapseId(payloadObj.optString("collapseID"));
-                payload.setPriority(payloadObj.optInt("priority"));
-                payload.setRawPayload(payloadObj.optString("rawData"));
-                payload.setDeeplink(payloadObj.optString("deeplink"));
+                payload.setFetchURL(payloadObj.optString(AppConstant.FETCHURL));
+                payload.setKey(payloadObj.optString(AppConstant.KEY));
+                payload.setId(payloadObj.optString(AppConstant.ID));
+                payload.setRid(payloadObj.optString(AppConstant.RID));
+                payload.setLink(payloadObj.optString(AppConstant.LINK));
+                payload.setTitle(payloadObj.optString(AppConstant.TITLE));
+                payload.setMessage(payloadObj.optString(AppConstant.NMESSAGE));
+                payload.setIcon(payloadObj.optString(AppConstant.ICON));
+                payload.setReqInt(payloadObj.optInt(AppConstant.REQINT));
+                payload.setTag(payloadObj.optString(AppConstant.TAG));
+                payload.setBanner(payloadObj.optString(AppConstant.BANNER));
+                payload.setAct_num(payloadObj.optInt(AppConstant.ACTNUM));
+                payload.setAct1name(payloadObj.optString(AppConstant.ACT1NAME));
+                payload.setAct1link(payloadObj.optString(AppConstant.ACT1LINK));
+                payload.setAct2name(payloadObj.optString(AppConstant.ACT2NAME));
+                payload.setAct2link(payloadObj.optString(AppConstant.ACT2LINK));
+                // payload.setInapp(payloadObj.optInt("inapp"));
+                payload.setInapp(1);
+                payload.setTrayicon(payloadObj.optString(AppConstant.TARYICON));
+                payload.setSmallIconAccentColor(payloadObj.optString(AppConstant.ICONCOLOR));
+                payload.setSound(payloadObj.optString(AppConstant.SOUND));
+                payload.setLedColor(payloadObj.optString(AppConstant.LEDCOLOR));
+                payload.setLockScreenVisibility(payloadObj.optInt(AppConstant.VISIBILITY));
+                payload.setGroupKey(payloadObj.optString(AppConstant.GKEY));
+                payload.setGroupMessage(payloadObj.optString(AppConstant.GMESSAGE));
+                payload.setFromProjectNumber(payloadObj.optString(AppConstant.PROJECTNUMBER));
+                payload.setCollapseId(payloadObj.optString(AppConstant.COLLAPSEID));
+                payload.setPriority(payloadObj.optInt(AppConstant.PRIORITY));
+                payload.setRawPayload(payloadObj.optString(AppConstant.RAWDATA));
+                payload.setDeeplink(payloadObj.optString(AppConstant.DEEPLINK));
                 payload.setType(payloadObj.optString("type"));
 //                if(payloadObj.optString("type").equalsIgnoreCase("type"))
 //                {
@@ -159,11 +152,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
-                    iZooto.processNotificationReceived(payload);
+                iZooto.processNotificationReceived(payload);
             } // This is your code
         };
         mainHandler.post(myRunnable);
     }
+
 
 
 }

@@ -7,17 +7,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
-
+import androidx.annotation.RequiresApi;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class iZooto {
 
@@ -26,20 +24,15 @@ public class iZooto {
     public static int mIzooToAppId;
     public static Builder mBuilder;
     public static int icon;
-
-
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
     }
-
     public static void setIzooToAppId(int izooToAppId) {
         mIzooToAppId = izooToAppId;
     }
-
     public static iZooto.Builder initialize(Context context) {
         return new iZooto.Builder(context);
     }
-
     private static void init(Builder builder) {
         final Context context = builder.mContext;
         appContext = context.getApplicationContext();
@@ -49,19 +42,18 @@ public class iZooto {
             ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle = appInfo.metaData;
             if (bundle != null) {
-                if (bundle.containsKey(AppConstant.IZOOTO_ENCRYPTION_KEY)) {
-                    mEncryptionKey = bundle.getString(AppConstant.IZOOTO_ENCRYPTION_KEY);
-                }
+//                if (bundle.containsKey(AppConstant.IZOOTO_ENCRYPTION_KEY)) {
+//                    mEncryptionKey = bundle.getString(AppConstant.IZOOTO_ENCRYPTION_KEY);
+//                }
                 if (bundle.containsKey(AppConstant.IZOOTO_APP_ID)) {
-                    mIzooToAppId = bundle.getInt(AppConstant.IZOOTO_APP_ID);//40493
+                    mIzooToAppId = bundle.getInt(AppConstant.IZOOTO_APP_ID);
                 }
                 if (mIzooToAppId == 0) {
-                    Lg.e(AppConstant.APP_NAME_TAG, "IZooTo App Id is missing.");
-                } else if (mEncryptionKey == null || mEncryptionKey.isEmpty()) {
-                    Lg.e(AppConstant.APP_NAME_TAG, "IZooTo Encryption key is missing.");
-                } else {
-                   // Lg.i("IZooTo Encryption key: ", mEncryptionKey);
-                    Lg.i("IZooTo App Id: ", mIzooToAppId + "");
+                    Lg.e(AppConstant.APP_NAME_TAG, AppConstant.MISSINGID);
+                }
+                else {
+                    Lg.i(AppConstant.APP_NAME_TAG+AppConstant.APPID, mIzooToAppId + "");
+
                     RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId + ".js", new RestClient.ResponseHandler() {
 
                         @Override
@@ -69,15 +61,15 @@ public class iZooto {
                             super.onFailure(statusCode, response, throwable);
                         }
 
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         void onSuccess(String response) {
                             super.onSuccess(response);
                             try {
-                              //  Log.e("iZootoResponse", response);
-                                JSONObject jsonObject = new JSONObject(Util.decrypt(mEncryptionKey, response));
-                                senderId = jsonObject.getString("senderId");
-                                String appId = jsonObject.getString("appId");
-                                String apiKey = jsonObject.getString("apiKey");
+                                JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
+                                senderId = jsonObject.getString(AppConstant.SENDERID);
+                                String appId = jsonObject.getString(AppConstant.APPID);
+                                String apiKey = jsonObject.getString(AppConstant.APIKEY);
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
                                 } else {
@@ -90,7 +82,7 @@ public class iZooto {
                     });
                 }
             } else {
-                Lg.e(AppConstant.APP_NAME_TAG, "It seems you forgot to configure izooto_app id or izooto_sender_id property in your app level build.gradle");
+                Lg.e(AppConstant.APP_NAME_TAG, AppConstant.MESSAGE);
             }
 
 
@@ -141,8 +133,8 @@ public class iZooto {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
             String appVersion = Util.getAppVersion();
-            String api_url = "app.php?s=" + 2 + "&pid=" + mIzooToAppId + "&btype=" + 9 + "&dtype=" + 3 + "&tz=" + System.currentTimeMillis() + "&bver=" + appVersion +
-                    "&os=" + 4 + "&allowed=" + 1 + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&check=1.0";
+            String api_url = "app.php?s=" + AppConstant.STYPE + "&pid=" + mIzooToAppId + "&btype=" + AppConstant.BTYPE + "&dtype=" + AppConstant.DTYPE + "&tz=" + System.currentTimeMillis() + "&bver=" + appVersion +
+                    "&os=" + AppConstant.SDKOS + "&allowed=" + AppConstant.ALLOWED + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&check=1.0";
             //mIzooToAppId
 
             try {
@@ -150,7 +142,7 @@ public class iZooto {
                 String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, "utf-8");
                 api_url += "&osVersion=" + osVersion + "&deviceName=" + deviceName;
             } catch (UnsupportedEncodingException e) {
-                Lg.e("error: ", "unsupported encoding exception");
+                Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
             }
 
             RestClient.get(api_url, new RestClient.ResponseHandler() {
@@ -175,7 +167,7 @@ public class iZooto {
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
-                   // Log.e("ResponseGet", "" + statusCode);
+                    // Log.e("ResponseGet", "" + statusCode);
 
                 }
             });
@@ -183,17 +175,17 @@ public class iZooto {
         }
         else
         {
-           if(mBuilder!=null && mBuilder.mTokenReceivedListener!=null) {
-               mBuilder.mTokenReceivedListener.onTokenReceived(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
-           }
+            if(mBuilder!=null && mBuilder.mTokenReceivedListener!=null) {
+                mBuilder.mTokenReceivedListener.onTokenReceived(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+            }
 
         }
     }
 
     public static void processNotificationReceived(Payload payload) {
-      if(payload!=null) {
-          NotificationEventManager.manageNotification(payload);
-      }
+        if(payload!=null) {
+            NotificationEventManager.manageNotification(payload);
+        }
 
     }
 
@@ -211,24 +203,24 @@ public class iZooto {
     public static void notificationClicked()
     {
 
-            if(mBuilder!=null && mBuilder.mNotificationHelper!=null)
-            {
-                mBuilder.mNotificationHelper.onNotificationView("1");
-            }
+        if(mBuilder!=null && mBuilder.mNotificationHelper!=null)
+        {
+            mBuilder.mNotificationHelper.onNotificationView("1");
+        }
 
     }
 
 
-        public  static  void HandleDeepLink(String url)
-            {
-                 if(mBuilder!=null && mBuilder.mDeeplink!=null)
-                    {
-                      if(url!=null)
-                         mBuilder.mDeeplink.onHandleDeepLink(url);
+    public  static  void HandleDeepLink(String url)
+    {
+        if(mBuilder!=null && mBuilder.mDeeplink!=null)
+        {
+            if(url!=null)
+                mBuilder.mDeeplink.onHandleDeepLink(url);
 
-                    }
+        }
 
-                }
+    }
 
     public static class Builder {
         Context mContext;
@@ -261,7 +253,7 @@ public class iZooto {
         }
 
     }
-// send events  with event name and event data
+    // send events  with event name and event data
     public static void SendEvent(String eventName, HashMap<String,String> data) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String database = data.toString();

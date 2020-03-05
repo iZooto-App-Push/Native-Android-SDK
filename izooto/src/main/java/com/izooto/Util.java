@@ -132,7 +132,7 @@ public class Util {
 
     boolean checkForFcmDependency() {
         if (!hasFCMLibrary()) {
-            Lg.d(AppConstant.APP_NAME_TAG, "The FCM library is missing! Please make sure to include it in your project.");
+            Lg.d(AppConstant.APP_NAME_TAG, AppConstant.CHECKFCMLIBRARY);
             return false;
         }
         return true;
