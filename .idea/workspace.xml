@@ -11,17 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e526a21-7e02-402a-a6d1-94a81cce592b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto-app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/android-x.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,15 +58,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2175">
-              <caret line="161" column="118" selection-start-line="161" selection-start-column="118" selection-end-line="161" selection-end-column="118" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/WebViewActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-433">
@@ -84,11 +66,36 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="156">
+              <caret line="29" selection-start-line="29" selection-end-line="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2625">
+              <caret line="186" column="63" selection-start-line="186" selection-start-column="63" selection-end-line="186" selection-end-column="63" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#setNotificationReceiveListener#0;class#Builder#0;class#iZooto#0" />
+                <element signature="method#setDeepLinkListener#0;class#Builder#0;class#iZooto#0" />
+                <element signature="method#SendEvent#0;class#iZooto#0" />
+                <element signature="method#sendUserProfile#0;class#iZooto#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/app/izoototest/AppController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="31" column="1" lean-forward="true" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -106,7 +113,7 @@
         <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/MyFirebaseInstanceIDService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="281">
-              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+              <caret line="34" selection-start-line="34" selection-end-line="34" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -114,20 +121,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/TokenReceivedListener.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
-              <caret line="11" column="2" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/Payload.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="18" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="18" />
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -203,12 +201,10 @@
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoDeepLinkListener.java" />
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Payload.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/app/izoototest/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/app/izoototest/AppController.java" />
         <option value="$PROJECT_DIR$/gradle.properties" />
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" />
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/MyFirebaseMessagingService.java" />
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" />
-        <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" />
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" />
         <option value="$PROJECT_DIR$/izooto/src/main/res/layout/activity_webview.xml" />
         <option value="$PROJECT_DIR$/izooto/build.gradle" />
@@ -216,6 +212,8 @@
         <option value="$PROJECT_DIR$/izooto/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/WebViewActivity.java" />
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TokenReceivedListener.java" />
+        <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/app/izoototest/AppController.java" />
         <option value="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" />
       </list>
     </option>
@@ -545,10 +543,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="808" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.3297568" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.3297568" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -557,11 +554,11 @@
       <window_info id="Resources Explorer" order="7" />
       <window_info id="Capture Tool" order="8" />
       <window_info anchor="bottom" id="Run" order="0" sideWeight="0.49642345" weight="0.47765362" />
-      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.49427754" weight="0.5083799" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="1" sideWeight="0.49427754" visible="true" weight="0.50793654" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32960895" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3282123" />
-      <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49785408" visible="true" weight="0.34199134" />
-      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.50572246" side_tool="true" weight="0.5083799" />
+      <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49785408" weight="0.34199134" />
+      <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.50572246" side_tool="true" weight="0.50793654" />
       <window_info anchor="bottom" id="Version Control" order="6" weight="0.32960895" />
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49785408" weight="0.17171717" />
       <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
@@ -772,17 +769,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/app/izoototest/AppController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="e#610#611#0" expanded="true" />
-            <element signature="e#653#654#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3360">
@@ -826,20 +812,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1950">
-          <caret line="155" column="24" selection-start-line="155" selection-start-column="24" selection-end-line="155" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#setNotificationReceiveListener#0;class#Builder#0;class#iZooto#0" />
-            <element signature="method#setDeepLinkListener#0;class#Builder#0;class#iZooto#0" />
-            <element signature="method#SendEvent#0;class#iZooto#0" />
-            <element signature="method#sendUserProfile#0;class#iZooto#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -893,17 +865,10 @@
     <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/MyFirebaseInstanceIDService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
@@ -917,7 +882,35 @@
     <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/TokenReceivedListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
-          <caret line="11" column="2" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2625">
+          <caret line="186" column="63" selection-start-line="186" selection-start-column="63" selection-end-line="186" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#setNotificationReceiveListener#0;class#Builder#0;class#iZooto#0" />
+            <element signature="method#setDeepLinkListener#0;class#Builder#0;class#iZooto#0" />
+            <element signature="method#SendEvent#0;class#iZooto#0" />
+            <element signature="method#sendUserProfile#0;class#iZooto#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/app/izoototest/AppController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="31" column="1" lean-forward="true" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
         </state>
       </provider>
     </entry>

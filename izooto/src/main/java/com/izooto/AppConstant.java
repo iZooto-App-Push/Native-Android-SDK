@@ -24,4 +24,9 @@ public interface AppConstant {
     String KEY_IN_DEEP="deeplink";
     String KEY_IN_PHONE ="call";
 
+
+
+
+
+
 }
