@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
 import androidx.annotation.RequiresApi;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -254,7 +256,7 @@ public class iZooto {
 
     }
     // send events  with event name and event data
-    public static void SendEvent(String eventName, HashMap<String,String> data) {
+    public static void addEvent(String eventName, HashMap<String,String> data) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String database = data.toString();
         String encodeData = "";
@@ -294,7 +296,7 @@ public class iZooto {
         }
     }
     // send user properties
-    public static void sendUserProfile(HashMap<String,String> object)
+    public static void addUserProfile(HashMap<String,String> object)
     {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String database = object.toString();

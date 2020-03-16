@@ -40,25 +40,28 @@ public class Payload {
     private String act2link;
     private int inapp;
     private String trayicon;
-    public String smallIconAccentColor;
-    public String sound;
-    public String ledColor;
-    public int lockScreenVisibility = 1;
-    public String groupKey;
-    public String groupMessage;
-    public String fromProjectNumber;
-    public String collapseId;
-    public int priority;
-    public String rawPayload;
-    public String deeplink;
-    public String type_input_to_payload;
-    public String dropdown_text;
-    public String validation;
-    public String editbox_title;
-    public String type;
+    private String smallIconAccentColor;
+    private String sound;
+    private String ledColor;
+    private int lockScreenVisibility = 1;
+    private String groupKey;
+    private String groupMessage;
+    private String fromProjectNumber;
+    private String collapseId;
+    private int priority;
+    private String rawPayload;
+    private String deeplink;
+    private String type_input_to_payload;
+    private String dropdown_text;
+    private String validation;
+    private String editbox_title;
+    private String type;
     public boolean isAndroid;
     public boolean isiOS;
     public  boolean isWeb;
+    private String  act1icon;
+    private String  act2icon;
+
     //////////////////////////////////////////////
     public int getInapp() {
         return inapp;
@@ -334,4 +337,19 @@ public class Payload {
         this.type = type;
     }
 
+    public String getAct1icon() {
+        return act1icon;
+    }
+
+    public void setAct1icon(String act1icon) {
+        this.act1icon = act1icon;
+    }
+
+    public String getAct2icon() {
+        return act2icon;
+    }
+
+    public void setAct2icon(String act2icon) {
+        this.act2icon = act2icon;
+    }
 }

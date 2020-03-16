@@ -2,6 +2,7 @@ package com.izooto;
 
 
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -24,12 +27,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.Random;
 
 public class NotificationEventManager {
-    private static Bitmap notificationIcon, notificationBanner;
+    private static Bitmap notificationIcon, notificationBanner;//,act1Icon,act2Icon;
     private static int icon;
 
     public static void manageNotification(Payload payload) {
@@ -165,6 +166,7 @@ public class NotificationEventManager {
                         .setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_SOUND).setVibrate(new long[]{1000, 1000})
                         .setSound(defaultSoundUri)
                         .setAutoCancel(true);
+
                 if(payload.getLedColor()!=null && !payload.getLedColor().isEmpty())
                     notificationBuilder.setColor(Color.parseColor(payload.getLedColor()));
                 if (notificationIcon != null)
@@ -187,20 +189,20 @@ public class NotificationEventManager {
                     Intent btn1 = new Intent(iZooto.appContext, NotificationActionReceiver.class);
                     String phone;
 
-                    String checknumber =decodeURL(payload.getAct1link());
-                    if(checknumber.contains("tel:"))
-                        phone=checknumber;
+                    String checknumber = decodeURL(payload.getAct1link());
+                    if (checknumber.contains("tel:"))
+                        phone = checknumber;
                     else
-                        phone="NO";
+                        phone = "NO";
 
                     btn1.putExtra(AppConstant.KEY_WEB_URL, link1);
                     btn1.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificaitionId);
                     btn1.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
-                    btn1.putExtra(AppConstant.KEY_IN_CID,payload.getId());
-                    btn1.putExtra(AppConstant.KEY_IN_RID,payload.getRid());
-                    btn1.putExtra(AppConstant.KEY_IN_BUTOON,1);
-                    btn1.putExtra(AppConstant.KEY_IN_DEEP,payload.getDeeplink());
-                    btn1.putExtra(AppConstant.KEY_IN_PHONE,phone);
+                    btn1.putExtra(AppConstant.KEY_IN_CID, payload.getId());
+                    btn1.putExtra(AppConstant.KEY_IN_RID, payload.getRid());
+                    btn1.putExtra(AppConstant.KEY_IN_BUTOON, 1);
+                    btn1.putExtra(AppConstant.KEY_IN_DEEP, payload.getDeeplink());
+                    btn1.putExtra(AppConstant.KEY_IN_PHONE, phone);
 
 
                     PendingIntent pendingIntent1 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -209,6 +211,7 @@ public class NotificationEventManager {
                                     0, payload.getAct1name(), pendingIntent1
                             ).build();
                     notificationBuilder.addAction(action1);
+
 
                 }
 
@@ -283,6 +286,7 @@ public class NotificationEventManager {
 
                 notificationBanner = null;
                 notificationIcon = null;
+               // act1Icon =null;
                 link = "";
                 link1 = "";
                 link2 = "";
@@ -297,6 +301,7 @@ public class NotificationEventManager {
             public void run() {
                 String smallIcon = payload.getIcon();
                 String banner = payload.getBanner();
+                String actIcon=payload.getAct1icon();
                 try {
                     if (smallIcon != null && !smallIcon.isEmpty())
                         notificationIcon = Util.getBitmapFromURL(smallIcon);
@@ -304,6 +309,10 @@ public class NotificationEventManager {
                         notificationBanner = Util.getBitmapFromURL(banner);
 
                     }
+//                   if(actIcon!=null && !actIcon.isEmpty())
+//                   {
+//                        act1Icon=Util.getBitmapFromURL(actIcon);
+//                    }
                     handler.post(notificationRunnable);
                 } catch (Exception e) {
                     Lg.e("Error", e.getMessage());
