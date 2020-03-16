@@ -114,9 +114,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 payload.setAct_num(payloadObj.optInt(AppConstant.ACTNUM));
                 payload.setAct1name(payloadObj.optString(AppConstant.ACT1NAME));
                 payload.setAct1link(payloadObj.optString(AppConstant.ACT1LINK));
+                payload.setAct1icon(payloadObj.optString(AppConstant.ACT1ICON));
                 payload.setAct2name(payloadObj.optString(AppConstant.ACT2NAME));
                 payload.setAct2link(payloadObj.optString(AppConstant.ACT2LINK));
-                // payload.setInapp(payloadObj.optInt("inapp"));
+                payload.setAct2icon(payloadObj.optString(AppConstant.ACT2ICON));
                 payload.setInapp(1);
                 payload.setTrayicon(payloadObj.optString(AppConstant.TARYICON));
                 payload.setSmallIconAccentColor(payloadObj.optString(AppConstant.ICONCOLOR));

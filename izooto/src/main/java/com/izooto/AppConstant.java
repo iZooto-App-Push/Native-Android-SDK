@@ -82,6 +82,10 @@ public interface AppConstant {
     String RAWDATA="rawData";
     String DEEPLINK ="deeplink";
     String PAYLOAD ="Payload";
+    String ACT1ICON="act1icon";
+    String ACT2ICON="act2icon";
+
+
     String NOTIFICATIONBODY="notifcationbody";
     String FIREBASEEXCEPTION ="exception";
     String FCMNAME = "FireBase Name";
