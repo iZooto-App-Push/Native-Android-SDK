@@ -95,6 +95,14 @@ public interface AppConstant {
     //API
     String APISUCESS ="API SUCCESS";
     String APIFAILURE ="API FAILURE";
+    String TELIPHONE = "tel:";
+    String NO = "NO";
+
+//// short payload
+
+
+
+    }
 
 
 
@@ -103,4 +111,3 @@ public interface AppConstant {
 
 
 
-}

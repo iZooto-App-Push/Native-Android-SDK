@@ -69,6 +69,7 @@ public class iZooto {
                             super.onSuccess(response);
                             try {
                                 JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
+                                 Log.e("JSONObject",jsonObject.toString());
                                 senderId = jsonObject.getString(AppConstant.SENDERID);
                                 String appId = jsonObject.getString(AppConstant.APPID);
                                 String apiKey = jsonObject.getString(AppConstant.APIKEY);
@@ -126,7 +127,7 @@ public class iZooto {
                 FirebaseApp.initializeApp(appContext, firebaseOptions, "[DEFAULT]");
             }
         } catch (IllegalStateException ex) {
-            FirebaseApp.initializeApp(appContext, firebaseOptions, "[DEFAULT]");
+            //FirebaseApp.initializeApp(appContext, firebaseOptions, "[DEFAULT]");
 
         }
     }
@@ -202,12 +203,12 @@ public class iZooto {
         }
     }
 
-    public static void notificationClicked()
+    public static void notificationClicked(String data)
     {
 
         if(mBuilder!=null && mBuilder.mNotificationHelper!=null)
         {
-            mBuilder.mNotificationHelper.onNotificationView("1");
+            mBuilder.mNotificationHelper.onNotificationView(data);
         }
 
     }

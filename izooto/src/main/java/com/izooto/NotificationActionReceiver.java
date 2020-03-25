@@ -51,7 +51,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
-                    iZooto.notificationClicked();
+                   // iZooto.notificationClicked();
+
+                   // iZooto.notificationClicked(deeplink);
+                    Log.e("Value",""+inApp+deeplink);
+
+
 
                 }
             });
@@ -61,44 +66,66 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
 
 
+         if (inApp ==2)
+         {
+             Log.e("Value",""+inApp);
+             if(inApp ==2 && btncount!=0) {
+                 iZooto.notificationClicked("NoLink");
+                 if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+                     WebViewActivity.startActivity(context, mUrl);
+
+                 } else {
+                     Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
+                     browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                     context.startActivity(browserIntent);
+
+                 }
+             }
+
+             else
+             {
+                 iZooto.notificationClicked(deeplink);
+
+             }
 
 
-        if (inApp == 1 && phoneNumber.equalsIgnoreCase("No"))
+         }
+         else
+         {
+             iZooto.notificationClicked("NoLink");
+
+        if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO))
             WebViewActivity.startActivity(context, mUrl);
         else {
             try {
 
-                if(deeplink.equalsIgnoreCase("deeplink")) {
-                    iZooto.HandleDeepLink(mUrl);
-                    Log.e("DeeplInk",deeplink);
+//                if (inApp == 2) {
+//
+//                    iZooto.notificationClicked(deeplink);
+//
+//                } else {
+////                   if (deeplink.equalsIgnoreCase("deeplink")) {
+//                       iZooto.HandleDeepLink(mUrl);
+//
+//                   } else {
+                    if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(browserIntent);
+                    } else {
+                        Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
+                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(browserIntent);
 
-                }
-                else
-                {
-                   if(phoneNumber.equalsIgnoreCase("No")) {
-                       Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                       browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                       context.startActivity(browserIntent);
-                   }
-                   else
-                   {
-                       Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
-                      browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                       context.startActivity(browserIntent);
-
-                   }
-                }
-
-//                 Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:555-1212"));
-//                 browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                 context.startActivity(browserIntent);
+                    }
+                    // }
+             //   }
 
 
+            } catch (Exception ex) {
+                Log.e("ex", ex.toString());
             }
-            catch (Exception ex)
-            {
-                Log.e("ex",ex.toString());
-            }
+        }
         }
 
     }

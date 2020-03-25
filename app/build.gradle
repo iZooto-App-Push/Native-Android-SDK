@@ -11,7 +11,7 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
-                izooto_app_id : 40493
+                izooto_app_id: 40493
         ]
     }
 
@@ -34,4 +34,6 @@ android {
 }
 dependencies {
     implementation project(path: ':izooto')
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

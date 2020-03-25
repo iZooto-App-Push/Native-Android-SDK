@@ -32,7 +32,7 @@
 
 
         <service
-            android:name="com.izooto.MyFirebaseMessagingService"
+            android:name="com.izooto.iZootoMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

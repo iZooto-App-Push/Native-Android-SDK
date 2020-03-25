@@ -23,10 +23,12 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import java.util.Random;
 
 public class NotificationEventManager {
@@ -66,6 +68,7 @@ public class NotificationEventManager {
 
     private static void parseJson(Payload payload, JSONObject jsonObject) {
         try {
+
             payload.setLink(getParsedvalue(jsonObject, payload.getLink()));
             payload.setTitle(getParsedvalue(jsonObject, payload.getTitle()));
             payload.setMessage(getParsedvalue(jsonObject, payload.getMessage()));
@@ -75,7 +78,6 @@ public class NotificationEventManager {
             payload.setAct1link(getParsedvalue(jsonObject, payload.getAct1link()));
             payload.setAct2name(getParsedvalue(jsonObject, payload.getAct2name()));
             payload.setAct2link(getParsedvalue(jsonObject, payload.getAct2link()));
-
             showNotification(payload);
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,7 +155,7 @@ public class NotificationEventManager {
                    intent.putExtra(AppConstant.KEY_IN_RID,payload.getRid());
                    intent.putExtra(AppConstant.KEY_IN_BUTOON,0);
                    intent.putExtra(AppConstant.KEY_IN_DEEP,payload.getDeeplink());
-                   intent.putExtra(AppConstant.KEY_IN_PHONE,"NO");
+                   intent.putExtra(AppConstant.KEY_IN_PHONE,AppConstant.NO);
                    PendingIntent pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
                         PendingIntent.FLAG_ONE_SHOT);
                 notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId)
@@ -177,11 +179,7 @@ public class NotificationEventManager {
                     notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
                             .bigPicture(notificationBanner)
                             .bigLargeIcon(notificationIcon).setSummaryText(payload.getMessage()));
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-//                    notificationBuilder.setColor(ContextCompat.getColor(iZooto.appContext, R.color.colorPrimary));
-
-
-                NotificationManager notificationManager =
+               NotificationManager notificationManager =
                         (NotificationManager) iZooto.appContext.getSystemService(Context.NOTIFICATION_SERVICE);
                 int notificaitionId = (int) System.currentTimeMillis();
                 if (payload.getAct1name() != null && !payload
@@ -190,10 +188,10 @@ public class NotificationEventManager {
                     String phone;
 
                     String checknumber = decodeURL(payload.getAct1link());
-                    if (checknumber.contains("tel:"))
+                    if (checknumber.contains(AppConstant.TELIPHONE))
                         phone = checknumber;
                     else
-                        phone = "NO";
+                        phone = AppConstant.NO;
 
                     btn1.putExtra(AppConstant.KEY_WEB_URL, link1);
                     btn1.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificaitionId);
@@ -222,10 +220,10 @@ public class NotificationEventManager {
                     String phone;
 
                     String checknumber =decodeURL(payload.getAct2link());
-                    if(checknumber.contains("tel:"))
-                        phone=checknumber;
+                    if (checknumber.contains(AppConstant.TELIPHONE))
+                        phone = checknumber;
                     else
-                        phone="NO";
+                        phone = AppConstant.NO;
 
 
                     btn2.putExtra(AppConstant.KEY_WEB_URL, link2);
@@ -244,7 +242,6 @@ public class NotificationEventManager {
                             ).build();
                     notificationBuilder.addAction(action2);
                 }
-
                 assert notificationManager != null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -252,13 +249,7 @@ public class NotificationEventManager {
                             "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT);
                     notificationManager.createNotificationChannel(channel);
                 }
-                
-
                 notificationManager.notify(notificaitionId, notificationBuilder.build());
-
-
-
-
                 try {
 
                     String api_url = "?pid=" + iZooto.mIzooToAppId   +
@@ -309,10 +300,6 @@ public class NotificationEventManager {
                         notificationBanner = Util.getBitmapFromURL(banner);
 
                     }
-//                   if(actIcon!=null && !actIcon.isEmpty())
-//                   {
-//                        act1Icon=Util.getBitmapFromURL(actIcon);
-//                    }
                     handler.post(notificationRunnable);
                 } catch (Exception e) {
                     Lg.e("Error", e.getMessage());
@@ -347,7 +334,6 @@ public class NotificationEventManager {
             String[] arrOfStr = url.split("&frwd=");
             String[] second = arrOfStr[1].split("&bkey=");
             String decodeData = new String(Base64.decode(second[0], Base64.DEFAULT));
-
              return decodeData;
 
 

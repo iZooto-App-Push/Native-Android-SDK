@@ -1,5 +1,6 @@
 package com.app.izoototest;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
     @Override
     public void onNotificationView(String s) {
         Log.e("NotificationClicked",s);
+        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
 
 
     }
