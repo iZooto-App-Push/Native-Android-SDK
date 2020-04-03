@@ -73,12 +73,12 @@ public class WebViewActivity extends AppCompatActivity {
 
 
     class CustWebViewClient extends WebViewClient {
-        public static final String TAG = "MyWebViewClient";
+        public static final String TAG = AppConstant.APP_NAME_TAG;
 //        boolean getSuccess;
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            Lg.d(TAG, "WebViewClient: shouldOverrideUrlLoading");
+            Lg.d(TAG, AppConstant.webViewData);
             return false;
         }
 

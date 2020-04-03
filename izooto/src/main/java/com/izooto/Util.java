@@ -9,12 +9,14 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -156,5 +158,10 @@ public class Util {
         {
             return false;
         }
+    }
+    public static String getDeviceLanguage()
+    {
+        return Locale.getDefault().getDisplayLanguage();
+
     }
 }

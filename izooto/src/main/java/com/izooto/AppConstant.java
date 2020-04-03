@@ -7,6 +7,9 @@ public interface AppConstant {
     String IZOOTO_SENDER_ID_KEY = "izooto_sender_id";
     String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";
     String SDKNAME = "IZOOTO";
+    String DEVICETOKEN="DEVICE TOKEN";
+    String UTF="UTF-8";
+    String FCMDEFAULT="[DEFAULT]";
 
 
     String UPDATE_DEVICE_TOKEN = "https://aevents.izooto.com/izooto/api.php";
@@ -24,8 +27,10 @@ public interface AppConstant {
     String  KEY_IN_CID = "cid";
     String KEY_IN_RID = "rid";
     String KEY_IN_BUTOON="btn";
-    String KEY_IN_DEEP="deeplink";
+    String KEY_IN_ADDITIONALDATA="ap";
     String KEY_IN_PHONE ="call";
+    String KEY_IN_ACT1ID = "act1ID";
+    String KEY_IN_ACT2ID="act2ID";
     int BTYPE = 9;
     int DTYPE = 3;
     int SDKOS = 4;
@@ -80,10 +85,12 @@ public interface AppConstant {
     String COLLAPSEID = "collapseID";
     String PRIORITY="priority";
     String RAWDATA="rawData";
-    String DEEPLINK ="deeplink";
+    String ADDITIONALPARAM ="ap";
     String PAYLOAD ="Payload";
     String ACT1ICON="act1icon";
     String ACT2ICON="act2icon";
+    String ACT1ID="act1id";
+    String ACT2ID ="act2id";
 
 
     String NOTIFICATIONBODY="notifcationbody";
@@ -99,7 +106,7 @@ public interface AppConstant {
     String NO = "NO";
 
 //// short payload
-
+String webViewData = "WebViewClient: shouldOverrideUrlLoading";
 
 
     }

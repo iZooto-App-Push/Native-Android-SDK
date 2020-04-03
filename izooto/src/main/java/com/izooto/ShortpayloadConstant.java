@@ -19,7 +19,7 @@ public interface ShortpayloadConstant {
     String ACT1LINK= "l1";
     String ACT2NAME= "b2";
     String ACT2LINK= "l2";
-    String INAPP= "inapp";
+    String INAPP= "ia";
     String TARYICON="trayicon";
     String ICONCOLOR="iconcolor";
     String SOUND= "sound";
@@ -31,9 +31,12 @@ public interface ShortpayloadConstant {
     String COLLAPSEID = "collapseID";
     String PRIORITY="priority";
     String RAWDATA="rawData";
-    String DEEPLINK ="deeplink";
+    String ADDITIONALPARAM ="ap";
     String PAYLOAD ="Payload";
     String ACT1ICON="ib1";
     String ACT2ICON="ib2";
+    String ACT1ID="d1";
+    String ACT2ID ="d2";
+
 
 }

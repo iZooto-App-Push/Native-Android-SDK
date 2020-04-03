@@ -50,7 +50,11 @@ public class Payload {
     private String collapseId;
     private int priority;
     private String rawPayload;
-    private String deeplink;
+    private String act1ID;
+    private String act2ID;
+
+
+    private String ap;
     private String type_input_to_payload;
     private String dropdown_text;
     private String validation;
@@ -289,14 +293,6 @@ public class Payload {
         this.rawPayload = rawPayload;
     }
 
-    public void setDeeplink(String deeplink) {
-        this.deeplink = deeplink;
-    }
-
-    public String getDeeplink() {
-        return deeplink;
-    }
-
     public String getType_input_to_payload() {
         return type_input_to_payload;
     }
@@ -352,4 +348,28 @@ public class Payload {
     public void setAct2icon(String act2icon) {
         this.act2icon = act2icon;
     }
+
+    public String getAct1ID() {
+        return act1ID;
+    }
+
+    public void setAct1ID(String act1ID) {
+        this.act1ID = act1ID;
+    }
+
+    public String getAct2ID() {
+        return act2ID;
+    }
+
+    public void setAct2ID(String act2ID) {
+        this.act2ID = act2ID;
+    }
+    public String getAp() {
+        return ap;
+    }
+
+    public void setAp(String ap) {
+        this.ap = ap;
+    }
+
 }
