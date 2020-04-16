@@ -40,29 +40,40 @@ public class Payload {
     private String act2link;
     private int inapp;
     private String trayicon;
-    // add new payload data
+    private String smallIconAccentColor;
+    private String sound;
+    private String ledColor;
+    private int lockScreenVisibility = 1;
+    private String groupKey;
+    private String groupMessage;
+    private String fromProjectNumber;
+    private String collapseId;
+    private int priority;
+    private String rawPayload;
+    private String act1ID;
+    private String act2ID;
 
 
-    public String smallIconAccentColor;
+    private String ap;
+    private String type_input_to_payload;
+    private String dropdown_text;
+    private String validation;
+    private String editbox_title;
+    private String type;
+    public boolean isAndroid;
+    public boolean isiOS;
+    public  boolean isWeb;
+    private String  act1icon;
+    private String  act2icon;
+    private int cfg;
 
-    public String sound;
-    public String ledColor;
-    public int lockScreenVisibility = 1;
-    public String groupKey;
-    public String groupMessage;
+    public int getCfg() {
+        return cfg;
+    }
 
-    public String fromProjectNumber;
-
-    public String collapseId;
-    public int priority;
-    public String rawPayload;
-    public String deeplink;
-    public String type_input_to_payload;
-    public String dropdown_text;
-    public String validation;
-    public String editbox_title;
-    public String type;
-
+    public void setCfg(int cfg) {
+        this.cfg = cfg;
+    }
 
     //////////////////////////////////////////////
     public int getInapp() {
@@ -291,14 +302,6 @@ public class Payload {
         this.rawPayload = rawPayload;
     }
 
-    public void setDeeplink(String deeplink) {
-        this.deeplink = deeplink;
-    }
-
-    public String getDeeplink() {
-        return deeplink;
-    }
-
     public String getType_input_to_payload() {
         return type_input_to_payload;
     }
@@ -337,6 +340,45 @@ public class Payload {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getAct1icon() {
+        return act1icon;
+    }
+
+    public void setAct1icon(String act1icon) {
+        this.act1icon = act1icon;
+    }
+
+    public String getAct2icon() {
+        return act2icon;
+    }
+
+    public void setAct2icon(String act2icon) {
+        this.act2icon = act2icon;
+    }
+
+    public String getAct1ID() {
+        return act1ID;
+    }
+
+    public void setAct1ID(String act1ID) {
+        this.act1ID = act1ID;
+    }
+
+    public String getAct2ID() {
+        return act2ID;
+    }
+
+    public void setAct2ID(String act2ID) {
+        this.act2ID = act2ID;
+    }
+    public String getAp() {
+        return ap;
+    }
+
+    public void setAp(String ap) {
+        this.ap = ap;
     }
 
 }
