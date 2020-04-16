@@ -65,6 +65,15 @@ public class Payload {
     public  boolean isWeb;
     private String  act1icon;
     private String  act2icon;
+    private int cfg;
+
+    public int getCfg() {
+        return cfg;
+    }
+
+    public void setCfg(int cfg) {
+        this.cfg = cfg;
+    }
 
     //////////////////////////////////////////////
     public int getInapp() {

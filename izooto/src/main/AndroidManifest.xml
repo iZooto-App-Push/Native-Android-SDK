@@ -10,16 +10,15 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:usesCleartextTraffic="true"
-
-        >
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name="com.izooto.WebViewActivity"
             android:screenOrientation="portrait"
             android:exported="true"
-            android:launchMode="singleTask"
-            />
+            android:launchMode="singleTask" />
+        <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing"
+            android:value="true" />
         <receiver
             android:name="com.izooto.NotificationActionReceiver"
             android:enabled="true">
@@ -39,11 +38,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-
-<!--        <meta-data-->
-<!--            android:name="izooto_enc_key"-->
-<!--            android:value="${izooto_enc_key}" />-->
 
         <meta-data
             android:name="izooto_app_id"

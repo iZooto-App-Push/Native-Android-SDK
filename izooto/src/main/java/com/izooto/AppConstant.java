@@ -7,7 +7,7 @@ public interface AppConstant {
     String IZOOTO_SENDER_ID_KEY = "izooto_sender_id";
     String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";
     String SDKNAME = "IZOOTO";
-    String DEVICETOKEN="DEVICE TOKEN";
+    String DEVICETOKEN="DEVICE TOKEN   ->  ";
     String UTF="UTF-8";
     String FCMDEFAULT="[DEFAULT]";
 
@@ -91,6 +91,7 @@ public interface AppConstant {
     String ACT2ICON="act2icon";
     String ACT1ID="act1id";
     String ACT2ID ="act2id";
+    String CFG="cfg";
 
 
     String NOTIFICATIONBODY="notifcationbody";
@@ -105,11 +106,17 @@ public interface AppConstant {
     String TELIPHONE = "tel:";
     String NO = "NO";
 
-//// short payload
-String webViewData = "WebViewClient: shouldOverrideUrlLoading";
+    //// short payload
+    String webViewData = "WebViewClient: shouldOverrideUrlLoading";
+    String LANDINGURL="landingURL";
+    String ACT1URL = "act1URL";
+    String ACT2URL="act2URL";
+    String ACT1TITLE="act1title";
+    String ACT2TITLE="act2title";
 
 
-    }
+
+}
 
 
 

@@ -109,7 +109,7 @@ public class Util {
         }
     }
 
-    public static String getAppVersion() {
+    public static String getSDKVersion() {
         try {
             PackageInfo pInfo = iZooto.appContext.getPackageManager().getPackageInfo(iZooto.appContext.getPackageName(), 0);
             return pInfo.versionName;
