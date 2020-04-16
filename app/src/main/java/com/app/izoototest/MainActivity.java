@@ -13,7 +13,6 @@ import com.izooto.NotificationHelperListener;
 import com.izooto.Payload;
 import com.izooto.iZooto;
 
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements NotificationHelperListener
 {
@@ -25,12 +24,7 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         iZooto.initialize(this).setNotificationReceiveListener(this).build();
-        HashMap<String,String> data = new HashMap<>();
-        data.put("CNumber","1202220200220");
-        data.put("CNAME","MasterCard");
-        data.put("CYEAR","120430");
-        iZooto.addEvent("Creadit",data);
-        iZooto.addUserProfile(data);
+
     }
 
 
@@ -63,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
 
 
     @Override
-    public void onNotificationView(String s) {
-        Log.e("NotificationClicked",s);
+    public void onNotificationOpened(String data) {
+        Log.e("NotificationClicked",data);
        // startActivity(new Intent(MainActivity.this,MainActivity.class));
 
 

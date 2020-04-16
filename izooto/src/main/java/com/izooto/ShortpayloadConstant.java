@@ -1,7 +1,7 @@
 package com.izooto;
 
 public interface ShortpayloadConstant {
-    String CAMPNAME = "campaignDetails";
+    String CAMPNAME = "cd";
     String CREATEDON= "ct";
     String FETCHURL = "fu";
     String KEY = "k";
@@ -37,6 +37,6 @@ public interface ShortpayloadConstant {
     String ACT2ICON="ib2";
     String ACT1ID="d1";
     String ACT2ID ="d2";
-
+    String CFG="cfg";
 
 }

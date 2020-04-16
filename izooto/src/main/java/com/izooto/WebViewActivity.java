@@ -54,6 +54,7 @@ public class WebViewActivity extends AppCompatActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
+        settings.setAppCacheEnabled(false);
         settings.setLoadsImagesAutomatically(true);
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setVerticalScrollBarEnabled(false);
