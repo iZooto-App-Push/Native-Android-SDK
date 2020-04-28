@@ -16,7 +16,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -123,13 +126,14 @@ public class iZooto {
     private static void initFireBaseApp(final String senderId, final String apiKey, final String appId) {
 
         FirebaseOptions firebaseOptions = new FirebaseOptions.Builder().setGcmSenderId(senderId).setApplicationId(appId).setApiKey(apiKey).build();
+
         try {
             FirebaseApp firebaseApp = FirebaseApp.getInstance(AppConstant.FCMDEFAULT);
             if (firebaseApp == null) {
                 FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
             }
         } catch (IllegalStateException ex) {
-            //FirebaseApp.initializeApp(appContext, firebaseOptions, "[DEFAULT]");
+            FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
 
         }
     }
@@ -138,13 +142,13 @@ public class iZooto {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
             String appVersion = Util.getSDKVersion();
-            String api_url = "app.php?s=" + AppConstant.STYPE + "&pid=" + mIzooToAppId + "&btype=" + AppConstant.BTYPE + "&dtype=" + AppConstant.DTYPE + "&tz=" + System.currentTimeMillis() + "&bver=" + appVersion +
-                    "&os=" + AppConstant.SDKOS + "&allowed=" + AppConstant.ALLOWED + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&check="+Util.getSDKVersion();
+            String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + appVersion +
+                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.CHECKSDKVERSION+Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage();
 
             try {
-                String deviceName = URLEncoder.encode(Util.getDeviceName(), "utf-8");
-                String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, "utf-8");
-                api_url += "&osVersion=" + osVersion + "&deviceName=" + deviceName;
+                String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
+                String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, AppConstant.UTF);
+                api_url += AppConstant.ANDROIDVERSION + osVersion + AppConstant.DEVICENAME + deviceName;
             } catch (UnsupportedEncodingException e) {
                 Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
             }
@@ -236,153 +240,226 @@ public class iZooto {
 
     }
     // send events  with event name and event data
-    public static void addEvent(String eventName, HashMap<String,String> data) {
-        String database = data.toString();
-        if (database != null && eventName != null) {
-            if (!(eventName.length() > 32)) {
-                HashMap<String, String>  newListEvent= new HashMap<String, String>();
-                for (Map.Entry<String,String> refineEntry : data.entrySet()) {
-                    if (!refineEntry.getKey().isEmpty() && refineEntry.getKey()!=null){
-                        String newKey = refineEntry.getKey().toLowerCase();
-                        newListEvent.put(newKey,refineEntry.getValue());
-                    }
+
+    public static void addEvent(String eventName, HashMap<String,Object> data) {
+        if (data != null && eventName != null&&eventName.length()>0&&data.size()>0) {
+            eventName = eventName.substring(0, Math.min(eventName.length(), 32)).replace(" ","_");
+            HashMap<String, Object>  newListEvent= new HashMap<String, Object>();
+            for (Map.Entry<String,Object> refineEntry : data.entrySet()) {
+                if (refineEntry.getKey()!=null&&!refineEntry.getKey().isEmpty()){
+                    String newKey = refineEntry.getKey().toLowerCase();
+                    newListEvent.put(newKey,refineEntry.getValue());
                 }
-                addEventAPI(eventName,newListEvent);
-            }else {
-                String newEventName = eventName.substring(0,32);
-                HashMap<String, String>  newListEvent= new HashMap<String, String>();
-                for (Map.Entry<String,String> refineEntry : data.entrySet()) {
-                    if (!refineEntry.getKey().isEmpty() && refineEntry.getKey()!=null){
-                        String newKey = refineEntry.getKey().toLowerCase();
-                        newListEvent.put(newKey,refineEntry.getValue());
-                    }
-                }
-                addEventAPI(newEventName,newListEvent);
+
             }
+            if (newListEvent.size()>0)
+                addEventAPI(eventName,newListEvent);
         }
     }
-    public static void addEventAPI(String eventName,HashMap<String,String> data){
+    private static void addEventAPI(String eventName,HashMap<String,Object> data){
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String encodeData = "";
-        eventName = eventName.replaceAll(" ", "_");
-        HashMap<String, String> validationHashMap = checkValidationEvent(data, 1);
-        if (validationHashMap.size() > 0) {
+        //validation
+        HashMap<String, Object> filterEventData = checkValidationEvent(data, 1);
+
+        if (filterEventData.size() > 0) {
             try {
-                JSONObject jsonObject = new JSONObject(validationHashMap.toString());
+
+                JSONObject jsonObject = new JSONObject(filterEventData);
                 encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
+
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
             String api_url = "?pid=" + mIzooToAppId + "&act=" + eventName +
                     "&et=evt" + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
             RestClient.postRequest(RestClient.EVENT_URL + api_url, new RestClient.ResponseHandler() {
+
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
                 }
+
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
+
+
                 }
+
+
             });
+
+
+        } else {
+            Log.e("Event Name Length", "Event length more than 32...");
         }
     }
-    public static HashMap<String, String> checkValidationEvent(HashMap<String, String> data,int index){
-        HashMap<String, String>  newList= new HashMap<String, String>();
-        for (HashMap.Entry<String,String> array:data.entrySet()) {
-            if (index<=16&&array.getKey().length()<=32&&array.getValue().length()<=32){
-                newList.put(array.getKey(),array.getValue());
-                index ++;
-            }else if (index<=16&&array.getKey().length()>32&&array.getValue().length()>32){
-                String newKey = array.getKey().substring(0,32);
-                String newValue = array.getValue().substring(0,32);
-                newList.put(newKey,newValue);
-                index ++;
-            }else if (index<=16&&array.getKey().length()<=32&&array.getValue().length()>32){
-                String newValue = array.getValue().substring(0,32);
-                newList.put(array.getKey(),newValue);
-                index ++;
-            }else if (index<=16&&array.getKey().length()>32&&array.getValue().length()<=32){
-                String newKey = array.getKey().substring(0,32);
-                newList.put(newKey,array.getValue());
-                index ++;
-            }/*else {
-             *//* if (index>16){
-                int newindex = index-16;
-                array.getValue().substring(0,32);
-            }*//*
-        }*/
+    private static HashMap<String, Object> checkValidationEvent(HashMap<String, Object> data,int index){
+        HashMap<String, Object>  newList= new HashMap<String, Object>();
+        for (HashMap.Entry<String,Object> array:data.entrySet()) {
+            if (index<=16){
+                String newKey = array.getKey().substring(0, Math.min(array.getKey().length(), 32));
+                if (array.getValue() instanceof String){
+                    if (array.getValue().toString().length()>0) {
+                        String newValue = array.getValue().toString().substring(0, Math.min(array.getValue().toString().length(), 32));
+                        newList.put(newKey, newValue);
+                        index++;
+                    }
+                } else if (!(array.getValue() instanceof String)&&array.getValue()!=null){
+                    newList.put(newKey, ( array.getValue()));
+                    index ++;
+                }
+
+            }
         }
         return newList;
     }
-
-
-
-
-
-
-    // send user properties
-    public static void addUserProperty(HashMap<String,String> object)
+    public static void addUserProperty(HashMap<String, Object> object)
     {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-        String database = object.toString();
         String encodeData = "";
-        if (database != null) {
-            HashMap<String, String>  newListUserProfile = new HashMap<String, String>();
-            for (Map.Entry<String,String> refineEntry : object.entrySet()) {
-                if (!refineEntry.getKey().isEmpty() && refineEntry.getKey()!=null){
+        if (object != null&&object.size()>0) {
+            HashMap<String, Object>  newListUserProfile = new HashMap<String, Object>();
+            for (Map.Entry<String,Object> refineEntry : object.entrySet()) {
+                if (refineEntry.getKey()!=null&&!refineEntry.getKey().isEmpty()){
                     String newKey = refineEntry.getKey().toLowerCase();
                     newListUserProfile.put(newKey,refineEntry.getValue());
                 }
             }
-            HashMap<String, String> filterHash = checkValidationUserProfile(newListUserProfile, 1);
-            if (filterHash.size() > 0) {
-                try {
-                    JSONObject jsonObject = new JSONObject(filterHash.toString());
-                    encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+            if (newListUserProfile.size()>0) {
+                HashMap<String, Object> filterUserPropertyData = checkValidationUserProfile(newListUserProfile, 1);
+
+                if (filterUserPropertyData.size() > 0) {
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(filterUserPropertyData);
+                        encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
+
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                    String api_url = "?pid=" + mIzooToAppId + "&act=add" +
+                            "&et=userp" + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
+                    RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
+
+                        @Override
+                        void onFailure(int statusCode, String response, Throwable throwable) {
+                            super.onFailure(statusCode, response, throwable);
+                        }
+
+                        @Override
+                        void onSuccess(String response) {
+                            super.onSuccess(response);
+
+
+                        }
+
+
+                    });
+
                 }
-                String api_url = "?pid=" + mIzooToAppId + "&act=add" +
-                        "&et=userp" + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
-                RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
-                    @Override
-                    void onFailure(int statusCode, String response, Throwable throwable) {
-                        super.onFailure(statusCode, response, throwable);
-                    }
-                    @Override
-                    void onSuccess(String response) {
-                        super.onSuccess(response);
-                    }
-                });
             }
         }
-
     }
-    public static HashMap<String, String> checkValidationUserProfile(HashMap<String, String> data,int index){
-        HashMap<String, String>  newList= new HashMap<String, String>();
-        for (HashMap.Entry<String,String> array:data.entrySet()) {
-            if (index<=64&&array.getKey().length()<=32&&array.getValue().length()<=32){
-                newList.put(array.getKey(),array.getValue());
-                index ++;
-            }else if (index<=64&&array.getKey().length()>32&&array.getValue().length()>32){
-                String newKey = array.getKey().substring(0,32);
-                String newValue = array.getValue().substring(0,32);
-                newList.put(newKey,newValue);
-                index ++;
-            }else if (index<=64&&array.getKey().length()<=32&&array.getValue().length()>32){
-                String newValue = array.getValue().substring(0,32);
-                newList.put(array.getKey(),newValue);
-                index ++;
-            }else if (index<=64&&array.getKey().length()>32&&array.getValue().length()<=32){
-                String newKey = array.getKey().substring(0,32);
-                newList.put(newKey,array.getValue());
-                index ++;
+
+
+    public static void removeUserProperty(HashMap<String,Object> removeData) {
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+        String encodeData = "";
+        String appVersion = Util.getSDKVersion();
+        if (removeData != null && removeData.size() > 0) {
+            HashMap<String, Object> newListRemoveUserProperty = new HashMap<String, Object>();
+            for (Map.Entry<String, Object> refineEntry : removeData.entrySet()) {
+                if (refineEntry.getKey() != null && !refineEntry.getKey().isEmpty()) {
+                    String newKey = refineEntry.getKey().toLowerCase();
+                    newListRemoveUserProperty.put(newKey, refineEntry.getValue());
+                }
+            }
+            if (newListRemoveUserProperty.size() > 0) {
+                HashMap<String, Object> filterData = checkValidationUserProfile(newListRemoveUserProperty, 1);
+                if (filterData.size() > 0) {
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(filterData);
+                        encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    String api_url = "?pid=" + mIzooToAppId + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) +
+                            "&btype=" + AppConstant.BTYPE + "&dtype=" + AppConstant.DTYPE + "&bver="+ appVersion +
+                            "&pte=" + AppConstant.PTE + "&os=" + AppConstant.SDKOS + "&pt=0" + "&et=userp" + "&ge=1" + "&val="+encodeData;
+                    RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler(){
+                        @Override
+                        void onFailure(int statusCode, String response, Throwable throwable) {
+                            super.onFailure(statusCode, response, throwable);
+
+                        }
+
+                        @Override
+                        void onSuccess(String response) {
+                            super.onSuccess(response);
+                        }
+                    });
+
+                }
+            }
+        }
+    }
+
+
+    private static HashMap<String, Object> checkValidationUserProfile(HashMap<String, Object> data,int index){
+        HashMap<String, Object>  newList= new HashMap<String, Object>();
+        int indexForValue = 1;
+        for (HashMap.Entry<String,Object> array:data.entrySet()) {
+            if (index<=64){
+                String newKey = array.getKey().substring(0, Math.min(array.getKey().length(), 32));
+                if (array.getValue() instanceof String){
+                    if (array.getValue().toString().length()>0) {
+                        String newValue = array.getValue().toString().substring(0, Math.min(array.getValue().toString().length(), 32));
+                        newList.put(newKey, newValue);
+                        index++;
+                    }
+                } else if (array.getValue() instanceof List) {
+                    List<Object> newvalueListDta = (List<Object>) array.getValue();
+                    List<Object> newvalueList = new ArrayList<Object>();
+                    for(Object obj: newvalueListDta) {
+                        if (indexForValue<=64){
+                            if (obj instanceof String){
+                                String ListData = obj.toString();
+                                if (indexForValue<=64&&ListData.length()>0){
+                                    String newListValue = ListData.substring(0, Math.min(ListData.length(), 32));
+                                    newvalueList.add(newListValue);
+                                    indexForValue ++;
+                                }
+                            }else if (!(obj instanceof String)&&obj!=null){
+                                newvalueList.add(obj);
+                                indexForValue ++;
+                            }
+
+                        }
+
+                    }
+                    newList.put(newKey, newvalueList);
+                    index ++;
+                }else if (!(array.getValue() instanceof String)&&!(array.getValue() instanceof List)&&array.getValue()!=null){
+                    newList.put(newKey, ( array.getValue()));
+                    index ++;
+                }
             }
         }
         return newList;
     }
 
+
+
+    // add user properties
 
 
     public static void setIcon(int icon1)

@@ -10,6 +10,21 @@ public interface AppConstant {
     String DEVICETOKEN="DEVICE TOKEN   ->  ";
     String UTF="UTF-8";
     String FCMDEFAULT="[DEFAULT]";
+    String BROWSERKEYID="{BROWSERKEYID}";
+    String PTE="2";
+    String ANDROIDVERSION = "&osVersion=";
+    String DEVICENAME ="&deviceName=";
+    String TOKEN="&bKey=";
+    String ADDURL="app.php?s=";
+    String  PID="&pid=";
+    String BTYPE_="&btype=";
+    String DTYPE_="&dtype=";
+    String TIMEZONE="&tz=";
+    String APPVERSION="&bver=";
+    String OS="&os=";
+    String ALLOWED_="&allowed=";
+    String CHECKSDKVERSION="&check=";
+    String LANGUAGE="&ln=";
 
 
     String UPDATE_DEVICE_TOKEN = "https://aevents.izooto.com/izooto/api.php";

@@ -1,7 +1,9 @@
 package com.app.izoototest;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -11,12 +13,19 @@ import android.view.MenuItem;
 
 import com.izooto.NotificationHelperListener;
 import com.izooto.Payload;
+import com.izooto.Util;
 import com.izooto.iZooto;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity implements NotificationHelperListener
 {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +33,12 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         iZooto.initialize(this).setNotificationReceiveListener(this).build();
-
+//        HashMap<String,Object> data=new HashMap<>();
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        data.put("Data",dtf.format(now));
+//        Log.e("New Date",""+dtf.format(now));
     }
 
 

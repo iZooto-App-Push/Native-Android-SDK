@@ -12,6 +12,9 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.os.ConfigurationCompat;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -161,7 +164,25 @@ public class Util {
     }
     public static String getDeviceLanguage()
     {
-        return Locale.getDefault().getDisplayLanguage();
+        //return Locale.getDefault().getDisplayLanguage();
+        Locale locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
+        } else {
+            locale = iZooto.appContext.getResources().getConfiguration().locale;
+        }
+       // Log.e("lanuguage",locale.getCountry());
+        return locale.getDisplayLanguage();
+
+    }
+    public static String getIntegerToBinary(int number)
+    {
+        return String.format("%16s", Integer.toBinaryString(number)).replace(' ', '0');
+
+    }
+    public static boolean checkNotificationEnable()
+    {
+       return NotificationManagerCompat.from(iZooto.appContext).areNotificationsEnabled();
 
     }
 }
