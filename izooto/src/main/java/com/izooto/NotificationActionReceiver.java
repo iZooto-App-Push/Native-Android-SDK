@@ -29,6 +29,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private String act1URL;
     private String btn1Title;
     private String btn2Title;
+    private String clickIndex = "0";
 
 
     @Override
@@ -52,19 +53,22 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         "&cid=" + cid + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + rid + "&op=click";
 
             }
-            RestClient.postRequest(RestClient.NOTIFICATIONCLICK+api_url, new RestClient.ResponseHandler() {
+            if(clickIndex.equalsIgnoreCase("1")) {
+                RestClient.postRequest(RestClient.NOTIFICATIONCLICK + api_url, new RestClient.ResponseHandler() {
 
 
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                }
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                    }
 
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-                }
-            });
+                    @Override
+                    void onSuccess(String response) {
+                        super.onSuccess(response);
+                        Log.e("Click","call");
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,6 +152,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 btn1Title=tempBundle.getString(AppConstant.ACT1TITLE);
             if(tempBundle.containsKey(AppConstant.ACT2TITLE))
                 btn2Title=tempBundle.getString(AppConstant.ACT2TITLE);
+            if(tempBundle.containsKey(AppConstant.CLICKINDEX))
+                clickIndex=tempBundle.getString(AppConstant.CLICKINDEX);
 
 
 

@@ -26,15 +26,12 @@ import java.util.Objects;
 import static com.izooto.AppConstant.TAG;
 
 public class iZooto {
-
     static Context appContext;
     private static String senderId;
     public static int mIzooToAppId;
     public static Builder mBuilder;
     public static int icon;
     private static Payload payload;
-    public static boolean checkMethodOverrideOrNot;
-
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
     }
@@ -133,7 +130,7 @@ public class iZooto {
                 FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
             }
         } catch (IllegalStateException ex) {
-            FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
+           // FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
 
         }
     }
@@ -240,7 +237,6 @@ public class iZooto {
 
     }
     // send events  with event name and event data
-
     public static void addEvent(String eventName, HashMap<String,Object> data) {
         if (data != null && eventName != null&&eventName.length()>0&&data.size()>0) {
             eventName = eventName.substring(0, Math.min(eventName.length(), 32)).replace(" ","_");
@@ -250,7 +246,6 @@ public class iZooto {
                     String newKey = refineEntry.getKey().toLowerCase();
                     newListEvent.put(newKey,refineEntry.getValue());
                 }
-
             }
             if (newListEvent.size()>0)
                 addEventAPI(eventName,newListEvent);
@@ -261,40 +256,27 @@ public class iZooto {
         String encodeData = "";
         //validation
         HashMap<String, Object> filterEventData = checkValidationEvent(data, 1);
-
         if (filterEventData.size() > 0) {
             try {
-
                 JSONObject jsonObject = new JSONObject(filterEventData);
                 encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
-
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-
             String api_url = "?pid=" + mIzooToAppId + "&act=" + eventName +
-                    "&et=evt" + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
+                    "&et=evt" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
             RestClient.postRequest(RestClient.EVENT_URL + api_url, new RestClient.ResponseHandler() {
-
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
                 }
-
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
-
-
                 }
-
-
             });
-
-
         } else {
-            Log.e("Event Name Length", "Event length more than 32...");
+            Log.e(AppConstant.APP_NAME_TAG, "Event length more than 32...");
         }
     }
     private static HashMap<String, Object> checkValidationEvent(HashMap<String, Object> data,int index){
@@ -304,7 +286,7 @@ public class iZooto {
                 String newKey = array.getKey().substring(0, Math.min(array.getKey().length(), 32));
                 if (array.getValue() instanceof String){
                     if (array.getValue().toString().length()>0) {
-                        String newValue = array.getValue().toString().substring(0, Math.min(array.getValue().toString().length(), 32));
+                        String newValue = array.getValue().toString().substring(0, Math.min(array.getValue().toString().length(), 64));
                         newList.put(newKey, newValue);
                         index++;
                     }
@@ -312,7 +294,6 @@ public class iZooto {
                     newList.put(newKey, ( array.getValue()));
                     index ++;
                 }
-
             }
         }
         return newList;
@@ -331,44 +312,29 @@ public class iZooto {
             }
             if (newListUserProfile.size()>0) {
                 HashMap<String, Object> filterUserPropertyData = checkValidationUserProfile(newListUserProfile, 1);
-
                 if (filterUserPropertyData.size() > 0) {
-
                     try {
-
                         JSONObject jsonObject = new JSONObject(filterUserPropertyData);
                         encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
-
-
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-
                     String api_url = "?pid=" + mIzooToAppId + "&act=add" +
-                            "&et=userp" + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
+                            "&et=userp" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
                     RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
-
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
                             super.onFailure(statusCode, response, throwable);
                         }
-
                         @Override
                         void onSuccess(String response) {
                             super.onSuccess(response);
-
-
                         }
-
-
                     });
-
                 }
             }
         }
     }
-
-
     public static void removeUserProperty(HashMap<String,Object> removeData) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String encodeData = "";
@@ -385,35 +351,30 @@ public class iZooto {
                 HashMap<String, Object> filterData = checkValidationUserProfile(newListRemoveUserProperty, 1);
                 if (filterData.size() > 0) {
                     try {
-
                         JSONObject jsonObject = new JSONObject(filterData);
                         encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
-
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    String api_url = "?pid=" + mIzooToAppId + "&bKey=" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) +
+                    String api_url = "?pid=" + mIzooToAppId + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) +
                             "&btype=" + AppConstant.BTYPE + "&dtype=" + AppConstant.DTYPE + "&bver="+ appVersion +
-                            "&pte=" + AppConstant.PTE + "&os=" + AppConstant.SDKOS + "&pt=0" + "&et=userp" + "&ge=1" + "&val="+encodeData;
+                            "&pte=" + AppConstant.PTE + "&os=" + AppConstant.OS + "&pt=0" + "&et=userp" + "&ge=1" + "&val="+encodeData;
                     RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler(){
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
                             super.onFailure(statusCode, response, throwable);
-
+                           // Log.e("Remove", "remove failure: -----"+statusCode );
                         }
-
                         @Override
                         void onSuccess(String response) {
                             super.onSuccess(response);
+                           // Log.e("Remove", "remove success: ----"+response );
                         }
                     });
-
                 }
             }
         }
     }
-
-
     private static HashMap<String, Object> checkValidationUserProfile(HashMap<String, Object> data,int index){
         HashMap<String, Object>  newList= new HashMap<String, Object>();
         int indexForValue = 1;
@@ -422,7 +383,7 @@ public class iZooto {
                 String newKey = array.getKey().substring(0, Math.min(array.getKey().length(), 32));
                 if (array.getValue() instanceof String){
                     if (array.getValue().toString().length()>0) {
-                        String newValue = array.getValue().toString().substring(0, Math.min(array.getValue().toString().length(), 32));
+                        String newValue = array.getValue().toString().substring(0, Math.min(array.getValue().toString().length(), 64));
                         newList.put(newKey, newValue);
                         index++;
                     }
@@ -434,7 +395,7 @@ public class iZooto {
                             if (obj instanceof String){
                                 String ListData = obj.toString();
                                 if (indexForValue<=64&&ListData.length()>0){
-                                    String newListValue = ListData.substring(0, Math.min(ListData.length(), 32));
+                                    String newListValue = ListData.substring(0, Math.min(ListData.length(), 64));
                                     newvalueList.add(newListValue);
                                     indexForValue ++;
                                 }
@@ -442,9 +403,7 @@ public class iZooto {
                                 newvalueList.add(obj);
                                 indexForValue ++;
                             }
-
                         }
-
                     }
                     newList.put(newKey, newvalueList);
                     index ++;
@@ -456,12 +415,6 @@ public class iZooto {
         }
         return newList;
     }
-
-
-
-    // add user properties
-
-
     public static void setIcon(int icon1)
     {
         icon=icon1;
@@ -571,9 +524,6 @@ public class iZooto {
             e.printStackTrace();
             Lg.d(TAG,e.toString());
         }
-
-
-
         //  if (iZooto.appContext == null)
         //   iZooto.appContext = this;
         Handler mainHandler = new Handler(Looper.getMainLooper());

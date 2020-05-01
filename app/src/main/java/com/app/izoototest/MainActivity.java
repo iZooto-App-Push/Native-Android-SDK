@@ -33,12 +33,6 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         iZooto.initialize(this).setNotificationReceiveListener(this).build();
-//        HashMap<String,Object> data=new HashMap<>();
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//        LocalDateTime now = LocalDateTime.now();
-//
-//        data.put("Data",dtf.format(now));
-//        Log.e("New Date",""+dtf.format(now));
     }
 
 
@@ -73,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
     @Override
     public void onNotificationOpened(String data) {
         Log.e("NotificationClicked",data);
-       // startActivity(new Intent(MainActivity.this,MainActivity.class));
 
 
     }

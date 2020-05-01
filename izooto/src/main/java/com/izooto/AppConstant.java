@@ -25,6 +25,7 @@ public interface AppConstant {
     String ALLOWED_="&allowed=";
     String CHECKSDKVERSION="&check=";
     String LANGUAGE="&ln=";
+    String CLICKINDEX= "clickIndex";
 
 
     String UPDATE_DEVICE_TOKEN = "https://aevents.izooto.com/izooto/api.php";

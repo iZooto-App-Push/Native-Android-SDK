@@ -85,12 +85,10 @@ public class NotificationEventManager {
                 payload.setLink(url);
 
             }
-
-
+            payload.setBanner(getParsedValue(jsonObject, payload.getBanner()));
             payload.setTitle(getParsedValue(jsonObject, payload.getTitle()));
             payload.setMessage(getParsedValue(jsonObject, payload.getMessage()));
             payload.setIcon(getParsedValue(jsonObject, payload.getIcon()));
-            payload.setBanner(getParsedValue(jsonObject, payload.getBanner()));
             payload.setAp("");
 
             payload.setInapp(0);
@@ -228,6 +226,22 @@ public class NotificationEventManager {
                 {
                     icon=R.drawable.ic_notifications_black_24dp;
                 }
+                String clickIndex = "0";
+                String impressionIndex ="0";
+
+                String data=Util.getIntegerToBinary(payload.getCfg());
+                if(data!=null && !data.isEmpty()) {
+                    clickIndex = String.valueOf(data.charAt(data.length() - 2));
+                    impressionIndex = String.valueOf(data.charAt(data.length() - 1));
+                }
+                else
+                {
+                    clickIndex = "0";
+                    impressionIndex="0";
+                }
+
+
+
                 intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
                 Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 intent.putExtra(AppConstant.KEY_WEB_URL, link);
@@ -245,6 +259,7 @@ public class NotificationEventManager {
                 intent.putExtra(AppConstant.ACT2TITLE,payload.getAct2name());
                 intent.putExtra(AppConstant.ACT1URL,payload.getAct1link());
                 intent.putExtra(AppConstant.ACT2URL,payload.getAct2link());
+                intent.putExtra(AppConstant.CLICKINDEX,clickIndex);
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
                         PendingIntent.FLAG_ONE_SHOT);
@@ -305,6 +320,8 @@ public class NotificationEventManager {
                     btn1.putExtra(AppConstant.ACT2TITLE,payload.getAct2name());
                     btn1.putExtra(AppConstant.ACT1URL,payload.getAct1link());
                     btn1.putExtra(AppConstant.ACT2URL,payload.getAct2link());
+                    btn1.putExtra(AppConstant.CLICKINDEX,clickIndex);
+
 
 
 
@@ -346,6 +363,8 @@ public class NotificationEventManager {
                     btn2.putExtra(AppConstant.ACT2TITLE,payload.getAct2name());
                     btn2.putExtra(AppConstant.ACT1URL,payload.getAct1link());
                     btn2.putExtra(AppConstant.ACT2URL,payload.getAct2link());
+                    btn2.putExtra(AppConstant.CLICKINDEX,clickIndex);
+
 
 
 
@@ -366,11 +385,8 @@ public class NotificationEventManager {
                 }
                 notificationManager.notify(notificaitionId, notificationBuilder.build());
                 try {
-                    String data=Util.getIntegerToBinary(payload.getCfg());
-                    String year = ""+ data.charAt(data.length()-2) + data.charAt(data.length()-1);
-                    String FirstIndex= String.valueOf(data.charAt(data.length()-2));
-                    String lastIndex=String.valueOf(data.charAt(data.length()-1));
-                    // if(lastIndex.equalsIgnoreCase("1")) {
+
+                     if(impressionIndex.equalsIgnoreCase("1")) {
 
 
                     String api_url = "?pid=" + iZooto.mIzooToAppId +
@@ -388,11 +404,13 @@ public class NotificationEventManager {
                         void onSuccess(String response) {
                             super.onSuccess(response);
                             if (payload != null)
-                                iZooto.notificationView(payload);
+                            Log.e("imp","call");
 
                         }
                     });
-                    // }
+                     }
+                    iZooto.notificationView(payload);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
