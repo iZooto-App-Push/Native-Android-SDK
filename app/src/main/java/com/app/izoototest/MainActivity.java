@@ -1,5 +1,6 @@
 package com.app.izoototest;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         iZooto.initialize(this).setNotificationReceiveListener(this).build();
+
     }
 
 

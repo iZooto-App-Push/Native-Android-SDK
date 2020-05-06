@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -89,8 +90,15 @@ public class NotificationEventManager {
             payload.setTitle(getParsedValue(jsonObject, payload.getTitle()));
             payload.setMessage(getParsedValue(jsonObject, payload.getMessage()));
             payload.setIcon(getParsedValue(jsonObject, payload.getIcon()));
-            payload.setAp("");
+            payload.setAct1name(getParsedValue(jsonObject,payload.getAct1name()));
+            payload.setAct1link(getParsedValue(jsonObject,payload.getAct1link()));
+            if (!payload.getAct1link().startsWith("http://") && !payload.getAct1link().startsWith("https://")) {
+                String url = payload.getAct1link();
+                url = "http://" + url;
+                payload.setAct1link(url);
 
+            }
+            payload.setAp("");
             payload.setInapp(0);
             if(payload.getTitle()!=null && !payload.getTitle().equalsIgnoreCase("")) {
                 showNotification(payload);
@@ -170,7 +178,6 @@ public class NotificationEventManager {
                     {
                         if (linkArray[2].contains("[")) {
                             String[] link1 = linkArray[2].split("\\[");
-                            // JSONObject jsonObject1 = null;
                             if (jsonObject1 == null)
                                 jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(link1[0]).getJSONObject(Integer.parseInt(link1[1].replace("]", ""))).getJSONObject(linkArray[3]);
                             else
@@ -263,8 +270,9 @@ public class NotificationEventManager {
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
                         PendingIntent.FLAG_ONE_SHOT);
-//                RemoteViews collapsedView = new RemoteViews(iZooto.appContext.getPackageName(), R.layout.remote_view);
-//                collapsedView.setTextViewText(R.id.notificationTitle,payload.getTitle());
+              //  RemoteViews collapsedView = new RemoteViews(iZooto.appContext.getPackageName(), R.layout.remote_view);
+              //  collapsedView.setTextViewText(R.id.notificationTitle,""+payload.getTitle());
+              //  collapsedView.setTextViewText(R.id.notificationMessage,""+payload.getMessage());
 //
 //                RemoteViews epandsView = new RemoteViews(iZooto.appContext.getPackageName(), R.layout.remote_view_expands);
 //                collapsedView.setTextViewText(R.id.notificationTitle,payload.getTitle());
@@ -278,7 +286,7 @@ public class NotificationEventManager {
                         .setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_SOUND).setVibrate(new long[]{1000, 1000})
                         .setSound(defaultSoundUri)
                         .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                        // .setCustomContentView(collapsedView)
+                       //  .setCustomContentView(collapsedView)
                         // .setCustomBigContentView(epandsView)
                         .setAutoCancel(true);
                 if(payload.getLedColor()!=null && !payload.getLedColor().isEmpty())

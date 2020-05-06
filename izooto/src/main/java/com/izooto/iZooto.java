@@ -135,7 +135,7 @@ public class iZooto {
         }
     }
 
-    public static void registerToken() {
+    private static void registerToken() {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
             String appVersion = Util.getSDKVersion();

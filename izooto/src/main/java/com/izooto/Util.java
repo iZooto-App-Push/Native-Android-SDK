@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -185,4 +186,5 @@ public class Util {
        return NotificationManagerCompat.from(iZooto.appContext).areNotificationsEnabled();
 
     }
+
 }
