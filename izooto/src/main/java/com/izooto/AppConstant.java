@@ -130,7 +130,10 @@ public interface AppConstant {
     String ACT1TITLE="act1title";
     String ACT2TITLE="act2title";
 
-
+    String BadgeIcon= "badgeicon";
+    String BadgeColor= "badgecolor";
+    String SUBTITLE = "subtitle";
+    String GROUP = "group";
 
 }
 

@@ -28,8 +28,12 @@ public class Payload {
     private String rid;//run id
     private String link;
     private String title;
+    private String subTitle;
     private String message;
     private String icon;
+    private String badgeicon;
+    private String badgecolor;
+    private int group;
     private int reqInt;
     private String tag;
     private String banner;
@@ -65,17 +69,49 @@ public class Payload {
     public  boolean isWeb;
     private String  act1icon;
     private String  act2icon;
-    private int cfg;
 
+
+    //////////////////////////////////////////////
+
+    private int cfg;
     public int getCfg() {
         return cfg;
     }
-
     public void setCfg(int cfg) {
         this.cfg = cfg;
     }
+    public int getGroup() {
+        return group;
+    }
 
-    //////////////////////////////////////////////
+    public void setGroup(int group) {
+        this.group = group;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public String getBadgeicon() {
+        return badgeicon;
+    }
+
+    public void setBadgeicon(String badgeicon) {
+        this.badgeicon = badgeicon;
+    }
+
+    public String getBadgecolor() {
+        return badgecolor;
+    }
+
+    public void setBadgecolor(String badgecolor) {
+        this.badgecolor = badgecolor;
+    }
+
     public int getInapp() {
         return inapp;
     }

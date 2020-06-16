@@ -120,6 +120,10 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setTag(payloadObj.optString(AppConstant.TAG));
                     payload.setBanner(payloadObj.optString(AppConstant.BANNER));
                     payload.setAct_num(payloadObj.optInt(AppConstant.ACTNUM));
+                    payload.setBadgeicon(payloadObj.optString(AppConstant.BadgeIcon));
+                    payload.setBadgecolor(payloadObj.optString(AppConstant.BadgeColor));
+                    payload.setSubTitle(payloadObj.optString(AppConstant.SUBTITLE));
+                    payload.setGroup(payloadObj.optInt(AppConstant.GROUP));
 
                     // Button 1
                     payload.setAct1name(payloadObj.optString(AppConstant.ACT1NAME));
@@ -169,6 +173,10 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setTag(payloadObj.optString(ShortpayloadConstant.TAG));
                     payload.setBanner(payloadObj.optString(ShortpayloadConstant.BANNER));
                     payload.setAct_num(payloadObj.optInt(ShortpayloadConstant.ACTNUM));
+                    payload.setBadgeicon(payloadObj.optString(ShortpayloadConstant.BadgeIcon));
+                    payload.setBadgecolor(payloadObj.optString(ShortpayloadConstant.BadgeColor));
+                    payload.setSubTitle(payloadObj.optString(ShortpayloadConstant.SUBTITLE));
+                    payload.setGroup(payloadObj.optInt(ShortpayloadConstant.GROUP));
                     // Button 2
                     payload.setAct1name(payloadObj.optString(ShortpayloadConstant.ACT1NAME));
                     payload.setAct1link(payloadObj.optString(ShortpayloadConstant.ACT1LINK));
@@ -194,6 +202,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
                     payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
                     payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
+
                 }
                 else
                     return;
