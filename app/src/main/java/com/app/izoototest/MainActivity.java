@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         iZooto.initialize(this).setNotificationReceiveListener(this).build();
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("Data","Data");
+        iZooto.setSubscription(true);
+       // iZooto.addEvent("Data",hashMap);
 
     }
 

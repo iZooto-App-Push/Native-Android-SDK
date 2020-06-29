@@ -42,14 +42,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         mUrl.replace("{BROWSERKEYID}", PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
         getBundleData(context, intent);
         try {
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
 
             if (btncount!=0) {
-                api_url = "?pid=" + iZooto.mIzooToAppId + "&ver=" + appVersion +
+                api_url = "?pid=" + preferenceUtil.getiZootoID(AppConstant.APPPID)+ "&ver=" + appVersion +
                         "&cid=" + cid + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + rid + "&op=click&btn=" + btncount;
             }
             else
             {
-                api_url = "?pid=" + iZooto.mIzooToAppId + "&ver=" + appVersion +
+                api_url = "?pid=" +preferenceUtil.getiZootoID(AppConstant.APPPID) + "&ver=" + appVersion +
                         "&cid=" + cid + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + rid + "&op=click";
 
             }

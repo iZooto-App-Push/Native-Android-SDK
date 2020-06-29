@@ -3,17 +3,25 @@ package com.izooto;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -28,14 +36,14 @@ import static com.izooto.AppConstant.TAG;
 public class iZooto {
     static Context appContext;
     private static String senderId;
-    public static int mIzooToAppId;
+    public static String mIzooToAppId;
     public static Builder mBuilder;
     public static int icon;
     private static Payload payload;
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
     }
-    public static void setIzooToAppId(int izooToAppId) {
+    public static void setIzooToAppId(String izooToAppId) {
         mIzooToAppId = izooToAppId;
     }
     public static iZooto.Builder initialize(Context context) {
@@ -51,15 +59,16 @@ public class iZooto {
             Bundle bundle = appInfo.metaData;
             if (bundle != null) {
                 if (bundle.containsKey(AppConstant.IZOOTO_APP_ID)) {
-                    mIzooToAppId = bundle.getInt(AppConstant.IZOOTO_APP_ID);
+                    mIzooToAppId = bundle.getString(AppConstant.IZOOTO_APP_ID);
                 }
-                if (mIzooToAppId == 0) {
+                if (mIzooToAppId =="") {
                     Lg.e(AppConstant.APP_NAME_TAG, AppConstant.MISSINGID);
                 }
                 else {
-                    Lg.i(AppConstant.APP_NAME_TAG+AppConstant.APPID, mIzooToAppId + "");
+                    Lg.i(AppConstant.APP_NAME_TAG, mIzooToAppId + "");
 
-                    RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId + ".js", new RestClient.ResponseHandler() {
+                   // RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId + ".js", new RestClient.ResponseHandler() {
+                    RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId , new RestClient.ResponseHandler() {
 
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
@@ -71,10 +80,13 @@ public class iZooto {
                         void onSuccess(String response) {
                             super.onSuccess(response);
                             try {
+                                final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                                 JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
                                 senderId = jsonObject.getString(AppConstant.SENDERID);
                                 String appId = jsonObject.getString(AppConstant.APPID);
                                 String apiKey = jsonObject.getString(AppConstant.APIKEY);
+                                mIzooToAppId = jsonObject.getString(AppConstant.APPPID);
+                                preferenceUtil.setiZootoID(AppConstant.APPPID,mIzooToAppId);
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
                                 } else {
@@ -138,8 +150,7 @@ public class iZooto {
     private static void registerToken() {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
-            String appVersion = Util.getSDKVersion();
-            String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + appVersion +
+            String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion() +
                     AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.CHECKSDKVERSION+Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage();
 
             try {
@@ -263,7 +274,7 @@ public class iZooto {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            String api_url = "?pid=" + mIzooToAppId + "&act=" + eventName +
+            String api_url = "?pid=" + preferenceUtil.getiZootoID(AppConstant.APPPID) + "&act=" + eventName +
                     "&et=evt" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
             RestClient.postRequest(RestClient.EVENT_URL + api_url, new RestClient.ResponseHandler() {
                 @Override
@@ -319,7 +330,7 @@ public class iZooto {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    String api_url = "?pid=" + mIzooToAppId + "&act=add" +
+                    String api_url = "?pid=" + preferenceUtil.getiZootoID(AppConstant.APPPID) + "&act=add" +
                             "&et=userp" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&val=" + encodeData;//URLEncoder.encode(database, "UTF-8");
                     RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
                         @Override
@@ -356,7 +367,7 @@ public class iZooto {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    String api_url = "?pid=" + mIzooToAppId + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) +
+                    String api_url = "?pid=" + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) +
                             "&btype=" + AppConstant.BTYPE + "&dtype=" + AppConstant.DTYPE + "&bver="+ appVersion +
                             "&pte=" + AppConstant.PTE + "&os=" + AppConstant.OS + "&pt=0" + "&et=userp" + "&ge=1" + "&val="+encodeData;
                     RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler(){
@@ -419,122 +430,39 @@ public class iZooto {
     {
         icon=icon1;
     }
-//    public static void iZootoHandleNotification(final Map<String,String> data)
-//    {
-//        Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);
-//
-//        try {
-//            if(data.get(AppConstant.CAMPNAME)!=null) {
-//                JSONObject payloadObj = new JSONObject(data.get(AppConstant.CAMPNAME));
-//                if (payloadObj.optLong(AppConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
-//                    payload = new Payload();
-//                    payload.setFetchURL(payloadObj.optString(AppConstant.FETCHURL));
-//                    payload.setKey(payloadObj.optString(AppConstant.KEY));
-//                    payload.setId(payloadObj.optString(AppConstant.ID));
-//                    payload.setRid(payloadObj.optString(AppConstant.RID));
-//                    payload.setLink(payloadObj.optString(AppConstant.LINK));
-//                    payload.setTitle(payloadObj.optString(AppConstant.TITLE));
-//                    payload.setMessage(payloadObj.optString(AppConstant.NMESSAGE));
-//                    payload.setIcon(payloadObj.optString(AppConstant.ICON));
-//                    payload.setReqInt(payloadObj.optInt(AppConstant.REQINT));
-//                    payload.setTag(payloadObj.optString(AppConstant.TAG));
-//                    payload.setBanner(payloadObj.optString(AppConstant.BANNER));
-//                    payload.setAct_num(payloadObj.optInt(AppConstant.ACTNUM));
-//                    payload.setAct1name(payloadObj.optString(AppConstant.ACT1NAME));
-//                    payload.setAct1link(payloadObj.optString(AppConstant.ACT1LINK));
-//                    payload.setAct1icon(payloadObj.optString(AppConstant.ACT1ICON));
-//                    payload.setAct1ID(payloadObj.optString(AppConstant.ACT1ID));
-//                    payload.setAct2name(payloadObj.optString(AppConstant.ACT2NAME));
-//                    payload.setAct2link(payloadObj.optString(AppConstant.ACT2LINK));
-//                    payload.setAct2icon(payloadObj.optString(AppConstant.ACT2ICON));
-//                    payload.setAct1ID(payloadObj.optString(AppConstant.ACT2ID));
-//                    payload.setInapp(payloadObj.optInt(AppConstant.INAPP));
-//                    payload.setTrayicon(payloadObj.optString(AppConstant.TARYICON));
-//                    payload.setSmallIconAccentColor(payloadObj.optString(AppConstant.ICONCOLOR));
-//                    payload.setSound(payloadObj.optString(AppConstant.SOUND));
-//                    payload.setLedColor(payloadObj.optString(AppConstant.LEDCOLOR));
-//                    payload.setLockScreenVisibility(payloadObj.optInt(AppConstant.VISIBILITY));
-//                    payload.setGroupKey(payloadObj.optString(AppConstant.GKEY));
-//                    payload.setGroupMessage(payloadObj.optString(AppConstant.GMESSAGE));
-//                    payload.setFromProjectNumber(payloadObj.optString(AppConstant.PROJECTNUMBER));
-//                    payload.setCollapseId(payloadObj.optString(AppConstant.COLLAPSEID));
-//                    payload.setPriority(payloadObj.optInt(AppConstant.PRIORITY));
-//                    payload.setRawPayload(payloadObj.optString(AppConstant.RAWDATA));
-//                    payload.setAp(payloadObj.optString(AppConstant.ADDITIONALPARAM));
-//                    payload.setCfg(payloadObj.optInt(AppConstant.CFG));
-//
-//                }
-//                else
-//                    return;
-//            }
-//            else
-//            {
-//                JSONObject payloadObj = new JSONObject(data);
-//                if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP))
-//                {
-//                    payload = new Payload();
-//                    payload.setFetchURL(payloadObj.optString(ShortpayloadConstant.FETCHURL));
-//                    payload.setKey(payloadObj.optString(ShortpayloadConstant.KEY));
-//                    payload.setId(payloadObj.optString(ShortpayloadConstant.ID));
-//                    payload.setRid(payloadObj.optString(ShortpayloadConstant.RID));
-//                    payload.setLink(payloadObj.optString(ShortpayloadConstant.LINK));
-//                    payload.setTitle(payloadObj.optString(ShortpayloadConstant.TITLE));
-//                    payload.setMessage(payloadObj.optString(ShortpayloadConstant.NMESSAGE));
-//                    payload.setIcon(payloadObj.optString(ShortpayloadConstant.ICON));
-//                    payload.setReqInt(payloadObj.optInt(ShortpayloadConstant.REQINT));
-//                    payload.setTag(payloadObj.optString(ShortpayloadConstant.TAG));
-//                    payload.setBanner(payloadObj.optString(ShortpayloadConstant.BANNER));
-//                    payload.setAct_num(payloadObj.optInt(ShortpayloadConstant.ACTNUM));
-//
-//                    payload.setAct1name(payloadObj.optString(ShortpayloadConstant.ACT1NAME));
-//                    payload.setAct1link(payloadObj.optString(ShortpayloadConstant.ACT1LINK));
-//                    payload.setAct1icon(payloadObj.optString(ShortpayloadConstant.ACT1ICON));
-//                    payload.setAct1ID(payloadObj.optString(ShortpayloadConstant.ACT1ID));
-//
-//                    payload.setAct2name(payloadObj.optString(ShortpayloadConstant.ACT2NAME));
-//                    payload.setAct2link(payloadObj.optString(ShortpayloadConstant.ACT2LINK));
-//                    payload.setAct2icon(payloadObj.optString(ShortpayloadConstant.ACT2ICON));
-//                    payload.setAct2ID(payloadObj.optString(ShortpayloadConstant.ACT2ID));
-//                    payload.setInapp(payloadObj.optInt(ShortpayloadConstant.INAPP));
-//                    payload.setTrayicon(payloadObj.optString(ShortpayloadConstant.TARYICON));
-//                    payload.setSmallIconAccentColor(payloadObj.optString(ShortpayloadConstant.ICONCOLOR));
-//                    payload.setSound(payloadObj.optString(ShortpayloadConstant.SOUND));
-//                    payload.setLedColor(payloadObj.optString(ShortpayloadConstant.LEDCOLOR));
-//                    payload.setLockScreenVisibility(payloadObj.optInt(ShortpayloadConstant.VISIBILITY));
-//                    payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
-//                    payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
-//                    payload.setFromProjectNumber(payloadObj.optString(ShortpayloadConstant.PROJECTNUMBER));
-//                    payload.setCollapseId(payloadObj.optString(ShortpayloadConstant.COLLAPSEID));
-//                    payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
-//                    payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
-//                    payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
-//                    payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
-//
-//                }
-//                else
-//                    return;
-//            }
-//
-//
-//
-//
-//            // return;
-//        } catch (Exception e) {
-//
-//            e.printStackTrace();
-//            Lg.d(TAG,e.toString());
-//        }
-//        //  if (iZooto.appContext == null)
-//        //   iZooto.appContext = this;
-//        Handler mainHandler = new Handler(Looper.getMainLooper());
-//        Runnable myRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                iZooto.processNotificationReceived(payload);
-//            } // This is your code
-//        };
-//        mainHandler.post(myRunnable);
-//    }
+
+    public static void setSubscription(Boolean enable) {
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+        int value = 2;
+        if (enable != null) {
+            if (enable) {
+                value = 0;
+            }
+            String api_url = "?pid=" + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)
+                    + AppConstant.BTYPE_ + AppConstant.BTYPE +AppConstant.DTYPE_ + AppConstant.DTYPE  +AppConstant.APPVERSION + Util.getSDKVersion() + "&pte=" + AppConstant.PTE +
+                    AppConstant.OS + AppConstant.SDKOS + "&pt=0" + "&ge=1" + "&action=" + value;
+
+            RestClient.postRequest(RestClient.SUBSCRIPTION_API + api_url, new RestClient.ResponseHandler() {
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                     super.onFailure(statusCode, response, throwable);
+                    Log.e(AppConstant.APP_NAME_TAG, "Subscription Failure");
+
+
+                }
+
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+
+                    Log.e(AppConstant.APP_NAME_TAG, "Subscription Success");
+
+                }
+            });
+
+        }
+
+    }
 public static void iZootoHandleNotification(Context context,final Map<String,String> data)
 {
     Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);

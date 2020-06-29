@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/AndroidSDK-android-X-izooto.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/AndroidSDK-android-X-izooto.iml" group="android-X/izooto" />
       <module fileurl="file://$PROJECT_DIR$/android-X.iml" filepath="$PROJECT_DIR$/android-X.iml" group="android-X" />
       <module fileurl="file://$PROJECT_DIR$/izooto/android-X-izooto.iml" filepath="$PROJECT_DIR$/izooto/android-X-izooto.iml" group="android-X/izooto" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="android-X/app" />

@@ -5,7 +5,8 @@ public interface AppConstant {
     String APP_NAME_TAG = "IZooTo";
     String FCM_DEVICE_TOKEN = "deviceToken";
     String IZOOTO_SENDER_ID_KEY = "izooto_sender_id";
-    String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";
+   // String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
+    String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/"; // new
     String SDKNAME = "IZOOTO";
     String DEVICETOKEN="DEVICE TOKEN   ->  ";
     String UTF="UTF-8";
@@ -26,6 +27,7 @@ public interface AppConstant {
     String CHECKSDKVERSION="&check=";
     String LANGUAGE="&ln=";
     String CLICKINDEX= "clickIndex";
+    String APPPID="pid";
 
 
     String UPDATE_DEVICE_TOKEN = "https://aevents.izooto.com/izooto/api.php";
@@ -134,6 +136,7 @@ public interface AppConstant {
     String BadgeColor= "badgecolor";
     String SUBTITLE = "subtitle";
     String GROUP = "group";
+    String ADVERTISEMENT_ID = "advertisementID";
 
 }
 

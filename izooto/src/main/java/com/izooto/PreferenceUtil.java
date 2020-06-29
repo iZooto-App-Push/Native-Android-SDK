@@ -130,6 +130,16 @@ public class PreferenceUtil {
         editor.putLong(key, value);
         editor.apply();
     }
+    public void setiZootoID(String key,String id)
+    {
+        SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
+        appInstallInfoEditor.putString(key, id);
+        appInstallInfoEditor.apply();
+    }
+    public String getiZootoID(String key)
+    {
+        return mSpref.getString(key, "");
+    }
 
 
 }
