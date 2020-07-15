@@ -19,6 +19,7 @@ package com.izooto;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -41,6 +42,10 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "iZooto";
     private  Payload payload = null;
+
+
+
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         try {
@@ -158,7 +163,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
             else
             {
                 JSONObject payloadObj = new JSONObject(data);
-                if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(this).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP))
+                if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) >PreferenceUtil.getInstance(this).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP))
                 {
                     payload = new Payload();
                     payload.setFetchURL(payloadObj.optString(ShortpayloadConstant.FETCHURL));
@@ -221,7 +226,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
             @Override
             public void run() {
                 iZooto.processNotificationReceived(payload);
-                iZooto.notificationView(payload);
+               // iZooto.notificationView(payload);
 
             } // This is your code
         };

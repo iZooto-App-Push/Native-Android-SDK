@@ -67,8 +67,8 @@ public class iZooto {
                 else {
                     Lg.i(AppConstant.APP_NAME_TAG, mIzooToAppId + "");
 
-                   // RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId + ".js", new RestClient.ResponseHandler() {
-                    RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId , new RestClient.ResponseHandler() {
+                    RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId + ".dat", new RestClient.ResponseHandler() {
+                   // RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId , new RestClient.ResponseHandler() {
 
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
@@ -151,7 +151,7 @@ public class iZooto {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
             String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion() +
-                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.CHECKSDKVERSION+Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage();
+                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.CHECKSDKVERSION;//+Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage();
 
             try {
                 String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
@@ -290,6 +290,7 @@ public class iZooto {
             Log.e(AppConstant.APP_NAME_TAG, "Event length more than 32...");
         }
     }
+
     private static HashMap<String, Object> checkValidationEvent(HashMap<String, Object> data,int index){
         HashMap<String, Object>  newList= new HashMap<String, Object>();
         for (HashMap.Entry<String,Object> array:data.entrySet()) {
@@ -346,7 +347,7 @@ public class iZooto {
             }
         }
     }
-    public static void removeUserProperty(HashMap<String,Object> removeData) {
+    public static void updateProperty(HashMap<String,Object> removeData) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String encodeData = "";
         String appVersion = Util.getSDKVersion();
@@ -369,7 +370,7 @@ public class iZooto {
                     }
                     String api_url = "?pid=" + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) +
                             "&btype=" + AppConstant.BTYPE + "&dtype=" + AppConstant.DTYPE + "&bver="+ appVersion +
-                            "&pte=" + AppConstant.PTE + "&os=" + AppConstant.OS + "&pt=0" + "&et=userp" + "&ge=1" + "&val="+encodeData;
+                            "&pte=" + AppConstant.PTE  + AppConstant.OS +AppConstant.SDKOS+ "&pt=0" + "&et=userp" + "&ge=1" + "&val="+encodeData;
                     RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler(){
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {

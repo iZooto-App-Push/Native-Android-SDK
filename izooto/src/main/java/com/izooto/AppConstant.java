@@ -5,8 +5,8 @@ public interface AppConstant {
     String APP_NAME_TAG = "IZooTo";
     String FCM_DEVICE_TOKEN = "deviceToken";
     String IZOOTO_SENDER_ID_KEY = "izooto_sender_id";
-   // String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
-    String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/"; // new
+   String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
+    //String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/"; // new
     String SDKNAME = "IZOOTO";
     String DEVICETOKEN="DEVICE TOKEN   ->  ";
     String UTF="UTF-8";
@@ -63,8 +63,10 @@ public interface AppConstant {
     String ATTACHREQUEST = "IZooTo RestClient: ResponseHandler is not attached for the Request: ";
     String EXCEPTIONERROR = "Thrown Error";
     String UNEXCEPTION ="unsupported encoding exception";
-    String CDN = "https://cdn.izooto.com/app/app_";
-    String MISSINGID="App Id is missing.";
+   String CDN = "https://cdn.izooto.com/app/app_";
+    //String CDN = "https://cdn.izooto.com/app/";
+
+ String MISSINGID="App Id is missing.";
     // Register String
 
     String SENDERID ="senderId";
@@ -137,6 +139,7 @@ public interface AppConstant {
     String SUBTITLE = "subtitle";
     String GROUP = "group";
     String ADVERTISEMENT_ID = "advertisementID";
+    String ISINSTALL="isInstall";
 
 }
 

@@ -54,6 +54,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         "&cid=" + cid + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + rid + "&op=click";
 
             }
+
             if(clickIndex.equalsIgnoreCase("1")) {
                 RestClient.postRequest(RestClient.NOTIFICATIONCLICK + api_url, new RestClient.ResponseHandler() {
 
@@ -66,7 +67,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     @Override
                     void onSuccess(String response) {
                         super.onSuccess(response);
-                        Log.e("Click","call");
+                       // Log.e("Click","call");
                     }
                 });
             }

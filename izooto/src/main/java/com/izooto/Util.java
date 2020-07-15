@@ -141,7 +141,7 @@ public class Util {
         return true;
 
     }
-    public static String trimeString(String optString) {
+    public static String trimString(String optString) {
         if(optString.length()>32)
         {
             int length=optString.length()-32;
@@ -183,27 +183,5 @@ public class Util {
        return NotificationManagerCompat.from(iZooto.appContext).areNotificationsEnabled();
 
     }
-//    public static String getAdvertisingID(final Context context) {
-//        final String advertisementID;
-//        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-//        AsyncTask.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    AdvertisingIdClient.Info advertisingIdInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
-//                    if (!advertisingIdInfo.isLimitAdTrackingEnabled()) {
-//                        String id = advertisingIdInfo.getId();
-//                        preferenceUtil.setStringData(AppConstant.ADVERTISEMENT_ID, id);
-//                    } else {
-//                        Log.e(AppConstant.APP_NAME_TAG, "If you stored the id you should remove it" );
-//                    }
-//                } catch (IOException | GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//        advertisementID = preferenceUtil.getStringData(AppConstant.ADVERTISEMENT_ID);
-//        return advertisementID;
-//    }
 
 }

@@ -1,6 +1,5 @@
 package com.app.izoototest;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -14,16 +13,12 @@ import android.view.MenuItem;
 
 import com.izooto.NotificationHelperListener;
 import com.izooto.Payload;
-import com.izooto.Util;
 import com.izooto.iZooto;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 
 
-public class MainActivity extends AppCompatActivity implements NotificationHelperListener
+public class MainActivity extends AppCompatActivity
 {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -33,11 +28,7 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        iZooto.initialize(this).setNotificationReceiveListener(this).build();
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("Data","Data");
-        iZooto.setSubscription(true);
-       // iZooto.addEvent("Data",hashMap);
+
 
     }
 
@@ -63,19 +54,6 @@ public class MainActivity extends AppCompatActivity implements NotificationHelpe
 
 
 
-    @Override
-    public void onNotificationReceived(Payload payload) {
-        Log.e("Received",payload.getTitle());
-
-    }
-
-
-    @Override
-    public void onNotificationOpened(String data) {
-        Log.e("NotificationClicked",data);
-
-
-    }
-
+  
 
 }

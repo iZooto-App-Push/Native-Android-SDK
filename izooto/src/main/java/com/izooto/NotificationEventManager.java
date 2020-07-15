@@ -503,6 +503,7 @@ private static void showNotification(final Payload payload) {
 
                     String api_url = "?pid=" +  preferenceUtil.getiZootoID(AppConstant.APPPID) +
                             "&cid=" + payload.getId() + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + payload.getRid() + "&op=view";
+
                     RestClient.postRequest(RestClient.IMPRESSION_URL + api_url, new RestClient.ResponseHandler() {
 
 
