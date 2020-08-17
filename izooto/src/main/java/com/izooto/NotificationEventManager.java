@@ -33,6 +33,8 @@ import org.json.JSONTokener;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.Random;
+
+
 public class NotificationEventManager {
     private static Bitmap notificationIcon, notificationBanner;//,act1Icon,act2Icon;
     private static int icon;
@@ -241,7 +243,6 @@ private static void showNotification(final Payload payload) {
                 clickIndex = "0";
                 impressionIndex="0";
             }
-
 
 
 

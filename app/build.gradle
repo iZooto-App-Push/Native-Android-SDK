@@ -5,13 +5,17 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.app.izoototest"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 29
-        versionCode 5
-        versionName "1.0.5"
+        versionCode 6
+        versionName "1.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
-                                izooto_app_id: "5e930dbb266d8259762ff297d18cdd69b9acb194"
+                                izooto_app_id: "561db654d15610905f253c77d03ba350809dc7e9"
+
+
+
+
         ]
     }
 
@@ -34,6 +38,6 @@ android {
 }
 dependencies {
     implementation project(path: ':izooto')
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

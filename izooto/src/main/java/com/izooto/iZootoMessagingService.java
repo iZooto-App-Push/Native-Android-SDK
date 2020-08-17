@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+
 public class iZootoMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "iZooto";
@@ -104,7 +105,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
     public   void handleNow(final Map<String, String> data) {
 
         Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);
-
+        //for 1.1.4+
         try {
 
             // JSONObject payloadObj = new JSONObject(data);

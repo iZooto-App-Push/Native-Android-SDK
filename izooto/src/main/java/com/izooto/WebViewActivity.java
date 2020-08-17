@@ -52,9 +52,13 @@ public class WebViewActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.circular_progress_bar);
         WebSettings settings = mWebView.getSettings();
         settings.setLoadWithOverviewMode(true);
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
+        settings.setJavaScriptEnabled(false);
+        settings.setDomStorageEnabled(false);
         settings.setAppCacheEnabled(false);
+        settings.setAllowFileAccess(false);
+        settings.setAllowFileAccessFromFileURLs(false);
+        settings.setAllowUniversalAccessFromFileURLs(false);
+
         settings.setLoadsImagesAutomatically(true);
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setVerticalScrollBarEnabled(false);
