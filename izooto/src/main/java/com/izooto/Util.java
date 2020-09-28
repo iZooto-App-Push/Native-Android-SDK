@@ -2,13 +2,17 @@ package com.izooto;
 
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.provider.Settings;
+import android.util.Log;
 
 import androidx.core.app.NotificationManagerCompat;
 
@@ -22,6 +26,9 @@ import java.util.Locale;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import static com.izooto.ShortpayloadConstant.TAG;
+
 
 public class Util {
 
@@ -88,6 +95,12 @@ public class Util {
         }
     }
 
+    public static String getAndroidId(Context mContext){
+        String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.e(TAG, "android id ---- "+android_id );
+        return android_id;
+    }
+
     public static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
@@ -96,6 +109,10 @@ public class Util {
         } else {
             return capitalize(manufacturer) + " " + model;
         }
+    }
+
+    public static boolean isNotificationEnabled(Context context){
+        return NotificationManagerCompat.from(context).areNotificationsEnabled();
     }
 
     private static String capitalize(String s) {
@@ -150,6 +167,25 @@ public class Util {
         return null;
     }
 
+    public static Drawable getApplicationIcon(Context context){
+        ApplicationInfo ai;
+        Drawable icon = null;
+        try {
+            ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+        } catch ( PackageManager.NameNotFoundException e ) {
+            ai = null;
+            //e.printStackTrace();
+        }
+
+        if ( ai != null ) {
+            icon =  context.getPackageManager().getApplicationIcon(ai);
+        }
+
+
+        return icon;
+    }
+
+
     public static boolean CheckValidationString(String optString) {
         if(optString.length()>32)
         {
@@ -169,7 +205,7 @@ public class Util {
         } else {
             locale = iZooto.appContext.getResources().getConfiguration().locale;
         }
-       // Log.e("lanuguage",locale.getCountry());
+        // Log.e("lanuguage",locale.getCountry());
         return locale.getDisplayLanguage();
 
     }
@@ -180,8 +216,18 @@ public class Util {
     }
     public static boolean checkNotificationEnable()
     {
-       return NotificationManagerCompat.from(iZooto.appContext).areNotificationsEnabled();
+        return NotificationManagerCompat.from(iZooto.appContext).areNotificationsEnabled();
 
+    }
+    public static String getPackageName(Context context) {
+        ApplicationInfo ai;
+        try {
+            ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            ai = null;
+            //e.printStackTrace();
+        }
+        return context.getPackageName();
     }
 
 }

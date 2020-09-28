@@ -1,8 +1,10 @@
 package com.izooto;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -25,12 +27,19 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     public static Intent createIntent(Context context, String url) {
-        Intent webIntent = new Intent(context, WebViewActivity.class);
-        webIntent.putExtra(AppConstant.KEY_WEB_URL, url);
-        webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return webIntent;
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+        if (iZooto.getWebActivity == null){
+            Intent webIntent = new Intent(context, WebViewActivity.class);
+            webIntent.putExtra(AppConstant.KEY_WEB_URL, url);
+            webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            return webIntent;
+        }else {
+            Intent webIntent = new Intent(context, iZooto.getWebActivity);
+            webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            preferenceUtil.setStringData(AppConstant.WEB_LANDING_URL,url);
+            return webIntent;
+        }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

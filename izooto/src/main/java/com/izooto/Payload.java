@@ -1,6 +1,6 @@
 package com.izooto;
 
-
+/* Developed By Amit Gupta */
 public class Payload {
 
     /**
@@ -69,6 +69,7 @@ public class Payload {
     public  boolean isWeb;
     private String  act1icon;
     private String  act2icon;
+    private int  badgeCount;
 
 
     //////////////////////////////////////////////
@@ -82,6 +83,14 @@ public class Payload {
     }
     public int getGroup() {
         return group;
+    }
+
+    public int getBadgeCount() {
+        return badgeCount;
+    }
+
+    public void setBadgeCount(int badgeCount) {
+        this.badgeCount = badgeCount;
     }
 
     public void setGroup(int group) {

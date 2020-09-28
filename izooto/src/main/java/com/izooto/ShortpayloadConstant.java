@@ -11,6 +11,7 @@ public interface ShortpayloadConstant {
     String TITLE = "t";
     String SUBTITLE = "st";
     String GROUP = "gp";
+    String BADGE_COUNT = "bct";
     String NMESSAGE = "m";
     String ICON = "i";
     String REQINT = "ri";

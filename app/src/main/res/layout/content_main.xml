@@ -9,12 +9,17 @@
     tools:showIn="@layout/activity_main">
 
     <TextView
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:gravity="center"
         android:textSize="18dp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/message"
         />
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

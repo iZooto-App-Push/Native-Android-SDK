@@ -5,7 +5,7 @@ public interface AppConstant {
     String APP_NAME_TAG = "IZooTo";
     String FCM_DEVICE_TOKEN = "deviceToken";
     String IZOOTO_SENDER_ID_KEY = "izooto_sender_id";
-   String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
+    String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
     //String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/"; // new
     String SDKNAME = "IZOOTO";
     String DEVICETOKEN="DEVICE TOKEN   ->  ";
@@ -28,6 +28,79 @@ public interface AppConstant {
     String LANGUAGE="&ln=";
     String CLICKINDEX= "clickIndex";
     String APPPID="pid";
+    String ENCRYPTED_PID="encryptedPid";
+    String ADVERTISING_ID = "add";
+    String GET_NOTIFICATION_ENABLED="enable";
+    String GET_NOTIFICATION_DISABLED="disable";
+    String FIREBASE_ANALYTICS_TRACK = "isCheck";
+    String TRACK_NOTIFICATION_ID = "notificationId";
+    String IS_NOTIFICATION_ID_UPDATED = "notificationIdUpdated";
+    String NOTIFICATION_COUNT = "count";
+    String PAYLOAD_BADGE_COUNT = "payloadBadgeCount";
+    String WEB_LANDING_URL = "webLandingUrl";
+    String LOG_EVENT = "logEvent";
+    String GET_FIREBASE_INSTANCE = "getInstance";
+    String UTM_SOURCE = "utm_source";
+    String UTM_MEDIUM = "utm_medium";
+    String UTM_CAMPAIGN = "utm_campaign";
+    String UTM_TERM = "utm_term";
+    String UTM_CONTENT = "utm_content";
+    String SOURCE = "source";
+    String MEDIUM = "medium";
+    String FIREBASE_NOTIFICATION_ID = "notification_id";
+    String FIREBASE_CAMPAIGN = "campaign";
+    String TERM = "term";
+    String CONTENT = "content";
+    String TIME_OF_CLICK = "time_of_click";
+    String FIREBASE_12PM = "12:00:00 PM";
+    String FIREBASE_2PM = "02:00:00 PM";
+    String FIREBASE_4PM = "04:00:00 PM";
+    String FIREBASE_6PM = "06:00:00 PM";
+    String FIREBASE_8PM = "08:00:00 PM";
+    String FIREBASE_10PM = "10:00:00 PM";
+    String FIREBASE_12AM = "12:00:00 AM";
+    String FIREBASE_2AM = "02:00:00 AM";
+    String FIREBASE_4AM = "04:00:00 AM";
+    String FIREBASE_6AM = "06:00:00 AM";
+    String FIREBASE_8AM = "08:00:00 AM";
+    String FIREBASE_10AM = "10:00:00 AM";
+    String FIREBASE_12to2PM = "12-2 PM";
+    String FIREBASE_2to4PM = "2-4 PM";
+    String FIREBASE_4to6PM = "4-6 PM";
+    String FIREBASE_6to8PM = "6-8 PM";
+    String FIREBASE_8to10PM = "8-10 PM";
+    String FIREBASE_10to12AM = "10-12 AM";
+    String FIREBASE_12to2AM = "12-2 AM";
+    String FIREBASE_2to4AM = "2-4 AM";
+    String FIREBASE_4to6AM = "4-6 AM";
+    String FIREBASE_6to8AM = "6-8 AM";
+    String FIREBASE_8to10AM = "8-10 AM";
+    String FIREBASE_10to12PM = "10-12 PM";
+    String API_PID = "?pid=";
+    String PTE_="&pte=";
+    String CID_="&cid=";
+    String RID_="&rid=";
+    String NOTIFICATION_OP="&op=";
+    String ACTION="&action=";
+    String PT_="&pt=";
+    int PT = 0;
+    String GE_ ="&ge=";
+    String ET_ ="&et=";
+    String VAL ="&val=";
+    String ACT ="&act=";
+    String BUTTON_ID_1 ="button1ID";
+    String BUTTON_TITLE_1 ="button1Title";
+    String BUTTON_URL_1 ="button1URL";
+    String ADDITIONAL_DATA ="additionalData";
+    String LANDING_URL ="landingURL";
+    String BUTTON_ID_2 ="button2ID";
+    String BUTTON_TITLE_2 ="button2Title";
+    String BUTTON_URL_2 ="button2URL";
+    String ACTION_TYPE ="actionType";
+    String NOTIFICATION_ ="Notification";
+    String INAPPALERT ="InAppAlert";
+    String DEFAULT_ICON ="default";
+    int GE = 1;
 
 
     String UPDATE_DEVICE_TOKEN = "https://aevents.izooto.com/izooto/api.php";
@@ -63,10 +136,10 @@ public interface AppConstant {
     String ATTACHREQUEST = "IZooTo RestClient: ResponseHandler is not attached for the Request: ";
     String EXCEPTIONERROR = "Thrown Error";
     String UNEXCEPTION ="unsupported encoding exception";
-   String CDN = "https://cdn.izooto.com/app/app_";
+    String CDN = "https://cdn.izooto.com/app/app_";
     //String CDN = "https://cdn.izooto.com/app/";
 
- String MISSINGID="App Id is missing.";
+    String MISSINGID="App Id is missing.";
     // Register String
 
     String SENDERID ="senderId";
@@ -138,8 +211,21 @@ public interface AppConstant {
     String BadgeColor= "badgecolor";
     String SUBTITLE = "subtitle";
     String GROUP = "group";
+    String BADGE_COUNT = "badgeCount";
     String ADVERTISEMENT_ID = "advertisementID";
     String ISINSTALL="isInstall";
+    String CHANNEL_NAME="iZooto Notification";
+    String DIALOG_DISMISS="Dismiss";
+    String DIALOG_OK="Take me there";
+    String URL_FWD="&frwd";
+    String URL_FWD_="&frwd=";
+    String URL_BKEY="&bkey=";
+    String URL_ID="id";
+    String URL_CLIENT="client";
+    String URL_RID="rid";
+    String URL_BKEY_="bkey";
+    String URL_FRWD___="frwd";
+    String FCM_TIME_FORMAT="hh:mm:ss aa";
 
 }
 

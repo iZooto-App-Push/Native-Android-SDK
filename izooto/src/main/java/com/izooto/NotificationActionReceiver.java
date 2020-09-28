@@ -39,19 +39,19 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         context.sendBroadcast(it);
         getBundleData(context, intent);
         String appVersion = Util.getSDKVersion();
-        mUrl.replace("{BROWSERKEYID}", PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
+        mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
         getBundleData(context, intent);
         try {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
 
             if (btncount!=0) {
-                api_url = "?pid=" + preferenceUtil.getiZootoID(AppConstant.APPPID)+ "&ver=" + appVersion +
-                        "&cid=" + cid + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + rid + "&op=click&btn=" + btncount;
+                api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID)+ "&ver=" + appVersion +
+                        AppConstant.CID_ + cid + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click&btn=" + btncount;
             }
             else
             {
-                api_url = "?pid=" +preferenceUtil.getiZootoID(AppConstant.APPPID) + "&ver=" + appVersion +
-                        "&cid=" + cid + "&bKey=" + PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "&rid=" + rid + "&op=click";
+                api_url = AppConstant.API_PID +preferenceUtil.getiZootoID(AppConstant.APPPID) + "&ver=" + appVersion +
+                        AppConstant.CID_  + cid + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click";
 
             }
 
@@ -67,7 +67,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     @Override
                     void onSuccess(String response) {
                         super.onSuccess(response);
-                       // Log.e("Click","call");
+                        // Log.e("Click","call");
                     }
                 });
             }
@@ -85,15 +85,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         {
 
             HashMap<String, String> hashMap = new HashMap<>();
-            hashMap.put("button1ID", act1ID);
-            hashMap.put("button1Title",btn1Title);
-            hashMap.put("button1URL", act1URL);
-            hashMap.put("additionalData", additionalData);
-            hashMap.put("landingURL", langingURL);
-            hashMap.put("button2ID", act2ID);
-            hashMap.put("button2Title",btn2Title);
-            hashMap.put("button2URL",act2URL);
-            hashMap.put("actionType", String.valueOf(btncount));
+            hashMap.put(AppConstant.BUTTON_ID_1, act1ID);
+            hashMap.put(AppConstant.BUTTON_TITLE_1,btn1Title);
+            hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
+            hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
+            hashMap.put(AppConstant.LANDING_URL, langingURL);
+            hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
+            hashMap.put(AppConstant.BUTTON_TITLE_2,btn2Title);
+            hashMap.put(AppConstant.BUTTON_URL_2,act2URL);
+            hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btncount));
             JSONObject jsonObject = new JSONObject(hashMap);
             iZooto.notificationActionHandler(jsonObject.toString());
         }

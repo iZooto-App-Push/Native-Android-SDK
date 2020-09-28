@@ -33,17 +33,18 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.izooto.shortcutbadger.ShortcutBadger;
+import com.izooto.shortcutbadger.ShortcutBadgerException;
 
 import org.json.JSONObject;
 
 import java.util.Map;
 
-
 public class iZootoMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "iZooto";
     private  Payload payload = null;
-
+    int count = 1;
 
 
 
@@ -54,7 +55,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 Map<String, String> data = remoteMessage.getData();
                 Log.d(AppConstant.APP_NAME_TAG, AppConstant.PAYLOAD + remoteMessage.getData());
                 handleNow(data);
-
             }
             if (remoteMessage.getNotification() != null) {
                 sendNotification(remoteMessage);
@@ -93,7 +93,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
+                    AppConstant.CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
@@ -105,7 +105,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
     public   void handleNow(final Map<String, String> data) {
 
         Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);
-        //for 1.1.4+
+
         try {
 
             // JSONObject payloadObj = new JSONObject(data);
@@ -130,6 +130,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setBadgecolor(payloadObj.optString(AppConstant.BadgeColor));
                     payload.setSubTitle(payloadObj.optString(AppConstant.SUBTITLE));
                     payload.setGroup(payloadObj.optInt(AppConstant.GROUP));
+                    payload.setBadgeCount(payloadObj.optInt(AppConstant.BADGE_COUNT));
 
                     // Button 1
                     payload.setAct1name(payloadObj.optString(AppConstant.ACT1NAME));
@@ -183,6 +184,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setBadgecolor(payloadObj.optString(ShortpayloadConstant.BadgeColor));
                     payload.setSubTitle(payloadObj.optString(ShortpayloadConstant.SUBTITLE));
                     payload.setGroup(payloadObj.optInt(ShortpayloadConstant.GROUP));
+                    payload.setBadgeCount(payloadObj.optInt(ShortpayloadConstant.BADGE_COUNT));
                     // Button 2
                     payload.setAct1name(payloadObj.optString(ShortpayloadConstant.ACT1NAME));
                     payload.setAct1link(payloadObj.optString(ShortpayloadConstant.ACT1LINK));
@@ -227,7 +229,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
             @Override
             public void run() {
                 iZooto.processNotificationReceived(payload);
-               // iZooto.notificationView(payload);
 
             } // This is your code
         };
