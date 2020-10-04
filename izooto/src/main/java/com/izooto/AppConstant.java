@@ -207,8 +207,8 @@ public interface AppConstant {
     String ACT1TITLE="act1title";
     String ACT2TITLE="act2title";
 
-    String BadgeIcon= "badgeicon";
-    String BadgeColor= "badgecolor";
+    String BADGE_ICON= "badgeicon";
+    String BADGE_COLOR= "badgecolor";
     String SUBTITLE = "subtitle";
     String GROUP = "group";
     String BADGE_COUNT = "badgeCount";
@@ -226,7 +226,18 @@ public interface AppConstant {
     String URL_BKEY_="bkey";
     String URL_FRWD___="frwd";
     String FCM_TIME_FORMAT="hh:mm:ss aa";
-
+    String NULL="null";
+    String FONT_COLOR="<font color=\"\"";
+    String POST="POST";
+    String CONTENT_TYPE="Content-Type";
+    String FORM_URL_ENCODED="application/x-www-form-urlencoded";
+    String FORM_URL_JSON="application/json; charset=UTF-8";
+    String DAT=".dat";
+    String HTTPS="https:";
+    String HTTP="http:";
+    String IMPR="impr.izooto.com";
+    String KEY_NOT_FOUND="KEY NOT FOUND";
+    String INSTLLED_FAILED="getInstanceId failed";
 }
 
 

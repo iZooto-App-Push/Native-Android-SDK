@@ -93,7 +93,7 @@ public class PreferenceUtil {
                         @Override
                         public void onComplete(@NonNull Task<InstanceIdResult> task) {
                             if (!task.isSuccessful()) {
-                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                Log.w(TAG, AppConstant.INSTLLED_FAILED, task.getException());
                                 return;
                             }
 
@@ -120,7 +120,7 @@ public class PreferenceUtil {
         if (mSpref.contains(key))
             return mSpref.getLong(key, 0L);
         else
-            Lg.e(TAG, "KEY NOT FOUND");
+            Lg.e(TAG, AppConstant.KEY_NOT_FOUND);
 
         return 0l;
     }

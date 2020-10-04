@@ -41,7 +41,7 @@ public class RestClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                makeApiCall(url,"POST",null,responseHandler,GET_TIMEOUT);
+                makeApiCall(url,AppConstant.POST,null,responseHandler,GET_TIMEOUT);
             }
         }).start();
     }
@@ -62,7 +62,7 @@ public class RestClient {
         String json = null;
 
         try {
-            if (url.contains("https:") || url.contains("http:") || url.contains("impr.izooto.com")) {
+            if (url.contains(AppConstant.HTTPS) || url.contains(AppConstant.HTTP) || url.contains(AppConstant.IMPR)) {
                 con = (HttpURLConnection) new URL(url).openConnection();
 
             } else {
@@ -77,11 +77,11 @@ public class RestClient {
                 con.setDoInput(true);
 
             if (method != null) {
-                if(method.equalsIgnoreCase("POST")) {
-                    con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                if(method.equalsIgnoreCase(AppConstant.POST)) {
+                    con.setRequestProperty(AppConstant.CONTENT_TYPE, AppConstant.FORM_URL_ENCODED);
                 }
                 else {
-                    con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                    con.setRequestProperty(AppConstant.CONTENT_TYPE, AppConstant.FORM_URL_JSON);
                 }
                 con.setRequestMethod(method);
                 con.setDoOutput(true);
@@ -89,7 +89,7 @@ public class RestClient {
 
             if (jsonBody != null) {
                 String strJsonBody = jsonBody.toString();
-                byte[] sendBytes = strJsonBody.getBytes("UTF-8");
+                byte[] sendBytes = strJsonBody.getBytes(AppConstant.UTF);
                 con.setFixedLengthStreamingMode(sendBytes.length);
                 OutputStream outputStream = con.getOutputStream();
                 outputStream.write(sendBytes);
@@ -99,13 +99,13 @@ public class RestClient {
             InputStream inputStream;
             Scanner scanner;
             if (httpResponse == HttpURLConnection.HTTP_OK) {
-                if (url.equals(AppConstant.CDN+iZooto.mIzooToAppId+".js"))
+                if (url.equals(AppConstant.CDN+iZooto.mIzooToAppId+AppConstant.DAT))
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
                 else
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
 
                 inputStream = con.getInputStream();
-                scanner = new Scanner(inputStream, "UTF-8");
+                scanner = new Scanner(inputStream, AppConstant.UTF);
                 json = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
                 scanner.close();
                 if (responseHandler != null) {
@@ -115,7 +115,7 @@ public class RestClient {
                     Lg.w(AppConstant.APP_NAME_TAG, AppConstant.ATTACHREQUEST);
 
             } else {
-                if (url.equals(AppConstant.CDN+iZooto.mIzooToAppId+".js"))
+                if (url.equals(AppConstant.CDN+iZooto.mIzooToAppId+AppConstant.DAT))
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
                 else
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.FAILURE);
@@ -124,7 +124,8 @@ public class RestClient {
                     inputStream = con.getInputStream();
 
                 if (inputStream != null) {
-                    scanner = new Scanner(inputStream, "UTF-8");
+                    scanner = new Scanner(inputStream, AppConstant.UTF);
+
                     json = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
                     scanner.close();
                 }

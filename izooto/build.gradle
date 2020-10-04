@@ -4,7 +4,7 @@ apply plugin: 'maven-publish' // Apply this plugin at the top of your library bu
 def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
 def getVersionName = { ->
-    return "1.0.7" // Replace with version Name
+    return "1.0.8" // Replace with version Name
 }
 def getArtificatId = { ->
     return "iZootoAndroidSDK" // Replace with library name ID
@@ -14,10 +14,10 @@ def getArtificatId = { ->
 android {
     compileSdkVersion 29
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 16
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.0.7"
+        versionCode 8
+        versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

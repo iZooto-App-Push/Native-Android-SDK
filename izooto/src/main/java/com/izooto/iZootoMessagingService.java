@@ -126,8 +126,8 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setTag(payloadObj.optString(AppConstant.TAG));
                     payload.setBanner(payloadObj.optString(AppConstant.BANNER));
                     payload.setAct_num(payloadObj.optInt(AppConstant.ACTNUM));
-                    payload.setBadgeicon(payloadObj.optString(AppConstant.BadgeIcon));
-                    payload.setBadgecolor(payloadObj.optString(AppConstant.BadgeColor));
+                    payload.setBadgeicon(payloadObj.optString(AppConstant.BADGE_ICON));
+                    payload.setBadgecolor(payloadObj.optString(AppConstant.BADGE_COLOR));
                     payload.setSubTitle(payloadObj.optString(AppConstant.SUBTITLE));
                     payload.setGroup(payloadObj.optInt(AppConstant.GROUP));
                     payload.setBadgeCount(payloadObj.optInt(AppConstant.BADGE_COUNT));
@@ -180,8 +180,8 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setTag(payloadObj.optString(ShortpayloadConstant.TAG));
                     payload.setBanner(payloadObj.optString(ShortpayloadConstant.BANNER));
                     payload.setAct_num(payloadObj.optInt(ShortpayloadConstant.ACTNUM));
-                    payload.setBadgeicon(payloadObj.optString(ShortpayloadConstant.BadgeIcon));
-                    payload.setBadgecolor(payloadObj.optString(ShortpayloadConstant.BadgeColor));
+                    payload.setBadgeicon(payloadObj.optString(ShortpayloadConstant.BADGE_ICON));
+                    payload.setBadgecolor(payloadObj.optString(ShortpayloadConstant.BADGE_ICON));
                     payload.setSubTitle(payloadObj.optString(ShortpayloadConstant.SUBTITLE));
                     payload.setGroup(payloadObj.optInt(ShortpayloadConstant.GROUP));
                     payload.setBadgeCount(payloadObj.optInt(ShortpayloadConstant.BADGE_COUNT));

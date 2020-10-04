@@ -1,5 +1,7 @@
 package com.app.izoototest;
 
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.ImageView;
 
 import com.izooto.NotificationHelperListener;
 import com.izooto.Payload;
@@ -21,17 +24,14 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity
 {
-WebView webView;
+private ImageView imageview;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-      //webView=findViewById(R.id.webView);
-//iZooto.setWebViewActivity(webView,MainActivity.this);
     }
 
 

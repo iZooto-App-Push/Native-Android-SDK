@@ -12,9 +12,9 @@
     <application
         android:name=".AppController"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/splash_image"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_launcher_background"
+        android:roundIcon="@drawable/splash_image"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

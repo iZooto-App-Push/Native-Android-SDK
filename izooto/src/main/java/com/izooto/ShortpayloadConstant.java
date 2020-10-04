@@ -18,8 +18,8 @@ public interface ShortpayloadConstant {
     String TAG= "tg";
     String BANNER = "bi";
     String ACTNUM= "b";
-    String BadgeIcon= "bic";
-    String BadgeColor= "bc";
+    String BADGE_ICON= "bic";
+    String BADGE_COLOR= "bc";
     String ACT1NAME= "b1";
     String ACT1LINK= "l1";
     String ACT2NAME= "b2";

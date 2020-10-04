@@ -5,14 +5,14 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.app.izoototest"
-        minSdkVersion 18
+        minSdkVersion 16
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.0.7"
+        versionCode 8
+        versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                                 izooto_app_id: "561db654d15610905f253c77d03ba350809dc7e9"
-
+                //  izooto_app_id:"359265885119a9c7b9fb99a1538cf2a9b6e13acf"
 
 
 

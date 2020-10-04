@@ -12,6 +12,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -268,7 +269,6 @@ public class NotificationEventManager {
                 NotificationCompat.Builder notificationBuilder = null;
                 Notification summaryNotification = null;
                 int SUMMARY_ID = 0;
-
                 Intent intent = null;
                 if (iZooto.icon!=0)
                 {
@@ -286,14 +286,16 @@ public class NotificationEventManager {
                             int checkExistence = iZooto.appContext.getResources().getIdentifier(payload.getBadgeicon(), "drawable", iZooto.appContext.getPackageName());
                             if ( checkExistence != 0 ) {  // the resource exists...
                                 icon = checkExistence;
+
                             }
                             else {  // checkExistence == 0  // the resource does NOT exist!!
                                 int checkExistenceMipmap = iZooto.appContext.getResources().getIdentifier(payload.getBadgeicon(), "mipmap", iZooto.appContext.getPackageName());
                                 if ( checkExistenceMipmap != 0 ) {  // the resource exists...
                                     icon = checkExistenceMipmap;
+
                                 }else {
 
-                                    icon = iZooto.appContext.getApplicationInfo().icon;
+                                    icon =R.drawable.ic_notifications_black_24dp;// iZooto.appContext.getApplicationInfo().logo;
                                 }
 
                             }
@@ -303,6 +305,9 @@ public class NotificationEventManager {
                     }
 
                 }
+
+
+
 
 
                 if (payload.getBadgecolor().contains("#")){
@@ -346,7 +351,6 @@ public class NotificationEventManager {
 
 
 
-
                 if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)){
                     priority = priorityForLessOreo(payload.getPriority());
                     notificationBuilder.setPriority(priority);
@@ -374,7 +378,7 @@ public class NotificationEventManager {
                     }
                 }
 
-                if (!payload.getSubTitle().contains("null")&&payload.getSubTitle()!=null&&!payload.getSubTitle().isEmpty()) {
+                if (!payload.getSubTitle().contains(AppConstant.NULL)&&payload.getSubTitle()!=null&&!payload.getSubTitle().isEmpty()) {
                     notificationBuilder.setSubText(payload.getSubTitle());
 
                 }
@@ -387,7 +391,7 @@ public class NotificationEventManager {
                     notificationBuilder.setLargeIcon(notificationIcon);
                 else if (notificationBanner != null)
                     notificationBuilder.setLargeIcon(notificationBanner);
-                if (notificationBanner != null && !payload.getSubTitle().contains("null") && payload.getSubTitle()!=null&&!payload.getSubTitle().isEmpty()) {
+                if (notificationBanner != null && !payload.getSubTitle().contains(AppConstant.NULL) && payload.getSubTitle()!=null&&!payload.getSubTitle().isEmpty()) {
                     notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
                             .bigPicture(notificationBanner)
                             .bigLargeIcon(notificationIcon)/*.setSummaryText(payload.getMessage())*/);
@@ -488,13 +492,19 @@ public class NotificationEventManager {
         });
     }
 
-    private static boolean isInt(String s)
+    private static boolean isInt(String s)//1234
     {
         try
-        { int i = Integer.parseInt(s); return true; }
+        {
+           Integer.parseInt(s);//1234//what is use case variable i // Number format exception check kiya tha
+        return true;
+        }
 
         catch(NumberFormatException er)
-        { return false; }
+        {
+            return false;
+        }
+
     }
 
     private static String getFinalUrl(Payload payload) {
