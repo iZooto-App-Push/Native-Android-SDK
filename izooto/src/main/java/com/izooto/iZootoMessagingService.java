@@ -181,7 +181,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setBanner(payloadObj.optString(ShortpayloadConstant.BANNER));
                     payload.setAct_num(payloadObj.optInt(ShortpayloadConstant.ACTNUM));
                     payload.setBadgeicon(payloadObj.optString(ShortpayloadConstant.BADGE_ICON));
-                    payload.setBadgecolor(payloadObj.optString(ShortpayloadConstant.BADGE_ICON));
+                    payload.setBadgecolor(payloadObj.optString(ShortpayloadConstant.BADGE_COLOR));
                     payload.setSubTitle(payloadObj.optString(ShortpayloadConstant.SUBTITLE));
                     payload.setGroup(payloadObj.optInt(ShortpayloadConstant.GROUP));
                     payload.setBadgeCount(payloadObj.optInt(ShortpayloadConstant.BADGE_COUNT));
