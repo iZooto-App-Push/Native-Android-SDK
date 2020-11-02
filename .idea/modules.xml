@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/izooto/AndroidSDK_1.0.6-android-X-izooto.iml" filepath="$PROJECT_DIR$/izooto/AndroidSDK_1.0.6-android-X-izooto.iml" group="android-X/izooto" />
-      <module fileurl="file://$PROJECT_DIR$/android-X.iml" filepath="$PROJECT_DIR$/android-X.iml" group="android-X" />
-      <module fileurl="file://$PROJECT_DIR$/izooto/android-X-izooto.iml" filepath="$PROJECT_DIR$/izooto/android-X-izooto.iml" group="android-X/izooto" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="android-X/app" />
-      <module fileurl="file://$PROJECT_DIR$/izooto/izooto.iml" filepath="$PROJECT_DIR$/izooto/izooto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidHotfix.iml" filepath="$PROJECT_DIR$/.idea/modules/androidHotfix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.iml" />
     </modules>
   </component>
 </project>

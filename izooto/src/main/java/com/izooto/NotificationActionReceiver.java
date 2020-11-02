@@ -99,10 +99,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
         else
         {
-            iZooto.notificationActionHandler("");
-
             if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO))
-                WebViewActivity.startActivity(context, mUrl);
+                iZootoWebViewActivity.startActivity(context, mUrl);
             else {
                 try {
                     if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
