@@ -32,7 +32,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
 import com.izooto.shortcutbadger.ShortcutBadger;
-import com.izooto.shortcutbadger.ShortcutBadgerException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -577,7 +576,7 @@ public class NotificationEventManager {
             }
             ShortcutBadger.applyCountOrThrow(iZooto.appContext,preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT));
 
-        } catch (ShortcutBadgerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

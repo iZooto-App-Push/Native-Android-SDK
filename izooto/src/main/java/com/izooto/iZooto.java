@@ -87,8 +87,6 @@ public class iZooto {
                     Lg.i(AppConstant.APP_NAME_TAG, mIzooToAppId + "");
 
                     RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId + ".dat", new RestClient.ResponseHandler() {
-                        // RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId , new RestClient.ResponseHandler() {
-
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
                             super.onFailure(statusCode, response, throwable);
@@ -129,8 +127,8 @@ public class iZooto {
 
     private static void init(final Context context, String apiKey, String appId) {
 
-        initFireBaseApp(senderId, apiKey, appId);
         FCMTokenGenerator fcmTokenGenerator = new FCMTokenGenerator();
+        fcmTokenGenerator.initFireBaseApp(senderId);
         fcmTokenGenerator.getToken(context, senderId, apiKey, appId, new TokenGenerator.TokenGenerationHandler() {
 
             @Override
@@ -152,8 +150,8 @@ public class iZooto {
             }
 
             @Override
-            public void failure(String errormsg) {
-                Lg.e(AppConstant.APP_NAME_TAG, errormsg);
+            public void failure(String errorMsg) {
+                Lg.e(AppConstant.APP_NAME_TAG, errorMsg);
             }
         });
 
@@ -164,10 +162,10 @@ public class iZooto {
         AdvertisingIdClient.getAdvertisingId(appContext, new AdvertisingIdClient.Listener() {
             @Override
             public void onAdvertisingIdClientFinish(AdvertisingIdClient.AdInfo adInfo) {
-                String adverstisementID;
-                adverstisementID = adInfo.getId();
-                preferenceUtil.setStringData(AppConstant.ADVERTISING_ID,adverstisementID);
-                invokeFinish(adverstisementID,preferenceUtil.getStringData(AppConstant.ENCRYPTED_PID));
+                String advertisementID;
+                advertisementID = adInfo.getId();
+                preferenceUtil.setStringData(AppConstant.ADVERTISING_ID,advertisementID);
+                invokeFinish(advertisementID,preferenceUtil.getStringData(AppConstant.ENCRYPTED_PID));
 
             }
 
@@ -184,7 +182,7 @@ public class iZooto {
 
     protected void start(final Context context, final Listener listener) {
         if (listener == null) {
-            Log.e(TAG, "getAdvertisingId - Error: null listener, dropping call");
+            Log.e(AppConstant.APP_NAME_TAG, "getAdvertisingId - Error: null listener, dropping call");
         } else {
             mHandler = new Handler(Looper.getMainLooper());
             mListener = listener;
@@ -212,8 +210,6 @@ public class iZooto {
     }
 
     protected static void invokeFinish(final String adverID, final String registrationID) {
-
-        Log.v(TAG, "invokeFinish");
         mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(new Runnable() {
             @Override
@@ -227,8 +223,6 @@ public class iZooto {
     }
 
     protected static void invokeFail(final Exception exception) {
-
-        Log.v(TAG, "invokeFail: " + exception);
         mHandler = new Handler(Looper.getMainLooper());
         mHandler.post(new Runnable() {
 
@@ -324,7 +318,7 @@ public class iZooto {
 
         try {
             ShortcutBadger.applyCountOrThrow(appContext, 0);
-        } catch (ShortcutBadgerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -384,7 +378,7 @@ public class iZooto {
         try {
             preferenceUtil.setIntData(AppConstant.NOTIFICATION_COUNT,preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT)-1);
             ShortcutBadger.applyCountOrThrow(appContext, preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT));
-        } catch (ShortcutBadgerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

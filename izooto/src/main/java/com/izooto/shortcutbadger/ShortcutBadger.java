@@ -71,7 +71,7 @@ public class ShortcutBadger {
         try {
             applyCountOrThrow(context, badgeCount);
             return true;
-        } catch (ShortcutBadgerException e) {
+        } catch (Exception e) {
             if (Log.isLoggable(LOG_TAG, Log.DEBUG)) {
                 Log.d(LOG_TAG, "Unable to execute badge", e);
             }
@@ -85,18 +85,20 @@ public class ShortcutBadger {
      * @param context    Caller context
      * @param badgeCount Desired badge count
      */
-    public static void applyCountOrThrow(Context context, int badgeCount) throws ShortcutBadgerException {
+    public static void applyCountOrThrow(Context context, int badgeCount)  {
         if (sShortcutBadger == null) {
             boolean launcherReady = initBadger(context);
 
             if (!launcherReady)
-                throw new ShortcutBadgerException("No default launcher available");
+                Log.e("ShortcutBadger"," default launcher available");
+               // throw new ShortcutBadgerException("No default launcher available");
         }
 
         try {
             sShortcutBadger.executeBadge(context, sComponentName, badgeCount);
         } catch (Exception e) {
-            throw new ShortcutBadgerException("Unable to execute badge", e);
+            Log.e("Handle Exception","ShortcutBadger");
+           // throw new ShortcutBadgerException("Unable to execute badge", e);
         }
     }
 
