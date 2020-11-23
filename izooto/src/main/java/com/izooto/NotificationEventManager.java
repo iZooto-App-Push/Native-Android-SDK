@@ -2,6 +2,7 @@ package com.izooto;
 
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -75,6 +76,7 @@ public class NotificationEventManager {
                         {
                             JSONObject jsonObject = new JSONObject(response);
                             parseJson(payload,jsonObject);
+
                         }
                         else if(json instanceof  JSONArray)
                         {
@@ -351,8 +353,10 @@ public class NotificationEventManager {
 
 
                 if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)){
-                    priority = priorityForLessOreo(payload.getPriority());
-                    notificationBuilder.setPriority(priority);
+
+                        priority = priorityForLessOreo(payload.getPriority());
+                        notificationBuilder.setPriority(priority);
+
 
                 }
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -434,11 +438,15 @@ public class NotificationEventManager {
                 assert notificationManager != null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-                    priority = priorityForImportance(payload.getPriority());
+
+                        priority = priorityForImportance(payload.getPriority());
                     NotificationChannel channel = new NotificationChannel(channelId,
                             AppConstant.CHANNEL_NAME, priority);
 
                     notificationManager.createNotificationChannel(channel);
+
+
+
 
                 }
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -548,12 +556,12 @@ public class NotificationEventManager {
             return NotificationManagerCompat.IMPORTANCE_MAX;
         if (priority > 7)
             return NotificationManagerCompat.IMPORTANCE_HIGH;
-        return NotificationManagerCompat.IMPORTANCE_DEFAULT;
+        return NotificationManagerCompat.IMPORTANCE_HIGH;
     }
     private static int priorityForLessOreo(int priority) {
         if (priority > 0)
             return Notification.PRIORITY_HIGH;
-        return Notification.PRIORITY_DEFAULT;
+        return Notification.PRIORITY_HIGH;
     }
     private static int setLockScreenVisibility(int visibility) {
         if (visibility < 0)

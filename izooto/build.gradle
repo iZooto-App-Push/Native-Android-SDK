@@ -1,16 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'maven-publish' // Apply this plugin at the top of your library build.gradle
-def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("github.properties"))) //Set env variable GPR_USER & GPR_API_KEY if not adding a properties file
-def getVersionName = { ->
-    return "1.0.8" // Replace with version Name
-}
-def getArtificatId = { ->
-    return "iZootoAndroidSDK" // Replace with library name ID
-}
-
-
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -27,58 +15,6 @@ android {
         }
     }
 }
-
-buildscript {
-    repositories {
-        jcenter()
-        mavenLocal()
-
-    }
-    dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        //classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-
-    }
-
-
-}
-
-
-
-publishing {
-    publications {
-        bar(MavenPublication) {
-            groupId "com.izooto" // Replace with group ID
-            artifactId getArtificatId()
-            version getVersionName()
-            artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
-        }
-    }
-    repositories {
-        maven {
-            name = "notification"
-            /** Configure path of your package repository on Github
-             ** Replace GITHUB_USERID with your/organisation Github userID
-             ** and REPOSITORY with the repository name on GitHub
-             */
-            url = uri("https://github.com/izooto-mobile-sdk/notification")
-            credentials {
-                /** Create github.properties in root project folder file with
-                 ** gpr.usr=GITHUB_USER_ID & gpr.key=PERSONAL_ACCESS_TOKEN
-                 ** Set env variable GPR_USER & GPR_API_KEY if not adding a properties file**/
-
-                username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
-                password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
-            }
-        }
-    }
-}
-
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '5.6.2'//Requried
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -89,3 +25,4 @@ dependencies {
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'org.testng:testng:6.9.6'
 }
+apply from: 'maven-push.gradle'

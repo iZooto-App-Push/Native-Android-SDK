@@ -103,6 +103,7 @@ public class iZooto {
                                 String appId = jsonObject.getString(AppConstant.APPID);
                                 String apiKey = jsonObject.getString(AppConstant.APIKEY);
                                 mIzooToAppId = jsonObject.getString(AppConstant.APPPID);
+                                Log.e("JSONObject",jsonObject.toString());
                                 preferenceUtil.setiZootoID(AppConstant.APPPID,mIzooToAppId);
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
