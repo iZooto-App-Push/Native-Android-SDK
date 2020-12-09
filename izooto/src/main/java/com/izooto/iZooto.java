@@ -100,7 +100,7 @@ public class iZooto {
                             try {
                                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                                 JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
-                                senderId = jsonObject.getString(AppConstant.SENDERID);
+                                senderId =jsonObject.getString(AppConstant.SENDERID);
                                 String appId = jsonObject.getString(AppConstant.APPID);
                                 String apiKey = jsonObject.getString(AppConstant.APIKEY);
                                 mIzooToAppId = jsonObject.getString(AppConstant.APPPID);
