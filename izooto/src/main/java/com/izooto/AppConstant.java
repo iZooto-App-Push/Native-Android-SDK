@@ -238,6 +238,13 @@ public interface AppConstant {
     String IMPR="impr.izooto.com";
     String KEY_NOT_FOUND="KEY NOT FOUND";
     String INSTLLED_FAILED="getInstanceId failed";
+    String GET_TOPIC_NAME = "getTopicName";
+    String REMOVE_TOPIC_NAME = "removeTopicName";
+    String ADD_TOPIC ="add_topic";
+    String REMOVE_TOPIC ="remove_topic";
+    String TOPIC ="topic";
+    String ANDROID_ID="&bKey=";
+
 }
 
 

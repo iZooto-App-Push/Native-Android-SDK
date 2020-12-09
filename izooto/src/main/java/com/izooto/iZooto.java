@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.izooto.shortcutbadger.ShortcutBadger;
 import com.izooto.shortcutbadger.ShortcutBadgerException;
 
@@ -86,7 +87,7 @@ public class iZooto {
                 else {
                     Lg.i(AppConstant.APP_NAME_TAG, mIzooToAppId + "");
 
-                    RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId + ".dat", new RestClient.ResponseHandler() {
+                    RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId +".dat", new RestClient.ResponseHandler() {
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
                             super.onFailure(statusCode, response, throwable);
@@ -103,8 +104,8 @@ public class iZooto {
                                 String appId = jsonObject.getString(AppConstant.APPID);
                                 String apiKey = jsonObject.getString(AppConstant.APIKEY);
                                 mIzooToAppId = jsonObject.getString(AppConstant.APPPID);
-                                Log.e("JSONObject",jsonObject.toString());
                                 preferenceUtil.setiZootoID(AppConstant.APPPID,mIzooToAppId);
+                                Log.e("JSONObject",jsonObject.toString());
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
                                 } else {
@@ -524,19 +525,23 @@ public class iZooto {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + eventName +
-                    AppConstant.ET_ + "evt" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
 
-            RestClient.postRequest(RestClient.EVENT_URL + api_url, new RestClient.ResponseHandler() {
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                }
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-                }
-            });
+            if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+                String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + eventName +
+                        AppConstant.ET_ + "evt" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
+
+                RestClient.postRequest(RestClient.EVENT_URL + api_url, new RestClient.ResponseHandler() {
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                    }
+
+                    @Override
+                    void onSuccess(String response) {
+                        super.onSuccess(response);
+                    }
+                });
+            }
         } else {
             Log.e(AppConstant.APP_NAME_TAG, "Event length more than 32...");
         }
@@ -582,60 +587,22 @@ public class iZooto {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + "add" +
-                            AppConstant.ET_ + "userp" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
+                    if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+                        String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + "add" +
+                                AppConstant.ET_ + "userp" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
 
-                    RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
-                        @Override
-                        void onFailure(int statusCode, String response, Throwable throwable) {
-                            super.onFailure(statusCode, response, throwable);
-                        }
-                        @Override
-                        void onSuccess(String response) {
-                            super.onSuccess(response);
-                        }
-                    });
-                }
-            }
-        }
-    }
-    public static void updateProperty(HashMap<String,Object> removeData) {
-        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-        String encodeData = "";
-        String appVersion = Util.getSDKVersion();
-        if (removeData != null && removeData.size() > 0) {
-            HashMap<String, Object> newListRemoveUserProperty = new HashMap<String, Object>();
-            for (Map.Entry<String, Object> refineEntry : removeData.entrySet()) {
-                if (refineEntry.getKey() != null && !refineEntry.getKey().isEmpty()) {
-                    String newKey = refineEntry.getKey().toLowerCase();
-                    newListRemoveUserProperty.put(newKey, refineEntry.getValue());
-                }
-            }
-            if (newListRemoveUserProperty.size() > 0) {
-                HashMap<String, Object> filterData = checkValidationUserProfile(newListRemoveUserProperty, 1);
-                if (filterData.size() > 0) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(filterData);
-                        encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                        RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
+                            @Override
+                            void onFailure(int statusCode, String response, Throwable throwable) {
+                                super.onFailure(statusCode, response, throwable);
+                            }
+
+                            @Override
+                            void onSuccess(String response) {
+                                super.onSuccess(response);
+                            }
+                        });
                     }
-                    String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) +
-                            AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.APPVERSION+ appVersion +
-                            AppConstant.PTE_ + AppConstant.PTE  + AppConstant.OS +AppConstant.SDKOS+ AppConstant.PT_+ AppConstant.PT + AppConstant.ET_ + "userp" + AppConstant.GE_ + AppConstant.GE + AppConstant.VAL + encodeData;
-
-                    RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler(){
-                        @Override
-                        void onFailure(int statusCode, String response, Throwable throwable) {
-                            super.onFailure(statusCode, response, throwable);
-                            // Log.e("Remove", "remove failure: -----"+statusCode );
-                        }
-                        @Override
-                        void onSuccess(String response) {
-                            super.onSuccess(response);
-                            // Log.e("Remove", "remove success: ----"+response );
-                        }
-                    });
                 }
             }
         }
@@ -857,4 +824,156 @@ public class iZooto {
         };
         mainHandler.post(myRunnable);
     }
+
+    public static void addTag(final List<String> topicName){
+        if (topicName != null && !topicName.isEmpty()) {
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+            if (preferenceUtil.getStringData(AppConstant.SENDERID) != null) {
+                FirebaseOptions firebaseOptions =
+                        new FirebaseOptions.Builder()
+                                .setGcmSenderId(preferenceUtil.getStringData(AppConstant.SENDERID)) //senderID
+                                .setApplicationId(get_App_ID()) //application ID
+                                .setApiKey(getAPI_KEY()) //Application Key
+                                .setProjectId(get_Project_ID()) //Project ID
+                                .build();
+                try {
+                    FirebaseApp firebaseApp = FirebaseApp.getInstance(AppConstant.FCMDEFAULT);
+                    if (firebaseApp == null) {
+                        FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
+                    }
+                } catch (IllegalStateException ex) {
+                    FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
+                }
+                List<String> topicList = new ArrayList<String>();
+                for (final String filterTopicName : topicName) {
+                    if (filterTopicName != null && !filterTopicName.isEmpty()) {
+                        if (Util.isMatchedString(filterTopicName)){
+                            try {
+                                FirebaseMessaging.getInstance().subscribeToTopic(filterTopicName);
+                                preferenceUtil.setStringData(AppConstant.GET_TOPIC_NAME, filterTopicName);
+                                topicList.add(filterTopicName);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                Log.e(TAG, "subscribeTopic: add " + topicList);
+                topicApi(AppConstant.ADD_TOPIC, topicList);
+            }
+        }
+    }
+    public static void removeTag(final List<String> topicName){
+        if (topicName != null && !topicName.isEmpty()) {
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+            if (preferenceUtil.getStringData(AppConstant.SENDERID) != null ) {
+
+                FirebaseOptions firebaseOptions =
+                        new FirebaseOptions.Builder()
+                                .setGcmSenderId(preferenceUtil.getStringData(AppConstant.SENDERID)) //senderID
+                                .setApplicationId(get_App_ID()) //application ID
+                                .setApiKey(getAPI_KEY()) //Application Key
+                                .setProjectId(get_Project_ID()) //Project ID
+                                .build();
+                try {
+                    FirebaseApp firebaseApp = FirebaseApp.getInstance(AppConstant.FCMDEFAULT);
+                    if (firebaseApp == null) {
+                        FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
+                    }
+                } catch (IllegalStateException ex) {
+                    FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
+                }
+                List<String> topicList = new ArrayList<String>();
+                for (final String filterTopicName : topicName) {
+                    if (filterTopicName != null && !filterTopicName.isEmpty()) {
+                        if (Util.isMatchedString(filterTopicName)) {
+                            try {
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic(filterTopicName);
+                                preferenceUtil.setStringData(AppConstant.REMOVE_TOPIC_NAME, filterTopicName);
+                                topicList.add(filterTopicName);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                topicApi(AppConstant.REMOVE_TOPIC, topicList);
+            }
+        }
+    }
+    private static void topicApi(String action, List<String> topic){
+        if (topic.size() > 0){
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+            if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+                String encodeData = "";
+                try {
+                    HashMap<String, List<String>> data = new HashMap<>();
+                    data.put(AppConstant.TOPIC, topic);
+                    JSONObject jsonObject = new JSONObject(data);
+                    encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + action +
+                        AppConstant.ET_ + "userp" + AppConstant.ANDROID_ID + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;
+                RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                    }
+                    @Override
+                    void onSuccess(String response) {
+                        super.onSuccess(response);
+                    }
+                });
+            }
+        }
+    }
+    private static String  getAPI_KEY()
+    {
+        try {
+            String apiKey = FirebaseOptions.fromResource(iZooto.appContext).getApiKey();
+            if (apiKey != null)
+                return apiKey;
+        }
+        catch (Exception e)
+        {
+            return "";//new String(Base64.decode(FCM_DEFAULT_API_KEY_BASE64, Base64.DEFAULT));
+
+        }
+        return "";
+
+
+    }
+    private  static String get_App_ID() {
+        try {
+            String application_id = FirebaseOptions.fromResource(iZooto.appContext).getApplicationId();
+            if (application_id!=null)
+                return application_id;
+        }
+        catch (Exception ex)
+        {
+            return "";//FCM_DEFAULT_APP_ID;
+
+        }
+        return "";
+
+    }
+    private  static String get_Project_ID()
+    {
+        try {
+            String project_id = FirebaseOptions.fromResource(iZooto.appContext).getProjectId();
+            if(project_id!=null)
+                return project_id;
+        }
+        catch (Exception exception)
+        {
+            return "";
+
+        }
+        return "";
+
+    }
+
 }

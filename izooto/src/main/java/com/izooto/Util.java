@@ -22,6 +22,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -229,5 +231,13 @@ public class Util {
         }
         return context.getPackageName();
     }
-
+    public static boolean isMatchedString(String s) {
+        try {
+            Pattern pattern= Pattern.compile("[a-zA-Z0-9-_.~%]{1,900}");
+            Matcher matcher = pattern.matcher(s);
+            return matcher.matches();
+        } catch (RuntimeException e) {
+            return false;
+        }
+    }
 }
