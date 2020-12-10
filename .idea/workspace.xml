@@ -19,28 +19,19 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/appcompat/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/constraintlayout/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/master-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/sdk-registry.xml/sdk-registry.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/maven-push.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/maven-push.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[ZY3228V9B7]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -440,33 +431,33 @@
       <screen x="0" y="23" width="1440" height="801" />
     </state>
     <state x="245" y="160" key="#PSD/0.23.1440.801@0.23.1440.801" timestamp="1604320007695" />
-    <state width="1398" height="424" key="GridCell.Tab.0.bottom" timestamp="1607520115123">
-      <screen x="0" y="23" width="1440" height="801" />
+    <state width="1398" height="182" key="GridCell.Tab.0.bottom" timestamp="1607524668674">
+      <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state width="1398" height="424" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1607494999704" />
+    <state width="1398" height="182" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1607524668674" />
     <state width="1398" height="405" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1606469759289" />
-    <state width="1398" height="424" key="GridCell.Tab.0.bottom/0.23.1440.801@0.23.1440.801" timestamp="1607520115123" />
+    <state width="1398" height="182" key="GridCell.Tab.0.bottom/0.23.1440.801@0.23.1440.801" timestamp="1607521044336" />
     <state width="1398" height="182" key="GridCell.Tab.0.bottom/0.23.1440.804@0.23.1440.804" timestamp="1607512172513" />
-    <state width="1398" height="424" key="GridCell.Tab.0.center" timestamp="1607520115121">
-      <screen x="0" y="23" width="1440" height="801" />
+    <state width="1398" height="182" key="GridCell.Tab.0.center" timestamp="1607524668673">
+      <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state width="1398" height="424" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1607494999703" />
+    <state width="1398" height="182" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1607524668673" />
     <state width="1398" height="405" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1606469759288" />
-    <state width="1398" height="424" key="GridCell.Tab.0.center/0.23.1440.801@0.23.1440.801" timestamp="1607520115121" />
+    <state width="1398" height="182" key="GridCell.Tab.0.center/0.23.1440.801@0.23.1440.801" timestamp="1607521044336" />
     <state width="1398" height="182" key="GridCell.Tab.0.center/0.23.1440.804@0.23.1440.804" timestamp="1607512172512" />
-    <state width="1398" height="424" key="GridCell.Tab.0.left" timestamp="1607520115120">
-      <screen x="0" y="23" width="1440" height="801" />
+    <state width="1398" height="182" key="GridCell.Tab.0.left" timestamp="1607524668672">
+      <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state width="1398" height="424" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1607494999702" />
+    <state width="1398" height="182" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1607524668672" />
     <state width="1398" height="405" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1606469759287" />
-    <state width="1398" height="424" key="GridCell.Tab.0.left/0.23.1440.801@0.23.1440.801" timestamp="1607520115120" />
+    <state width="1398" height="182" key="GridCell.Tab.0.left/0.23.1440.801@0.23.1440.801" timestamp="1607521044335" />
     <state width="1398" height="182" key="GridCell.Tab.0.left/0.23.1440.804@0.23.1440.804" timestamp="1607512172512" />
-    <state width="1398" height="424" key="GridCell.Tab.0.right" timestamp="1607520115122">
-      <screen x="0" y="23" width="1440" height="801" />
+    <state width="1398" height="182" key="GridCell.Tab.0.right" timestamp="1607524668673">
+      <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state width="1398" height="424" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1607494999704" />
+    <state width="1398" height="182" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1607524668673" />
     <state width="1398" height="405" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1606469759289" />
-    <state width="1398" height="424" key="GridCell.Tab.0.right/0.23.1440.801@0.23.1440.801" timestamp="1607520115122" />
+    <state width="1398" height="182" key="GridCell.Tab.0.right/0.23.1440.801@0.23.1440.801" timestamp="1607521044336" />
     <state width="1398" height="182" key="GridCell.Tab.0.right/0.23.1440.804@0.23.1440.804" timestamp="1607512172512" />
   </component>
   <component name="masterDetails">
