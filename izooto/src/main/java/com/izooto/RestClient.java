@@ -1,8 +1,6 @@
 package com.izooto;
 
 
-import android.util.Log;
-
 import org.json.JSONObject;
 
 import java.io.InputStream;
@@ -99,7 +97,7 @@ public class RestClient {
             InputStream inputStream;
             Scanner scanner;
             if (httpResponse == HttpURLConnection.HTTP_OK) {
-                if (url.equals(AppConstant.CDN+iZooto.mIzooToAppId+AppConstant.DAT))
+                if (url.equals(AppConstant.CDN+ iZooto.mIzooToAppId+AppConstant.DAT))
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
                 else
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
@@ -115,7 +113,7 @@ public class RestClient {
                     Lg.w(AppConstant.APP_NAME_TAG, AppConstant.ATTACHREQUEST);
 
             } else {
-                if (url.equals(AppConstant.CDN+iZooto.mIzooToAppId+AppConstant.DAT))
+                if (url.equals(AppConstant.CDN+ iZooto.mIzooToAppId+AppConstant.DAT))
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
                 else
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.FAILURE);

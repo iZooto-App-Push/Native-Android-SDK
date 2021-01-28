@@ -169,7 +169,7 @@ public class AdvertisingIdClient {
     protected void start(final Context context, final Listener listener) {
 
         if (listener == null) {
-            Log.e(TAG, "getAdvertisingId - Error: null listener, dropping call");
+            Log.e(AppConstant.APP_NAME_TAG, "getAdvertisingId - Error: null listener, dropping call");
         } else {
             mHandler = new Handler(Looper.getMainLooper());
             mListener = listener;
@@ -200,20 +200,20 @@ public class AdvertisingIdClient {
                     AdvertisingInterface adInterface = new AdvertisingInterface(connection.getBinder());
                     String id = adInterface.getId();
                     if(TextUtils.isEmpty(id)) {
-                        Log.w(TAG, "getAdvertisingIdInfo - Error: ID Not available");
+                        Log.w(AppConstant.APP_NAME_TAG, "getAdvertisingIdInfo - Error: ID Not available");
                         invokeFail(new Exception("Advertising ID extraction Error: ID Not available"));
                     } else {
                         invokeFinish(new AdInfo(id, adInterface.isLimitAdTrackingEnabled(true)));
                     }
                 }
             } catch (Exception exception) {
-                Log.w(TAG, "getAdvertisingIdInfo - Error: " + exception);
+                Log.w(AppConstant.APP_NAME_TAG, "getAdvertisingIdInfo - Error: " + exception);
                 invokeFail(exception);
             } finally {
                 context.unbindService(connection);
             }
         } catch (Exception exception) {
-            Log.w(TAG, "getAdvertisingIdInfo - Error: " + exception);
+            Log.w(AppConstant.APP_NAME_TAG, "getAdvertisingIdInfo - Error: " + exception);
             invokeFail(exception);
         }
     }
@@ -223,7 +223,7 @@ public class AdvertisingIdClient {
     //==============================================================================================
     protected void invokeFinish(final AdInfo adInfo) {
 
-        Log.v(TAG, "invokeFinish");
+        Log.v(AppConstant.APP_NAME_TAG, "invokeFinish");
         mHandler.post(new Runnable() {
 
             @Override
@@ -238,7 +238,7 @@ public class AdvertisingIdClient {
 
     protected void invokeFail(final Exception exception) {
 
-        Log.v(TAG, "invokeFail: " + exception);
+        Log.v(AppConstant.APP_NAME_TAG, "invokeFail: " + exception);
         mHandler.post(new Runnable() {
 
             @Override

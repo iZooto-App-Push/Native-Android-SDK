@@ -9,6 +9,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.izooto.iZooto;
+
+import java.util.HashMap;
+
 
 public class MainActivity extends AppCompatActivity
 {
@@ -19,6 +23,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+//        HashMap<String,Object> data = new HashMap<>();
+//        data.put("Xiaomi","Yes");
+//        iZooto.addUserProperty(data);
 
 
     }

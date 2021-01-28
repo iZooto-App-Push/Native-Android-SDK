@@ -3,11 +3,13 @@ package com.izooto;
 
 public interface AppConstant {
     String APP_NAME_TAG = "iZooto";
+
     String FCM_DEVICE_TOKEN = "deviceToken";
     String IZOOTO_SENDER_ID_KEY = "izooto_sender_id";
     String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
     //String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/"; // new
     String SDKNAME = "IZOOTO";
+   // String SDKNAME = "MOMAGIC";
     String DEVICETOKEN="DEVICE TOKEN   ->  ";
     String UTF="UTF-8";
     String FCMDEFAULT="[DEFAULT]";
@@ -106,6 +108,8 @@ public interface AppConstant {
     String UPDATE_DEVICE_TOKEN = "https://aevents.izooto.com/izooto/api.php";
     String IZOOTO_ENCRYPTION_KEY = "izooto_enc_key";
     String IZOOTO_APP_ID = "izooto_app_id";
+   // String DATAB_APP_ID = "momagic_app_id";
+
     String ACTION_BTN_ONE = "actionBtnOne";
     String ACTION_BTN_TWO = "actionBtnTwo";
     int NOTIFICAITON_REQ_CODE = 101;
@@ -244,6 +248,7 @@ public interface AppConstant {
     String REMOVE_TOPIC ="remove_topic";
     String TOPIC ="topic";
     String ANDROID_ID="&bKey=";
+    String ADVERTISEMENTID="&adid=";
 
 }
 

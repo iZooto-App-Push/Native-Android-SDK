@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">IZooToTest</string>
     <string name="action_settings">Settings</string>
-    <string name="message">iZooto Notification Services</string>
+    <string name="message">Push  Notification Services</string>
 </resources>

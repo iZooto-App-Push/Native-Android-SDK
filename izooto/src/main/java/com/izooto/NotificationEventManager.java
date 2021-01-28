@@ -2,7 +2,6 @@ package com.izooto;
 
 
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -13,10 +12,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -40,12 +37,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 public class NotificationEventManager {
     private static Bitmap notificationIcon, notificationBanner;//,act1Icon,act2Icon;
@@ -273,7 +265,7 @@ public class NotificationEventManager {
                 Intent intent = null;
                 if (iZooto.icon!=0)
                 {
-                    icon=iZooto.icon;
+                    icon= iZooto.icon;
                 }
                 else
                 {
@@ -339,7 +331,7 @@ public class NotificationEventManager {
                         PendingIntent.FLAG_ONE_SHOT);
 
                 notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId)
-                        .setContentTitle(payload.getTitle())
+                       .setContentTitle(payload.getTitle())
                         .setSmallIcon(icon)
                         .setContentText(payload.getMessage())
                         .setContentIntent(pendingIntent)
@@ -416,7 +408,7 @@ public class NotificationEventManager {
                     PendingIntent pendingIntent1 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Action action1 =
                             new NotificationCompat.Action.Builder(
-                                    0,  HtmlCompat.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.gray) + "\">" + payload.getAct1name() + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY),
+                                    0, payload.getAct1name(),
                                     pendingIntent1).build();
                     notificationBuilder.addAction(action1);
 
@@ -431,7 +423,7 @@ public class NotificationEventManager {
                     PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Action action2 =
                             new NotificationCompat.Action.Builder(
-                                    0, HtmlCompat.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.gray) + "\">" + payload.getAct2name() + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY),
+                                    0, payload.getAct2name() ,
                                     pendingIntent2).build();
                     notificationBuilder.addAction(action2);
                 }
@@ -468,9 +460,7 @@ public class NotificationEventManager {
 
                 notificationBanner = null;
                 notificationIcon = null;
-                /*link = "";
-                link1 = "";
-                link2 = "";*/
+
 
             }
 
@@ -714,7 +704,7 @@ public class NotificationEventManager {
 
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
 
-        String api_url = AppConstant.API_PID +  preferenceUtil.getiZootoID(AppConstant.APPPID) +
+        String api_url = AppConstant.API_PID +  preferenceUtil.getDataBID(AppConstant.APPPID) +
                 AppConstant.CID_ + payload.getId() + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.RID_ + payload.getRid() + "&op=view";
 
         RestClient.postRequest(RestClient.IMPRESSION_URL + api_url, new RestClient.ResponseHandler() {

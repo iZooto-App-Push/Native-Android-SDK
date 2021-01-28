@@ -25,18 +25,10 @@ public class iZootoWebViewActivity extends AppCompatActivity {
     }
 
     public static Intent createIntent(Context context, String url) {
-        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-        if (iZooto.getWebActivity == null){
-            Intent webIntent = new Intent(context, iZootoWebViewActivity.class);
-            webIntent.putExtra(AppConstant.KEY_WEB_URL, url);
-            webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            return webIntent;
-        }else {
-            Intent webIntent = new Intent(context, iZooto.getWebActivity);
-            webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            preferenceUtil.setStringData(AppConstant.WEB_LANDING_URL,url);
-            return webIntent;
-        }
+        Intent webIntent = new Intent(context, iZootoWebViewActivity.class);
+        webIntent.putExtra(AppConstant.KEY_WEB_URL, url);
+        webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return webIntent;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +47,7 @@ public class iZootoWebViewActivity extends AppCompatActivity {
 
     private void initUI() {
         getBundleData();
-        mWebView = findViewById(R.id.webview);
+        mWebView = findViewById(R.id.webView);
         mProgressBar = findViewById(R.id.circular_progress_bar);
         WebSettings settings = mWebView.getSettings();
         settings.setLoadWithOverviewMode(true);
@@ -119,4 +111,5 @@ public class iZootoWebViewActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

@@ -45,12 +45,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
 
             if (btncount!=0) {
-                api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID)+ "&ver=" + appVersion +
+                api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID)+ "&ver=" + appVersion +
                         AppConstant.CID_ + cid + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click&btn=" + btncount;
             }
             else
             {
-                api_url = AppConstant.API_PID +preferenceUtil.getiZootoID(AppConstant.APPPID) + "&ver=" + appVersion +
+                api_url = AppConstant.API_PID +preferenceUtil.getDataBID(AppConstant.APPPID) + "&ver=" + appVersion +
                         AppConstant.CID_  + cid + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click";
 
             }
@@ -99,8 +99,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
         else
         {
-            if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO))
-                iZootoWebViewActivity.startActivity(context, mUrl);
+            if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+                if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null) {
+                    iZooto.notificationInAppAction(mUrl);
+                } else
+                    iZootoWebViewActivity.startActivity(context, mUrl);
+            }
             else {
                 try {
                     if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
@@ -114,7 +118,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     }
 
                 } catch (Exception ex) {
-                    Log.e("ex", ex.toString());
+                    Log.e(AppConstant.APP_NAME_TAG, ex.toString());
                 }
             }
         }

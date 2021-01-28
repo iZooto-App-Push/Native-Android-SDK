@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -17,7 +16,7 @@ import com.google.firebase.iid.InstanceIdResult;
 
 public class PreferenceUtil {
 
-    public static final String SHARED_PREF_NAME = "izooto";
+    public static final String SHARED_PREF_NAME = "DATAB";
     private static PreferenceUtil mContext;
     private final SharedPreferences mSpref;
     private String TAG = PreferenceUtil.class.getSimpleName();
@@ -130,13 +129,13 @@ public class PreferenceUtil {
         editor.putLong(key, value);
         editor.apply();
     }
-    public void setiZootoID(String key,String id)
+    public void setDataBID(String key,String id)
     {
         SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
         appInstallInfoEditor.putString(key, id);
         appInstallInfoEditor.apply();
     }
-    public String getiZootoID(String key)
+    public String getDataBID(String key)
     {
         return mSpref.getString(key, "");
     }

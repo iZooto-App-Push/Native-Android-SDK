@@ -66,6 +66,72 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1007215295999:android:21b5b50012d7005de3bbca",
+        "android_client_info": {
+          "package_name": "com.k.demotesting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007215295999-g1830pe1brkq88vn50i0p0gnoipfcmh7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.k.demotesting",
+            "certificate_hash": "1de769e70067ba2250548ff58f2df45a79929407"
+          }
+        },
+        {
+          "client_id": "1007215295999-br86884ahqd0dah3a085k74p8r6a7dti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMql9mySjw5IdGAvoywreX5-Un7D1K53I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007215295999-br86884ahqd0dah3a085k74p8r6a7dti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007215295999:android:67d5d0cbcdf95d9ce3bbca",
+        "android_client_info": {
+          "package_name": "com.momagic_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007215295999-br86884ahqd0dah3a085k74p8r6a7dti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMql9mySjw5IdGAvoywreX5-Un7D1K53I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007215295999-br86884ahqd0dah3a085k74p8r6a7dti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1007215295999:android:843fc00f62db65a8e3bbca",
         "android_client_info": {
           "package_name": "com.naiduniatesting"

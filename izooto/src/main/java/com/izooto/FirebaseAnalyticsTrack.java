@@ -3,7 +3,6 @@ package com.izooto;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -19,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.izooto.AppConstant.TAG;
-
 public class FirebaseAnalyticsTrack {
 
     private static Class<?> FirebaseAnalyticsClass;
@@ -29,9 +26,9 @@ public class FirebaseAnalyticsTrack {
     private static Payload mPayload;
     private static AtomicLong receivedTime;
     private static AtomicLong openedTime;
-    private static final String IZOOTO_NOTIFICATION_OPENED_EVENT = "push_notification_opened";
-    private static final String IZOOTO_NOTIFICATION_INFLUENCE_OPEN_EVENT = "push_notification_influence_open";
-    private static final String IZOOTO_NOTIFICATION_RECEIVED_EVENT = "push_notification_received";
+    private static final String DATB_NOTIFICATION_OPENED_EVENT = "push_notification_opened";
+    private static final String DATB_NOTIFICATION_INFLUENCE_OPEN_EVENT = "push_notification_influence_open";
+    private static final String DATB_NOTIFICATION_RECEIVED_EVENT = "push_notification_received";
 
     public FirebaseAnalyticsTrack(Context mContext) {
         this.mContext = mContext;
@@ -56,7 +53,7 @@ public class FirebaseAnalyticsTrack {
             if (getDataFromPayload(receivedPayload) != null){
                 Bundle bundle = getDataFromPayload(receivedPayload);
                 if (trackEventMethod != null) {
-                    trackEventMethod.invoke(firebaseAnalyticsInstance, IZOOTO_NOTIFICATION_RECEIVED_EVENT, bundle);
+                    trackEventMethod.invoke(firebaseAnalyticsInstance, DATB_NOTIFICATION_RECEIVED_EVENT, bundle);
                 }
 
                 if (receivedTime == null)
@@ -94,7 +91,7 @@ public class FirebaseAnalyticsTrack {
                 }
 
                 if (trackEventMethod != null) {
-                    trackEventMethod.invoke(firebaseAnalyticsInstance, IZOOTO_NOTIFICATION_INFLUENCE_OPEN_EVENT, bundle);
+                    trackEventMethod.invoke(firebaseAnalyticsInstance, DATB_NOTIFICATION_INFLUENCE_OPEN_EVENT, bundle);
                 }
 
             }
@@ -119,7 +116,7 @@ public class FirebaseAnalyticsTrack {
                     bundle.putString(AppConstant.TIME_OF_CLICK, getTimeOfClick());
                 }
                 if (trackEventMethod != null) {
-                    trackEventMethod.invoke(firebaseAnalyticsInstance, IZOOTO_NOTIFICATION_OPENED_EVENT, bundle);
+                    trackEventMethod.invoke(firebaseAnalyticsInstance, DATB_NOTIFICATION_OPENED_EVENT, bundle);
                 }
 
             }

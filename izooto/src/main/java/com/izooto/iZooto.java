@@ -4,9 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +21,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.izooto.shortcutbadger.ShortcutBadger;
-import com.izooto.shortcutbadger.ShortcutBadgerException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +50,9 @@ public class iZooto {
     @SuppressLint("StaticFieldLeak")
     static Activity curActivity;
     public static Class<?>  getWebActivity;
+    private static BackgroundReceiver backgroundReceiver;
+    private static String advertisementID;
+
 
 
     public static void setSenderId(String senderId) {
@@ -104,8 +107,8 @@ public class iZooto {
                                 String appId = jsonObject.getString(AppConstant.APPID);
                                 String apiKey = jsonObject.getString(AppConstant.APIKEY);
                                 mIzooToAppId = jsonObject.getString(AppConstant.APPPID);
-                                preferenceUtil.setiZootoID(AppConstant.APPPID,mIzooToAppId);
-                                Log.e("JSONObject",jsonObject.toString());
+                                preferenceUtil.setDataBID(AppConstant.APPPID,mIzooToAppId);
+                                trackAdvertisingId();
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
                                 } else {
@@ -139,11 +142,14 @@ public class iZooto {
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                 if (util.isInitializationValid()) {
                     Lg.i(AppConstant.APP_NAME_TAG, AppConstant.DEVICETOKEN  + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+
                     registerToken();
                     ActivityLifecycleListener.registerActivity((Application)appContext);
                     setCurActivity(context);
                     areNotificationsEnabledForSubscribedState(appContext);
-                    trackAdvertisingId();
+                    backgroundReceiver = new BackgroundReceiver();
+                    BackgroundJobIntentService.enqueueWork(context);
+
 
                     if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack())
                         firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
@@ -164,7 +170,6 @@ public class iZooto {
         AdvertisingIdClient.getAdvertisingId(appContext, new AdvertisingIdClient.Listener() {
             @Override
             public void onAdvertisingIdClientFinish(AdvertisingIdClient.AdInfo adInfo) {
-                String advertisementID;
                 advertisementID = adInfo.getId();
                 preferenceUtil.setStringData(AppConstant.ADVERTISING_ID,advertisementID);
                 invokeFinish(advertisementID,preferenceUtil.getStringData(AppConstant.ENCRYPTED_PID));
@@ -259,7 +264,7 @@ public class iZooto {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
             String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion() +
-                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage();
+                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage()+AppConstant.ADVERTISEMENTID+preferenceUtil.getStringData(AppConstant.ADVERTISING_ID);
 
             try {
                 String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
@@ -268,7 +273,6 @@ public class iZooto {
             } catch (UnsupportedEncodingException e) {
                 Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
             }
-
 
             RestClient.get(api_url, new RestClient.ResponseHandler() {
                 @Override
@@ -323,7 +327,9 @@ public class iZooto {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        activity.registerReceiver(backgroundReceiver, intentFilter);
     }
     private static void setCurActivity(Context context) {
         boolean foreground = isContextActivity(context);
@@ -386,12 +392,18 @@ public class iZooto {
 
 
     }
+    public static void notificationInAppAction(String url){
+        if (mBuilder!=null && mBuilder.mWebViewListener!=null)
+            mBuilder.mWebViewListener.onWebView(url);
+    }
 
 
     public static class Builder {
         Context mContext;
         private TokenReceivedListener mTokenReceivedListener;
         private NotificationHelperListener mNotificationHelper;
+        public NotificationWebViewListener mWebViewListener;
+
         OSInAppDisplayOption mDisplayOption;
         private Builder(Context context) {
             mContext = context;
@@ -411,6 +423,12 @@ public class iZooto {
             inAppOption = displayOption.toString();
             return this;
         }
+        public Builder setLandingURLListener(NotificationWebViewListener mNotificationWebViewListener){
+            mWebViewListener = mNotificationWebViewListener;
+            return this;
+
+        }
+
 
 
         public Builder unsubscribeWhenNotificationsAreDisabled(boolean set){
@@ -457,7 +475,7 @@ public class iZooto {
 
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
         String appVersion = Util.getSDKVersion();
-        String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)
+        String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)
                 + AppConstant.BTYPE_+ AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.APPVERSION + appVersion + AppConstant.PTE_ + AppConstant.PTE +
                 AppConstant.OS +AppConstant.SDKOS  + AppConstant.PT_+ AppConstant.PT + AppConstant.GE_ + AppConstant.GE + AppConstant.ACTION + value;
 
@@ -526,8 +544,8 @@ public class iZooto {
                 ex.printStackTrace();
             }
 
-            if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
-                String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + eventName +
+            if (!preferenceUtil.getDataBID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+                String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.ACT + eventName +
                         AppConstant.ET_ + "evt" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
 
                 RestClient.postRequest(RestClient.EVENT_URL + api_url, new RestClient.ResponseHandler() {
@@ -587,8 +605,8 @@ public class iZooto {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
-                        String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + "add" +
+                    if (!preferenceUtil.getDataBID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+                        String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.ACT + "add" +
                                 AppConstant.ET_ + "userp" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
 
                         RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
@@ -659,7 +677,7 @@ public class iZooto {
             if (enable) {
                 value = 0;
             }
-            String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)
+            String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)
                     + AppConstant.BTYPE_ + AppConstant.BTYPE +AppConstant.DTYPE_ + AppConstant.DTYPE  +AppConstant.APPVERSION + Util.getSDKVersion() + AppConstant.PTE_ + AppConstant.PTE +
                     AppConstant.OS + AppConstant.SDKOS + AppConstant.PT_+ AppConstant.PT + AppConstant.GE_ + AppConstant.GE + AppConstant.ACTION + value;
 
@@ -690,139 +708,132 @@ public class iZooto {
 
     public static void iZootoHandleNotification(Context context,final Map<String,String> data)
     {
-        Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);
+        Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
+            try {
 
-        try {
+                if (data.get(AppConstant.CAMPNAME) != null) {
 
-            if(data.get(AppConstant.CAMPNAME)!=null) {
+                    JSONObject payloadObj = new JSONObject(data.get(AppConstant.CAMPNAME));
+                    if (payloadObj.optLong(AppConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
+                        payload = new Payload();
+                        payload.setFetchURL(payloadObj.optString(AppConstant.FETCHURL));
+                        payload.setKey(payloadObj.optString(AppConstant.KEY));
+                        payload.setId(payloadObj.optString(AppConstant.ID));
+                        payload.setRid(payloadObj.optString(AppConstant.RID));
+                        payload.setLink(payloadObj.optString(AppConstant.LINK));
+                        payload.setTitle(payloadObj.optString(AppConstant.TITLE));
+                        payload.setMessage(payloadObj.optString(AppConstant.NMESSAGE));
+                        payload.setIcon(payloadObj.optString(AppConstant.ICON));
+                        payload.setReqInt(payloadObj.optInt(AppConstant.REQINT));
+                        payload.setTag(payloadObj.optString(AppConstant.TAG));
+                        payload.setBanner(payloadObj.optString(AppConstant.BANNER));
+                        payload.setAct_num(payloadObj.optInt(AppConstant.ACTNUM));
+                        payload.setBadgeicon(payloadObj.optString(AppConstant.BADGE_ICON));
+                        payload.setBadgecolor(payloadObj.optString(AppConstant.BADGE_COLOR));
+                        payload.setSubTitle(payloadObj.optString(AppConstant.SUBTITLE));
+                        payload.setGroup(payloadObj.optInt(AppConstant.GROUP));
+                        payload.setBadgeCount(payloadObj.optInt(AppConstant.BADGE_COUNT));
 
-                JSONObject payloadObj = new JSONObject(data.get(AppConstant.CAMPNAME));
-                if (payloadObj.optLong(AppConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
-                    payload = new Payload();
-                    payload.setFetchURL(payloadObj.optString(AppConstant.FETCHURL));
-                    payload.setKey(payloadObj.optString(AppConstant.KEY));
-                    payload.setId(payloadObj.optString(AppConstant.ID));
-                    payload.setRid(payloadObj.optString(AppConstant.RID));
-                    payload.setLink(payloadObj.optString(AppConstant.LINK));
-                    payload.setTitle(payloadObj.optString(AppConstant.TITLE));
-                    payload.setMessage(payloadObj.optString(AppConstant.NMESSAGE));
-                    payload.setIcon(payloadObj.optString(AppConstant.ICON));
-                    payload.setReqInt(payloadObj.optInt(AppConstant.REQINT));
-                    payload.setTag(payloadObj.optString(AppConstant.TAG));
-                    payload.setBanner(payloadObj.optString(AppConstant.BANNER));
-                    payload.setAct_num(payloadObj.optInt(AppConstant.ACTNUM));
-                    payload.setBadgeicon(payloadObj.optString(AppConstant.BADGE_ICON));
-                    payload.setBadgecolor(payloadObj.optString(AppConstant.BADGE_COLOR));
-                    payload.setSubTitle(payloadObj.optString(AppConstant.SUBTITLE));
-                    payload.setGroup(payloadObj.optInt(AppConstant.GROUP));
-                    payload.setBadgeCount(payloadObj.optInt(AppConstant.BADGE_COUNT));
+                        // Button 1
+                        payload.setAct1name(payloadObj.optString(AppConstant.ACT1NAME));
+                        payload.setAct1link(payloadObj.optString(AppConstant.ACT1LINK));
+                        payload.setAct1icon(payloadObj.optString(AppConstant.ACT1ICON));
+                        payload.setAct1ID(payloadObj.optString(AppConstant.ACT1ID));
+                        // Button 2
+                        payload.setAct2name(payloadObj.optString(AppConstant.ACT2NAME));
+                        payload.setAct2link(payloadObj.optString(AppConstant.ACT2LINK));
+                        payload.setAct2icon(payloadObj.optString(AppConstant.ACT2ICON));
+                        payload.setAct2ID(payloadObj.optString(AppConstant.ACT2ID));
 
-                    // Button 1
-                    payload.setAct1name(payloadObj.optString(AppConstant.ACT1NAME));
-                    payload.setAct1link(payloadObj.optString(AppConstant.ACT1LINK));
-                    payload.setAct1icon(payloadObj.optString(AppConstant.ACT1ICON));
-                    payload.setAct1ID(payloadObj.optString(AppConstant.ACT1ID));
-                    // Button 2
-                    payload.setAct2name(payloadObj.optString(AppConstant.ACT2NAME));
-                    payload.setAct2link(payloadObj.optString(AppConstant.ACT2LINK));
-                    payload.setAct2icon(payloadObj.optString(AppConstant.ACT2ICON));
-                    payload.setAct2ID(payloadObj.optString(AppConstant.ACT2ID));
+                        payload.setInapp(payloadObj.optInt(AppConstant.INAPP));
+                        payload.setTrayicon(payloadObj.optString(AppConstant.TARYICON));
+                        payload.setSmallIconAccentColor(payloadObj.optString(AppConstant.ICONCOLOR));
+                        payload.setSound(payloadObj.optString(AppConstant.SOUND));
+                        payload.setLedColor(payloadObj.optString(AppConstant.LEDCOLOR));
+                        payload.setLockScreenVisibility(payloadObj.optInt(AppConstant.VISIBILITY));
+                        payload.setGroupKey(payloadObj.optString(AppConstant.GKEY));
+                        payload.setGroupMessage(payloadObj.optString(AppConstant.GMESSAGE));
+                        payload.setFromProjectNumber(payloadObj.optString(AppConstant.PROJECTNUMBER));
+                        payload.setCollapseId(payloadObj.optString(AppConstant.COLLAPSEID));
+                        payload.setPriority(payloadObj.optInt(AppConstant.PRIORITY));
+                        payload.setRawPayload(payloadObj.optString(AppConstant.RAWDATA));
+                        payload.setAp(payloadObj.optString(AppConstant.ADDITIONALPARAM));
+                        payload.setCfg(payloadObj.optInt(AppConstant.CFG));
 
-                    payload.setInapp(payloadObj.optInt(AppConstant.INAPP));
-                    payload.setTrayicon(payloadObj.optString(AppConstant.TARYICON));
-                    payload.setSmallIconAccentColor(payloadObj.optString(AppConstant.ICONCOLOR));
-                    payload.setSound(payloadObj.optString(AppConstant.SOUND));
-                    payload.setLedColor(payloadObj.optString(AppConstant.LEDCOLOR));
-                    payload.setLockScreenVisibility(payloadObj.optInt(AppConstant.VISIBILITY));
-                    payload.setGroupKey(payloadObj.optString(AppConstant.GKEY));
-                    payload.setGroupMessage(payloadObj.optString(AppConstant.GMESSAGE));
-                    payload.setFromProjectNumber(payloadObj.optString(AppConstant.PROJECTNUMBER));
-                    payload.setCollapseId(payloadObj.optString(AppConstant.COLLAPSEID));
-                    payload.setPriority(payloadObj.optInt(AppConstant.PRIORITY));
-                    payload.setRawPayload(payloadObj.optString(AppConstant.RAWDATA));
-                    payload.setAp(payloadObj.optString(AppConstant.ADDITIONALPARAM));
-                    payload.setCfg(payloadObj.optInt(AppConstant.CFG));
+                    } else
+                        return;
+                } else {
+                    JSONObject payloadObj = new JSONObject(data);
+                    if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
+                        payload = new Payload();
+                        payload.setFetchURL(payloadObj.optString(ShortpayloadConstant.FETCHURL));
+                        payload.setKey(payloadObj.optString(ShortpayloadConstant.KEY));
+                        payload.setId(payloadObj.optString(ShortpayloadConstant.ID));
+                        payload.setRid(payloadObj.optString(ShortpayloadConstant.RID));
+                        payload.setLink(payloadObj.optString(ShortpayloadConstant.LINK));
+                        payload.setTitle(payloadObj.optString(ShortpayloadConstant.TITLE));
+                        payload.setMessage(payloadObj.optString(ShortpayloadConstant.NMESSAGE));
+                        payload.setIcon(payloadObj.optString(ShortpayloadConstant.ICON));
+                        payload.setReqInt(payloadObj.optInt(ShortpayloadConstant.REQINT));
+                        payload.setTag(payloadObj.optString(ShortpayloadConstant.TAG));
+                        payload.setBanner(payloadObj.optString(ShortpayloadConstant.BANNER));
+                        payload.setAct_num(payloadObj.optInt(ShortpayloadConstant.ACTNUM));
+                        payload.setBadgeicon(payloadObj.optString(ShortpayloadConstant.BADGE_ICON));
+                        payload.setBadgecolor(payloadObj.optString(ShortpayloadConstant.BADGE_COLOR));
+                        payload.setSubTitle(payloadObj.optString(ShortpayloadConstant.SUBTITLE));
+                        payload.setGroup(payloadObj.optInt(ShortpayloadConstant.GROUP));
+                        payload.setBadgeCount(payloadObj.optInt(ShortpayloadConstant.BADGE_COUNT));
+                        // Button 2
+                        payload.setAct1name(payloadObj.optString(ShortpayloadConstant.ACT1NAME));
+                        payload.setAct1link(payloadObj.optString(ShortpayloadConstant.ACT1LINK));
+                        payload.setAct1icon(payloadObj.optString(ShortpayloadConstant.ACT1ICON));
+                        payload.setAct1ID(payloadObj.optString(ShortpayloadConstant.ACT1ID));
+                        // Button 2
+                        payload.setAct2name(payloadObj.optString(ShortpayloadConstant.ACT2NAME));
+                        payload.setAct2link(payloadObj.optString(ShortpayloadConstant.ACT2LINK));
+                        payload.setAct2icon(payloadObj.optString(ShortpayloadConstant.ACT2ICON));
+                        payload.setAct2ID(payloadObj.optString(ShortpayloadConstant.ACT2ID));
 
+                        payload.setInapp(payloadObj.optInt(ShortpayloadConstant.INAPP));
+                        payload.setTrayicon(payloadObj.optString(ShortpayloadConstant.TARYICON));
+                        payload.setSmallIconAccentColor(payloadObj.optString(ShortpayloadConstant.ICONCOLOR));
+                        payload.setSound(payloadObj.optString(ShortpayloadConstant.SOUND));
+                        payload.setLedColor(payloadObj.optString(ShortpayloadConstant.LEDCOLOR));
+                        payload.setLockScreenVisibility(payloadObj.optInt(ShortpayloadConstant.VISIBILITY));
+                        payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
+                        payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
+                        payload.setFromProjectNumber(payloadObj.optString(ShortpayloadConstant.PROJECTNUMBER));
+                        payload.setCollapseId(payloadObj.optString(ShortpayloadConstant.COLLAPSEID));
+                        payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
+                        payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
+                        payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
+                        payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
+
+                    } else
+                        return;
                 }
-                else
-                    return;
-            }
-            else
-            {
-                JSONObject payloadObj = new JSONObject(data);
-                if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP))
-                {
-                    payload = new Payload();
-                    payload.setFetchURL(payloadObj.optString(ShortpayloadConstant.FETCHURL));
-                    payload.setKey(payloadObj.optString(ShortpayloadConstant.KEY));
-                    payload.setId(payloadObj.optString(ShortpayloadConstant.ID));
-                    payload.setRid(payloadObj.optString(ShortpayloadConstant.RID));
-                    payload.setLink(payloadObj.optString(ShortpayloadConstant.LINK));
-                    payload.setTitle(payloadObj.optString(ShortpayloadConstant.TITLE));
-                    payload.setMessage(payloadObj.optString(ShortpayloadConstant.NMESSAGE));
-                    payload.setIcon(payloadObj.optString(ShortpayloadConstant.ICON));
-                    payload.setReqInt(payloadObj.optInt(ShortpayloadConstant.REQINT));
-                    payload.setTag(payloadObj.optString(ShortpayloadConstant.TAG));
-                    payload.setBanner(payloadObj.optString(ShortpayloadConstant.BANNER));
-                    payload.setAct_num(payloadObj.optInt(ShortpayloadConstant.ACTNUM));
-                    payload.setBadgeicon(payloadObj.optString(ShortpayloadConstant.BADGE_ICON));
-                    payload.setBadgecolor(payloadObj.optString(ShortpayloadConstant.BADGE_COLOR));
-                    payload.setSubTitle(payloadObj.optString(ShortpayloadConstant.SUBTITLE));
-                    payload.setGroup(payloadObj.optInt(ShortpayloadConstant.GROUP));
-                    payload.setBadgeCount(payloadObj.optInt(ShortpayloadConstant.BADGE_COUNT));
-                    // Button 2
-                    payload.setAct1name(payloadObj.optString(ShortpayloadConstant.ACT1NAME));
-                    payload.setAct1link(payloadObj.optString(ShortpayloadConstant.ACT1LINK));
-                    payload.setAct1icon(payloadObj.optString(ShortpayloadConstant.ACT1ICON));
-                    payload.setAct1ID(payloadObj.optString(ShortpayloadConstant.ACT1ID));
-                    // Button 2
-                    payload.setAct2name(payloadObj.optString(ShortpayloadConstant.ACT2NAME));
-                    payload.setAct2link(payloadObj.optString(ShortpayloadConstant.ACT2LINK));
-                    payload.setAct2icon(payloadObj.optString(ShortpayloadConstant.ACT2ICON));
-                    payload.setAct2ID(payloadObj.optString(ShortpayloadConstant.ACT2ID));
 
-                    payload.setInapp(payloadObj.optInt(ShortpayloadConstant.INAPP));
-                    payload.setTrayicon(payloadObj.optString(ShortpayloadConstant.TARYICON));
-                    payload.setSmallIconAccentColor(payloadObj.optString(ShortpayloadConstant.ICONCOLOR));
-                    payload.setSound(payloadObj.optString(ShortpayloadConstant.SOUND));
-                    payload.setLedColor(payloadObj.optString(ShortpayloadConstant.LEDCOLOR));
-                    payload.setLockScreenVisibility(payloadObj.optInt(ShortpayloadConstant.VISIBILITY));
-                    payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
-                    payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
-                    payload.setFromProjectNumber(payloadObj.optString(ShortpayloadConstant.PROJECTNUMBER));
-                    payload.setCollapseId(payloadObj.optString(ShortpayloadConstant.COLLAPSEID));
-                    payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
-                    payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
-                    payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
-                    payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
 
-                }
-                else
-                    return;
+                // return;
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                Lg.d(TAG, e.toString());
             }
 
 
+            if (iZooto.appContext == null)
+                iZooto.appContext = context;
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            Runnable myRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    iZooto.processNotificationReceived(payload);
+                } // This is your code
+            };
+            mainHandler.post(myRunnable);
 
 
-            // return;
-        } catch (Exception e) {
-
-            e.printStackTrace();
-            Lg.d(TAG,e.toString());
-        }
-
-
-
-        if (iZooto.appContext == null)
-            iZooto.appContext = context;
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                iZooto.processNotificationReceived(payload);
-            } // This is your code
-        };
-        mainHandler.post(myRunnable);
     }
 
     public static void addTag(final List<String> topicName){
@@ -858,7 +869,7 @@ public class iZooto {
                         }
                     }
                 }
-                Log.e(TAG, "subscribeTopic: add " + topicList);
+                Log.e(AppConstant.APP_NAME_TAG, "subscribeTopic: add " + topicList);
                 topicApi(AppConstant.ADD_TOPIC, topicList);
             }
         }
@@ -904,7 +915,7 @@ public class iZooto {
     private static void topicApi(String action, List<String> topic){
         if (topic.size() > 0){
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-            if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+            if (!preferenceUtil.getDataBID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
                 String encodeData = "";
                 try {
                     HashMap<String, List<String>> data = new HashMap<>();
@@ -915,7 +926,7 @@ public class iZooto {
                     ex.printStackTrace();
                 }
 
-                String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + action +
+                String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.ACT + action +
                         AppConstant.ET_ + "userp" + AppConstant.ANDROID_ID + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;
                 RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
                     @Override
