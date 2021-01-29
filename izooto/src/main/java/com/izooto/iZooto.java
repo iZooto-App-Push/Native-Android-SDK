@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.webkit.WebView;
 
 import androidx.annotation.RequiresApi;
 
@@ -49,12 +48,8 @@ public class iZooto {
     public static String inAppOption;
     @SuppressLint("StaticFieldLeak")
     static Activity curActivity;
-    public static Class<?>  getWebActivity;
-    private static BackgroundReceiver backgroundReceiver;
+    private static iZootoBackgroundReceiver iZootoBackgroundReceiver;
     private static String advertisementID;
-
-
-
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
     }
@@ -107,7 +102,8 @@ public class iZooto {
                                 String appId = jsonObject.getString(AppConstant.APPID);
                                 String apiKey = jsonObject.getString(AppConstant.APIKEY);
                                 mIzooToAppId = jsonObject.getString(AppConstant.APPPID);
-                                preferenceUtil.setDataBID(AppConstant.APPPID,mIzooToAppId);
+                                preferenceUtil.setiZootoID(AppConstant.APPPID,mIzooToAppId);
+                                Log.e("iZootoData",jsonObject.toString());
                                 trackAdvertisingId();
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
@@ -142,15 +138,12 @@ public class iZooto {
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                 if (util.isInitializationValid()) {
                     Lg.i(AppConstant.APP_NAME_TAG, AppConstant.DEVICETOKEN  + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
-
                     registerToken();
                     ActivityLifecycleListener.registerActivity((Application)appContext);
                     setCurActivity(context);
                     areNotificationsEnabledForSubscribedState(appContext);
-                    backgroundReceiver = new BackgroundReceiver();
-                    BackgroundJobIntentService.enqueueWork(context);
-
-
+                    iZootoBackgroundReceiver = new iZootoBackgroundReceiver();
+                    iZootoJobIntentService.enqueueWork(context);
                     if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack())
                         firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
 
@@ -243,29 +236,14 @@ public class iZooto {
         });
     }
 
-
-
-    private static void initFireBaseApp(final String senderId, final String apiKey, final String appId) {
-
-        FirebaseOptions firebaseOptions = new FirebaseOptions.Builder().setGcmSenderId(senderId).setApplicationId(appId).setApiKey(apiKey).build();
-
-        try {
-            FirebaseApp firebaseApp = FirebaseApp.getInstance(AppConstant.FCMDEFAULT);
-            if (firebaseApp == null) {
-                FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
-            }
-        } catch (IllegalStateException ex) {
-            // FirebaseApp.initializeApp(appContext, firebaseOptions, AppConstant.FCMDEFAULT);
-
-        }
-    }
-
     private static void registerToken() {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
+           // String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion() +
+                   // AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage()+AppConstant.ADVERTISEMENTID+preferenceUtil.getStringData(AppConstant.ADVERTISING_ID);
             String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion() +
-                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage()+AppConstant.ADVERTISEMENTID+preferenceUtil.getStringData(AppConstant.ADVERTISING_ID);
-
+                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage() +
+                    AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.ADVERTISEMENTID +preferenceUtil.getStringData(AppConstant.ADVERTISING_ID);
             try {
                 String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
                 String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, AppConstant.UTF);
@@ -273,6 +251,7 @@ public class iZooto {
             } catch (UnsupportedEncodingException e) {
                 Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
             }
+            Log.e("APIURL",api_url);
 
             RestClient.get(api_url, new RestClient.ResponseHandler() {
                 @Override
@@ -329,7 +308,7 @@ public class iZooto {
         }
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        activity.registerReceiver(backgroundReceiver, intentFilter);
+        activity.registerReceiver(iZootoBackgroundReceiver, intentFilter);
     }
     private static void setCurActivity(Context context) {
         boolean foreground = isContextActivity(context);
@@ -475,10 +454,9 @@ public class iZooto {
 
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
         String appVersion = Util.getSDKVersion();
-        String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)
+        String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ANDROID_ID + Util.getAndroidId(appContext)
                 + AppConstant.BTYPE_+ AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.APPVERSION + appVersion + AppConstant.PTE_ + AppConstant.PTE +
                 AppConstant.OS +AppConstant.SDKOS  + AppConstant.PT_+ AppConstant.PT + AppConstant.GE_ + AppConstant.GE + AppConstant.ACTION + value;
-
         RestClient.postRequest(RestClient.SUBSCRIPTION_API + api_url, new RestClient.ResponseHandler(){
             @Override
             void onFailure(int statusCode, String response, Throwable throwable) {
@@ -502,19 +480,9 @@ public class iZooto {
         inAppOption = displayOption.toString();
     }
 
-    public static void setWebViewActivity(Class<?>  setActivity){
-        getWebActivity = setActivity;
-    }
 
-    public static void setLandingURL(WebView mWebView) {
-        if (mWebView != null) {
-            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-            String mUrl = preferenceUtil.getStringData(AppConstant.WEB_LANDING_URL);
-            if (mUrl != null) {
-                mWebView.loadUrl(mUrl);
-            }
-        }
-    }
+
+
 
     // send events  with event name and event data
     public static void addEvent(String eventName, HashMap<String,Object> data) {
@@ -544,10 +512,9 @@ public class iZooto {
                 ex.printStackTrace();
             }
 
-            if (!preferenceUtil.getDataBID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
-                String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.ACT + eventName +
-                        AppConstant.ET_ + "evt" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
-
+            if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+                String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + eventName +
+                        AppConstant.ET_ + "evt" + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.VAL + encodeData;
                 RestClient.postRequest(RestClient.EVENT_URL + api_url, new RestClient.ResponseHandler() {
                     @Override
                     void onFailure(int statusCode, String response, Throwable throwable) {
@@ -605,10 +572,11 @@ public class iZooto {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    if (!preferenceUtil.getDataBID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
-                        String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.ACT + "add" +
-                                AppConstant.ET_ + "userp" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
-
+                    if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+                      //  String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + "add" +
+                           //     AppConstant.ET_ + "userp" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
+                        String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + "add" +
+                                AppConstant.ET_ + "userp" + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.VAL + encodeData;
                         RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
                             @Override
                             void onFailure(int statusCode, String response, Throwable throwable) {
@@ -677,10 +645,12 @@ public class iZooto {
             if (enable) {
                 value = 0;
             }
-            String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)
-                    + AppConstant.BTYPE_ + AppConstant.BTYPE +AppConstant.DTYPE_ + AppConstant.DTYPE  +AppConstant.APPVERSION + Util.getSDKVersion() + AppConstant.PTE_ + AppConstant.PTE +
-                    AppConstant.OS + AppConstant.SDKOS + AppConstant.PT_+ AppConstant.PT + AppConstant.GE_ + AppConstant.GE + AppConstant.ACTION + value;
-
+           // String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)
+               //     + AppConstant.BTYPE_ + AppConstant.BTYPE +AppConstant.DTYPE_ + AppConstant.DTYPE  +AppConstant.APPVERSION + Util.getSDKVersion() + AppConstant.PTE_ + AppConstant.PTE +
+                 //   AppConstant.OS + AppConstant.SDKOS + AppConstant.PT_+ AppConstant.PT + AppConstant.GE_ + AppConstant.GE + AppConstant.ACTION + value;
+            String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ANDROID_ID + Util.getAndroidId(iZooto.appContext)
+                    + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.APPVERSION + Util.getSDKVersion() + AppConstant.PTE_ + AppConstant.PTE +
+                    AppConstant.OS + AppConstant.SDKOS + AppConstant.PT_ + AppConstant.PT + AppConstant.GE_ + AppConstant.GE + AppConstant.ACTION + value;
             RestClient.postRequest(RestClient.SUBSCRIPTION_API + api_url, new RestClient.ResponseHandler() {
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
@@ -915,7 +885,7 @@ public class iZooto {
     private static void topicApi(String action, List<String> topic){
         if (topic.size() > 0){
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-            if (!preferenceUtil.getDataBID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
+            if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
                 String encodeData = "";
                 try {
                     HashMap<String, List<String>> data = new HashMap<>();
@@ -926,9 +896,9 @@ public class iZooto {
                     ex.printStackTrace();
                 }
 
-                String api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID) + AppConstant.ACT + action +
-                        AppConstant.ET_ + "userp" + AppConstant.ANDROID_ID + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;
-                RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
+                String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + action +
+                        AppConstant.ET_ + "userp" + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.VAL + encodeData +
+                        AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.BTYPE_ + AppConstant.BTYPE;                RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
                     @Override
                     void onFailure(int statusCode, String response, Throwable throwable) {
                         super.onFailure(statusCode, response, throwable);

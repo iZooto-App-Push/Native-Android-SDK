@@ -446,11 +446,16 @@ public class NotificationEventManager {
                         notificationManager.notify(SUMMARY_ID, summaryNotification);
                     }
                 }
-                notificationManager.notify(notificaitionId, notificationBuilder.build());
+              //  notificationManager.notify(notificaitionId, notificationBuilder.build());
+                if (payload.getCollapseId()!=null && !payload.getCollapseId().isEmpty()){
+                    int notifyId = Util.convertStringToDecimal(payload.getCollapseId());
+                    notificationManager.notify(notifyId, notificationBuilder.build());
+                }else
+                    notificationManager.notify(notificaitionId, notificationBuilder.build());
                 try {
 
                     if(impressionIndex.equalsIgnoreCase("1")) {
-                        viewNotificationApi(payload);
+                        impressionNotificationApi(payload);
                     }
                     iZooto.notificationView(payload);
 
@@ -648,7 +653,7 @@ public class NotificationEventManager {
                     try {
 
                         if(impressionIndex.equalsIgnoreCase("1")) {
-                            viewNotificationApi(payload);
+                            impressionNotificationApi(payload);
                         }
                         iZooto.notificationView(payload);
 
@@ -700,13 +705,12 @@ public class NotificationEventManager {
         return intent;
     }
 
-    private static void viewNotificationApi(final Payload payload){
+    private static void impressionNotificationApi(final Payload payload){
 
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
 
-        String api_url = AppConstant.API_PID +  preferenceUtil.getDataBID(AppConstant.APPPID) +
-                AppConstant.CID_ + payload.getId() + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.RID_ + payload.getRid() + "&op=view";
-
+        String api_url = AppConstant.API_PID +  preferenceUtil.getiZootoID(AppConstant.APPPID) +
+                AppConstant.CID_ + payload.getId() + AppConstant.ANDROID_ID + Util.getAndroidId(iZooto.appContext) + AppConstant.RID_ + payload.getRid() + "&op=view";
         RestClient.postRequest(RestClient.IMPRESSION_URL + api_url, new RestClient.ResponseHandler() {
 
 

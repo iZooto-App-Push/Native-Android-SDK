@@ -45,14 +45,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
 
             if (btncount!=0) {
-                api_url = AppConstant.API_PID + preferenceUtil.getDataBID(AppConstant.APPPID)+ "&ver=" + appVersion +
-                        AppConstant.CID_ + cid + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click&btn=" + btncount;
+                api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID)+ "&ver=" + appVersion +
+                        AppConstant.CID_ + cid + AppConstant.ANDROID_ID + Util.getAndroidId(iZooto.appContext) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click&btn=" + btncount;
             }
             else
             {
-                api_url = AppConstant.API_PID +preferenceUtil.getDataBID(AppConstant.APPPID) + "&ver=" + appVersion +
-                        AppConstant.CID_  + cid + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click";
-
+                api_url = AppConstant.API_PID +preferenceUtil.getiZootoID(AppConstant.APPPID) + "&ver=" + appVersion +
+                        AppConstant.CID_  + cid + AppConstant.ANDROID_ID + Util.getAndroidId(iZooto.appContext) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click";
             }
 
             if(clickIndex.equalsIgnoreCase("1")) {

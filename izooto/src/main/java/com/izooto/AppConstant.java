@@ -17,7 +17,7 @@ public interface AppConstant {
     String PTE="2";
     String ANDROIDVERSION = "&osVersion=";
     String DEVICENAME ="&deviceName=";
-    String TOKEN="&bKey=";
+    String TOKEN="&at=";
     String ADDURL="app.php?s=";
     String  PID="&pid=";
     String BTYPE_="&btype=";
@@ -249,7 +249,6 @@ public interface AppConstant {
     String TOPIC ="topic";
     String ANDROID_ID="&bKey=";
     String ADVERTISEMENTID="&adid=";
-
 }
 
 

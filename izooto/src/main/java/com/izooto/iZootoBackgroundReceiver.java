@@ -8,17 +8,17 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class BackgroundReceiver extends BroadcastReceiver {
+public class iZootoBackgroundReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        ComponentName receiver = new ComponentName(context, BackgroundReceiver.class);
+        ComponentName receiver = new ComponentName(context, iZootoBackgroundReceiver.class);
         PackageManager pm = context.getPackageManager();
 
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
-        BackgroundJobIntentService.enqueueWork(context);
+        iZootoJobIntentService.enqueueWork(context);
 
     }
 
