@@ -16,8 +16,7 @@ public class iZootoJobIntentService extends JobIntentService {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-//        Log.e("iZootoData", "onHandleWork ");
-        setAlarm();
+        setBackgroundServices();
         stopSelf();
     }
     public static void enqueueWork(Context ctx) {
@@ -26,7 +25,7 @@ public class iZootoJobIntentService extends JobIntentService {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void setAlarm() {
+    public void setBackgroundServices() {
         Intent restartServiceIntent = new Intent(getApplicationContext(), this.getClass());
         restartServiceIntent.setPackage(getPackageName());
         PendingIntent restartServicePendingIntent = PendingIntent.getService(getApplicationContext(), 1, restartServiceIntent, PendingIntent.FLAG_ONE_SHOT);
@@ -52,7 +51,6 @@ public class iZootoJobIntentService extends JobIntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        Log.e("setAlarmCtx", "onReceive --onDestroy ");
         Intent broadcastIntent = new Intent(this, iZootoBackgroundReceiver.class);
         sendBroadcast(broadcastIntent);
     }

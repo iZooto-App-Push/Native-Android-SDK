@@ -103,7 +103,6 @@ public class iZooto {
                                 String apiKey = jsonObject.getString(AppConstant.APIKEY);
                                 mIzooToAppId = jsonObject.getString(AppConstant.APPPID);
                                 preferenceUtil.setiZootoID(AppConstant.APPPID,mIzooToAppId);
-                                Log.e("iZootoData",jsonObject.toString());
                                 trackAdvertisingId();
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
@@ -251,15 +250,10 @@ public class iZooto {
             } catch (UnsupportedEncodingException e) {
                 Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
             }
-            Log.e("APIURL",api_url);
-
             RestClient.get(api_url, new RestClient.ResponseHandler() {
                 @Override
                 void onSuccess(final String response) {
-
                     super.onSuccess(response);
-
-
                     if (mBuilder != null && mBuilder.mTokenReceivedListener != null) {
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
@@ -573,8 +567,6 @@ public class iZooto {
                         ex.printStackTrace();
                     }
                     if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
-                      //  String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + "add" +
-                           //     AppConstant.ET_ + "userp" + AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.VAL + encodeData;//URLEncoder.encode(database, "UTF-8");
                         String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + "add" +
                                 AppConstant.ET_ + "userp" + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.VAL + encodeData;
                         RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {

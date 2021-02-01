@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="iZootoData" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="token" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
@@ -28,15 +28,9 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/BackgroundJobIntentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoJobIntentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/BackgroundReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoBackgroundReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/PreferenceUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/PreferenceUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoJobIntentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoJobIntentService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -485,32 +479,32 @@
       <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="335" y="175" key="AndroidProcessChooserDialog/0.23.1440.797@0.23.1440.797" timestamp="1610958354997" />
-    <state width="1398" height="318" key="GridCell.Tab.0.bottom" timestamp="1611902299547">
+    <state width="1398" height="332" key="GridCell.Tab.0.bottom" timestamp="1612155946059">
       <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state width="1398" height="318" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1611902299547" />
-    <state width="1398" height="405" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1606469759289" />
+    <state width="1398" height="332" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1612155946059" />
+    <state width="1398" height="318" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1611929405894" />
     <state width="1398" height="291" key="GridCell.Tab.0.bottom/0.23.1440.801@0.23.1440.801" timestamp="1611227202502" />
     <state width="1398" height="182" key="GridCell.Tab.0.bottom/0.23.1440.804@0.23.1440.804" timestamp="1607512172513" />
-    <state width="1398" height="318" key="GridCell.Tab.0.center" timestamp="1611902299546">
+    <state width="1398" height="332" key="GridCell.Tab.0.center" timestamp="1612155946058">
       <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state width="1398" height="318" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1611902299546" />
-    <state width="1398" height="405" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1606469759288" />
+    <state width="1398" height="332" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1612155946058" />
+    <state width="1398" height="318" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1611929405893" />
     <state width="1398" height="291" key="GridCell.Tab.0.center/0.23.1440.801@0.23.1440.801" timestamp="1611227202500" />
     <state width="1398" height="182" key="GridCell.Tab.0.center/0.23.1440.804@0.23.1440.804" timestamp="1607512172512" />
-    <state width="1398" height="318" key="GridCell.Tab.0.left" timestamp="1611902299545">
+    <state width="1398" height="332" key="GridCell.Tab.0.left" timestamp="1612155946056">
       <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state width="1398" height="318" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1611902299545" />
-    <state width="1398" height="405" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1606469759287" />
+    <state width="1398" height="332" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1612155946056" />
+    <state width="1398" height="318" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1611929405892" />
     <state width="1398" height="291" key="GridCell.Tab.0.left/0.23.1440.801@0.23.1440.801" timestamp="1611227202499" />
     <state width="1398" height="182" key="GridCell.Tab.0.left/0.23.1440.804@0.23.1440.804" timestamp="1607512172512" />
-    <state width="1398" height="318" key="GridCell.Tab.0.right" timestamp="1611902299546">
+    <state width="1398" height="332" key="GridCell.Tab.0.right" timestamp="1612155946058">
       <screen x="0" y="23" width="1440" height="797" />
     </state>
-    <state width="1398" height="318" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1611902299546" />
-    <state width="1398" height="405" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1606469759289" />
+    <state width="1398" height="332" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1612155946058" />
+    <state width="1398" height="318" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1611929405894" />
     <state width="1398" height="291" key="GridCell.Tab.0.right/0.23.1440.801@0.23.1440.801" timestamp="1611227202501" />
     <state width="1398" height="182" key="GridCell.Tab.0.right/0.23.1440.804@0.23.1440.804" timestamp="1607512172512" />
     <state width="720" height="399" key="XDebugger.FullValuePopup" timestamp="1610958423062">

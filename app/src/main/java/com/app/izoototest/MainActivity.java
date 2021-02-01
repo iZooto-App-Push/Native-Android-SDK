@@ -11,7 +11,9 @@ import android.view.MenuItem;
 
 import com.izooto.iZooto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity
 //        HashMap<String,Object> data = new HashMap<>();
 //        data.put("Xiaomi","Yes");
 //        iZooto.addUserProperty(data);
+
 
 
     }
