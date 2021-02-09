@@ -249,6 +249,7 @@ public interface AppConstant {
     String TOPIC ="topic";
     String ANDROID_ID="&bKey=";
     String ADVERTISEMENTID="&adid=";
+    String MI_TOKEN = "&mt=";
 }
 
 
