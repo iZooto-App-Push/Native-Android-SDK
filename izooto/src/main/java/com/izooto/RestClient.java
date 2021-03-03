@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class RestClient {
 
-    private static final String BASE_URL = "https://aevents.izooto.com/";
+    public static final String BASE_URL = "https://aevents.izooto.com/";
     private static final int TIMEOUT = 120000;
     public static final int GET_TIMEOUT = 60000;
     public static final String EVENT_URL="https://et.izooto.com/evt";

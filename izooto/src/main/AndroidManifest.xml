@@ -70,23 +70,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".iZootoJobIntentService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true">
-        </service>
 
-        <receiver android:name=".iZootoBackgroundReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
-                    tools:ignore="BatteryLife" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.net.wifi.STATE_CHANGE" />
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
         <meta-data
             android:name="izooto_app_id"
             android:value="${izooto_app_id}" />

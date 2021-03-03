@@ -2,6 +2,7 @@ package com.izooto;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -48,7 +49,7 @@ public class iZooto {
     public static String inAppOption;
     @SuppressLint("StaticFieldLeak")
     static Activity curActivity;
-    private static iZootoBackgroundReceiver iZootoBackgroundReceiver;
+   // private static iZootoBackgroundReceiver iZootoBackgroundReceiver;
     private static String advertisementID;
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
@@ -84,7 +85,6 @@ public class iZooto {
                 }
                 else {
                     Lg.i(AppConstant.APP_NAME_TAG, mIzooToAppId + "");
-
                     RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId +".dat", new RestClient.ResponseHandler() {
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
@@ -141,8 +141,6 @@ public class iZooto {
                     ActivityLifecycleListener.registerActivity((Application)appContext);
                     setCurActivity(context);
                     areNotificationsEnabledForSubscribedState(appContext);
-                    iZootoBackgroundReceiver = new iZootoBackgroundReceiver();
-                    iZootoJobIntentService.enqueueWork(context);
                     if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack())
                         firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
 
@@ -300,9 +298,6 @@ public class iZooto {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        activity.registerReceiver(iZootoBackgroundReceiver, intentFilter);
     }
     private static void setCurActivity(Context context) {
         boolean foreground = isContextActivity(context);

@@ -16,6 +16,7 @@
 
 package com.izooto;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -28,6 +29,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -36,7 +39,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONObject;
 
 import java.util.Map;
+import java.util.Objects;
 
+@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class iZootoMessagingService extends FirebaseMessagingService {
 
     private  Payload payload = null;
@@ -44,7 +49,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         try {
             if (remoteMessage.getData().size() > 0) {
                 Map<String, String> data = remoteMessage.getData();
@@ -65,28 +70,25 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void sendNotification(RemoteMessage remoteMessage) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
-
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                        .setContentTitle(remoteMessage.getNotification().getTitle())
+                        .setContentTitle(Objects.requireNonNull(remoteMessage.getNotification()).getTitle())
                         .setContentText(remoteMessage.getNotification().getBody())
                         .setAutoCancel(true)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
-
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
                     AppConstant.CHANNEL_NAME,

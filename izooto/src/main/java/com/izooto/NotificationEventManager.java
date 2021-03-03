@@ -51,7 +51,7 @@ public class NotificationEventManager {
             showNotification(payload);
         else
             addCheck = true;
-        processPayload(payload);
+           processPayload(payload);
 
     }
 
