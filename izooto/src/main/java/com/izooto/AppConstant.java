@@ -250,6 +250,15 @@ public interface AppConstant {
     String ANDROID_ID="&bKey=";
     String ADVERTISEMENTID="&adid=";
     String MI_TOKEN = "&mt=";
+ String LASTCLICKINDEX= "lastclickIndex";
+ String LAST_NOTIFICAION_CLICKED= "last_notification_clicked";
+ String LAST_NOTIFICAION_VIEWED= "last_notification_viewed";
+ String LAST_WEBSITE_VISIT= "last_website_visit";
+ String LANG_= "lang";
+ String CURRENT_DATE= "currentDate";
+ String IS_LAUNCH_FIRST_TIME= "isLaunchFirstTime";
+ String VER_= "&ver=";
+ String ISID_= "&isid=";
 }
 
 

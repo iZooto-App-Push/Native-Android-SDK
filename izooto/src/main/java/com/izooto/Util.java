@@ -1,6 +1,7 @@
 package com.izooto;
 
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -9,17 +10,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
@@ -29,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -147,6 +156,24 @@ public class Util {
         return "";
     }
 
+    public static CharSequence  makeBoldString(CharSequence title) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
+        } else {
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>"); // or for older api
+        }
+        return title;
+    }
+
+    public static CharSequence makeBlackString(CharSequence title) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
+        } else {
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>"); // or for older api
+        }
+        return title;
+    }
+
     boolean hasFCMLibrary() {
         try {
             return com.google.firebase.messaging.FirebaseMessaging.class != null;
@@ -155,9 +182,34 @@ public class Util {
         }
     }
 
+    public static Bitmap makeCornerRounded(Bitmap image){
+        Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
+        Canvas canvas = new Canvas(imageRounded);
+        Paint mpaint = new Paint();
+        mpaint.setAntiAlias(true);
+        mpaint.setShader(new BitmapShader(image, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+        canvas.drawRoundRect((new RectF(0.0f, 0.0f, image.getWidth(), image.getHeight())), 10, 10, mpaint);
+        return imageRounded;
+    }
+
     public boolean isInitializationValid() {
         checkForFcmDependency();
         return true;
+    }
+
+    public static boolean isAppInForeground(Context context) {
+        List<ActivityManager.RunningTaskInfo> task =
+                ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
+                        .getRunningTasks(1);
+        if (task.isEmpty()) {
+            // app is in background
+            return false;
+        }
+        return task
+                .get(0)
+                .topActivity
+                .getPackageName()
+                .equalsIgnoreCase(context.getPackageName());
     }
 
     boolean checkForFcmDependency() {
@@ -175,6 +227,25 @@ public class Util {
             return optString.substring(0,length);
         }
         return null;
+    }
+
+    public static int convertStringToDecimal(String number){
+        char[] numChar = number.toCharArray();
+        int intValue = 0;
+        int decimal = 1;
+        for(int index = numChar.length ; index > 0 ; index --){
+            if(index == 1 ){
+                if(numChar[index - 1] == '-'){
+                    return intValue * -1;
+                } else if(numChar[index - 1] == '+'){
+                    return intValue;
+                }
+            }
+            intValue = intValue + (((int)numChar[index-1] - 48) * (decimal));
+            System.out.println((int)numChar[index-1] - 48+ " " + (decimal));
+            decimal = decimal * 10;
+        }
+        return intValue;
     }
 
     public static Drawable getApplicationIcon(Context context){
@@ -219,6 +290,21 @@ public class Util {
         return locale.getDisplayLanguage();
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static String getDeviceLanguageTag()
+    {
+        //return Locale.getDefault().getDisplayLanguage();
+        Locale locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
+        } else {
+            locale = iZooto.appContext.getResources().getConfiguration().locale;
+        }
+        // Log.e("lanuguage",locale.getCountry());
+        return locale.getDefault().toLanguageTag();
+
+    }
     public static String getIntegerToBinary(int number)
     {
         return String.format("%16s", Integer.toBinaryString(number)).replace(' ', '0');
@@ -248,49 +334,4 @@ public class Util {
             return false;
         }
     }
-    public static int convertStringToDecimal(String number){
-        char[] numChar = number.toCharArray();
-        int intValue = 0;
-        int decimal = 1;
-        for(int index = numChar.length ; index > 0 ; index --){
-            if(index == 1 ){
-                if(numChar[index - 1] == '-'){
-                    return intValue * -1;
-                } else if(numChar[index - 1] == '+'){
-                    return intValue;
-                }
-            }
-            intValue = intValue + (((int)numChar[index-1] - 48) * (decimal));
-            System.out.println((int)numChar[index-1] - 48+ " " + (decimal));
-            decimal = decimal * 10;
-        }
-        return intValue;
-    }
-    public static CharSequence  makeBoldString(CharSequence title) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
-        } else {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>"); // or for older api
-        }
-        return title;
-    }
-
-    public static CharSequence makeBlackString(CharSequence title) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
-        } else {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>"); // or for older api
-        }
-        return title;
-    }
-    public static Bitmap makeCornerRounded(Bitmap image){
-        Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
-        Canvas canvas = new Canvas(imageRounded);
-        Paint mpaint = new Paint();
-        mpaint.setAntiAlias(true);
-        mpaint.setShader(new BitmapShader(image, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
-        canvas.drawRoundRect((new RectF(0.0f, 0.0f, image.getWidth(), image.getHeight())), 10, 10, mpaint);
-        return imageRounded;
-    }
-
 }

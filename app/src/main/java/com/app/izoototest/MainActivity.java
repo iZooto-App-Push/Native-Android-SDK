@@ -25,17 +25,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        HashMap<String,Object> data = new HashMap<>();
-//        data.put("Xiaomi","Yes");
-//        iZooto.addUserProperty(data);
-
-
-
     }
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

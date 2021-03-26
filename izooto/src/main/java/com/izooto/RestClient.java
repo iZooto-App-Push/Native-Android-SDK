@@ -21,7 +21,9 @@ public class RestClient {
     public static final String IMPRESSION_URL="https://impr.izooto.com/imp";
     public static  final String NOTIFICATIONCLICK="https://clk.izooto.com/clk";
     public static final String SUBSCRIPTION_API="https://usub.izooto.com/sunsub";
-
+    public static final String LASTNOTIFICATIONCLICKURL="https://lci.izooto.com/lci";
+    public static final String LASTNOTIFICATIONVIEWURL="https://lim.izooto.com/lim";
+    public static final String LASTVISITURL="https://lvi.izooto.com/lvi";
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }

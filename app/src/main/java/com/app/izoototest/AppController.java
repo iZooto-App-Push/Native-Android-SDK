@@ -2,7 +2,6 @@ package com.app.izoototest;
 
 import android.app.Application;
 import android.util.Log;
-
 import com.izooto.NotificationWebViewListener;
 import com.izooto.iZooto;
 import com.izooto.NotificationHelperListener;
@@ -16,12 +15,10 @@ public class AppController extends Application implements TokenReceivedListener,
     @Override
     public void onCreate() {
         super.onCreate();
-
         iZooto.initialize(this)
                 .setNotificationReceiveListener(this)
                 .setTokenReceivedListener(this)
                 .setLandingURLListener(this)
-
                 .build();
 
 

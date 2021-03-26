@@ -10,6 +10,7 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
@@ -30,6 +31,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private String btn1Title;
     private String btn2Title;
     private String clickIndex = "0";
+    private String lastClickIndex = "0";
+
 
 
     @Override
@@ -66,13 +69,42 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     @Override
                     void onSuccess(String response) {
                         super.onSuccess(response);
-                        // Log.e("Click","call");
+                         Log.e("Click","C");
+                    }
+                });
+            }
+            if (lastClickIndex.equalsIgnoreCase("1")){
+                String encodeData = "";
+                try {
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put(AppConstant.LAST_NOTIFICAION_CLICKED, true);
+                    JSONObject jsonObject = new JSONObject(data);
+                    encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                String lastClickAPIUrl = AppConstant.API_PID +preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.VER_ + appVersion +
+                        AppConstant.ANDROID_ID + Util.getAndroidId(iZooto.appContext) + AppConstant.VAL + encodeData + AppConstant.ACT + "add" + AppConstant.ISID_ + "1" + AppConstant.ET_ + "userp";
+                RestClient.postRequest(RestClient.LASTNOTIFICATIONCLICKURL + lastClickAPIUrl, new RestClient.ResponseHandler() {
+
+
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                    }
+
+                    @Override
+                    void onSuccess(String response) {
+                        super.onSuccess(response);
+                         Log.e("Click","L");
                     }
                 });
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         if (additionalData.equalsIgnoreCase(""))
         {
@@ -157,6 +189,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 btn2Title=tempBundle.getString(AppConstant.ACT2TITLE);
             if(tempBundle.containsKey(AppConstant.CLICKINDEX))
                 clickIndex=tempBundle.getString(AppConstant.CLICKINDEX);
+            if(tempBundle.containsKey(AppConstant.LASTCLICKINDEX))
+                lastClickIndex=tempBundle.getString(AppConstant.LASTCLICKINDEX);
 
 
 
