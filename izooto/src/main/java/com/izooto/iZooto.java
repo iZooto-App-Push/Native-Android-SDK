@@ -51,8 +51,9 @@ public class iZooto {
     public static String inAppOption;
     @SuppressLint("StaticFieldLeak")
     static Activity curActivity;
-   // private static iZootoBackgroundReceiver iZootoBackgroundReceiver;
     private static String advertisementID;
+    public static boolean isHybrid = false; //check for SDK(Flutter,React native)
+
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
     }
@@ -366,18 +367,80 @@ public class iZooto {
 
 
     }
+
     public static void notificationInAppAction(String url){
         if (mBuilder!=null && mBuilder.mWebViewListener!=null)
             mBuilder.mWebViewListener.onWebView(url);
     }
+    /*
+      Handle the Hybrid Web_View Listener
+     */
+    public static void notificationWebView(NotificationWebViewListener notificationWebViewListener){
+        mBuilder.mWebViewListener = notificationWebViewListener;
+        if(mBuilder.mWebViewListener!=null)
+        {
+            runNotificationWebViewCallback();
+        }
+    }
 
+    private static void runNotificationWebViewCallback() {
+        runOnMainUIThread(new Runnable() {
+            public void run() {
+                if (!NotificationActionReceiver.WebViewClick.isEmpty())
+                    iZooto.mBuilder.mWebViewListener.onWebView(NotificationActionReceiver.WebViewClick);
+            }
+        });
+    }
+
+    /*
+     Handle the Hybrid DeepLink  Listener
+    */
+    public static void notificationClick(NotificationHelperListener notificationOpenedListener)
+    {
+        mBuilder.mNotificationHelper = notificationOpenedListener;
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+        if(mBuilder.mNotificationHelper!=null)
+        {
+            runNotificationOpenedCallback();
+        }
+        if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
+            firebaseAnalyticsTrack.openedEventTrack();
+        }
+        try {
+            preferenceUtil.setIntData(AppConstant.NOTIFICATION_COUNT,preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT)-1);
+            ShortcutBadger.applyCountOrThrow(appContext, preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private static void runNotificationOpenedCallback() {
+        runOnMainUIThread(new Runnable() {
+            public void run() {
+                if (!NotificationActionReceiver.notificationClick.isEmpty())
+                    iZooto.mBuilder.mNotificationHelper.onNotificationOpened(NotificationActionReceiver.notificationClick);
+            }
+        });
+    }
+
+    // handle the execution
+    static void runOnMainUIThread(Runnable runnable) {
+        if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+            runnable.run();
+        } else {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(runnable);
+        }
+
+    }
 
     public static class Builder {
         Context mContext;
         private TokenReceivedListener mTokenReceivedListener;
         private NotificationHelperListener mNotificationHelper;
         public NotificationWebViewListener mWebViewListener;
-
         OSInAppDisplayOption mDisplayOption;
         private Builder(Context context) {
             mContext = context;
@@ -915,8 +978,6 @@ public class iZooto {
             String api_url = AppConstant.API_PID +preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ANDROID_ID +
                     Util.getAndroidId(context) + AppConstant.VAL + encodeData + AppConstant.ACT + "add" + AppConstant.ISID_ + "1" + AppConstant.ET_ + "userp";
             RestClient.postRequest(RestClient.LASTVISITURL + api_url, new RestClient.ResponseHandler() {
-
-
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);

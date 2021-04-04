@@ -1,6 +1,7 @@
 package com.app.izoototest;
 
 import android.app.Application;
+import android.content.Intent;
 import android.util.Log;
 import com.izooto.NotificationWebViewListener;
 import com.izooto.iZooto;
@@ -39,11 +40,17 @@ public class AppController extends Application implements TokenReceivedListener,
     @Override
     public void onNotificationOpened(String data) {
      Log.e("Data",data);
+     Intent intent=new Intent(this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 
     @Override
     public void onWebView(String landingUrl) {
         Log.e("LandingURL",landingUrl);
+        Intent intent=new Intent(this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

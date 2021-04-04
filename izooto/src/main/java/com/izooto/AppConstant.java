@@ -259,6 +259,8 @@ public interface AppConstant {
  String IS_LAUNCH_FIRST_TIME= "isLaunchFirstTime";
  String VER_= "&ver=";
  String ISID_= "&isid=";
+ String IS_HYBRID_SDK = "hybrid";
+
 }
 
 

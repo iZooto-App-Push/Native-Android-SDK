@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private String btn2Title;
     private String clickIndex = "0";
     private String lastClickIndex = "0";
+    public static String notificationClick = "";
+    public static String WebViewClick = "";
 
 
 
@@ -111,6 +115,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             additionalData = "1";
         }
 
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+        if (iZooto.isHybrid)
+            preferenceUtil.setBooleanData(AppConstant.IS_HYBRID_SDK, iZooto.isHybrid);
 
         if (!additionalData.equalsIgnoreCase("1") && inApp >=0)
         {
@@ -126,16 +133,45 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             hashMap.put(AppConstant.BUTTON_URL_2,act2URL);
             hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btncount));
             JSONObject jsonObject = new JSONObject(hashMap);
-            iZooto.notificationActionHandler(jsonObject.toString());
+            if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                iZooto.notificationActionHandler(jsonObject.toString());
+            else {
+                if (Util.isAppInForeground(iZooto.appContext))
+                    iZooto.notificationActionHandler(jsonObject.toString());
+                else
+                    notificationClick = jsonObject.toString();
+            }
+            if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                launchApp(context);
+            }
         }
         else
         {
+
             if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
-                if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null) {
+                if (iZooto.mBuilder!=null && iZooto.mBuilder.mWebViewListener!=null){
                     iZooto.notificationInAppAction(mUrl);
-                } else
+                    if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                        launchApp(context);
+                }else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                    WebViewClick = mUrl;
+                    launchApp(context);
+                }
+                else
                     iZootoWebViewActivity.startActivity(context, mUrl);
+            }else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)){
+                launchApp(context);
             }
+
+
+
+
+//            if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+//                if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null) {
+//                    iZooto.notificationInAppAction(mUrl);
+//                } else
+//                    iZootoWebViewActivity.startActivity(context, mUrl);
+//            }
             else {
                 try {
                     if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
@@ -154,6 +190,24 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             }
         }
 
+    }
+    private void launchApp(Context context){
+        PackageManager pm = context.getPackageManager();
+        Intent LaunchIntent = null;
+        String name = "";
+        try {
+            if (pm != null && !Util.isAppInForeground(iZooto.appContext)) {
+                ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                name = (String) pm.getApplicationLabel(app);
+                LaunchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                Intent intentAppLaunch = LaunchIntent; // new Intent();
+                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intentAppLaunch);
+            }
+            Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getBundleData(Context context, Intent intent) {
