@@ -1077,35 +1077,32 @@ public class NotificationEventManager {
         return phone;
     }
     private static void lastViewNotificationApi(){
-        Log.e("LastIndex",lastView_Click);
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-        String encodeData = "";
-        try {
-            HashMap<String, Object> data = new HashMap<>();
-            data.put(AppConstant.LAST_NOTIFICAION_VIEWED, true);
-            JSONObject jsonObject = new JSONObject(data);
-            encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        String time = preferenceUtil.getStringData(AppConstant.CURRENT_DATE_VIEW);
+        if (!time.equalsIgnoreCase(Util.getTime())) {
+            preferenceUtil.setStringData(AppConstant.CURRENT_DATE_VIEW, Util.getTime());
+            String encodeData = "";
+            try {
+                HashMap<String, Object> data = new HashMap<>();
+                data.put(AppConstant.LAST_NOTIFICAION_VIEWED, true);
+                JSONObject jsonObject = new JSONObject(data);
+                encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.VER_ + Util.getSDKVersion() +
+                    AppConstant.ANDROID_ID + Util.getAndroidId(iZooto.appContext) + AppConstant.VAL + encodeData + AppConstant.ACT + "add" + AppConstant.ISID_ + "1" + AppConstant.ET_ + "userp";
+            RestClient.postRequest(RestClient.LASTNOTIFICATIONVIEWURL + api_url, new RestClient.ResponseHandler() {
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                }
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+                    Log.e("l", "v");
+                }
+            });
         }
-        String api_url = AppConstant.API_PID +preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.VER_ + Util.getSDKVersion() +
-                AppConstant.ANDROID_ID + Util.getAndroidId(iZooto.appContext) + AppConstant.VAL + encodeData + AppConstant.ACT + "add" + AppConstant.ISID_ + "1" + AppConstant.ET_ + "userp";
-
-        RestClient.postRequest(RestClient.LASTNOTIFICATIONVIEWURL + api_url, new RestClient.ResponseHandler() {
-
-
-            @Override
-            void onFailure(int statusCode, String response, Throwable throwable) {
-                super.onFailure(statusCode, response, throwable);
-            }
-
-            @Override
-            void onSuccess(String response) {
-                super.onSuccess(response);
-                Log.e(" lastView","call");
-
-            }
-        });
     }
-
 }

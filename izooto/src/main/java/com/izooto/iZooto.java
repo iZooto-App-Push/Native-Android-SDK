@@ -102,6 +102,7 @@ public class iZooto {
                                 try {
                                     final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
+                                    Log.e("JSONObject",jsonObject.toString());
                                     senderId =jsonObject.getString(AppConstant.SENDERID);
                                     String appId = jsonObject.getString(AppConstant.APPID);
                                     String apiKey = jsonObject.getString(AppConstant.APIKEY);
@@ -146,6 +147,8 @@ public class iZooto {
                 if (util.isInitializationValid()) {
                     Lg.i(AppConstant.APP_NAME_TAG, AppConstant.DEVICETOKEN  + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                     registerToken();
+                    if (iZooto.isHybrid)
+                        preferenceUtil.setBooleanData(AppConstant.IS_HYBRID_SDK, iZooto.isHybrid);
                     lastVisitApi(context);
                     ActivityLifecycleListener.registerActivity((Application)appContext);
                     setCurActivity(context);
@@ -245,8 +248,8 @@ public class iZooto {
     private static void registerToken() {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
-            String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion() +
-                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion()+AppConstant.LANGUAGE+Util.getDeviceLanguage() +
+            String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion(appContext) +
+                    AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion(appContext)+AppConstant.LANGUAGE+Util.getDeviceLanguage() +
                     AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.ADVERTISEMENTID +preferenceUtil.getStringData(AppConstant.ADVERTISING_ID);//+AppConstant.MI_TOKEN;
             try {
                 String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
@@ -386,8 +389,10 @@ public class iZooto {
     private static void runNotificationWebViewCallback() {
         runOnMainUIThread(new Runnable() {
             public void run() {
-                if (!NotificationActionReceiver.WebViewClick.isEmpty())
+                if (!NotificationActionReceiver.WebViewClick.isEmpty()) {
                     iZooto.mBuilder.mWebViewListener.onWebView(NotificationActionReceiver.WebViewClick);
+                    NotificationActionReceiver.WebViewClick = "";
+                }
             }
         });
     }
@@ -419,8 +424,10 @@ public class iZooto {
     private static void runNotificationOpenedCallback() {
         runOnMainUIThread(new Runnable() {
             public void run() {
-                if (!NotificationActionReceiver.notificationClick.isEmpty())
+                if (!NotificationActionReceiver.notificationClick.isEmpty()) {
                     iZooto.mBuilder.mNotificationHelper.onNotificationOpened(NotificationActionReceiver.notificationClick);
+                    NotificationActionReceiver.notificationClick = "";
+                }
             }
         });
     }
@@ -511,7 +518,7 @@ public class iZooto {
     private static void getNotificationAPI(Context context,int value){
 
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-        String appVersion = Util.getSDKVersion();
+        String appVersion = Util.getSDKVersion(context);
         String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ANDROID_ID + Util.getAndroidId(appContext)
                 + AppConstant.BTYPE_+ AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.APPVERSION + appVersion + AppConstant.PTE_ + AppConstant.PTE +
                 AppConstant.OS +AppConstant.SDKOS  + AppConstant.PT_+ AppConstant.PT + AppConstant.GE_ + AppConstant.GE + AppConstant.ACTION + value;
@@ -702,7 +709,7 @@ public class iZooto {
                 value = 0;
             }
             String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ANDROID_ID + Util.getAndroidId(iZooto.appContext)
-                    + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.APPVERSION + Util.getSDKVersion() + AppConstant.PTE_ + AppConstant.PTE +
+                    + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.APPVERSION + Util.getSDKVersion(appContext) + AppConstant.PTE_ + AppConstant.PTE +
                     AppConstant.OS + AppConstant.SDKOS + AppConstant.PT_ + AppConstant.PT + AppConstant.GE_ + AppConstant.GE + AppConstant.ACTION + value;
             RestClient.postRequest(RestClient.SUBSCRIPTION_API + api_url, new RestClient.ResponseHandler() {
                 @Override
@@ -962,8 +969,8 @@ public class iZooto {
     private static void lastVisitApi(Context context){
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
         String time = preferenceUtil.getStringData(AppConstant.CURRENT_DATE);
-        if (!time.equalsIgnoreCase(getTime())){
-            preferenceUtil.setStringData(AppConstant.CURRENT_DATE,getTime());
+        if (!time.equalsIgnoreCase(Util.getTime())){
+            preferenceUtil.setStringData(AppConstant.CURRENT_DATE,Util.getTime());
             String encodeData = "";
             try {
                 HashMap<String, Object> data = new HashMap<>();
@@ -986,17 +993,12 @@ public class iZooto {
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
-                    Log.e(" lastVisit","call");
+                    Log.e(" lv","v");
 
                 }
             });
         }
     }
 
-    private static String getTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
-        String currentDate = sdf.format(new Date());
-        return currentDate;
-    }
 
 }

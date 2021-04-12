@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -146,9 +148,9 @@ public class Util {
         }
     }
 
-    public static String getSDKVersion() {
+    public static String getSDKVersion(Context context) {
         try {
-            PackageInfo pInfo = iZooto.appContext.getPackageManager().getPackageInfo(iZooto.appContext.getPackageName(), 0);
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(iZooto.appContext.getPackageName(), 0);
             return pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -255,7 +257,6 @@ public class Util {
             ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
         } catch ( PackageManager.NameNotFoundException e ) {
             ai = null;
-            //e.printStackTrace();
         }
 
         if ( ai != null ) {
@@ -279,14 +280,12 @@ public class Util {
     }
     public static String getDeviceLanguage()
     {
-        //return Locale.getDefault().getDisplayLanguage();
         Locale locale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
         } else {
             locale = iZooto.appContext.getResources().getConfiguration().locale;
         }
-        // Log.e("lanuguage",locale.getCountry());
         return locale.getDisplayLanguage();
 
     }
@@ -294,14 +293,12 @@ public class Util {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static String getDeviceLanguageTag()
     {
-        //return Locale.getDefault().getDisplayLanguage();
         Locale locale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
         } else {
             locale = iZooto.appContext.getResources().getConfiguration().locale;
         }
-        // Log.e("lanuguage",locale.getCountry());
         return locale.getDefault().toLanguageTag();
 
     }
@@ -333,5 +330,10 @@ public class Util {
         } catch (RuntimeException e) {
             return false;
         }
+    }
+    public static String getTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        String currentDate = sdf.format(new Date());
+        return currentDate;
     }
 }
