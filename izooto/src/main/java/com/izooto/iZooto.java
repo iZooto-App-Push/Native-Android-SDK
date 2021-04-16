@@ -102,7 +102,6 @@ public class iZooto {
                                 try {
                                     final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
-                                    Log.e("JSONObject",jsonObject.toString());
                                     senderId =jsonObject.getString(AppConstant.SENDERID);
                                     String appId = jsonObject.getString(AppConstant.APPID);
                                     String apiKey = jsonObject.getString(AppConstant.APIKEY);
@@ -136,7 +135,6 @@ public class iZooto {
     private static void init(final Context context, String apiKey, String appId) {
 
         FCMTokenGenerator fcmTokenGenerator = new FCMTokenGenerator();
-        fcmTokenGenerator.initFireBaseApp(senderId);
         fcmTokenGenerator.getToken(context, senderId, apiKey, appId, new TokenGenerator.TokenGenerationHandler() {
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

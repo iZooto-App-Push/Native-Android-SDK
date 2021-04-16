@@ -7,8 +7,8 @@ android {
         applicationId "com.app.izoototest"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 8
-        versionName "1.1.8"
+        versionCode 9
+        versionName "1.1.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 izooto_app_id: "4eb31cf3f33e99f2c59af0b36ab9462b2260db1f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
