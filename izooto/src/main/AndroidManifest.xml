@@ -57,11 +57,8 @@
             <intent-filter>
                 <action android:name="actionBtnOne" />
                 <action android:name="actionBtnTwo" />
-
             </intent-filter>
         </receiver>
-
-
         <service
             android:name="com.izooto.iZootoMessagingService"
             android:enabled="true"

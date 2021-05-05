@@ -241,7 +241,7 @@ public class NotificationEventManager {
             }
         }
     }
-    private static void receiveAds(final Payload payload){
+    public static void receiveAds(final Payload payload){
 
         final Handler handler = new Handler(Looper.getMainLooper());
         final Runnable notificationRunnable = new Runnable() {
@@ -999,6 +999,11 @@ public class NotificationEventManager {
                 super.onSuccess(response);
                 if (payload != null)
                     Log.e("imp","call");
+                if(!AppConstant.SDKVERSION.equalsIgnoreCase(preferenceUtil.getStringData(AppConstant.SDK)))
+                {
+                    callSDKUpdate();
+                    Log.e("Call","update");
+                }
 
             }
         });
@@ -1104,5 +1109,39 @@ public class NotificationEventManager {
                 }
             });
         }
+
+
+    }
+    private static void callSDKUpdate() {
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+        try
+        {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("pid",preferenceUtil.getiZootoID(AppConstant.APPPID));
+            jsonObject.put("bKey",Util.getAndroidId(iZooto.appContext));
+            jsonObject.put("av",preferenceUtil.getStringData(AppConstant.SDK));
+            RestClient.postRequest1(RestClient.UPDATE_SDK ,jsonObject, new RestClient.ResponseHandler() {
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                }
+
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+
+                    preferenceUtil.setStringData(AppConstant.SDK,AppConstant.SDKVERSION);
+
+
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.v("Exception",ex.toString());
+
+        }
+        // Log.e("Request",RestClient.UPDATE_SDK+api_url);
+
     }
 }

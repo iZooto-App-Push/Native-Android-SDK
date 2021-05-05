@@ -70,7 +70,23 @@ public class Payload {
     private String  act1icon;
     private String  act2icon;
     private int  badgeCount;
-
+    private String cpc;
+    private String rv;
+    private String rc;
+    private String passive_flag;
+    private String cpm;
+    private String ctr;
+    private String received_bid;
+    private String ad_type;
+    private String adID;
+    private int index;
+    private long responseTime;
+    private long startTime;
+    private  String fallBackSubDomain;
+    private String fallBackDomain;
+    private String fallBackPath;
+    private int time_out;
+    private int adTimeOut;
 
     //////////////////////////////////////////////
 
@@ -426,4 +442,140 @@ public class Payload {
         this.ap = ap;
     }
 
+    public String getCpc() {
+        return cpc;
+    }
+
+    public void setCpc(String cpc) {
+        this.cpc = cpc;
+    }
+
+    public String getRv() {
+        return rv;
+    }
+
+    public void setRv(String rv) {
+        this.rv = rv;
+    }
+
+    public String getRc() {
+        return rc;
+    }
+
+    public void setRc(String rc) {
+        this.rc = rc;
+    }
+
+    public String getPassive_flag() {
+        return passive_flag;
+    }
+
+    public void setPassive_flag(String passive_flag) {
+        this.passive_flag = passive_flag;
+    }
+
+    public String getCpm() {
+        return cpm;
+    }
+
+    public void setCpm(String cpm) {
+        this.cpm = cpm;
+    }
+
+    public String getCtr() {
+        return ctr;
+    }
+
+    public void setCtr(String ctr) {
+        this.ctr = ctr;
+    }
+
+    public String getReceived_bid() {
+        return received_bid;
+    }
+
+    public void setReceived_bid(String received_bid) {
+        this.received_bid = received_bid;
+    }
+
+    public String getAd_type() {
+        return ad_type;
+    }
+
+    public void setAd_type(String ad_type) {
+        this.ad_type = ad_type;
+    }
+
+    public String getAdID() {
+        return adID;
+    }
+
+    public void setAdID(String adID) {
+        this.adID = adID;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public long getResponseTime() {
+        return responseTime;
+    }
+
+    public void setResponseTime(long responseTime) {
+        this.responseTime = responseTime;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getFallBackSubDomain() {
+        return fallBackSubDomain;
+    }
+
+    public void setFallBackSubDomain(String fallBackSubDomain) {
+        this.fallBackSubDomain = fallBackSubDomain;
+    }
+
+    public String getFallBackDomain() {
+        return fallBackDomain;
+    }
+
+    public void setFallBackDomain(String fallBackDomain) {
+        this.fallBackDomain = fallBackDomain;
+    }
+
+    public String getFallBackPath() {
+        return fallBackPath;
+    }
+
+    public void setFallBackPath(String fallBackPath) {
+        this.fallBackPath = fallBackPath;
+    }
+
+    public int getTime_out() {
+        return time_out;
+    }
+
+    public void setTime_out(int time_out) {
+        this.time_out = time_out;
+
+    }
+
+    public int getAdTimeOut() {
+        return adTimeOut;
+    }
+
+    public void setAdTimeOut(int adTimeOut) {
+        this.adTimeOut = adTimeOut;
+    }
 }

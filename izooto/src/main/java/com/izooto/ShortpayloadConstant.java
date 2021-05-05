@@ -43,6 +43,19 @@ public interface ShortpayloadConstant {
     String ACT1ID="d1";
     String ACT2ID ="d2";
     String CFG="cfg";
-
+    String CPC="cpc";
+    String RV="rv";
+    String RC="rc";
+    String Passive_Flag="pf";
+    String CPM="cpm";
+    String CTR="ctr";
+    String RECEIVED_BID="rb";
+    String AD_TYPE="tp";
+    String AD_ID="id";
+    String FALLBACK_SUB_DOMAIN="fsd";
+    String FALL_BACK_DOMAIN="fbd";
+    String FAll_BACK_PATH="fbu";
+    String TIME_OUT="to";
+    String AD_TIME_OUT="to";
 
 }

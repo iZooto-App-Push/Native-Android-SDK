@@ -248,7 +248,7 @@ public class iZooto {
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
             String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion(appContext) +
                     AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion(appContext)+AppConstant.LANGUAGE+Util.getDeviceLanguage() +
-                    AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.ADVERTISEMENTID +preferenceUtil.getStringData(AppConstant.ADVERTISING_ID);//+AppConstant.MI_TOKEN;
+                    AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.ADVERTISEMENTID +preferenceUtil.getStringData(AppConstant.ADVERTISING_ID)+AppConstant.QSDK_VERSION +AppConstant.SDKVERSION;;//+AppConstant.MI_TOKEN;
             try {
                 String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
                 String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, AppConstant.UTF);
@@ -256,6 +256,8 @@ public class iZooto {
             } catch (UnsupportedEncodingException e) {
                 Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
             }
+            preferenceUtil.setStringData(AppConstant.SDK,AppConstant.SDKVERSION);
+
             RestClient.get(api_url, new RestClient.ResponseHandler() {
                 @Override
                 void onSuccess(final String response) {
@@ -738,7 +740,16 @@ public class iZooto {
     {
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
             try {
+                final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
 
+                if(data.get("an") !=null && data.get("g")!=null)
+                {
+                    AdMediation.getAdJsonData(data);
+                    preferenceUtil.setBooleanData("Mediation",true);
+
+                }
+                else {
+                    preferenceUtil.setBooleanData("Mediation", false);
 
                     JSONObject payloadObj = new JSONObject(data);
                     if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
@@ -789,7 +800,7 @@ public class iZooto {
                     } else
                         return;
 
-
+                }
 
                 // return;
             } catch (Exception e) {
@@ -905,7 +916,8 @@ public class iZooto {
 
                 String api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID) + AppConstant.ACT + action +
                         AppConstant.ET_ + "userp" + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.VAL + encodeData +
-                        AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.BTYPE_ + AppConstant.BTYPE;                RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
+                        AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.BTYPE_ + AppConstant.BTYPE;
+                RestClient.postRequest(RestClient.PROPERTIES_URL + api_url, new RestClient.ResponseHandler() {
                     @Override
                     void onFailure(int statusCode, String response, Throwable throwable) {
                         super.onFailure(statusCode, response, throwable);

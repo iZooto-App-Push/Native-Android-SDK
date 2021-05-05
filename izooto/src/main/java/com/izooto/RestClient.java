@@ -24,6 +24,10 @@ public class RestClient {
     public static final String LASTNOTIFICATIONCLICKURL="https://lci.izooto.com/lci";
     public static final String LASTNOTIFICATIONVIEWURL="https://lim.izooto.com/lim";
     public static final String LASTVISITURL="https://lvi.izooto.com/lvi";
+   // public static final String UPDATE_SDK=" https://vr.izooto.com/vr";
+    public static final String MEDIATION_IMPRESSION="https://med.izooto.com/medi";
+    public static final String MEDIATION_CLICKS="https://med.izooto.com/medc";
+    public static final String UPDATE_SDK="https://svr.izooto.com/svr";
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }
@@ -36,6 +40,16 @@ public class RestClient {
             }
         }).start();
     }
+    static void getRequest(final String url, final int timeOut,final ResponseHandler responseHandler) {
+        new Thread(new Runnable() {
+            public void run() {
+                if(timeOut==0)
+                    makeApiCall(url, null, null, responseHandler, GET_TIMEOUT);
+                else
+                    makeApiCall(url, null, null, responseHandler,timeOut);
+            }
+        }).start();
+    }
     static void postRequest(final String url,final ResponseHandler responseHandler)
     {
         new Thread(new Runnable() {
@@ -45,7 +59,16 @@ public class RestClient {
             }
         }).start();
     }
+    static void postRequest1(final String url, final JSONObject jsonObject, final ResponseHandler responseHandler)
 
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                makeApiCall(url,AppConstant.POST,jsonObject,responseHandler,GET_TIMEOUT);
+            }
+        }).start();
+    }
     public static void makeApiCall(final String url, final String method, final JSONObject jsonBody, final ResponseHandler responseHandler, final int timeout) {
         ExecutorService es = Executors.newSingleThreadExecutor();
         es.submit(new Runnable() {

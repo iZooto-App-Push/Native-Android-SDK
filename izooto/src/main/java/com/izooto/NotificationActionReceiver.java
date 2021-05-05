@@ -36,6 +36,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private String lastClickIndex = "0";
     public static String notificationClick = "";
     public static String WebViewClick = "";
+    public  static  String medClick="";
 
 
 
@@ -50,7 +51,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         getBundleData(context, intent);
         try {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-
+            if(!AppConstant.SDKVERSION.equalsIgnoreCase(preferenceUtil.getStringData(AppConstant.SDK)))
+            {
+                callSDKUpdate();
+                Log.e("Call","update");
+            }
             if (btncount!=0) {
                 api_url = AppConstant.API_PID + preferenceUtil.getiZootoID(AppConstant.APPPID)+ "&ver=" + appVersion +
                         AppConstant.CID_ + cid + AppConstant.ANDROID_ID + Util.getAndroidId(context) + AppConstant.RID_ + rid + AppConstant.NOTIFICATION_OP + "click&btn=" + btncount;
@@ -109,13 +114,27 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+        if(preferenceUtil.getBoolean("Mediation")) {
+            if (AdMediation.clicksData.size() > 0) {
+                for (int i = 0; i < AdMediation.clicksData.size(); i++) {
+                    if (i == AdMediation.clicksData.size()) {
+                        Log.e("Abc", "No call");
+                    }
+                    callRandomClick(AdMediation.clicksData.get(i));
+                }
 
+            }
+        }
+        if(medClick!="")
+        {
+            callMediationClicks(medClick);
+        }
 
         if (additionalData.equalsIgnoreCase(""))
         {
             additionalData = "1";
         }
-        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
 
 
         if (!additionalData.equalsIgnoreCase("1") && inApp >=0)
@@ -185,6 +204,84 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
 
     }
+    private static void callRandomClick(String rv) {
+        RestClient.get(rv, new RestClient.ResponseHandler() {
+            @Override
+            void onSuccess(String response) {
+                super.onSuccess(response);
+
+                Log.e("Testing","click");
+
+            }
+
+            @Override
+            void onFailure(int statusCode, String response, Throwable throwable) {
+                super.onFailure(statusCode, response, throwable);
+                Log.e("Failure",""+statusCode);
+
+            }
+        });
+    }
+
+    private void callMediationClicks(final String medClick) {
+        try {
+            JSONObject jsonObject=new JSONObject(medClick);
+            RestClient.postRequest1(RestClient.MEDIATION_CLICKS, jsonObject, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+                    NotificationActionReceiver.medClick="";
+
+
+                }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                    Log.e("Failure", "" + statusCode);
+
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.e("exception ",ex.toString());
+        }
+    }
+
+    private static void callSDKUpdate() {
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+        try
+        {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("pid",preferenceUtil.getiZootoID(AppConstant.APPPID));
+            jsonObject.put("bKey",Util.getAndroidId(iZooto.appContext));
+            jsonObject.put("av",preferenceUtil.getStringData(AppConstant.SDK));
+            RestClient.postRequest1(RestClient.UPDATE_SDK ,jsonObject, new RestClient.ResponseHandler() {
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                }
+
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+
+                    preferenceUtil.setStringData(AppConstant.SDK,AppConstant.SDKVERSION);
+
+
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.v("Exception",ex.toString());
+
+        }
+        // Log.e("Request",RestClient.UPDATE_SDK+api_url);
+
+    }
+
     private void launchApp(Context context){
         PackageManager pm = context.getPackageManager();
         Intent LaunchIntent = null;

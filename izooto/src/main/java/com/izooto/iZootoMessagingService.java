@@ -29,7 +29,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
         try {
             if (remoteMessage.getData().size() > 0) {
                 Map<String, String> data = remoteMessage.getData();
-                Log.d(AppConstant.APP_NAME_TAG, AppConstant.PAYLOAD + remoteMessage.getData());
                 handleNow(data);
 
             }
@@ -79,7 +78,17 @@ public class iZootoMessagingService extends FirebaseMessagingService {
     public   void handleNow(final Map<String, String> data) {
 
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
+        PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(iZooto.appContext);
+
         try {
+            if(data.get("an") !=null && data.get("g")!=null)
+            {
+                AdMediation.getAdJsonData(data);
+                preferenceUtil.setBooleanData("Mediation",true);
+
+            }
+            else {
+                preferenceUtil.setBooleanData("Mediation", false);
                 JSONObject payloadObj = new JSONObject(data);
                 if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(this).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
                     payload = new Payload();
@@ -128,6 +137,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
                 } else
                     return;
+            }
 
         } catch (Exception e) {
 
