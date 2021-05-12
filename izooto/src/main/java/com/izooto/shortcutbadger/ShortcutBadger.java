@@ -90,7 +90,7 @@ public class ShortcutBadger {
             boolean launcherReady = initBadger(context);
 
             if (!launcherReady)
-                Log.e("ShortcutBadger"," default launcher available");
+                Log.v("ShortcutBadger"," default launcher available");
         }
 
         try {

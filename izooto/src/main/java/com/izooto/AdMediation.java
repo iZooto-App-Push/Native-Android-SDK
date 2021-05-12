@@ -169,7 +169,7 @@ public class AdMediation {
             @Override
             void onFailure(int statusCode, String response, Throwable throwable) {
                 super.onFailure(statusCode, response, throwable);
-                Log.e("Failure",""+statusCode);
+                Log.v("Failure",""+statusCode);
 
             }
         });
@@ -478,7 +478,7 @@ public class AdMediation {
             }
             catch (Exception ex)
             {
-            Log.e("Exception ex",ex.toString());
+            Log.v("Exception ex",ex.toString());
             }
         }
 
@@ -533,7 +533,7 @@ public class AdMediation {
             @Override
             void onFailure(int statusCode, String response, Throwable throwable) {
                 super.onFailure(statusCode, response, throwable);
-                Log.e("Failure",""+statusCode);
+                Log.v("Failure",""+statusCode);
 
 
 
@@ -610,7 +610,7 @@ public class AdMediation {
         return finalURL;
 
         } catch (Exception ex) {
-            Log.e("Exception",Message+ ex.toString());
+            Log.v("Exception",Message+ ex.toString());
 
         }
         return "";
@@ -783,7 +783,7 @@ public class AdMediation {
                 }
                 catch (Exception ex)
                 {
-                    Log.e("Exception Fallback",ex.toString());
+                    Log.v("Exception Fallback",ex.toString());
                 }
 
 
@@ -792,7 +792,7 @@ public class AdMediation {
             @Override
             void onFailure(int statusCode, String response, Throwable throwable) {
                 super.onFailure(statusCode, response, throwable);
-                Log.e("Failure",""+statusCode);
+                Log.v("Failure",""+statusCode);
 
             }
         });
@@ -932,7 +932,7 @@ public class AdMediation {
             @Override
             void onFailure(int statusCode, String response, Throwable throwable) {
                 super.onFailure(statusCode, response, throwable);
-                Log.e("Failure",""+statusCode);
+                Log.v("Failure",""+statusCode);
 
             }
         });

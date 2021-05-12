@@ -52,7 +52,8 @@ public class iZooto {
     @SuppressLint("StaticFieldLeak")
     static Activity curActivity;
     private static String advertisementID;
-    public static boolean isHybrid = false; //check for SDK(Flutter,React native)
+    public static boolean isHybrid = false;//check for SDK(Flutter,React native)
+    public static String SDKDEF ="native";
 
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
@@ -111,10 +112,10 @@ public class iZooto {
                                     if (senderId != null && !senderId.isEmpty()) {
                                         init(context, apiKey, appId);
                                     } else {
-                                        Lg.e(AppConstant.APP_NAME_TAG, appContext.getString(R.string.something_wrong_fcm_sender_id));
+                                        Lg.v(AppConstant.APP_NAME_TAG, appContext.getString(R.string.something_wrong_fcm_sender_id));
                                     }
                                 } catch (JSONException e) {
-                                    Lg.e(AppConstant.APP_NAME_TAG,e.toString());
+                                    Lg.v(AppConstant.APP_NAME_TAG,e.toString());
                                 }
                             }
                         });
@@ -123,7 +124,7 @@ public class iZooto {
 
 
             } else {
-                Lg.e(AppConstant.APP_NAME_TAG, AppConstant.MESSAGE);
+                Lg.v(AppConstant.APP_NAME_TAG, AppConstant.MESSAGE);
             }
 
 
@@ -189,7 +190,7 @@ public class iZooto {
 
     protected void start(final Context context, final Listener listener) {
         if (listener == null) {
-            Log.e(AppConstant.APP_NAME_TAG, "getAdvertisingId - Error: null listener, dropping call");
+            Log.v(AppConstant.APP_NAME_TAG, "getAdvertisingId - Error: null listener, dropping call");
         } else {
             mHandler = new Handler(Looper.getMainLooper());
             mListener = listener;
@@ -248,7 +249,7 @@ public class iZooto {
         if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
             String api_url = AppConstant.ADDURL + AppConstant.STYPE + AppConstant.PID + mIzooToAppId + AppConstant.BTYPE_ + AppConstant.BTYPE + AppConstant.DTYPE_ + AppConstant.DTYPE + AppConstant.TIMEZONE + System.currentTimeMillis() + AppConstant.APPVERSION + Util.getSDKVersion(appContext) +
                     AppConstant.OS + AppConstant.SDKOS + AppConstant.ALLOWED_ + AppConstant.ALLOWED + AppConstant.ANDROID_ID + Util.getAndroidId(appContext) + AppConstant.CHECKSDKVERSION +Util.getSDKVersion(appContext)+AppConstant.LANGUAGE+Util.getDeviceLanguage() +
-                    AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.ADVERTISEMENTID +preferenceUtil.getStringData(AppConstant.ADVERTISING_ID)+AppConstant.QSDK_VERSION +AppConstant.SDKVERSION;;//+AppConstant.MI_TOKEN;
+                    AppConstant.TOKEN + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) + AppConstant.ADVERTISEMENTID +preferenceUtil.getStringData(AppConstant.ADVERTISING_ID)+AppConstant.QSDK_VERSION +AppConstant.SDKVERSION+AppConstant.SDKTYPE+SDKDEF;
             try {
                 String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
                 String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, AppConstant.UTF);
@@ -256,8 +257,6 @@ public class iZooto {
             } catch (UnsupportedEncodingException e) {
                 Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
             }
-            preferenceUtil.setStringData(AppConstant.SDK,AppConstant.SDKVERSION);
-
             RestClient.get(api_url, new RestClient.ResponseHandler() {
                 @Override
                 void onSuccess(final String response) {
@@ -740,16 +739,16 @@ public class iZooto {
     {
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
             try {
-                final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+                final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
 
-                if(data.get("an") !=null && data.get("g")!=null)
+                if(data.get(AppConstant.AD_NETWORK) !=null && data.get(AppConstant.GLOBAL)!=null)
                 {
                     AdMediation.getAdJsonData(data);
-                    preferenceUtil.setBooleanData("Mediation",true);
+                    preferenceUtil.setBooleanData(AppConstant.MEDIATION,true);
 
                 }
                 else {
-                    preferenceUtil.setBooleanData("Mediation", false);
+                    preferenceUtil.setBooleanData(AppConstant.MEDIATION, false);
 
                     JSONObject payloadObj = new JSONObject(data);
                     if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
@@ -1003,7 +1002,7 @@ public class iZooto {
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
-                    Log.e(" lv","v");
+                    Log.v(" lv","v");
 
                 }
             });

@@ -1,6 +1,7 @@
 package com.izooto;
 
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -118,7 +119,7 @@ public class Util {
 
     public static String getAndroidId(Context mContext){
         String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.e(TAG, "android id ---- "+android_id );
+        Log.v(TAG, "android id ---- "+android_id );
         return android_id;
     }
 
@@ -150,7 +151,7 @@ public class Util {
 
     public static String getSDKVersion(Context context) {
         try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(iZooto.appContext.getPackageName(), 0);
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

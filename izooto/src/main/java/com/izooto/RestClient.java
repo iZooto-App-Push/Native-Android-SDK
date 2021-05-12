@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 public class RestClient {
 
     public static final String BASE_URL = "https://aevents.izooto.com/";
+   // public static final String BASE_URL="https://iz-java-appsrv-test.azurewebsites.net/";
     private static final int TIMEOUT = 120000;
     public static final int GET_TIMEOUT = 60000;
     public static final String EVENT_URL="https://et.izooto.com/evt";
@@ -27,7 +28,8 @@ public class RestClient {
    // public static final String UPDATE_SDK=" https://vr.izooto.com/vr";
     public static final String MEDIATION_IMPRESSION="https://med.izooto.com/medi";
     public static final String MEDIATION_CLICKS="https://med.izooto.com/medc";
-    public static final String UPDATE_SDK="https://svr.izooto.com/svr";
+   // public static final String UPDATE_SDK="https://svr.izooto.com/svr";
+   // public static final String UPDATE_SDK="https://iz-java-appsrv-test.azurewebsites.net/svr";
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }
@@ -202,7 +204,7 @@ public class RestClient {
         }
 
         void onFailure(int statusCode, String response, Throwable throwable) {
-            Lg.e(AppConstant.APP_NAME_TAG, AppConstant.APIFAILURE  + response);
+            Lg.i(AppConstant.APP_NAME_TAG, AppConstant.APIFAILURE  + response);
         }
     }
 }
