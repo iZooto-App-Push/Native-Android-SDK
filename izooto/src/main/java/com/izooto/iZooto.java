@@ -257,7 +257,7 @@ public class iZooto {
             } catch (UnsupportedEncodingException e) {
                 Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
             }
-            RestClient.get(api_url, new RestClient.ResponseHandler() {
+            RestClient.postRequest(api_url, new RestClient.ResponseHandler() {
                 @Override
                 void onSuccess(final String response) {
                     super.onSuccess(response);

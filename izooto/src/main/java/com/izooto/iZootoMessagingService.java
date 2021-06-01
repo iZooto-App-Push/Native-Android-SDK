@@ -30,6 +30,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
             if (remoteMessage.getData().size() > 0) {
                 Map<String, String> data = remoteMessage.getData();
                 handleNow(data);
+                Log.e("Payload",data.toString());
             }
             if (remoteMessage.getNotification() != null) {
                 sendNotification(remoteMessage);

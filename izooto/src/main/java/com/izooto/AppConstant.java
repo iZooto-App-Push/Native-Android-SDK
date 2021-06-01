@@ -251,8 +251,6 @@ public interface AppConstant {
     String ADVERTISEMENTID="&adid=";
     String MI_TOKEN = "&mt=";
  String LASTCLICKINDEX= "lastclickIndex";
- String LAST_NOTIFICAION_CLICKED= "last_notification_clicked";
- String LAST_NOTIFICAION_VIEWED= "last_notification_viewed";
  String LAST_WEBSITE_VISIT= "last_website_visit";
  String LANG_= "lang";
  String CURRENT_DATE= "currentDate";
@@ -274,7 +272,15 @@ public interface AppConstant {
  String MEDIATION="Mediation";
  String SDKTYPE="&sn=";
  String SDKDES="native";
-
+ String CURRENT_DAYS_VIEW = "currentDaysView";
+ String CURRENT_DAYS_CLICK = "currentDaysClick";
+ String CFGFORDOMAIN= "cfgfordomain";
+ String LAST_NOTIFICAION_CLICKED= "last_notification_clicked";
+ String LAST_NOTIFICAION_VIEWED= "last_notification_viewed";
+ String CURRENT_DATE_VIEW_WEEKLY = "currentDateViewWeekly";
+ String CURRENT_DATE_VIEW_DAILY = "currentDateViewDaily";
+ String CURRENT_DATE_CLICK_WEEKLY = "currentDateClickWeekly";
+ String CURRENT_DATE_CLICK_DAILY = "currentDateClickDaily";
 }
 
 

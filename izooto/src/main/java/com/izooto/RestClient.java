@@ -1,6 +1,8 @@
 package com.izooto;
 
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.InputStream;
@@ -86,6 +88,7 @@ public class RestClient {
         int httpResponse = -1;
         String json = null;
 
+
         try {
             if (url.contains(AppConstant.HTTPS) || url.contains(AppConstant.HTTP) || url.contains(AppConstant.IMPR)) {
                 con = (HttpURLConnection) new URL(url).openConnection();
@@ -93,7 +96,6 @@ public class RestClient {
             } else {
                 con = (HttpURLConnection) new URL(BASE_URL + url).openConnection();
             }
-
             con.setUseCaches(false);
             con.setConnectTimeout(timeout);
             con.setReadTimeout(timeout);
