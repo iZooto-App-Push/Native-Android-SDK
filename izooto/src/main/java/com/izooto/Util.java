@@ -3,10 +3,12 @@ package com.izooto;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -19,6 +21,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.Html;
@@ -120,7 +123,7 @@ public class Util {
 
     public static String getAndroidId(Context mContext){
         String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.v(TAG, "android id ---- "+android_id );
+        System.out.println("android id ---- "+android_id );
         return android_id;
     }
 
@@ -377,5 +380,23 @@ public class Util {
         String dataCFG = sixthDg + fifthDg + fourthDg;
         int decimalData = Integer.parseInt(dataCFG,2);
         return decimalData;
+    }
+    static boolean isValidResourceName(String name) {
+        return (name != null && !name.matches("^[0-9]"));
+    }
+
+    static Uri getSoundUri(Context context, String sound) {
+        Resources resources = context.getResources();
+        String packageName = context.getPackageName();
+        int soundId;
+        if (isValidResourceName(sound)) {
+            soundId = resources.getIdentifier(sound, "raw", packageName);
+            if (soundId != 0)
+                return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + packageName + "/" + soundId);
+        }
+        soundId = resources.getIdentifier("izooto_default_sound", "raw", packageName);
+        if (soundId != 0)
+            return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + packageName + "/" + soundId);
+        return null;
     }
 }

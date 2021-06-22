@@ -149,7 +149,7 @@ public interface AppConstant {
     String SENDERID ="senderId";
     String APPID = "appId";
     String APIKEY="apiKey";
-
+ //https://cdn.izooto.com/app/app_b7d70ad86cbd3664ec38d8a7c294bfd6452cf5e8.dat
     ///////// JSON Payload Data
 
     String CAMPNAME = "campaignDetails";

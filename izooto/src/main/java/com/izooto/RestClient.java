@@ -1,10 +1,8 @@
 package com.izooto;
 
 
-import android.util.Log;
 
 import org.json.JSONObject;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -12,7 +10,6 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class RestClient {
 
     public static final String BASE_URL = "https://aevents.izooto.com/";
@@ -28,8 +25,8 @@ public class RestClient {
     public static final String LASTNOTIFICATIONVIEWURL="https://lim.izooto.com/lim";
     public static final String LASTVISITURL="https://lvi.izooto.com/lvi";
    // public static final String UPDATE_SDK=" https://vr.izooto.com/vr";
-    public static final String MEDIATION_IMPRESSION="https://med.izooto.com/medi";
-    public static final String MEDIATION_CLICKS="https://med.izooto.com/medc";
+   public static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
+    public static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
    // public static final String UPDATE_SDK="https://svr.izooto.com/svr";
    // public static final String UPDATE_SDK="https://iz-java-appsrv-test.azurewebsites.net/svr";
     private static int getThreadTimeout(int timeout) {

@@ -43,6 +43,7 @@ public class iZooto {
     public static String mIzooToAppId;
     public static Builder mBuilder;
     public static int icon;
+    public static String soundID;
     private static Payload payload;
     public static boolean mUnsubscribeWhenNotificationsAreDisabled;
     protected static Listener mListener;
@@ -186,6 +187,10 @@ public class iZooto {
 
     public static synchronized void idsAvailable(Context context, Listener listener) {
         new iZooto().start(context, listener);
+    }
+    public static void  setNotificationSound(String soundName)
+    {
+          soundID = soundName;
     }
 
     protected void start(final Context context, final Listener listener) {
@@ -795,6 +800,8 @@ public class iZooto {
                         payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
                         payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
                         payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
+                        payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATIONSOUND));
+
 
                     } else
                         return;
@@ -856,7 +863,6 @@ public class iZooto {
                         }
                     }
                 }
-                Log.e(AppConstant.APP_NAME_TAG, "subscribeTopic: add " + topicList);
                 topicApi(AppConstant.ADD_TOPIC, topicList);
             }
         }

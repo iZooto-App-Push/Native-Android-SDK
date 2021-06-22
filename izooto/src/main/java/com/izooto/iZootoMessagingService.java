@@ -134,6 +134,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
                     payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
                     payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
+                    payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATIONSOUND));
 
                 } else
                     return;
