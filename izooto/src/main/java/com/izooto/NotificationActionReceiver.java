@@ -168,8 +168,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             else {
                 if (Util.isAppInForeground(context))
                     iZooto.notificationActionHandler(jsonObject.toString());
-                else
+                else {
                     notificationClick = jsonObject.toString();
+                    iZooto.notificationActionHandler(jsonObject.toString());
+                }
             }
             if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                 launchApp(context);
@@ -180,6 +182,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
             if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                 {
+                    iZooto.notificationActionHandler("");
                     if (iZooto.mBuilder!=null && iZooto.mBuilder.mWebViewListener!=null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)){
                         iZooto.notificationInAppAction(mUrl);
                     }else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
@@ -195,8 +198,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 }
             }else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)){
                 launchApp(context);
+                iZooto.notificationActionHandler("");
             }
-
             else {
                 try {
                     if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
@@ -263,7 +266,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             void onSuccess(String response) {
                 super.onSuccess(response);
 
-                Log.v("Testing","click");
 
             }
 

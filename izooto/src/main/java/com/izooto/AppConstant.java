@@ -260,7 +260,7 @@ public interface AppConstant {
  String IS_HYBRID_SDK = "hybrid";
  String CURRENT_DATE_VIEW = "currentDateView";
  String CURRENT_DATE_CLICK = "currentDateClick";
- String SDKVERSION="1.2.0";
+ String SDKVERSION="1.2.3";
  String QSDK_VERSION="&av=";
  String SDK="SDKVERSION";
  String AD_NETWORK="an";
@@ -281,6 +281,7 @@ public interface AppConstant {
  String CURRENT_DATE_VIEW_DAILY = "currentDateViewDaily";
  String CURRENT_DATE_CLICK_WEEKLY = "currentDateClickWeekly";
  String CURRENT_DATE_CLICK_DAILY = "currentDateClickDaily";
+ String PAYLOAD_JSONARRAY = "payloadJsonArray";
 }
 
 

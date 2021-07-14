@@ -49,7 +49,8 @@ public class NotificationEventManager {
     private static int priority, lockScreenVisibility;
     private static boolean addCheck;
     private static String lastView_Click = "0";
-
+    public static String iZootoReceivedPayload;
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void manageNotification(Payload payload) {
         if (payload.getFetchURL() == null || payload.getFetchURL().isEmpty()) {
             addCheck = false;
@@ -63,6 +64,7 @@ public class NotificationEventManager {
 
     private static void processPayload(final Payload payload) {
         RestClient.get(payload.getFetchURL(), new RestClient.ResponseHandler() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             void onSuccess(String response) {
                 super.onSuccess(response);
@@ -97,6 +99,7 @@ public class NotificationEventManager {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void parseJson(Payload payload, JSONObject jsonObject) {
         try {
             payload.setLink(getParsedValue(jsonObject, payload.getLink()));
@@ -213,11 +216,12 @@ public class NotificationEventManager {
         return "";
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void showNotification(final Payload payload) {
+
         if (addCheck) {
             receiveAds(payload);
         } else {
-
             if (isAppInForeground(iZooto.appContext)) {
                 if (iZooto.inAppOption == null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)) {
                     receivedNotification(payload);
@@ -243,8 +247,6 @@ public class NotificationEventManager {
                 String impressionIndex ="0";
                 String lastSeventhIndex = "0";
                 String lastNinthIndex = "0";
-
-
                 String data=Util.getIntegerToBinary(payload.getCfg());
                 if(data!=null && !data.isEmpty()) {
                     clickIndex = String.valueOf(data.charAt(data.length() - 2));
@@ -353,10 +355,16 @@ public class NotificationEventManager {
 
                 NotificationManager notificationManager =
                         (NotificationManager) iZooto.appContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                int notificaitionId = (int) System.currentTimeMillis();
+
+
+                int notificationId;
+                if (payload.getTag()!=null && !payload.getTag().isEmpty())
+                    notificationId = Util.convertStringToDecimal(payload.getTag());
+                else
+                    notificationId = (int) System.currentTimeMillis();
                 if (payload.getAct1name() != null && !payload.getAct1name().isEmpty()) {
                     String phone = getPhone(payload.getAct1link());
-                    Intent btn1 = notificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastView_Click, notificaitionId, 1);
+                    Intent btn1 = notificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastView_Click, notificationId, 1);
                     PendingIntent pendingIntent1 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Action action1 =
                             new NotificationCompat.Action.Builder(
@@ -371,7 +379,7 @@ public class NotificationEventManager {
                 if (payload.getAct2name() != null && !payload.getAct2name().isEmpty()) {
 //                    btn2.setAction(AppConstant.ACTION_BTN_TWO);
                     String phone = getPhone(payload.getAct2link());
-                    Intent btn2 = notificationClick(payload, payload.getAct2link(), payload.getLink(), payload.getAct1link(), phone, clickIndex, lastView_Click, notificaitionId, 2);
+                    Intent btn2 = notificationClick(payload, payload.getAct2link(), payload.getLink(), payload.getAct1link(), phone, clickIndex, lastView_Click, notificationId, 2);
                     PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Action action2 =
                             new NotificationCompat.Action.Builder(
@@ -416,11 +424,11 @@ public class NotificationEventManager {
                     }
                 }
 
-                if (payload.getCollapseId() != null && !payload.getCollapseId().isEmpty()) {
-                    int notifyId = Util.convertStringToDecimal(payload.getCollapseId());
-                    notificationManager.notify(notifyId, notificationBuilder.build());
-                } else
-                    notificationManager.notify(notificaitionId, notificationBuilder.build());
+//                if (payload.getCollapseId() != null && !payload.getCollapseId().isEmpty()) {
+//                    int notifyId = Util.convertStringToDecimal(payload.getCollapseId());
+//                    notificationManager.notify(notifyId, notificationBuilder.build());
+//                } else
+                    notificationManager.notify(notificationId, notificationBuilder.build());
                 try {
 
                     if (impressionIndex.equalsIgnoreCase("1")) {
@@ -430,7 +438,9 @@ public class NotificationEventManager {
                         lastViewNotificationApi(payload, lastView_Click, lastSeventhIndex, lastNinthIndex);
                     }
 
-                    iZooto.notificationView(payload);
+                    PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+                    if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                        iZooto.notificationView(payload);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -681,10 +691,15 @@ public class NotificationEventManager {
                     notificationBuilder.setColor(Color.parseColor(payload.getLedColor()));
                 NotificationManager notificationManager =
                         (NotificationManager) iZooto.appContext.getSystemService(Context.NOTIFICATION_SERVICE);
-                int notificaitionId = (int) System.currentTimeMillis();
+
+                int notificationId;
+                if (payload.getTag()!=null && !payload.getTag().isEmpty())
+                    notificationId = Util.convertStringToDecimal(payload.getTag());
+                else
+                    notificationId = (int) System.currentTimeMillis();
                 if (payload.getAct1name() != null && !payload.getAct1name().isEmpty()) {
                     String phone = getPhone(payload.getAct1link());
-                    Intent btn1 = notificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastView_Click, notificaitionId, 1);
+                    Intent btn1 = notificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastView_Click, notificationId, 1);
                     PendingIntent pendingIntent1 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Action action1 =
                             new NotificationCompat.Action.Builder(
@@ -695,7 +710,7 @@ public class NotificationEventManager {
                 if (payload.getAct2name() != null && !payload.getAct2name().isEmpty()) {
 //                    btn2.setAction(AppConstant.ACTION_BTN_TWO);
                     String phone = getPhone(payload.getAct2link());
-                    Intent btn2 = notificationClick(payload, payload.getAct2link(), payload.getLink(), payload.getAct1link(), phone, clickIndex, lastView_Click, notificaitionId, 2);
+                    Intent btn2 = notificationClick(payload, payload.getAct2link(), payload.getLink(), payload.getAct1link(), phone, clickIndex, lastView_Click, notificationId, 2);
                     PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Action action2 =
                             new NotificationCompat.Action.Builder(
@@ -739,11 +754,11 @@ public class NotificationEventManager {
                     }
                 }
 
-                if (payload.getCollapseId() != null && !payload.getCollapseId().isEmpty()) {
-                    int notifyId = Util.convertStringToDecimal(payload.getCollapseId());
-                    notificationManager.notify(notifyId, notificationBuilder.build());
-                } else
-                    notificationManager.notify(notificaitionId, notificationBuilder.build());
+//                if (payload.getCollapseId() != null && !payload.getCollapseId().isEmpty()) {
+//                    int notifyId = Util.convertStringToDecimal(payload.getCollapseId());
+//                    notificationManager.notify(notifyId, notificationBuilder.build());
+//                } else
+                    notificationManager.notify(notificationId, notificationBuilder.build());
                 try {
 
                     if (impressionIndex.equalsIgnoreCase("1")) {
@@ -752,7 +767,14 @@ public class NotificationEventManager {
                     if (lastView_Click.equalsIgnoreCase("1") || lastSeventhIndex.equalsIgnoreCase("1")){
                         lastViewNotificationApi(payload, lastView_Click, lastSeventhIndex, lastNinthIndex);
                     }
-                    iZooto.notificationView(payload);
+                    final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+                    if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                        iZooto.notificationView(payload);
+                    else {
+                        onReceiveNotificationHybrid(iZooto.appContext, payload);
+                        iZootoReceivedPayload = preferenceUtil.getStringData(AppConstant.PAYLOAD_JSONARRAY);
+                        iZooto.notificationViewHybrid(iZootoReceivedPayload, payload);
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -893,6 +915,7 @@ public class NotificationEventManager {
         final Activity activity = iZooto.curActivity;
         if (activity != null) {
             activity.runOnUiThread(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void run() {
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(activity);
@@ -961,7 +984,14 @@ public class NotificationEventManager {
                         if (lastView_Click.equalsIgnoreCase("1") || lastSeventhIndex.equalsIgnoreCase("1")){
                             lastViewNotificationApi(payload, lastView_Click, lastSeventhIndex, lastNinthIndex);
                         }
-                        iZooto.notificationView(payload);
+                        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+                        if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                            iZooto.notificationView(payload);
+                        else {
+                            onReceiveNotificationHybrid(iZooto.appContext, payload);
+                            iZootoReceivedPayload = preferenceUtil.getStringData(AppConstant.PAYLOAD_JSONARRAY);
+                            iZooto.notificationViewHybrid(iZootoReceivedPayload, payload);
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -971,6 +1001,33 @@ public class NotificationEventManager {
             });
         }
 
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static void onReceiveNotificationHybrid(Context context, Payload payload){
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+        JSONObject payloadJSON = new JSONObject();
+        JSONArray jsonArray;
+        try {
+            if (!preferenceUtil.getStringData(AppConstant.PAYLOAD_JSONARRAY).isEmpty())
+                jsonArray = new JSONArray(preferenceUtil.getStringData(AppConstant.PAYLOAD_JSONARRAY));
+            else
+                jsonArray = new JSONArray();
+            if (jsonArray.length() >= 10){
+                jsonArray.remove(0);
+            }
+            try {
+                payloadJSON.put("title", payload.getTitle());
+                payloadJSON.put("message", payload.getMessage());
+                payloadJSON.put("banner", payload.getBanner());
+                payloadJSON.put("landingURL", payload.getLink());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            jsonArray.put(payloadJSON);
+            preferenceUtil.setStringData(AppConstant.PAYLOAD_JSONARRAY, jsonArray.toString());
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 
     private static Intent notificationClick(Payload payload, String getLink, String getLink1, String getLink2, String phone, String finalClickIndex, String lastClick, int notificationId, int button) {

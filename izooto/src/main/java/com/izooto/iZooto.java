@@ -358,12 +358,20 @@ public class iZooto {
     public static void notificationActionHandler(String data)
     {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-        if(mBuilder!=null && mBuilder.mNotificationHelper!=null)
-        {
-            mBuilder.mNotificationHelper.onNotificationOpened(data);
+
+        if (!data.isEmpty()) {
+            if (mBuilder != null && mBuilder.mNotificationHelper != null) {
+                mBuilder.mNotificationHelper.onNotificationOpened(data);
+            }
         }
         if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
             firebaseAnalyticsTrack.openedEventTrack();
+        }
+        else {
+            if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack() && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
+                firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
+                firebaseAnalyticsTrack.openedEventTrack();
+            }
         }
         try {
             preferenceUtil.setIntData(AppConstant.NOTIFICATION_COUNT,preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT)-1);
@@ -401,28 +409,37 @@ public class iZooto {
         });
     }
 
+
+
     /*
      Handle the Hybrid DeepLink  Listener
     */
+//    public static void notificationClick(NotificationHelperListener notificationOpenedListener)
+//    {
+//        mBuilder.mNotificationHelper = notificationOpenedListener;
+//        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+//        if(mBuilder.mNotificationHelper!=null)
+//        {
+//            runNotificationOpenedCallback();
+//        }
+//        if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
+//            firebaseAnalyticsTrack.openedEventTrack();
+//        }
+//        try {
+//            preferenceUtil.setIntData(AppConstant.NOTIFICATION_COUNT,preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT)-1);
+//            ShortcutBadger.applyCountOrThrow(appContext, preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
     public static void notificationClick(NotificationHelperListener notificationOpenedListener)
     {
         mBuilder.mNotificationHelper = notificationOpenedListener;
-        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-        if(mBuilder.mNotificationHelper!=null)
-        {
+        if(mBuilder.mNotificationHelper!=null) {
             runNotificationOpenedCallback();
         }
-        if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
-            firebaseAnalyticsTrack.openedEventTrack();
-        }
-        try {
-            preferenceUtil.setIntData(AppConstant.NOTIFICATION_COUNT,preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT)-1);
-            ShortcutBadger.applyCountOrThrow(appContext, preferenceUtil.getIntData(AppConstant.NOTIFICATION_COUNT));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
     }
 
     private static void runNotificationOpenedCallback() {
@@ -446,6 +463,55 @@ public class iZooto {
         }
 
     }
+    public static void notificationViewHybrid(String payloadList, Payload payload)
+    {
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+        if(payload!=null)
+        {
+            if(mBuilder!=null && mBuilder.mNotificationReceivedHybridlistener !=null)
+            {
+                mBuilder.mNotificationReceivedHybridlistener.onNotificationReceivedHybrid(payloadList);
+            }
+            if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
+                firebaseAnalyticsTrack.receivedEventTrack(payload);
+            }else {
+                if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack() && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
+                    firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
+                    firebaseAnalyticsTrack.receivedEventTrack(payload);
+                }
+            }
+            if (payload.getId() != null && !payload.getId().isEmpty()) {
+                if (!payload.getId().equals(preferenceUtil.getStringData(AppConstant.TRACK_NOTIFICATION_ID))) {
+                    preferenceUtil.setBooleanData(AppConstant.IS_NOTIFICATION_ID_UPDATED, false);
+                }
+                preferenceUtil.setStringData(AppConstant.TRACK_NOTIFICATION_ID, payload.getId());
+            }
+        }
+    }
+    public static void notificationReceivedCallback(NotificationReceiveHybridListener notificationReceivedHybridListener){
+        mBuilder.mNotificationReceivedHybridlistener = notificationReceivedHybridListener;
+        if(mBuilder.mNotificationReceivedHybridlistener != null) {
+            runNotificationReceivedCallback();
+        }
+    }
+    private static void runNotificationReceivedCallback() {
+        runOnMainUIThread(new Runnable() {
+            public void run() {
+                final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+                if (NotificationEventManager.iZootoReceivedPayload != null) {
+                    iZooto.mBuilder.mNotificationReceivedHybridlistener.onNotificationReceivedHybrid(NotificationEventManager.iZootoReceivedPayload);
+//                    NotificationEventManager.iZootoReceivedPayload;
+                }
+                if (!preferenceUtil.getBoolean(AppConstant.IS_NOTIFICATION_ID_UPDATED)) {
+                    if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack() && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
+                        firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
+                        firebaseAnalyticsTrack.influenceOpenTrack();
+                        preferenceUtil.setBooleanData(AppConstant.IS_NOTIFICATION_ID_UPDATED, true);
+                    }
+                }
+            }
+        });
+    }
 
     public static class Builder {
         Context mContext;
@@ -453,6 +519,7 @@ public class iZooto {
         private NotificationHelperListener mNotificationHelper;
         public NotificationWebViewListener mWebViewListener;
         OSInAppDisplayOption mDisplayOption;
+        public NotificationReceiveHybridListener mNotificationReceivedHybridlistener;
         private Builder(Context context) {
             mContext = context;
         }
@@ -476,7 +543,10 @@ public class iZooto {
             return this;
 
         }
-
+        public Builder setNotificationReceiveHybridListener(NotificationReceiveHybridListener notificationReceivedHybrid) {
+            mNotificationReceivedHybridlistener = notificationReceivedHybrid;
+            return this;
+        }
 
 
         public Builder unsubscribeWhenNotificationsAreDisabled(boolean set){
