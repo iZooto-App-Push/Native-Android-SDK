@@ -37,15 +37,24 @@ import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -294,17 +303,27 @@ public class Util {
         return locale.getDisplayLanguage();
 
     }
-
+    public static void sleepTime(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+        }
+    }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static String getDeviceLanguageTag()
     {
-        Locale locale;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
-        } else {
-            locale = iZooto.appContext.getResources().getConfiguration().locale;
+        if(iZooto.appContext!=null) {
+            Locale locale;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
+                return locale.getDefault().getDisplayLanguage();
+            } else {
+                return "iz-ln";
+            }
         }
-        return locale.getDefault().toLanguageTag();
+        else {
+            return "iz_ln";
+        }
 
     }
     public static String getIntegerToBinary(int number)
@@ -399,4 +418,82 @@ public class Util {
             return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + packageName + "/" + soundId);
         return null;
     }
+    public static void setException(Context context, String exception, String className,String methodName) {
+        if (context == null)
+            return;
+        try {
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            if (!exception.isEmpty()){
+                Map<String, String> mapData = new HashMap<>();
+                mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                mapData.put(AppConstant.TOKEN,"" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+                mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(context));
+                mapData.put(AppConstant.EXCEPTION_, "" + exception);
+                mapData.put(AppConstant.METHOD_NAME, "" + methodName);
+                mapData.put(AppConstant.ClASS_NAME, "" + className);
+                String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
+                String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, AppConstant.UTF);
+                mapData.put(AppConstant.ANDROIDVERSION,"" + osVersion);
+                mapData.put(AppConstant.DEVICENAME,"" + deviceName);
+                RestClient.newPostRequest(RestClient.APP_EXCEPTION_URL, mapData, new RestClient.ResponseHandler() {
+                    @Override
+                    void onSuccess(final String response) {
+                        super.onSuccess(response);
+                    }
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Log.e("Exception ex -- ", e.toString());
+        }
+    }
+    public static boolean isNetworkAvailable(Context mContext) {
+        ConnectivityManager connectivity = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity == null) {
+            return false;
+        } else {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public static HashMap<String, Object> toMap(JSONObject jsonobj)  throws JSONException {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        Iterator<String> keys = jsonobj.keys();
+        while(keys.hasNext()) {
+            String key = keys.next();
+            Object value = jsonobj.get(key);
+            if (value instanceof JSONArray) {
+                value = toList((JSONArray) value);
+            } else if (value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            map.put(key, value);
+        }   return map;
+    }
+
+    public static List<Object> toList(JSONArray array) throws JSONException {
+        List<Object> list = new ArrayList<Object>();
+        for(int i = 0; i < array.length(); i++) {
+            Object value = array.get(i);
+            if (value instanceof JSONArray) {
+                value = toList((JSONArray) value);
+            }
+            else if (value instanceof JSONObject) {
+                value = toMap((JSONObject) value);
+            }
+            list.add(value);
+        }   return list;
+    }
+
+
 }

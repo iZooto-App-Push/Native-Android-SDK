@@ -87,6 +87,7 @@ public class Payload {
     private String fallBackPath;
     private int time_out;
     private int adTimeOut;
+    private int  maxNotification;
 
     //////////////////////////////////////////////
 
@@ -577,5 +578,11 @@ public class Payload {
 
     public void setAdTimeOut(int adTimeOut) {
         this.adTimeOut = adTimeOut;
+    }
+    public int getMaxNotification() {
+        return maxNotification;
+    }
+    public void setMaxNotification(int maxNotification) {
+        this.maxNotification = maxNotification;
     }
 }

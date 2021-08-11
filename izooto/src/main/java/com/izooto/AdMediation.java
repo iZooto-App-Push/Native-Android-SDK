@@ -1,4 +1,5 @@
 package com.izooto;
+import android.content.Context;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,12 +17,12 @@ public class AdMediation {
     public static List<String> clicksData=new ArrayList<>();
     private static List<JSONObject> successList=new ArrayList<>();
 
-    public static void getAdJsonData(Map<String,String> data)
+    public static void getAdJsonData(Context context, Map<String,String> data)
     {
 
        try
        {
-            PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
+            PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(context);
               payloadList.clear();
               passiveList.clear();
               adPayload.clear();
@@ -35,7 +36,7 @@ public class AdMediation {
                if (jsonArray.length() > 0) {
                        for (int i = 0; i < jsonArray.length(); i++) {
                            JSONObject payloadObj = jsonArray.getJSONObject(i);
-                           if (jsonObject.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
+                           if (jsonObject.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(context).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
                                payload = new Payload();
                                payload.setAd_type(jsonObject.optString(ShortpayloadConstant.AD_TYPE));
                                payload.setAdID(payloadObj.optString(ShortpayloadConstant.AD_ID));
@@ -158,22 +159,7 @@ public class AdMediation {
        }
     }
 
-    private static void callUpdateAPI(String updateURL) {
-        RestClient.get(updateURL, new RestClient.ResponseHandler() {
-            @Override
-            void onSuccess(String response) {
-                super.onSuccess(response);
 
-            }
-
-            @Override
-            void onFailure(int statusCode, String response, Throwable throwable) {
-                super.onFailure(statusCode, response, throwable);
-                Log.v("Failure",""+statusCode);
-
-            }
-        });
-    }
 
     private static void processPayload(final Payload payload, final int adIndex,final int indexValue) {
         final long start = System.currentTimeMillis(); //fetch start time
@@ -290,133 +276,126 @@ public class AdMediation {
 
 
     private static void parseJson(Payload payload, JSONObject jsonObject,int adIndex,int adNetwork) {
-        try {
-            PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
+        if(iZooto.appContext!=null) {
+            try {
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
 
-            payload.setTitle(getParsedValue(jsonObject, payload.getTitle()));
-            if (payload.getReceived_bid().equalsIgnoreCase("-1"))
-                payload.setReceived_bid(payload.getReceived_bid());
-            else
-                payload.setReceived_bid(getParsedValue(jsonObject, payload.getReceived_bid()));
-            if(payload.getTitle()=="")
-            {
-                payload.setCpc("-1");
-                payload.setReceived_bid("-1");
-            }
-            else {
+                payload.setTitle(getParsedValue(jsonObject, payload.getTitle()));
+                if (payload.getReceived_bid().equalsIgnoreCase("-1"))
+                    payload.setReceived_bid(payload.getReceived_bid());
+                else
+                    payload.setReceived_bid(getParsedValue(jsonObject, payload.getReceived_bid()));
+                if (payload.getTitle() == "") {
+                    payload.setCpc("-1");
+                    payload.setReceived_bid("-1");
+                } else {
 
-                payload.setCpc(getParsedValue(jsonObject, payload.getCpc()));
-                if(payload.getCtr()!="") {
-                    payload.setCtr(getParsedValue(jsonObject, payload.getCtr()));
-                    payload.setCpm(getParsedValue(jsonObject, payload.getCpm()));
+                    payload.setCpc(getParsedValue(jsonObject, payload.getCpc()));
+                    if (payload.getCtr() != "") {
+                        payload.setCtr(getParsedValue(jsonObject, payload.getCtr()));
+                        payload.setCpm(getParsedValue(jsonObject, payload.getCpm()));
 
 
-                    if (payload.getCpm() != "") {
-                        if (payload.getCtr() != "") {
-                            Float d = Float.parseFloat(payload.getCpm());
-                            Float r = Float.parseFloat(payload.getCtr());
-                            Float dat = 10 * r;
-                            Float dataC = d / dat;
-                            payload.setCpc(String.valueOf(dataC));
+                        if (payload.getCpm() != "") {
+                            if (payload.getCtr() != "") {
+                                Float d = Float.parseFloat(payload.getCpm());
+                                Float r = Float.parseFloat(payload.getCtr());
+                                Float dat = 10 * r;
+                                Float dataC = d / dat;
+                                payload.setCpc(String.valueOf(dataC));
+                            }
+
                         }
+                    }
+                }
+
+                payload.setLink(getParsedValue(jsonObject, payload.getLink()));
+
+                if (!payload.getLink().startsWith("http://") && !payload.getLink().startsWith("https://")) {
+                    String url = payload.getLink();
+                    url = "https://" + url;
+                    payload.setLink(url);
+
+                }
+                payload.setBanner(getParsedValue(jsonObject, payload.getBanner()));
+                payload.setMessage(getParsedValue(jsonObject, payload.getMessage()));
+                payload.setIcon(getParsedValue(jsonObject, payload.getIcon()));
+                payload.setAct1link(getParsedValue(jsonObject, payload.getAct1link()));
+
+                if (payload.getAct_num() == 1) {
+
+                    if (payload.getAct1link() != null) {
+                        payload.setAct1name(payload.getAct1name());
+                    }
+                    if (!payload.getAct1link().startsWith("http://") && !payload.getAct1link().startsWith("https://")) {
+                        String url = payload.getAct1link();
+                        url = "https://" + url;
+                        payload.setAct1link(url);
 
                     }
                 }
-            }
+                if (payload.getIcon() != null && payload.getIcon() != "") {
+                    if (!payload.getIcon().startsWith("http://") && !payload.getIcon().startsWith("https://")) {
+                        String url = payload.getIcon();
+                        url = "https://" + url;
+                        payload.setIcon(url);
 
-            payload.setLink(getParsedValue(jsonObject, payload.getLink()));
-
-            if (!payload.getLink().startsWith("http://") && !payload.getLink().startsWith("https://")) {
-                String url = payload.getLink();
-                url = "https://" + url;
-                payload.setLink(url);
-
-            }
-            payload.setBanner(getParsedValue(jsonObject, payload.getBanner()));
-            payload.setMessage(getParsedValue(jsonObject, payload.getMessage()));
-            payload.setIcon(getParsedValue(jsonObject, payload.getIcon()));
-            payload.setAct1link(getParsedValue(jsonObject,payload.getAct1link()));
-
-            if(payload.getAct_num()==1) {
-
-                if (payload.getAct1link() != null) {
-                    payload.setAct1name(payload.getAct1name());
-                }
-                if (!payload.getAct1link().startsWith("http://") && !payload.getAct1link().startsWith("https://")) {
-                    String url = payload.getAct1link();
-                    url = "https://" + url;
-                    payload.setAct1link(url);
+                    }
 
                 }
-            }
-            if(payload.getIcon()!=null && payload.getIcon()!="")
-            {
-                if (!payload.getIcon().startsWith("http://") && !payload.getIcon().startsWith("https://")) {
-                    String url = payload.getIcon();
-                    url = "https://" + url;
-                    payload.setIcon(url);
+                if (payload.getBanner() != null && payload.getBanner() != "") {
+                    if (!payload.getBanner().startsWith("http://") && !payload.getBanner().startsWith("https://")) {
+                        String url = payload.getBanner();
+                        url = "https://" + url;
+                        payload.setBanner(url);
+
+                    }
 
                 }
-
-            }
-            if(payload.getBanner()!=null && payload.getBanner()!="")
-            {
-                if (!payload.getBanner().startsWith("http://") && !payload.getBanner().startsWith("https://")) {
-                    String url = payload.getBanner();
-                    url = "https://" + url;
-                    payload.setBanner(url);
-
+                if (payload.getCpc() == "" && payload.getReceived_bid() == "") {
+                    payload.setCpc("-1");
+                    payload.setReceived_bid("-1");
                 }
 
-            }
-            if(payload.getCpc()=="" && payload.getReceived_bid()=="" )
-            {
-                payload.setCpc("-1");
-                payload.setReceived_bid("-1");
-            }
-
-            payload.setAp("");
-            payload.setInapp(0);
-            JSONObject data = new JSONObject();
-            data.put("b", payload.getCpc());
-            data.put("a", payload.getAdID());
-            if(payload.getResponseTime()==0)
-                data.put("t", -1);
-                 else
-                 data.put("t", payload.getResponseTime());
+                payload.setAp("");
+                payload.setInapp(0);
+                JSONObject data = new JSONObject();
+                data.put("b", payload.getCpc());
+                data.put("a", payload.getAdID());
+                if (payload.getResponseTime() == 0)
+                    data.put("t", -1);
+                else
+                    data.put("t", payload.getResponseTime());
                 if (payload.getReceived_bid() != null && !payload.getReceived_bid().isEmpty())
                     data.put("rb", payload.getReceived_bid());
-                   successList.add(data);
+                successList.add(data);
 
-            if(adIndex==4)
-            {
-                finalAdPayload(payload);
-            }
-            if(adIndex==5 && preferenceUtil.getBoolean("Send"))
-            {
-                if(payload.getTitle()!=null && !payload.getTitle().equalsIgnoreCase("")) {
-                    preferenceUtil.setBooleanData("Send",false);
+                if (adIndex == 4) {
                     finalAdPayload(payload);
                 }
-                else
-                {
-                    if(failsList.size()>0) {
-                        String fallBackURL = callFallbackAPI(payload);
-                        ShowFallBackResponse(fallBackURL, payload);
+                if (adIndex == 5 && preferenceUtil.getBoolean("Send")) {
+                    if (payload.getTitle() != null && !payload.getTitle().equalsIgnoreCase("")) {
+                        preferenceUtil.setBooleanData("Send", false);
+                        finalAdPayload(payload);
+                    } else {
+                        if (failsList.size() > 0) {
+                            String fallBackURL = callFallbackAPI(payload);
+                            ShowFallBackResponse(fallBackURL, payload);
+                        }
                     }
+
+
                 }
+                if (adIndex == 6) {
+                    adPayload.add(payload);
+                    if (adNetwork == (payloadList.size()) - 1) {
+                        showNotification(adPayload);
+                    }
 
-
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if(adIndex==6  ) {
-                 adPayload.add(payload);
-               if(adNetwork==(payloadList.size())-1) {
-                   showNotification(adPayload);
-               }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
     }
