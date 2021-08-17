@@ -281,25 +281,19 @@ public class iZooto {
                     mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                     mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
                     mapData.put(AppConstant.TIMEZONE, "" + System.currentTimeMillis());
-                    mapData.put(AppConstant.APPVERSION, "" + Util.getSDKVersion(iZooto.appContext));
+                    mapData.put(AppConstant.APPVERSION, "" + SDKVERSION);
                     mapData.put(AppConstant.OS, "" + AppConstant.SDKOS);
                     mapData.put(AppConstant.ALLOWED_, "" + AppConstant.ALLOWED);
                     mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
-                    mapData.put(AppConstant.CHECKSDKVERSION, "" + Util.getSDKVersion(appContext));
+                    mapData.put(AppConstant.CHECKSDKVERSION, "" + SDKVERSION);
                     mapData.put(AppConstant.LANGUAGE, "" + Util.getDeviceLanguage());
                     mapData.put(AppConstant.QSDK_VERSION, "" + AppConstant.SDKVERSION);
                     mapData.put(AppConstant.TOKEN, "" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                     mapData.put(AppConstant.ADVERTISEMENTID, "" + preferenceUtil.getStringData(AppConstant.ADVERTISING_ID));
                     mapData.put(AppConstant.PACKAGE_NAME, "" + appContext.getPackageName());
                     mapData.put(AppConstant.SDKTYPE, "" + SDKDEF);
-                    try {
-                        String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
-                        String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, AppConstant.UTF);
-                        mapData.put(AppConstant.ANDROIDVERSION, "" + osVersion);
-                        mapData.put(AppConstant.DEVICENAME, "" + deviceName);
-                    } catch (UnsupportedEncodingException e) {
-                        Lg.e(AppConstant.APP_NAME_TAG, AppConstant.UNEXCEPTION);
-                    }
+                    mapData.put(AppConstant.ANDROIDVERSION, "" + Build.VERSION.RELEASE);
+                    mapData.put(AppConstant.DEVICENAME, "" +  Util.getDeviceName());
                     RestClient.newPostRequest(RestClient.BASE_URL, mapData, new RestClient.ResponseHandler() {
                         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                         @Override
@@ -384,6 +378,7 @@ public class iZooto {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void processNotificationReceived(Payload payload) {
         if(payload!=null) {
             NotificationEventManager.manageNotification(payload);
@@ -689,12 +684,10 @@ public class iZooto {
     private static void addEventAPI(String eventName,HashMap<String,Object> data){
         if(appContext!=null) {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-            String encodeData = "";
             HashMap<String, Object> filterEventData = checkValidationEvent(data, 1);
             if (filterEventData.size() > 0) {
                 try {
                     JSONObject jsonObject = new JSONObject(filterEventData);
-                    encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
 
                     if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && Util.isNetworkAvailable(appContext)) {
                         if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
@@ -704,7 +697,7 @@ public class iZooto {
                             mapData.put(AppConstant.ACT, eventName);
                             mapData.put(AppConstant.ET_, "evt");
                             mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
-                            mapData.put(AppConstant.VAL, "" + encodeData);
+                            mapData.put(AppConstant.VAL, "" + jsonObject.toString());
 
                             RestClient.newPostRequest(RestClient.EVENT_URL, mapData, new RestClient.ResponseHandler() {
                                 @Override
@@ -764,7 +757,6 @@ public class iZooto {
             return;
 
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-        String encodeData = "";
 
         try {
             if (object != null && object.size()>0) {
@@ -779,7 +771,6 @@ public class iZooto {
                     HashMap<String, Object> filterUserPropertyData = checkValidationUserProfile(newListUserProfile, 1);
                     if (filterUserPropertyData.size() > 0) {
                         JSONObject jsonObject = new JSONObject(filterUserPropertyData);
-                        encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
 
                         if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && Util.isNetworkAvailable(appContext)) {
                             if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
@@ -788,7 +779,7 @@ public class iZooto {
                                 mapData.put(AppConstant.ACT, "add");
                                 mapData.put(AppConstant.ET_, "" + AppConstant.USERP_);
                                 mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
-                                mapData.put(AppConstant.VAL, "" + encodeData);
+                                mapData.put(AppConstant.VAL, "" + jsonObject.toString());
 
                                 RestClient.newPostRequest(RestClient.PROPERTIES_URL, mapData, new RestClient.ResponseHandler() {
                                     @Override
@@ -884,7 +875,7 @@ public class iZooto {
                         mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
                         mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                         mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
-                        mapData.put(AppConstant.APPVERSION, "" + Util.getSDKVersion(iZooto.appContext));
+                        mapData.put(AppConstant.APPVERSION, "" + SDKVERSION);
                         mapData.put(AppConstant.PTE_, "" + AppConstant.PTE);
                         mapData.put(AppConstant.OS, "" + AppConstant.SDKOS);
                         mapData.put(AppConstant.PT_, "" + AppConstant.PT);
@@ -1003,6 +994,7 @@ public class iZooto {
                 iZooto.appContext = context;
             Handler mainHandler = new Handler(Looper.getMainLooper());
             Runnable myRunnable = new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void run() {
                     iZooto.processNotificationReceived(payload);
@@ -1094,22 +1086,16 @@ public class iZooto {
             if (topic.size() > 0) {
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                 if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
-                    String encodeData = "";
                     try {
                         HashMap<String, List<String>> data = new HashMap<>();
                         data.put(AppConstant.TOPIC, topic);
                         JSONObject jsonObject = new JSONObject(data);
-                        encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    try {
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.ACT, action);
                         mapData.put(AppConstant.ET_, "" + AppConstant.USERP_);
                         mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
-                        mapData.put(AppConstant.VAL, "" + encodeData);
+                        mapData.put(AppConstant.VAL, "" + jsonObject.toString());
                         mapData.put(AppConstant.TOKEN, "" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                         mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                         RestClient.newPostRequest(RestClient.PROPERTIES_URL, mapData, new RestClient.ResponseHandler() {
@@ -1182,22 +1168,16 @@ public class iZooto {
             String time = preferenceUtil.getStringData(AppConstant.CURRENT_DATE);
             if (!time.equalsIgnoreCase(getTime())) {
                 preferenceUtil.setStringData(AppConstant.CURRENT_DATE, getTime());
-                String encodeData = "";
                 try {
                     HashMap<String, Object> data = new HashMap<>();
                     data.put(AppConstant.LAST_WEBSITE_VISIT, true);
                     data.put(AppConstant.LANG_, Util.getDeviceLanguageTag());
                     JSONObject jsonObject = new JSONObject(data);
-                    encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
 
-                try {
                     Map<String, String> mapData = new HashMap<>();
                     mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                     mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
-                    mapData.put(AppConstant.VAL, "" + encodeData);
+                    mapData.put(AppConstant.VAL, "" + jsonObject.toString());
                     mapData.put(AppConstant.ACT, "add");
                     mapData.put(AppConstant.ISID_, "1");
                     mapData.put(AppConstant.ET_, "" + AppConstant.USERP_);

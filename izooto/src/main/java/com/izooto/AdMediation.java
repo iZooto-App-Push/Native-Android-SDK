@@ -704,7 +704,7 @@ public class AdMediation {
                 finalData.put("rid",payload1.getRid());
                 finalData.put("type",payload1.getAd_type());
                 finalData.put("ta",(end-payload1.getStartTime()));
-                finalData.put("av",Util.getSDKVersion(iZooto.appContext));
+                finalData.put("av",AppConstant.SDKVERSION);
                 JSONObject servedObject=new JSONObject();
                 servedObject.put("a",payload1.getAdID());
                 servedObject.put("b",payload1.getCpc());
@@ -785,7 +785,7 @@ public class AdMediation {
             finalData.put("rid", payload.getRid());
             finalData.put("type", payload.getAd_type());
             finalData.put("ta", (end - payload.getStartTime()));
-            finalData.put("av", Util.getSDKVersion(iZooto.appContext));
+            finalData.put("av", AppConstant.SDKVERSION);
             JSONObject servedObject = new JSONObject();
             servedObject.put("a",0);
             servedObject.put("b", 0);
@@ -864,7 +864,7 @@ public class AdMediation {
                 finalData.put("rid",payload1.getRid());
                 finalData.put("type",payload1.getAd_type());
                 finalData.put("ta",(end-payload1.getStartTime()));
-                finalData.put("av",Util.getSDKVersion(iZooto.appContext));
+                finalData.put("av",AppConstant.SDKVERSION);
                 JSONObject servedObject=new JSONObject();
                 servedObject.put("a",payload1.getAdID());
                 servedObject.put("b",payload1.getCpc());

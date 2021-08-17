@@ -131,7 +131,7 @@ public class Util {
     }
 
     public static String getAndroidId(Context mContext){
-        String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
         System.out.println("android id ---- "+android_id );
         return android_id;
     }

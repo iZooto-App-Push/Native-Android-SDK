@@ -1229,12 +1229,10 @@ public class NotificationEventManager {
     private static void lastViewNotification(final Payload payload){
         if(iZooto.appContext!=null) {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-            String encodeData = "";
             try {
                 HashMap<String, Object> data = new HashMap<>();
                 data.put(AppConstant.LAST_NOTIFICAION_VIEWED, true);
                 JSONObject jsonObject = new JSONObject(data);
-                encodeData = URLEncoder.encode(jsonObject.toString(), AppConstant.UTF);
 
                 String limURL;
                 int dataCfg = Util.getBinaryToDecimal(payload.getCfg());
@@ -1246,9 +1244,9 @@ public class NotificationEventManager {
 
                 Map<String, String> mapData = new HashMap<>();
                 mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                mapData.put(AppConstant.VER_, Util.getSDKVersion(iZooto.appContext));
+                mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
                 mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(iZooto.appContext));
-                mapData.put(AppConstant.VAL, "" + encodeData);
+                mapData.put(AppConstant.VAL, "" + jsonObject.toString());
                 mapData.put(AppConstant.ACT, "add");
                 mapData.put(AppConstant.ISID_, "1");
                 mapData.put(AppConstant.ET_, "" + AppConstant.USERP_);

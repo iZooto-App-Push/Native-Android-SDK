@@ -3,6 +3,7 @@ package com.izooto;
 
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -15,13 +16,11 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.StringJoiner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 public class RestClient {
 
     public static final String BASE_URL = "https://aevents.izooto.com/app.php";
-   // public static final String BASE_URL="https://iz-java-appsrv-test.azurewebsites.net/";
     private static final int TIMEOUT = 120000;
     public static final int GET_TIMEOUT = 60000;
     public static final String EVENT_URL="https://et.izooto.com/evt";
@@ -111,17 +110,21 @@ public class RestClient {
 
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private static void startHTTPConnection(String url, String method, Map<String,String> data, ResponseHandler responseHandler, int timeout) {
+    private static void startHTTPConnection(String url, String method, final Map<String,String> data, ResponseHandler responseHandler, int timeout) {
         HttpURLConnection con = null;
         int httpResponse = -1;
         String json = null;
-        StringJoiner sj = null;
+        StringBuilder postData=null;
         try {
             if (data != null) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                    sj = new StringJoiner("&");
-                    for (Map.Entry<String, String> entry : data.entrySet())
-                        sj.add(URLEncoder.encode(entry.getKey(), AppConstant.UTF) + "=" + entry.getValue());
+                postData = new StringBuilder();
+                for (Map.Entry<String, String> param : data.entrySet()) {
+                    if (postData.length() != 0) {
+                        postData.append('&');
+                    }
+                    postData.append(URLEncoder.encode(param.getKey(), AppConstant.UTF));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(param.getValue(),AppConstant.UTF));
                 }
             }
             if (url.contains(AppConstant.HTTPS) || url.contains(AppConstant.HTTP) || url.contains(AppConstant.IMPR)) {
@@ -135,25 +138,30 @@ public class RestClient {
             if (method != null) {
                 con.setRequestMethod(AppConstant.POST);
                 con.setDoOutput(true);
-                byte[] out = sj.toString().getBytes(StandardCharsets.UTF_8);
-                int length = out.length;
-                con.setFixedLengthStreamingMode(length);
-                con.setRequestProperty(AppConstant.CONTENT_TYPE, AppConstant.FORM_URL_ENCODED);
-                con.setRequestProperty(AppConstant.CHARSET_, AppConstant.UTF_);
-                con.setRequestProperty(AppConstant.CONTENT_L, Integer.toString( length ));
-                con.setInstanceFollowRedirects( false );
-                con.setUseCaches( false );
-                con.connect();
-                try(OutputStream os = con.getOutputStream()) {
-                    os.write(out);
-                }
-            }
+                if(postData!=null) {
+                    byte[] out = postData.toString().getBytes(StandardCharsets.UTF_8);
+                    int length = out.length;
+                    con.setFixedLengthStreamingMode(length);
+                    con.setRequestProperty(AppConstant.CONTENT_TYPE, AppConstant.FORM_URL_ENCODED);
+                    con.setRequestProperty(AppConstant.CHARSET_, AppConstant.UTF_);
+                    con.setRequestProperty(AppConstant.CONTENT_L, Integer.toString(length));
+                    con.setInstanceFollowRedirects(false);
+                    con.setUseCaches(false);
+                    con.connect();
 
+                    try (OutputStream os = con.getOutputStream()) {
+                        os.write(out);
+                    }
+                }
+
+
+            }
             httpResponse = con.getResponseCode();
             InputStream inputStream;
             Scanner scanner;
             if (httpResponse == HttpURLConnection.HTTP_OK) {
-                if (url.equals(AppConstant.CDN + iZooto.mIzooToAppId+ AppConstant.DAT))
+
+                if (url.equals(AppConstant.CDN + iZooto.mIzooToAppId + AppConstant.DAT))
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
                 else
                     Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);

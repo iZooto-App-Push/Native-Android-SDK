@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,6 +27,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Log.e("HMS",Build.MANUFACTURER);
+        HashMap<String,Object> data =new HashMap<>();
+        data.put("language","bhojpuri");
+        iZooto.addUserProperty(data);
 
     }
     @Override
