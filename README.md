@@ -1,73 +1,31 @@
-t# izooto
-App notification service
+<p align = "center">
+	<img src="https://user-images.githubusercontent.com/60651012/129727793-bc8b8f01-b317-4f1c-bace-c6882b86bff7.png">
+</p>
 
+## iZooto Native Android Push Notification Plugin
 
+[iZooto](https://www.izooto.com) provides push notification service for mobile apps. This plugin makes it easy to implement push notifications on your Android app built on the Native framework.
 
-Introduction :
- This document will talk about iZooto’s SDK integration process for Android. 
+#### Installation
 
-Process:
-The following process is a step by step guide to integrate iZooto’s SDK.
+Please refer to iZooto's [Android Native SDK Setup](https://help.izooto.com/docs/android-sdk-setup-1) page for step-by-step instructions on how to install the plugin.
 
-Copy the android-release.AAR (shared) file to the libs folder of your project.
-Open app/build.gradle (Module: app) file and add the following lines of code: 
+#### SDK Methods
 
-Inside defaultConfig{} tag :
+Please see iZooto's [Android Native SDK References](https://help.izooto.com/docs/sdk-reference) page for a list of all the available callbacks and methods.
 
-      manifestPlaceholders = [
-               izooto_enc_key: "izooto_seceret-key”
-               izooto_app_id : "izotot_app_id" 
-       ]
-	
+#### Change Log
 
-	Inside dependancies{} tag :
+Please refer to this repository's [release tags](https://github.com/izooto-mobile-sdk/android-X/releases) for a complete change log of every released version.
 
-implementation project(path: ':izooto-release')
-implementation 'com.google.firebase:firebase-messaging:20.0.1'
+#### Support
 
-Once done, go to File → Project Structure and :
+Please visit [izooto.com](https://www.izooto.com) or write to [support@izooto.com](mailto:support@izooto.com) for any kind of issues.
 
-Under the dependency tab, click on New Module, represented by + icon.
+#### Demo Project
 
+For reference, we have uploaded a demo project with the latest SDK in the <code>master</code> folder of this repository.
 
+#### Supports:
 
-Select ‘Import JAR/AAR Package’ and click ‘Next’.
-Import ‘izooto-release.aar’ file shared and click on Finish.
-Sync the project
-
-Add the following lines of code under the Manifest file.
-
-For Internet Permissions, define a new user-permission tag:
-
- <uses-permission android:name="android.permission.INTERNET"/>
-
-Inside the application tag:
-
-   android:name=".yourApplicationName"
-
-<meta-data
-   android:name="izooto_enc_key"
-   android:value="${izooto_enc_key}" />
-
-<meta-data
-   android:name="izooto_app_id"
-   android:value="${izooto_app_id}" />
-
-Sync the project.
-Create an Application File and include the following lines of code:
-
-public class myApplicationName extends Application implements TokenReceivedListener
-{
-
-   @Override
-   public void onCreate() {
-       super.onCreate();
-    iZooto.initialize(this).setTokenReceivedListener(this).build(); }
- @Override
-   public void onTokenReceived(String token) {
-       Lg.i("Device token", token + "");
- }}
-
-Clean and re-build the project.
-
-Congratulations! You have successfully integrated iZooto’s Android SDK. When you now run the project, the FCM key would be generated and captured inside Android Studio’s Logs.
+* Tested and validated from Android 5.0 (API level 21) to Android 11 (API level 30).
