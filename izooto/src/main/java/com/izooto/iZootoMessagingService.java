@@ -24,6 +24,7 @@ import java.util.Objects;
 public class iZootoMessagingService extends FirebaseMessagingService {
 
     private  Payload payload = null;
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         try {
@@ -135,6 +136,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
                     payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATIONSOUND));
                     payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
+                    payload.setCustomNotification(payloadObj.optInt(ShortpayloadConstant.CUSTOM_NOTIFICATION));
 
                 } else
                     return;

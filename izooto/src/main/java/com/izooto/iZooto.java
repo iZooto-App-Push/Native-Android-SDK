@@ -56,7 +56,7 @@ public class iZooto {
     private static String advertisementID;
     public static boolean isHybrid = false;//check for SDK(Flutter,React native)
     public static String SDKDEF ="native";
-
+    public static int bannerImage;
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
     }
@@ -911,10 +911,29 @@ public class iZooto {
     }
 
     public static void setFirebaseAnalytics(boolean isSet){
-        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-        preferenceUtil.setBooleanData(AppConstant.FIREBASE_ANALYTICS_TRACK,isSet);
+        if(appContext!=null) {
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+            preferenceUtil.setBooleanData(AppConstant.FIREBASE_ANALYTICS_TRACK, isSet);
+        }
+        else
+        {
+            Log.e(AppConstant.APP_NAME_TAG,"Current object is not pass here");
+        }
+    }
+    public static void setCustomNotificationTemplate(boolean setTemplate){
+        if(appContext!=null) {
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+            preferenceUtil.setBooleanData(AppConstant.CUSTOM_NOTIFICATION, setTemplate);
+        }
+        else
+        {
+            Log.e(AppConstant.APP_NAME_TAG,"Current object is not pass here");
+        }
     }
 
+    public static void setDefaultNotificationBanner(int setBanner){
+        bannerImage = setBanner;
+    }
     public static void iZootoHandleNotification(Context context,final Map<String,String> data)
     {
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
@@ -975,6 +994,8 @@ public class iZooto {
                         payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
                         payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATIONSOUND));
                         payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
+                        payload.setCustomNotification(payloadObj.optInt(ShortpayloadConstant.CUSTOM_NOTIFICATION));
+
 
 
                     } else

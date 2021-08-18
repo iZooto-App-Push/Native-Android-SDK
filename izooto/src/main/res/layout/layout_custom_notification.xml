@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:orientation="vertical"
+    android:background="@color/notificationBg"
+    android:id="@+id/linear_layout_collapse"
+    android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/iv_large_icon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:scaleType="fitXY"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:textSize="13sp"
+                android:textColor="@color/notificationMBg"
+                style="@style/TextAppearance.Compat.Notification.Info"
+                android:ellipsize="end"
+                android:maxLines="2"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_display_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="3:45 PM"
+        android:textColor="@color/notificationMBg"
+        android:layout_marginRight="10dp"
+        style="@style/TextAppearance.Compat.Notification.Info"
+        android:textSize="11sp"/>
+
+</LinearLayout>

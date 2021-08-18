@@ -494,6 +494,10 @@ public class Util {
             list.add(value);
         }   return list;
     }
-
+    public static String getTimeWithoutDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+        String currentDate = sdf.format(new Date());
+        return currentDate;
+    }
 
 }

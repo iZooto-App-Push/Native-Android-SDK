@@ -59,5 +59,6 @@ public interface ShortpayloadConstant {
     String AD_TIME_OUT="to";
     String NOTIFICATIONSOUND="su";
     String MAX_NOTIFICATION="mn";
+    String CUSTOM_NOTIFICATION="cn";
 
 }

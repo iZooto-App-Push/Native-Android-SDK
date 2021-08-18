@@ -5,5 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="gray">#E69E9C9C</color>
     <color name="black">#000000</color>
-
+    <color name="white">#ffffff</color>
+    <color name="notificationBg">#ffffff</color>
+    <color name="notificationMBg">#000</color>
 </resources>

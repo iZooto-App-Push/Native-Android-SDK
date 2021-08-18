@@ -23,23 +23,15 @@ import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.RemoteViews;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.text.HtmlCompat;
-
 import com.izooto.shortcutbadger.ShortcutBadger;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -222,25 +214,50 @@ public class NotificationEventManager {
         return "";
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private static void showNotification(final Payload payload) {
-        if (addCheck) {
-            receiveAds(payload);
-        } else {
-            if (isAppInForeground(iZooto.appContext)) {
-                if (iZooto.inAppOption == null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)) {
-                    receivedNotification(payload);
-                } else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)) {
-                    showAlert(payload);
-                }
-            } else {
-                receivedNotification(payload);
+//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//    private static void showNotification(final Payload payload) {
+//        if (addCheck) {
+//            receiveAds(payload);
+//        } else {
+//            if (isAppInForeground(iZooto.appContext)) {
+//                if (iZooto.inAppOption == null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)) {
+//                    receivedNotification(payload);
+//                } else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)) {
+//                    showAlert(payload);
+//                }
+//            } else {
+//                receivedNotification(payload);
+//
+//            }
+//        }
+//    }
+private static void showNotification(final Payload payload) {
+    if (iZooto.appContext == null)
+        return;
 
+    if (addCheck){
+         receiveAds(payload);
+    }else {
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+        if (Util.isAppInForeground(iZooto.appContext)){
+            if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)){
+                if (payload.getCustomNotification() == 1 || preferenceUtil.getBoolean(AppConstant.CUSTOM_NOTIFICATION))
+                    NotificationCustomView.receiveCustomNotification(payload);
+                else
+                    receivedNotification(payload);
+            }else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)){
+                showAlert(payload);
             }
+        }else {
+            if (payload.getCustomNotification() == 1 || preferenceUtil.getBoolean(AppConstant.CUSTOM_NOTIFICATION))
+                NotificationCustomView.receiveCustomNotification(payload);
+            else
+                receivedNotification(payload);
         }
     }
+}
 
-    public static void receiveAds(final Payload payload) {
+     static void receiveAds(final Payload payload) {
 
         final Handler handler = new Handler(Looper.getMainLooper());
         final Runnable notificationRunnable = new Runnable() {
@@ -875,7 +892,7 @@ public class NotificationEventManager {
 
     }
 
-    private static int priorityForImportance(int priority) {
+     static int priorityForImportance(int priority) {
         if (priority > 9)
             return NotificationManagerCompat.IMPORTANCE_MAX;
         if (priority > 7)
@@ -883,13 +900,13 @@ public class NotificationEventManager {
         return NotificationManagerCompat.IMPORTANCE_HIGH;
     }
 
-    private static int priorityForLessOreo(int priority) {
+     static int priorityForLessOreo(int priority) {
         if (priority > 0)
             return Notification.PRIORITY_HIGH;
         return Notification.PRIORITY_HIGH;
     }
 
-    private static int setLockScreenVisibility(int visibility) {
+     static int setLockScreenVisibility(int visibility) {
         if (visibility < 0)
             return NotificationCompat.VISIBILITY_SECRET;
         if (visibility == 0)
@@ -898,7 +915,7 @@ public class NotificationEventManager {
 
     }
 
-    private static void badgeCountUpdate(int count) {
+     static void badgeCountUpdate(int count) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
         try {
             if (count > 0) {
@@ -1049,7 +1066,7 @@ public class NotificationEventManager {
         }
     }
 
-    private static Intent notificationClick(Payload payload, String getLink, String getLink1, String getLink2, String phone, String finalClickIndex, String lastClick, int notificationId, int button) {
+     static Intent notificationClick(Payload payload, String getLink, String getLink1, String getLink2, String phone, String finalClickIndex, String lastClick, int notificationId, int button) {
         String link = getLink;
         String link1 = getLink1;
         String link2 = getLink2;
@@ -1090,7 +1107,7 @@ public class NotificationEventManager {
         return intent;
     }
 
-    private static void impressionNotificationApi(final Payload payload){
+     static void impressionNotificationApi(final Payload payload){
         if(iZooto.appContext!=null) {
 
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
@@ -1126,7 +1143,7 @@ public class NotificationEventManager {
         }
     }
 
-    private static int getBadgeColor(String setColor) {
+     static int getBadgeColor(String setColor) {
         int iconColor;
         if (setColor.contains("#")) {
             try {
@@ -1147,7 +1164,7 @@ public class NotificationEventManager {
         return iconColor;
     }
 
-    private static int getBadgeIcon(String setBadgeIcon) {
+     static int getBadgeIcon(String setBadgeIcon) {
         int bIicon;
         if (iZooto.icon != 0) {
             bIicon = iZooto.icon;
@@ -1184,7 +1201,7 @@ public class NotificationEventManager {
         return bIicon;
     }
 
-    private static String getPhone(String getActLink) {
+     static String getPhone(String getActLink) {
         String phone;
         String checkNumber = decodeURL(getActLink);
         if (checkNumber.contains(AppConstant.TELIPHONE))
@@ -1193,7 +1210,7 @@ public class NotificationEventManager {
             phone = AppConstant.NO;
         return phone;
     }
-    private static void lastViewNotificationApi(final Payload payload, String lastViewIndex, String seventhCFG, String ninthCFG){
+     static void lastViewNotificationApi(final Payload payload, String lastViewIndex, String seventhCFG, String ninthCFG){
        if(iZooto.appContext!=null) {
            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
            String dayDiff1 = Util.dayDifference(Util.getTime(), preferenceUtil.getStringData(AppConstant.CURRENT_DATE_VIEW_WEEKLY));
@@ -1270,7 +1287,7 @@ public class NotificationEventManager {
     /*
      *Set Maximum notification in the tray through getMaximumNotificationInTray() method
      * */
-    public static void getMaximumNotificationInTray(Context context, int mn){
+     static void getMaximumNotificationInTray(Context context, int mn){
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 NotificationManager notificationManagerActive =

@@ -88,6 +88,7 @@ public class Payload {
     private int time_out;
     private int adTimeOut;
     private int  maxNotification;
+    private int  CustomNotification;
 
     //////////////////////////////////////////////
 
@@ -584,5 +585,13 @@ public class Payload {
     }
     public void setMaxNotification(int maxNotification) {
         this.maxNotification = maxNotification;
+    }
+
+    public int getCustomNotification() {
+        return CustomNotification;
+    }
+
+    public void setCustomNotification(int customNotification) {
+        CustomNotification = customNotification;
     }
 }

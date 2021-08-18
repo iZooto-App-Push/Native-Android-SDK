@@ -255,7 +255,7 @@ public interface AppConstant {
  String IS_HYBRID_SDK = "hybrid";
  String CURRENT_DATE_VIEW = "currentDateView";
  String CURRENT_DATE_CLICK = "currentDateClick";
- String SDKVERSION="1.3.1";
+ String SDKVERSION="1.3.2";
  String QSDK_VERSION="av";
  String SDK="SDKVERSION";
  String AD_NETWORK="an";
@@ -292,7 +292,7 @@ public interface AppConstant {
     String EVENT_LOCAL_DATA_EV = "eventLocalDataEV";
     String SET_SUBSCRITION_LOCAL_DATA = "setSubscriptionLocalData";
     String IS_SET_SUBSCRIPTION_METHOD = "isSetSubscriptionMethod";
-
+    String CUSTOM_NOTIFICATION = "iz_customNotification";
 
 }
 
