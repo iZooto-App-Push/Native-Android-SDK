@@ -112,6 +112,7 @@ public class iZooto {
                                         mIzooToAppId = jsonObject.optString(AppConstant.APPPID);
                                         preferenceUtil.setiZootoID(AppConstant.APPPID, mIzooToAppId);
                                         trackAdvertisingId();
+                                        Log.e("JSONObject",jsonObject.toString());
                                         if (senderId != null && !senderId.isEmpty()) {
                                             init(context, apiKey, appId);
                                         } else {
@@ -920,10 +921,10 @@ public class iZooto {
             Log.e(AppConstant.APP_NAME_TAG,"Current object is not pass here");
         }
     }
-    public static void setCustomNotificationTemplate(boolean setTemplate){
+    public static void setDefaultTemplate(int previewID){
         if(appContext!=null) {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-            preferenceUtil.setBooleanData(AppConstant.CUSTOM_NOTIFICATION, setTemplate);
+            preferenceUtil.setIntData(AppConstant.NOTIFICATION_PREVIEW, previewID);
         }
         else
         {

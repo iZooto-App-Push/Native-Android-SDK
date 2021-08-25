@@ -8,6 +8,7 @@ import com.izooto.iZooto;
 import com.izooto.NotificationHelperListener;
 import com.izooto.Payload;
 import com.izooto.TokenReceivedListener;
+import com.izooto.PushTemplate;
 
 public class AppController extends Application implements TokenReceivedListener,NotificationHelperListener, NotificationWebViewListener
 
@@ -22,8 +23,8 @@ public class AppController extends Application implements TokenReceivedListener,
                // .setLandingURLListener(this)
                 .build();
      //  iZooto.setNotificationSound("pikachu");// no use extesnion  name
-        iZooto.setCustomNotificationTemplate(true);
-       // iZooto.setDefaultNotificationBanner(R.drawable.splash_image);
+        iZooto.setDefaultTemplate(PushTemplate.TEXT_OVERLAY);
+        iZooto.setDefaultNotificationBanner(R.drawable.splash_image);
     }
 
     @Override

@@ -63,32 +63,5 @@
         android:visibility="gone"
         android:layout_marginTop="5dp"
         android:scaleType="fitXY"/>
-    <LinearLayout
-        android:id="@+id/linear_layout_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_notification_button_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="button1"
-            android:singleLine="true"
-            android:textSize="13sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/tv_notification_button_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="button1"
-            android:singleLine="true"
-            android:textSize="13sp"
-            android:layout_marginLeft="10dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 
 </LinearLayout>

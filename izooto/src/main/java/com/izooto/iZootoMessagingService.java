@@ -75,7 +75,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
     }
 
 
-    public   void handleNow(final Map<String, String> data) {
+    public void handleNow(final Map<String, String> data) {
 
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
         PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(this);

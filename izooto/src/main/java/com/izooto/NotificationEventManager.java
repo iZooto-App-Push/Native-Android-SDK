@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -72,7 +71,6 @@ public class NotificationEventManager {
                         Object json = new JSONTokener(response).nextValue();
                         if (json instanceof JSONObject) {
                             JSONObject jsonObject = new JSONObject(response);
-
                             parseJson(payload, jsonObject);
 
                         } else if (json instanceof JSONArray) {
@@ -82,6 +80,7 @@ public class NotificationEventManager {
                             parseJson(payload, jsonObject);
 
                         }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -214,34 +213,19 @@ public class NotificationEventManager {
         return "";
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-//    private static void showNotification(final Payload payload) {
-//        if (addCheck) {
-//            receiveAds(payload);
-//        } else {
-//            if (isAppInForeground(iZooto.appContext)) {
-//                if (iZooto.inAppOption == null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)) {
-//                    receivedNotification(payload);
-//                } else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)) {
-//                    showAlert(payload);
-//                }
-//            } else {
-//                receivedNotification(payload);
-//
-//            }
-//        }
-//    }
+
 private static void showNotification(final Payload payload) {
     if (iZooto.appContext == null)
         return;
 
     if (addCheck){
          receiveAds(payload);
+
     }else {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
         if (Util.isAppInForeground(iZooto.appContext)){
             if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)){
-                if (payload.getCustomNotification() == 1 || preferenceUtil.getBoolean(AppConstant.CUSTOM_NOTIFICATION))
+                if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)== PushTemplate.TEXT_OVERLAY)
                     NotificationCustomView.receiveCustomNotification(payload);
                 else
                     receivedNotification(payload);
@@ -249,7 +233,7 @@ private static void showNotification(final Payload payload) {
                 showAlert(payload);
             }
         }else {
-            if (payload.getCustomNotification() == 1 || preferenceUtil.getBoolean(AppConstant.CUSTOM_NOTIFICATION))
+            if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)==PushTemplate.TEXT_OVERLAY)
                 NotificationCustomView.receiveCustomNotification(payload);
             else
                 receivedNotification(payload);

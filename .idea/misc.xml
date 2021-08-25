@@ -7,6 +7,7 @@
         <entry key="izooto/src/main/res/drawable/ic_baseline_share_24.xml" value="0.23384615384615384" />
         <entry key="izooto/src/main/res/layout/layout_custom_notification.xml" value="0.20153985507246377" />
         <entry key="izooto/src/main/res/layout/layout_custom_notification_expand.xml" value="0.20153985507246377" />
+        <entry key="izooto/src/main/res/layout/remote_view_expands.xml" value="0.1" />
       </map>
     </option>
   </component>
