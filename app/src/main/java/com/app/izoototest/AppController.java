@@ -1,8 +1,15 @@
 package com.app.izoototest;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.izooto.NotificationWebViewListener;
 import com.izooto.iZooto;
 import com.izooto.NotificationHelperListener;
@@ -14,13 +21,14 @@ public class AppController extends Application implements TokenReceivedListener,
 
 {
 
+    @SuppressLint("NewApi")
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onCreate() {
         super.onCreate();
         iZooto.initialize(this)
                 .setNotificationReceiveListener(this)
                 .setTokenReceivedListener(this)
-               // .setLandingURLListener(this)
                 .build();
      //  iZooto.setNotificationSound("pikachu");// no use extesnion  name
         iZooto.setDefaultTemplate(PushTemplate.TEXT_OVERLAY);

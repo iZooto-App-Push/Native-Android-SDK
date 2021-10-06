@@ -1,1 +1,2 @@
 include ':app',':izooto'
+include ':izooto-hms'

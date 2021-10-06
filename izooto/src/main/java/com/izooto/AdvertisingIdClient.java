@@ -60,7 +60,7 @@ public class AdvertisingIdClient {
     /**
      * Ad Info data class with the results
      */
-    public class AdInfo {
+    public static class AdInfo {
 
         private final String  mAdvertisingId;
         private final boolean mLimitAdTrackingEnabled;

@@ -57,8 +57,11 @@ public interface ShortpayloadConstant {
     String FAll_BACK_PATH="fbu";
     String TIME_OUT="to";
     String AD_TIME_OUT="to";
-    String NOTIFICATIONSOUND="su";
-    String MAX_NOTIFICATION="mn";
+    String NOTIFICATION_SOUND="su";
     String CUSTOM_NOTIFICATION="cn";
+    String MAX_NOTIFICATION="mn";
+    String TEXTOVERLAY="nt";
+    String BGCOLOR="nbc";
+    String TIME_TO_LIVE="tl";
 
 }

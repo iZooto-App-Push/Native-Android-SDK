@@ -13,11 +13,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -25,10 +23,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -40,12 +34,7 @@ import androidx.core.text.HtmlCompat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,7 +51,6 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import static com.izooto.ShortpayloadConstant.TAG;
 
 
 public class Util {
@@ -113,23 +101,69 @@ public class Util {
                 activeNetwork.isConnectedOrConnecting();
     }
 
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream input = connection.getInputStream();
-                return BitmapFactory.decodeStream(input);
-            }
-            return null;
-        } catch (IOException e) {
-            // Log exception
-            return null;
-        }
-    }
+//    public static Bitmap getBitmapFromURL(String src) {
+//        try {
+//            URL url = new URL(src);
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            connection.setDoInput(true);
+//            connection.connect();
+//            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+//                InputStream input = connection.getInputStream();
+//                return BitmapFactory.decodeStream(input);
+//            }
+//            return null;
+//        } catch (IOException e) {
+//            // Log exception
+//            return null;
+//        }
+//    }
+  private static Bitmap getBitMap(String src) {
+            int retry=0;
+            boolean isCheck=false;
+            do {
+                 if(isCheck)
+                 {
+                     sleepTime(2000);
+                 }
+                try {
+                    return BitmapFactory.decodeStream(new URL(src).openConnection().getInputStream());
+                } catch (Throwable t) {
+                    retry++;
+                    isCheck=true;
+                    if(retry>=4) {
+                        return null;
+                    }
 
+                }
+            }while(retry<4);
+
+        return null;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static Bitmap getBitmapFromURL(String name) {
+        if (name == null)
+            return null;
+         String trimmedName = name.trim();
+         trimmedName = trimmedName.replace("///", "/");
+         trimmedName = trimmedName.replace("//", "/");
+         trimmedName = trimmedName.replace("http:/", "https://");
+         trimmedName = trimmedName.replace("https:/", "https://");
+         if(trimmedName.contains(".jpeg") || trimmedName.contains(".jpg") || trimmedName.contains(".png")) {
+             if (trimmedName.startsWith("http://") || trimmedName.startsWith("https://")) {
+                 Bitmap bmp =getBitMap(trimmedName);
+                 if(bmp!=null) {
+                     return bmp;
+                 }
+             }
+         }
+         else
+         {
+             Util.setException(iZooto.appContext,"Image URL is not correct"+name,AppConstant.APP_NAME_TAG,"Util");
+            return null;
+         }
+        return null;
+
+    }
     public static String getAndroidId(Context mContext){
         @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
         System.out.println("android id ---- "+android_id );
@@ -418,7 +452,8 @@ public class Util {
             return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + packageName + "/" + soundId);
         return null;
     }
-    public static void setException(Context context, String exception, String className,String methodName) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static void setException(Context context, String exception, String className, String methodName) {
         if (context == null)
             return;
         try {
@@ -431,11 +466,9 @@ public class Util {
                 mapData.put(AppConstant.EXCEPTION_, "" + exception);
                 mapData.put(AppConstant.METHOD_NAME, "" + methodName);
                 mapData.put(AppConstant.ClASS_NAME, "" + className);
-                String deviceName = URLEncoder.encode(Util.getDeviceName(), AppConstant.UTF);
-                String osVersion = URLEncoder.encode(Build.VERSION.RELEASE, AppConstant.UTF);
-                mapData.put(AppConstant.ANDROIDVERSION,"" + osVersion);
-                mapData.put(AppConstant.DEVICENAME,"" + deviceName);
-                RestClient.newPostRequest(RestClient.APP_EXCEPTION_URL, mapData, new RestClient.ResponseHandler() {
+                mapData.put(AppConstant.ANDROIDVERSION,"" + Build.VERSION.RELEASE);
+                mapData.put(AppConstant.DEVICENAME,"" + Util.getDeviceName());
+                RestClient.postRequest(RestClient.APP_EXCEPTION_URL, mapData,null, new RestClient.ResponseHandler() {
                     @Override
                     void onSuccess(final String response) {
                         super.onSuccess(response);
@@ -499,5 +532,79 @@ public class Util {
         String currentDate = sdf.format(new Date());
         return currentDate;
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    static void trackClickOffline(Context context, String apiUrl, String constantValue, String rid, String cid, int click) {
+        if (context == null)
+            return;
 
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            JSONObject payloadJSON = new JSONObject();
+            JSONArray jsonArray;
+            if (!preferenceUtil.getStringData(constantValue).isEmpty()) {
+                jsonArray = new JSONArray(preferenceUtil.getStringData(constantValue));
+            } else
+                jsonArray = new JSONArray();
+            payloadJSON.put(AppConstant.APPPID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+            payloadJSON.put(AppConstant.SDK, AppConstant.SDKVERSION);
+            payloadJSON.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+            if (!apiUrl.isEmpty())
+                payloadJSON.put(AppConstant.STORE_URL, apiUrl);
+            if (!rid.isEmpty())
+                payloadJSON.put(AppConstant.RID, rid);
+
+            if (constantValue.equalsIgnoreCase(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE)) {
+                payloadJSON.put("notification_op", "click");
+                if (!cid.isEmpty())
+                    payloadJSON.put(AppConstant.CID_, cid);
+                if (click != 0)
+                    payloadJSON.put("click", click);
+            }
+
+            jsonArray.put(payloadJSON);
+
+            preferenceUtil.setStringData(constantValue, jsonArray.toString());
+        } catch (Exception e) {
+            Util.setException(context, e.toString(), "trackClickOffline()", "Util");
+        }
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    static void trackMediation_Impression_Click(Context context, String hitName, String impressionORClickDATA) {
+        if (context == null)
+            return;
+
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            JSONObject payloadJSON = new JSONObject();
+            JSONArray jsonArray;
+            if (!preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS).isEmpty()) {
+                jsonArray = new JSONArray(preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS));
+            } else
+                jsonArray = new JSONArray();
+            payloadJSON.put(AppConstant.STORE_MED_API, hitName);
+            payloadJSON.put(AppConstant.STORE_MED_DATA, impressionORClickDATA.replace("\n", ""));
+            jsonArray.put(payloadJSON);
+            preferenceUtil.setStringData(AppConstant.STORE_MEDIATION_RECORDS, jsonArray.toString());
+        } catch (Exception e) {
+            Util.setException(context, e.toString(), "trackMediation_Impression_Click", "Util");
+        }
+    }
+
+    static boolean ridExists(JSONArray jsonArray, String rid) {
+        return jsonArray.toString().contains("\"rid\":\"" + rid + "\"");
+    }
+    static String getAppVersion(Context context) {
+        if (context == null)
+            return "App Version  is not Found";
+        PackageManager pm = context.getPackageManager();
+        String pkgName = context.getPackageName();
+        PackageInfo pkgInfo = null;
+        try {
+            pkgInfo = pm.getPackageInfo(pkgName, 0);
+            return pkgInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "App Version  is not Found";
+        }
+    }
 }

@@ -255,7 +255,7 @@ public interface AppConstant {
  String IS_HYBRID_SDK = "hybrid";
  String CURRENT_DATE_VIEW = "currentDateView";
  String CURRENT_DATE_CLICK = "currentDateClick";
- String SDKVERSION="1.3.3";
+ String SDKVERSION="1.3.4";
  String QSDK_VERSION="av";
  String SDK="SDKVERSION";
  String AD_NETWORK="an";
@@ -286,13 +286,36 @@ public interface AppConstant {
  String ClASS_NAME = "className";
  String APPName_2="NotificationEventManager";
  String APPName_3="NotificationActionManager";
-    String USER_LOCAL_DATA = "iz_userLocalData";
-    String SET_SUBSCRIPTION_DATA="iz_setSubscription";
-    String EVENT_LOCAL_DATA_EN = "eventLocalDataEN";
-    String EVENT_LOCAL_DATA_EV = "eventLocalDataEV";
+ String USER_LOCAL_DATA = "iz_userLocalData";
+ String SET_SUBSCRIPTION_DATA="iz_setSubscription";
+ String EVENT_LOCAL_DATA_EN = "eventLocalDataEN";
+ String EVENT_LOCAL_DATA_EV = "eventLocalDataEV";
     String SET_SUBSCRITION_LOCAL_DATA = "setSubscriptionLocalData";
     String IS_SET_SUBSCRIPTION_METHOD = "isSetSubscriptionMethod";
     String NOTIFICATION_PREVIEW = "iz_notification_preview";
+    String DEVICE_ID = "{~DEVICEID~}";
+    String ANDROID_TOKEN = "{~TOKEN~}";
+    String R_FCM_TOKEN="{~FCMTOKEN~}";
+    String CAN_GENERATE_FCM_TOKEN = "iz_canGenerateFcmToken";
+    String FCM_TOKEN_FROM_JSON = "fcmToken";
+    String CHECK_SDK_UPDATE="IZ_SDK_UPDATE";
+    String GLOBAL_PUBLIC_KEY= "gpl";
+    String STORAGE_GPL_DATA="iz_gpl_url";
+    String STORAGE_PAYLOAD_DATA="iz_payload_data";
+    String IZ_NOTIFICATION_CLICK_OFFLINE = "iZ_Notification_Click_Offline";
+    String IZ_NOTIFICATION_VIEW_OFFLINE = "iZ_Notification_View_Offline";
+    String IZ_NOTIFICATION_LAST_CLICK_OFFLINE = "iZ_Notification_Last_Click_Offline";
+    String IZ_NOTIFICATION_LAST_VIEW_OFFLINE = "iZ_Notification_Last_View_Offline";
+    String IS_CONSENT_STORED= "iz_isConsentStored";
+    String CAN_STORED_QUEUE= "iz_cantStoredQueue";
+    String STORE_URL = "apiURL";
+    String STORE_MEDIATION_RECORDS="iz_mediation_records";
+    String STORE_MED_API="iz_api_name";
+    String STORE_MED_DATA="iz_mediationData";
+    String MED_IMPRESION="iz_impression";
+    String MED_CLICK="iz_mClick";
+    String IZ_ADD_TOPIC_OFFLINE = "iz_add_topic_offline";
+    String IZ_REMOVE_TOPIC_OFFLINE = "iz_remove_topic_offline";
 
 }
 

@@ -244,9 +244,9 @@ public class NotificationCustomView {
 //                }else
                          notificationManager.notify(notificaitionId, notificationBuilder.build());
 
-                         if (impressionIndex.equalsIgnoreCase("1")) {
-                             NotificationEventManager.impressionNotificationApi(payload);
-                         }
+//                         if (impressionIndex.equalsIgnoreCase("1")) {
+//                             NotificationEventManager.impressionNotificationApi(payload);
+//                         }
                          if (lastViewIndex.equalsIgnoreCase("1") || lastSeventhIndex.equalsIgnoreCase("1")) {
                              NotificationEventManager.lastViewNotificationApi(payload, lastViewIndex, lastSeventhIndex, lastNinthIndex);
                          }

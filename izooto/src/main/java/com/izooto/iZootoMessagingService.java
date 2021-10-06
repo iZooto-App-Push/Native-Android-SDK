@@ -24,6 +24,7 @@ import java.util.Objects;
 public class iZootoMessagingService extends FirebaseMessagingService {
 
     private  Payload payload = null;
+    private String TAG="iZootoMessagingService";
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -75,23 +76,59 @@ public class iZootoMessagingService extends FirebaseMessagingService {
     }
 
 
-    public void handleNow(final Map<String, String> data) {
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public   void handleNow(final Map<String, String> data) {
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
         PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(this);
-
+        //DatabaseHandler db =new DatabaseHandler(this);
         try {
-            if(data.get(AppConstant.AD_NETWORK) !=null && data.get(AppConstant.GLOBAL)!=null)
+            if(data.get(AppConstant.AD_NETWORK) !=null || data.get(AppConstant.GLOBAL)!=null || data.get(AppConstant.GLOBAL_PUBLIC_KEY)!=null)
             {
-                AdMediation.getAdJsonData(this,data);
-                preferenceUtil.setBooleanData(AppConstant.MEDIATION,true);
+                if(data.get(AppConstant.GLOBAL_PUBLIC_KEY)!=null)
+                {
+                    try
+                    {
+                        JSONObject jsonObject=new JSONObject(Objects.requireNonNull(data.get(AppConstant.GLOBAL)));
+                        String urlData=data.get(AppConstant.GLOBAL_PUBLIC_KEY);
+                        if(jsonObject.toString()!=null && urlData!=null && !urlData.isEmpty()) {
+                            String cid = jsonObject.optString(ShortpayloadConstant.ID);
+                            String rid = jsonObject.optString(ShortpayloadConstant.RID);
+                            NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL,cid,rid,-1);
+                            AdMediation.getMediationGPL(this, jsonObject, urlData);
+                        }
+                        else
+                        {
+                            NotificationEventManager.handleNotificationError("Payload Error",data.toString(),"MessagingSevices","HandleNow");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
+                    }
 
+                }
+                else {
+                    try {
+                        JSONObject jsonObject = new JSONObject(data.get(AppConstant.GLOBAL));
+                        String cid = jsonObject.optString(ShortpayloadConstant.ID);
+                        String rid = jsonObject.optString(ShortpayloadConstant.RID);
+                        NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1);
+                        AdMediation.getAdJsonData(this, data);
+                        preferenceUtil.setBooleanData(AppConstant.MEDIATION, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
+
+                    }
+                }
             }
             else {
                 preferenceUtil.setBooleanData(AppConstant.MEDIATION, false);
                 JSONObject payloadObj = new JSONObject(data);
                 if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(this).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
                     payload = new Payload();
+                    payload.setCreated_Time(payloadObj.optString(ShortpayloadConstant.CREATEDON));
                     payload.setFetchURL(payloadObj.optString(ShortpayloadConstant.FETCHURL));
                     payload.setKey(payloadObj.optString(ShortpayloadConstant.KEY));
                     payload.setId(payloadObj.optString(ShortpayloadConstant.ID));
@@ -134,35 +171,47 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
                     payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
                     payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
-                    payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATIONSOUND));
+                    payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_SOUND));
                     payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
-                    payload.setCustomNotification(payloadObj.optInt(ShortpayloadConstant.CUSTOM_NOTIFICATION));
+                    payload.setFallBackDomain(payloadObj.optString(ShortpayloadConstant.FALL_BACK_DOMAIN));
+                    payload.setFallBackSubDomain(payloadObj.optString(ShortpayloadConstant.FALLBACK_SUB_DOMAIN));
+                    payload.setFallBackPath(payloadObj.optString(ShortpayloadConstant.FAll_BACK_PATH));
+                    payload.setDefaultNotificationPreview(payloadObj.optInt(ShortpayloadConstant.TEXTOVERLAY));
+                    payload.setNotification_bg_color(payloadObj.optString(ShortpayloadConstant.BGCOLOR));
 
-                } else
+                } else {
+                    String updateDaily=NotificationEventManager.getDailyTime(this);
+                    if (!updateDaily.equalsIgnoreCase(Util.getTime())) {
+                        preferenceUtil.setStringData(AppConstant.CURRENT_DATE_VIEW_DAILY, Util.getTime());
+                        NotificationEventManager.handleNotificationError("Payload Error" + payloadObj.optString("t"), payloadObj.toString(), "DATBMESSAGINSERVEICES", "handleNow()");
+                    }
                     return;
+                }
+                if (iZooto.appContext == null)
+                    iZooto.appContext = this;
+//                if(db.isTableExists(true)) {
+//                    db.addNotificationInDB(payload);
+//                }
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                Runnable myRunnable = new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void run() {
+                        NotificationEventManager.handleImpressionAPI(payload);
+                        iZooto.processNotificationReceived(iZooto.appContext, payload);
+
+                    }
+                };
+                mainHandler.post(myRunnable);
             }
-
         } catch (Exception e) {
-
-            e.printStackTrace();
-            Lg.d(AppConstant.APP_NAME_TAG, e.toString());
+            Util.setException(this, e.toString(),TAG , "handleNow");
         }
 
 
-        if (iZooto.appContext == null)
-            iZooto.appContext = this;
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                iZooto.processNotificationReceived(payload);
 
-            } // This is your code
-        };
-        mainHandler.post(myRunnable);
 
 
     }
-
 
 }

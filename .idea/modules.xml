@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidHotfix.iml" filepath="$PROJECT_DIR$/.idea/modules/androidHotfix.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.iml" />
     </modules>
   </component>
 </project>

@@ -88,8 +88,10 @@ public class Payload {
     private int time_out;
     private int adTimeOut;
     private int  maxNotification;
-    private int  CustomNotification;
-
+    private String public_global_key;
+    private int defaultNotificationPreview;
+    private String notification_bg_color;
+    private String time_to_live;
     //////////////////////////////////////////////
 
     private int cfg;
@@ -102,6 +104,7 @@ public class Payload {
     public int getGroup() {
         return group;
     }
+    private String created_Time;
 
     public int getBadgeCount() {
         return badgeCount;
@@ -587,11 +590,41 @@ public class Payload {
         this.maxNotification = maxNotification;
     }
 
-    public int getCustomNotification() {
-        return CustomNotification;
+
+    public int getDefaultNotificationPreview() {
+        return defaultNotificationPreview;
     }
 
-    public void setCustomNotification(int customNotification) {
-        CustomNotification = customNotification;
+    public void setDefaultNotificationPreview(int defaultNotificationPreview) {
+        this.defaultNotificationPreview = defaultNotificationPreview;
+    }
+
+    public String getNotification_bg_color() {
+        return notification_bg_color;
+    }
+
+    public void setNotification_bg_color(String notification_bg_color) {
+        this.notification_bg_color = notification_bg_color;
+    }
+    public String getPublic_global_key() {
+        return public_global_key;
+    }
+
+    public void setPublic_global_key(String public_global_key) {
+        this.public_global_key = public_global_key;
+    }
+    public String getCreated_Time() {
+        return created_Time;
+    }
+
+    public void setCreated_Time(String created_Time) {
+        this.created_Time = created_Time;
+    }
+    public String getTime_to_live() {
+        return time_to_live;
+    }
+
+    public void setTime_to_live(String time_to_live) {
+        this.time_to_live = time_to_live;
     }
 }
