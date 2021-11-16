@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         Log.e("HMS",Build.MANUFACTURER);
         HashMap<String,Object> data =new HashMap<>();
         data.put("language","bhojpuri");
-        iZooto.addUserProperty(data);
+     //   iZooto.addUserProperty(data);
 
     }
     @Override

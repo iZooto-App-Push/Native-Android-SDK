@@ -87,11 +87,23 @@ public class Payload {
     private String fallBackPath;
     private int time_out;
     private int adTimeOut;
+    private String created_Time;
+    private String time_to_live;
+    private String push_type;
     private int  maxNotification;
+    private int  CustomNotification;
     private String public_global_key;
     private int defaultNotificationPreview;
     private String notification_bg_color;
-    private String time_to_live;
+
+    public int getMaxNotification() {
+        return maxNotification;
+    }
+
+    public void setMaxNotification(int maxNotification) {
+        this.maxNotification = maxNotification;
+    }
+
     //////////////////////////////////////////////
 
     private int cfg;
@@ -104,7 +116,6 @@ public class Payload {
     public int getGroup() {
         return group;
     }
-    private String created_Time;
 
     public int getBadgeCount() {
         return badgeCount;
@@ -573,7 +584,6 @@ public class Payload {
 
     public void setTime_out(int time_out) {
         this.time_out = time_out;
-
     }
 
     public int getAdTimeOut() {
@@ -583,13 +593,44 @@ public class Payload {
     public void setAdTimeOut(int adTimeOut) {
         this.adTimeOut = adTimeOut;
     }
-    public int getMaxNotification() {
-        return maxNotification;
-    }
-    public void setMaxNotification(int maxNotification) {
-        this.maxNotification = maxNotification;
+
+    public String getCreated_Time() {
+        return created_Time;
     }
 
+    public void setCreated_Time(String created_Time) {
+        this.created_Time = created_Time;
+    }
+
+    public String getTime_to_live() {
+        return time_to_live;
+    }
+
+    public void setTime_to_live(String time_to_live) {
+        this.time_to_live = time_to_live;
+    }
+
+    public String getPush_type() {
+        return push_type;
+    }
+
+    public void setPush_type(String push_type) {
+        this.push_type = push_type;
+    }
+    public int getCustomNotification() {
+        return CustomNotification;
+    }
+
+    public void setCustomNotification(int customNotification) {
+        CustomNotification = customNotification;
+    }
+    public String getPublic_global_key() {
+        return public_global_key;
+    }
+
+    public void setPublic_global_key(String public_global_key) {
+        this.public_global_key = public_global_key;
+    }
 
     public int getDefaultNotificationPreview() {
         return defaultNotificationPreview;
@@ -605,26 +646,5 @@ public class Payload {
 
     public void setNotification_bg_color(String notification_bg_color) {
         this.notification_bg_color = notification_bg_color;
-    }
-    public String getPublic_global_key() {
-        return public_global_key;
-    }
-
-    public void setPublic_global_key(String public_global_key) {
-        this.public_global_key = public_global_key;
-    }
-    public String getCreated_Time() {
-        return created_Time;
-    }
-
-    public void setCreated_Time(String created_Time) {
-        this.created_Time = created_Time;
-    }
-    public String getTime_to_live() {
-        return time_to_live;
-    }
-
-    public void setTime_to_live(String time_to_live) {
-        this.time_to_live = time_to_live;
     }
 }

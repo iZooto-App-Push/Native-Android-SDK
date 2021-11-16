@@ -1,23 +1,25 @@
 package com.izooto;
 
 
-
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 public class RestClient {
 
     public static final String BASE_URL = "https://aevents.izooto.com/app.php";
@@ -33,7 +35,13 @@ public class RestClient {
     public static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
     public static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
     public static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
-    public static void get(final String url, final ResponseHandler responseHandler) {
+
+    private static int getThreadTimeout(int timeout) {
+        return timeout + 5000;
+    }
+
+
+    static void get(final String url, final ResponseHandler responseHandler) {
         new Thread(new Runnable() {
             public void run() {
                 makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT);
@@ -147,12 +155,15 @@ public class RestClient {
                 InputStream inputStream;
                 Scanner scanner;
                 if (httpResponse == HttpURLConnection.HTTP_OK) {
-                    Log.e("Response",url);
-                    if(data!=null)
-                        Log.e("Response",data.toString());
-                    if(jsonBody!=null)
-                        Log.e("Response",jsonBody.toString());
-
+                    DebugFileManager.createExternalStoragePublic(iZooto.appContext,"->"+url,"[Log.V]->URL");
+                    if(data!=null) {
+                        Log.e("Response",data.toString()+url);
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + data, "[Log.V]->URL");
+                    }
+                    if(jsonBody!=null) {
+                        Log.e("Response",data.toString()+url);
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + jsonBody.toString(), "[Log.V]->URL");
+                    }
                     if (url.equals(AppConstant.CDN + iZooto.mIzooToAppId + AppConstant.DAT))
                         Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
                     else
@@ -207,7 +218,6 @@ public class RestClient {
         }while (retry < 4 && httpResponse != 200);
     }
 
-
     private static void callResponseHandlerOnSuccess(final ResponseHandler handler, final String response) {
         new AppExecutors().networkIO().execute(new Runnable() {
             @Override
@@ -219,7 +229,12 @@ public class RestClient {
     }
 
     private static void callResponseHandlerOnFailure(final ResponseHandler handler, final int statusCode, final String response, final Throwable throwable) {
-        new AppExecutors().networkIO().execute(() -> handler.onFailure(statusCode, response, throwable));
+        new AppExecutors().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                handler.onFailure(statusCode, response, throwable);
+            }
+        });
     }
 
     static class ResponseHandler {
@@ -231,4 +246,5 @@ public class RestClient {
             Lg.v(AppConstant.APP_NAME_TAG, AppConstant.APIFAILURE  + response);
         }
     }
+
 }

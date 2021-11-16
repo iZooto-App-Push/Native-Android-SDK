@@ -15,18 +15,20 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
+
     private String mUrl;
     private int inApp;
     private String rid;
     private  String cid;
     private int btnCount;
+    private String api_url;
     private String additionalData;
     private String phoneNumber;
     private String act1ID;
@@ -43,15 +45,29 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     public  static  String medClick="";
     private String pushType;
     private int cfg;
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressLint("MissingPermission")
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onReceive(Context context, Intent intent) {
         if(context!=null) {
+
             Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-            context.sendBroadcast(it);
+           if(Build.VERSION.SDK_INT <Build.VERSION_CODES.R) {
+               context.sendBroadcast(it);
+           }
+//           if(Build.VERSION.SDK_INT>Build.VERSION_CODES.R)
+//           {
+//
+//
+//           }
+//           else
+//           {
+//               Log.e("Response","Below Android 12");
+//           }
+
             getBundleData(context, intent);
             mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
+            getBundleData(context, intent);
             try {
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                 if (clickIndex.equalsIgnoreCase("1")) {
@@ -63,8 +79,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     } else {
                         clkURL = RestClient.NOTIFICATIONCLICK;
                     }
-                    notificationClickAPI(context, clkURL, cid, rid, btnCount, -1);
 
+                    notificationClickAPI(context, clkURL, cid, rid, btnCount, -1,pushType);
 
                     String lastEighthIndex = "0";
                     String lastTenthIndex = "0";
@@ -112,12 +128,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
                 if (AdMediation.clicksData.size() > 0) {
                     for (int i = 0; i < AdMediation.clicksData.size(); i++) {
                         if (i == AdMediation.clicksData.size()) {
-                            break;
                         }
                         callRandomClick(AdMediation.clicksData.get(i));
                     }
@@ -127,7 +142,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             if (medClick != "") {
                 callMediationClicks(medClick,0);
             }
-
 
             if (additionalData.equalsIgnoreCase("")) {
                 additionalData = "1";
@@ -152,18 +166,16 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 else {
                     if (Util.isAppInForeground(context))
                         iZooto.notificationActionHandler(jsonObject.toString());
-                    else {
+                    else
                         notificationClick = jsonObject.toString();
-                        iZooto.notificationActionHandler(jsonObject.toString());
-                    }
                 }
                 if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                     launchApp(context);
                 }
             } else {
+
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     {
-                        iZooto.notificationActionHandler("");
                         if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             iZooto.notificationInAppAction(mUrl);
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
@@ -178,13 +190,35 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     }
                 } else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     launchApp(context);
-                    iZooto.notificationActionHandler("");
                 } else {
                     try {
                         if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                            browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            context.startActivity(browserIntent);
+                            if(mUrl!=null && !mUrl.isEmpty()) {
+
+                                if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
+                                    String url = "https://" + mUrl;
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                    browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    context.startActivity(browserIntent);
+
+
+                                } else {
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    context.startActivity(browserIntent);
+                                }
+
+                            }
+
+                            else
+                            {
+
+
+                                Util.setException(context, "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
+                                DebugFileManager.createExternalStoragePublic(iZooto.appContext,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
+
+                            }
                         } else {
                             Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
                             browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -192,31 +226,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         }
 
                     } catch (Exception ex) {
-                        Log.e(AppConstant.APP_NAME_TAG, ex.toString());
+                        Util.setException(context,ex.toString()+ "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
+
                     }
                 }
             }
         }
+
     }
-    private void launchApp(Context context){
-        PackageManager pm = context.getPackageManager();
-        Intent LaunchIntent = null;
-        String name = "";
-        try {
-            if (pm != null && !Util.isAppInForeground(context)) {
-                ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
-                name = (String) pm.getApplicationLabel(app);
-                LaunchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
-                Intent intentAppLaunch = LaunchIntent; // new Intent();
-                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intentAppLaunch);
-            }
-            Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void lastClickAPI(Context context, String lciURL, String rid, int i){
         if (context == null)
             return;
@@ -227,7 +245,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             HashMap<String, Object> data = new HashMap<>();
             data.put(AppConstant.LAST_NOTIFICAION_CLICKED, true);
             JSONObject jsonObject = new JSONObject(data);
-
             Map<String,String> mapData= new HashMap<>();
             mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
             mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
@@ -249,14 +266,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, null);
                         }
                     } catch (Exception e) {
-                        Log.e(AppConstant.APP_NAME_TAG, "Success: clkURLException -- " + e );
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"LastClick"+e.toString(),"[Log.V]->");
                     }
                 }
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
-                    Log.e("Response","onFailure lciURL");
                     try {
                         if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE).isEmpty()) {
                             JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE));
@@ -266,7 +282,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         } else
                             Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
                     } catch (Exception e) {
-                        Log.e("Response", "onFailure  ");
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"LastClick"+e.toString(),"[Log.V]->");
+
                     }
 
                 }
@@ -276,62 +293,28 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
 
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void getBundleData(Context context, Intent intent) {
-        if(context!=null) {
-            try {
-                Bundle tempBundle = intent.getExtras();
-                if (tempBundle != null) {
-                    if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
-                        mUrl = tempBundle.getString(AppConstant.KEY_WEB_URL);
-                    if (tempBundle.containsKey(AppConstant.KEY_IN_APP))
-                        inApp = tempBundle.getInt(AppConstant.KEY_IN_APP);
-                    if (tempBundle.containsKey(AppConstant.KEY_IN_RID))
-                        rid = tempBundle.getString(AppConstant.KEY_IN_RID);
-                    if (tempBundle.containsKey(AppConstant.KEY_IN_CID))
-                        cid = tempBundle.getString(AppConstant.KEY_IN_CID);
-                    if (tempBundle.containsKey(AppConstant.KEY_IN_BUTOON))
-                        btnCount = tempBundle.getInt(AppConstant.KEY_IN_BUTOON);
-                    if (tempBundle.containsKey(AppConstant.KEY_IN_ADDITIONALDATA))
-                        additionalData = tempBundle.getString(AppConstant.KEY_IN_ADDITIONALDATA);
-                    if (tempBundle.containsKey(AppConstant.KEY_IN_PHONE))
-                        phoneNumber = tempBundle.getString(AppConstant.KEY_IN_PHONE);
-                    if (tempBundle.containsKey(AppConstant.KEY_IN_ACT1ID))
-                        act1ID = tempBundle.getString(AppConstant.KEY_IN_ACT1ID);
-                    if (tempBundle.containsKey(AppConstant.KEY_IN_ACT2ID))
-                        act2ID = tempBundle.getString(AppConstant.KEY_IN_ACT2ID);
-                    if (tempBundle.containsKey(AppConstant.LANDINGURL))
-                        langingURL = tempBundle.getString(AppConstant.LANDINGURL);
-                    if (tempBundle.containsKey(AppConstant.ACT1URL))
-                        act1URL = tempBundle.getString(AppConstant.ACT1URL);
-                    if (tempBundle.containsKey(AppConstant.ACT2URL))
-                        act2URL = tempBundle.getString(AppConstant.ACT2URL);
-                    if (tempBundle.containsKey(AppConstant.ACT1TITLE))
-                        btn1Title = tempBundle.getString(AppConstant.ACT1TITLE);
-                    if (tempBundle.containsKey(AppConstant.ACT2TITLE))
-                        btn2Title = tempBundle.getString(AppConstant.ACT2TITLE);
-                    if (tempBundle.containsKey(AppConstant.CLICKINDEX))
-                        clickIndex = tempBundle.getString(AppConstant.CLICKINDEX);
-                    if (tempBundle.containsKey(AppConstant.LASTCLICKINDEX))
-                        lastClickIndex = tempBundle.getString(AppConstant.LASTCLICKINDEX);
-                    if (tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
-                        cfg = tempBundle.getInt(AppConstant.CFGFORDOMAIN);
-
-
-                    if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
-                        NotificationManager notificationManager =
-                                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
-                    }
+     static void callRandomClick(String rv) {
+        if(!rv.isEmpty()) {
+            RestClient.get(rv, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
                 }
-            } catch (Exception ex) {
-                Util.setException(context, ex.toString(), AppConstant.APPName_3, "getBundleData");
-            }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+
+                }
+            });
         }
     }
-    static void callMediationClicks(final String medClick,int cNUmber) {
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    static void callMediationClicks(final String medClick, int cNUmber) {
         try {
             if(!medClick.isEmpty()) {
+                DebugFileManager.createExternalStoragePublic(iZooto.appContext,medClick,"mediationClick");
                 JSONObject jsonObject = new JSONObject(medClick);
                 RestClient.postRequest(RestClient.MEDIATION_CLICKS, null,jsonObject, new RestClient.ResponseHandler() {
                     @SuppressLint("NewApi")
@@ -347,14 +330,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             }
                             catch (Exception ex)
                             {
-                                Log.e("Exception",ex.toString());
+                                DebugFileManager.createExternalStoragePublic(iZooto.appContext,"MediationCLick"+ex.toString(),"[Log.V]->");
+
+
                             }
                         }
                         else {
                             NotificationActionReceiver.medClick = "";
                         }
                     }
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     void onFailure(int statusCode, String response, Throwable throwable) {
                         super.onFailure(statusCode, response, throwable);
@@ -367,28 +351,84 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
         catch (Exception ex)
         {
-            System.out.println(ex.toString());
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"MediationCLick"+ex.toString(),"[Log.V]->");
+
         }
     }
-    private static void callRandomClick(String rv) {
-        if(!rv.isEmpty()) {
-            RestClient.get(rv, new RestClient.ResponseHandler() {
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-                }
-
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
 
 
-                }
-            });
+    static void launchApp(Context context){
+
+        PackageManager pm = context.getPackageManager();
+        Intent launchIntent = null;
+        String name = "";
+        try {
+            if (pm != null && !Util.isAppInForeground(context)) {
+                ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                name = (String) pm.getApplicationLabel(app);
+                launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                Intent intentAppLaunch = launchIntent; // new Intent();
+                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intentAppLaunch);
+            }
+            Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
+        } catch (PackageManager.NameNotFoundException e) {
+            Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
+
+        }
+    }
+
+    private void getBundleData(Context context, Intent intent) {
+        Bundle tempBundle = intent.getExtras();
+        if (tempBundle != null) {
+            if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
+                mUrl = tempBundle.getString(AppConstant.KEY_WEB_URL);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_APP))
+                inApp = tempBundle.getInt(AppConstant.KEY_IN_APP);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_RID))
+                rid = tempBundle.getString(AppConstant.KEY_IN_RID);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_CID))
+                cid = tempBundle.getString(AppConstant.KEY_IN_CID);
+            if(tempBundle.containsKey(AppConstant.KEY_IN_BUTOON))
+                btnCount = tempBundle.getInt(AppConstant.KEY_IN_BUTOON);
+            if(tempBundle.containsKey(AppConstant.KEY_IN_ADDITIONALDATA))
+                additionalData = tempBundle.getString(AppConstant.KEY_IN_ADDITIONALDATA);
+            if(tempBundle.containsKey(AppConstant.KEY_IN_PHONE))
+                phoneNumber=tempBundle.getString(AppConstant.KEY_IN_PHONE);
+            if(tempBundle.containsKey(AppConstant.KEY_IN_ACT1ID))
+                act1ID=tempBundle.getString(AppConstant.KEY_IN_ACT1ID);
+            if(tempBundle.containsKey(AppConstant.KEY_IN_ACT2ID))
+                act2ID=tempBundle.getString(AppConstant.KEY_IN_ACT2ID);
+            if(tempBundle.containsKey(AppConstant.LANDINGURL))
+                langingURL=tempBundle.getString(AppConstant.LANDINGURL);
+            if(tempBundle.containsKey(AppConstant.ACT1URL))
+                act1URL=tempBundle.getString(AppConstant.ACT1URL);
+            if(tempBundle.containsKey(AppConstant.ACT2URL))
+                act2URL=tempBundle.getString(AppConstant.ACT2URL);
+            if(tempBundle.containsKey(AppConstant.ACT1TITLE))
+                btn1Title=tempBundle.getString(AppConstant.ACT1TITLE);
+            if(tempBundle.containsKey(AppConstant.ACT2TITLE))
+                btn2Title=tempBundle.getString(AppConstant.ACT2TITLE);
+            if(tempBundle.containsKey(AppConstant.CLICKINDEX))
+                clickIndex=tempBundle.getString(AppConstant.CLICKINDEX);
+            if(tempBundle.containsKey(AppConstant.LASTCLICKINDEX))
+                lastClickIndex=tempBundle.getString(AppConstant.LASTCLICKINDEX);
+            if(tempBundle.containsKey(AppConstant.PUSH))
+                pushType=tempBundle.getString(AppConstant.PUSH);
+            if(tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
+                cfg=tempBundle.getInt(AppConstant.CFGFORDOMAIN);
+
+
+
+            if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
+            }
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    static void notificationClickAPI(Context context, String clkURL, String cid, String rid, int btnCount, int i) {
+    static void notificationClickAPI(Context context, String clkURL, String cid, String rid, int btnCount, int i,String pushType) {
         if (context == null)
             return;
 
@@ -400,9 +440,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             mapData.put(AppConstant.CID_, cid);
             mapData.put(AppConstant.ANDROID_ID,"" + Util.getAndroidId(context));
             mapData.put(AppConstant.RID_,"" + rid);
+            mapData.put(AppConstant.PUSH, pushType);
             mapData.put("op","click");
             if (btnCount != 0)
                 mapData.put("btn","" + btnCount);
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,mapData.toString(),"clickData");
 
             RestClient.postRequest(clkURL, mapData,null, new RestClient.ResponseHandler() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -418,7 +460,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
                         }
                     } catch (Exception e) {
-                        Log.e(AppConstant.APP_NAME_TAG, "Success: clkURLException -- " + e );
+                        Util.setException(iZooto.appContext,e.toString(),AppConstant.APPName_3,"notificationClickAPI");
                     }
 
                 }
@@ -435,7 +477,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
                         }
                     } catch (Exception e) {
-                        Log.e("TAG", "onFailure: clkURLException"+e );
+                        Util.setException(iZooto.appContext,e.toString(),AppConstant.APPName_3,"notificationClickAPI->onFailure");
                     }
                 }
             });
@@ -444,21 +486,5 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         } catch (Exception e) {
             Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
         }
-    }
-    public static Map<String,String> jsonToMap(String t) throws JSONException {
-
-        HashMap<String, String> map = new HashMap<String, String>();
-        JSONObject jObject = new JSONObject(t);
-        Iterator<?> keys = jObject.keys();
-
-        while( keys.hasNext() ){
-            String key = (String)keys.next();
-            String value = jObject.getString(key);
-            map.put(key, value);
-
-        }
-
-        System.out.println("json : "+jObject);
-        return map;
     }
 }

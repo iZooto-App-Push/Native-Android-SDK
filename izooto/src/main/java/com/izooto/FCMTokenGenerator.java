@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -19,68 +17,68 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class FCMTokenGenerator implements TokenGenerator {
 
     private FirebaseApp firebaseApp;
-@Override
-public void getToken(final Context context, final String senderId, final String apiKey, final String appId, final TokenGenerationHandler callback) {
-    if (context == null)
-        return;
-    PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-    if (preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_FCM_TOKEN)) {
-        if (callback != null)
-            callback.complete(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
-        return;
-    }
-    new Thread(new Runnable() {
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        @Override
-        public void run() {
-            try {
-                initFireBaseApp(senderId);
-
-                FirebaseMessaging messageApp = firebaseApp.get(FirebaseMessaging.class);
-                messageApp.getToken()
-                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                            @Override
-                            public void onComplete(@NonNull Task<String> task) {
-
-                                try {
-                                    if (!task.isSuccessful()) {
-                                        Util.setException(context, task.getException().toString(), "getToken", "iZootoFCMTokenGenerator");
-                                        return;
-                                    }
-                                    String token = task.getResult();
-                                    if (token != null && !token.isEmpty()) {
-                                        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-                                        if (!token.equals(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)) || !AppConstant.SDKVERSION.equals(preferenceUtil.getStringData(AppConstant.CHECK_SDK_UPDATE))) {
-                                            preferenceUtil.setBooleanData(AppConstant.IS_TOKEN_UPDATED, false);
-                                            preferenceUtil.setStringData(AppConstant.CHECK_SDK_UPDATE,AppConstant.SDKVERSION);
-                                        }
-                                        preferenceUtil.setStringData(AppConstant.FCM_DEVICE_TOKEN, token);
-                                        if (callback != null)
-                                            callback.complete(token);
-                                    } else {
-                                        callback.failure(AppConstant.FCMERROR);
-                                    }
-
-                                } catch (Exception e) {
-                                    Util.setException(context, e.toString(), "getToken", "iZootoFCMTokenGenerator");
-                                    if (callback != null)
-                                        callback.failure(e.getMessage());
-                                }
+    private String token = "";
 
 
-                                // Log and toast
-                            }
-                        });
-
-            } catch (Exception e) {
-                Util.setException(context, e.toString(), "getToken", "iZootoFCMTokenGenerator");
-                if (callback != null)
-                    callback.failure(e.getMessage());
-            }
+    @Override
+    public void getToken(final Context context, final String senderId, final String apiKey, final String appId, final TokenGenerationHandler callback) {
+        if (context == null)
+            return;
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+        if (preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_FCM_TOKEN)) {
+            if (callback != null)
+                callback.complete(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+            return;
         }
-    }).start();
+        new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void run() {
+                try {
+                    initFireBaseApp(senderId);
+                    FirebaseMessaging messageApp = firebaseApp.get(FirebaseMessaging.class);
+                    messageApp.getToken()
+                            .addOnCompleteListener(new OnCompleteListener<String>() {
+                                @Override
+                                public void onComplete(@NonNull Task<String> task) {
 
-}
+                                    try {
+                                        if (!task.isSuccessful()) {
+                                            Util.setException(context, task.getException().toString(), "getToken", "FCMTokenGenerator");
+                                            return;
+                                        }
+                                        String token = task.getResult();
+                                        if (token != null && !token.isEmpty()) {
+                                            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                                            if (!token.equals(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)) || !AppConstant.SDKVERSION.equals(preferenceUtil.getStringData(AppConstant.CHECK_SDK_UPDATE))) {
+                                                preferenceUtil.setBooleanData(AppConstant.IS_TOKEN_UPDATED, false);
+                                                preferenceUtil.setStringData(AppConstant.CHECK_SDK_UPDATE, AppConstant.SDKVERSION);
+                                            }
+                                            preferenceUtil.setStringData(AppConstant.FCM_DEVICE_TOKEN, token);
+                                            if (callback != null)
+                                                callback.complete(token);
+                                        } else {
+                                            callback.failure(AppConstant.FCMERROR);
+                                        }
+
+                                    } catch (Exception e) {
+                                        Util.setException(context, e.getMessage(), "getToken", "FCMTokenGenerator");
+                                        if (callback != null)
+                                            callback.failure(e.getMessage());
+                                    }
+                                }
+                            });
+
+                } catch (Exception e) {
+                    Util.setException(context, e.getMessage(), "getToken", "FCMTokenGenerator");
+                    if (callback != null)
+                        callback.failure(e.getMessage());
+                }
+            }
+        }).start();
+
+    }
+
     public   void initFireBaseApp(final String senderId) {
         if (firebaseApp != null)
             return;
@@ -100,7 +98,7 @@ public void getToken(final Context context, final String senderId, final String 
         }
         else
         {
-            Log.e(AppConstant.APP_NAME_TAG,"Missing google-service.json file");
+            Log.v(AppConstant.APP_NAME_TAG,"missing google-service.json file");
         }
     }
     private static String  getAPI_KEY()

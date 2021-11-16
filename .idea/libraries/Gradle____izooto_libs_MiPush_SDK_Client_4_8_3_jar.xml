@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ./izooto/libs/MiPush_SDK_Client_4_8_3.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/izooto/libs/MiPush_SDK_Client_4_8_3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

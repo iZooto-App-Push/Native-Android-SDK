@@ -317,6 +317,60 @@ public interface AppConstant {
     String IZ_ADD_TOPIC_OFFLINE = "iz_add_topic_offline";
     String IZ_REMOVE_TOPIC_OFFLINE = "iz_remove_topic_offline";
 
+
+
+
+
+    ///////// JSON Payload Data
+
+
+    String XIAOMITOKEN = "mt";
+    String XiaomiToken = "xiaomi_token";
+    String MIAPIKEY = "Mi_api_key";
+    String MIAPPID="Mi_app_id";
+    String CHECK_PAYLOAD="Title";
+    String BRAND_NAME="Xiaomi";
+    String ADD_CHECK="RID";
+
+    String CHECK_MESSAGE="MESSAGE";
+
+    String CHECK_CREATED_ON="CT";
+    String CHECK_RID="RID";
+    String CHECK_TTL="TTL";
+    String NOTIFICATION_DUPLICATE="Add";
+    String PUSH_TYPE="&ct=";
+    String PUSH="push_type";
+    String CHECK_XIAOMI="Check";
+    String HMS_TOKEN = "hms_token";
+    String KEY_HMS="ht";
+    String HMS_APP_ID="hms_app_id";
+    String HMS="Huawei";
+    String PUSH_HMS="hms";
+    String PUSH_FCM="fcm";
+    String PUSH_XIAOMI="xiomi";
+    String Check_Notification="CheckData";
+    String Check_YES="true";
+    String Check_NO="false";
+
+    String IS_UPDATED_XIAOMI_TOKEN = "iz_xiaomi_token_updated";
+    String IS_UPDATED_HMS_TOKEN = "iz_hms_token_updated";
+    String CUSTOM_NOTIFICATION = "iz_customNotification";
+
+    String R_XIAOMI_TOKEN = "{~MITOKEN~}";
+    String R_HMS_TOKEN = "{~HMSTOKEN~}";
+
+    String ACCOUNT_ID="{~PID~}";
+    String ADID="{~ADID~}";
+    String CAN_GENERATE_HUAWEI_TOKEN = "iz_canGenerateHuaweiToken";
+    String CAN_GENERATE_XIAOMI_TOKEN = "iz_canGenerateXiaomiToken";
+
+    String XIAOMI_TOKEN_FROM_JSON = "xiaomiToken";
+    String HUAWEI_TOKEN_FROM_JSON = "huaweiToken";
+    String CLOUD_PUSH="iz_Counter";
+
+    String FILE_EXIST="iz_fileExits";
+    String DIRECTORYNAME="DATB.907135001.debug";
+
 }
 
 

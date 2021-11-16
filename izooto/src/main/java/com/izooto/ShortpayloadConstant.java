@@ -64,4 +64,5 @@ public interface ShortpayloadConstant {
     String BGCOLOR="nbc";
     String TIME_TO_LIVE="tl";
 
+
 }

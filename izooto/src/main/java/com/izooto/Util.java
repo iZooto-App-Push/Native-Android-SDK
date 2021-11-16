@@ -1,7 +1,6 @@
 package com.izooto;
 
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -34,10 +33,14 @@ import androidx.core.text.HtmlCompat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -51,6 +54,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import static com.izooto.ShortpayloadConstant.TAG;
 
 
 public class Util {
@@ -101,41 +105,26 @@ public class Util {
                 activeNetwork.isConnectedOrConnecting();
     }
 
-//    public static Bitmap getBitmapFromURL(String src) {
-//        try {
-//            URL url = new URL(src);
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//            connection.setDoInput(true);
-//            connection.connect();
-//            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-//                InputStream input = connection.getInputStream();
-//                return BitmapFactory.decodeStream(input);
-//            }
-//            return null;
-//        } catch (IOException e) {
-//            // Log exception
-//            return null;
-//        }
-//    }
-  private static Bitmap getBitMap(String src) {
-            int retry=0;
-            boolean isCheck=false;
-            do {
-                 if(isCheck)
-                 {
-                     sleepTime(2000);
-                 }
-                try {
-                    return BitmapFactory.decodeStream(new URL(src).openConnection().getInputStream());
-                } catch (Throwable t) {
-                    retry++;
-                    isCheck=true;
-                    if(retry>=4) {
-                        return null;
-                    }
+    private static Bitmap getBitMap(String src) {
+        int retry=0;
+        boolean isCheck=false;
+        do {
+            if(isCheck)
+            {
+                sleepTime(2000);
 
+            }
+            try {
+                return BitmapFactory.decodeStream(new URL(src).openConnection().getInputStream());
+            } catch (Throwable t) {
+                retry++;
+                isCheck=true;
+                if(retry>=4) {
+                    return null;
                 }
-            }while(retry<4);
+
+            }
+        }while(retry<4);
 
         return null;
     }
@@ -143,30 +132,30 @@ public class Util {
     public static Bitmap getBitmapFromURL(String name) {
         if (name == null)
             return null;
-         String trimmedName = name.trim();
-         trimmedName = trimmedName.replace("///", "/");
-         trimmedName = trimmedName.replace("//", "/");
-         trimmedName = trimmedName.replace("http:/", "https://");
-         trimmedName = trimmedName.replace("https:/", "https://");
-         if(trimmedName.contains(".jpeg") || trimmedName.contains(".jpg") || trimmedName.contains(".png")) {
-             if (trimmedName.startsWith("http://") || trimmedName.startsWith("https://")) {
-                 Bitmap bmp =getBitMap(trimmedName);
-                 if(bmp!=null) {
-                     return bmp;
-                 }
-             }
-         }
-         else
-         {
-             Util.setException(iZooto.appContext,"Image URL is not correct"+name,AppConstant.APP_NAME_TAG,"Util");
+        String trimmedName = name.trim();
+        trimmedName = trimmedName.replace("///", "/");
+        trimmedName = trimmedName.replace("//", "/");
+        trimmedName = trimmedName.replace("http:/", "https://");
+        trimmedName = trimmedName.replace("https:/", "https://");
+        if(trimmedName.contains(".jpeg") || trimmedName.contains(".jpg") || trimmedName.contains(".png")) {
+            if (trimmedName.startsWith("http://") || trimmedName.startsWith("https://")) {
+                Bitmap bmp =getBitMap(trimmedName);
+                if(bmp!=null) {
+                    return bmp;
+                }
+            }
+        }
+        else
+        {
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,name,"[Log-> e]->getBitmapFromURL");
             return null;
-         }
+        }
         return null;
 
     }
     public static String getAndroidId(Context mContext){
-        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        System.out.println("android id ---- "+android_id );
+        String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.v(TAG, "android id ---- "+android_id);
         return android_id;
     }
 
@@ -206,24 +195,6 @@ public class Util {
         return "";
     }
 
-    public static CharSequence  makeBoldString(CharSequence title) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
-        } else {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>"); // or for older api
-        }
-        return title;
-    }
-
-    public static CharSequence makeBlackString(CharSequence title) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
-        } else {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>"); // or for older api
-        }
-        return title;
-    }
-
     boolean hasFCMLibrary() {
         try {
             return com.google.firebase.messaging.FirebaseMessaging.class != null;
@@ -232,34 +203,9 @@ public class Util {
         }
     }
 
-    public static Bitmap makeCornerRounded(Bitmap image){
-        Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
-        Canvas canvas = new Canvas(imageRounded);
-        Paint mpaint = new Paint();
-        mpaint.setAntiAlias(true);
-        mpaint.setShader(new BitmapShader(image, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
-        canvas.drawRoundRect((new RectF(0.0f, 0.0f, image.getWidth(), image.getHeight())), 10, 10, mpaint);
-        return imageRounded;
-    }
-
     public boolean isInitializationValid() {
         checkForFcmDependency();
         return true;
-    }
-
-    public static boolean isAppInForeground(Context context) {
-        List<ActivityManager.RunningTaskInfo> task =
-                ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
-                        .getRunningTasks(1);
-        if (task.isEmpty()) {
-            // app is in background
-            return false;
-        }
-        return task
-                .get(0)
-                .topActivity
-                .getPackageName()
-                .equalsIgnoreCase(context.getPackageName());
     }
 
     boolean checkForFcmDependency() {
@@ -279,25 +225,6 @@ public class Util {
         return null;
     }
 
-    public static int convertStringToDecimal(String number){
-        char[] numChar = number.toCharArray();
-        int intValue = 0;
-        int decimal = 1;
-        for(int index = numChar.length ; index > 0 ; index --){
-            if(index == 1 ){
-                if(numChar[index - 1] == '-'){
-                    return intValue * -1;
-                } else if(numChar[index - 1] == '+'){
-                    return intValue;
-                }
-            }
-            intValue = intValue + (((int)numChar[index-1] - 48) * (decimal));
-            System.out.println((int)numChar[index-1] - 48+ " " + (decimal));
-            decimal = decimal * 10;
-        }
-        return intValue;
-    }
-
     public static Drawable getApplicationIcon(Context context){
         ApplicationInfo ai;
         Drawable icon = null;
@@ -305,6 +232,7 @@ public class Util {
             ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
         } catch ( PackageManager.NameNotFoundException e ) {
             ai = null;
+            //e.printStackTrace();
         }
 
         if ( ai != null ) {
@@ -328,36 +256,15 @@ public class Util {
     }
     public static String getDeviceLanguage()
     {
+        //return Locale.getDefault().getDisplayLanguage();
         Locale locale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
         } else {
             locale = iZooto.appContext.getResources().getConfiguration().locale;
         }
+        // Log.e("lanuguage",locale.getCountry());
         return locale.getDisplayLanguage();
-
-    }
-    public static void sleepTime(int time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-        }
-    }
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static String getDeviceLanguageTag()
-    {
-        if(iZooto.appContext!=null) {
-            Locale locale;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
-                return locale.getDefault().getDisplayLanguage();
-            } else {
-                return "iz-ln";
-            }
-        }
-        else {
-            return "iz_ln";
-        }
 
     }
     public static String getIntegerToBinary(int number)
@@ -389,15 +296,108 @@ public class Util {
             return false;
         }
     }
+    public static int convertStringToDecimal(String number){
+        char[] numChar = number.toCharArray();
+        int intValue = 0;
+        int decimal = 1;
+        for(int index = numChar.length ; index > 0 ; index --){
+            if(index == 1 ){
+                if(numChar[index - 1] == '-'){
+                    return intValue * -1;
+                } else if(numChar[index - 1] == '+'){
+                    return intValue;
+                }
+            }
+            intValue = intValue + (((int)numChar[index-1] - 48) * (decimal));
+            decimal = decimal * 10;
+        }
+        return intValue;
+    }
+    public static CharSequence  makeBoldString(CharSequence title) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
+        } else {
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>"); // or for older api
+        }
+        return title;
+    }
+
+    public static CharSequence makeBlackString(CharSequence title) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
+        } else {
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>"); // or for older api
+        }
+        return title;
+    }
+    public static Bitmap makeCornerRounded(Bitmap image){
+        Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
+        Canvas canvas = new Canvas(imageRounded);
+        Paint mpaint = new Paint();
+        mpaint.setAntiAlias(true);
+        mpaint.setShader(new BitmapShader(image, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+        canvas.drawRoundRect((new RectF(0.0f, 0.0f, image.getWidth(), image.getHeight())), 10, 10, mpaint);
+        return imageRounded;
+    }
+    public static boolean isAppInForeground(Context context) {
+        List<ActivityManager.RunningTaskInfo> task =
+                ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
+                        .getRunningTasks(1);
+        if (task.isEmpty()) {
+            // app is in background
+            return false;
+        }
+        return task
+                .get(0)
+                .topActivity
+                .getPackageName()
+                .equalsIgnoreCase(context.getPackageName());
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static String getDeviceLanguageTag()
+    {
+        if(iZooto.appContext!=null) {
+            Locale locale;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
+                return locale.getDefault().getDisplayLanguage();
+            } else {
+                return "iz-ln";
+            }
+        }
+        else {
+            return "iz_ln";
+        }
+
+    }
     public static String getTime() {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
         String currentDate = sdf.format(new Date());
         return currentDate;
     }
-    public static String getCurrentDay(){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
-        Calendar calendar = Calendar.getInstance();
-        return dayFormat.format(calendar.getTime());
+    public static boolean hasHMSLibraries() {
+        return hasHMSAGConnectLibrary() && hasHMSPushKitLibrary();
+    }
+    private static boolean hasHMSAGConnectLibrary() {
+        try {
+            return com.huawei.agconnect.config.AGConnectServicesConfig.class != null;
+        } catch (NoClassDefFoundError e) {
+            return false;
+        }
+    }
+    private static boolean hasHMSPushKitLibrary() {
+        try {
+            return com.huawei.hms.aaid.HmsInstanceId.class != null;
+        } catch (NoClassDefFoundError e) {
+            return false;
+        }
+    }
+
+    public static void sleepTime(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+        }
     }
     public static String dayDifference(String currentDate, String previousDate){
         if (previousDate.isEmpty())
@@ -452,8 +452,7 @@ public class Util {
             return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + packageName + "/" + soundId);
         return null;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void setException(Context context, String exception, String className, String methodName) {
+    public static void setException(Context context, String exception, String className,String methodName) {
         if (context == null)
             return;
         try {
@@ -466,6 +465,7 @@ public class Util {
                 mapData.put(AppConstant.EXCEPTION_, "" + exception);
                 mapData.put(AppConstant.METHOD_NAME, "" + methodName);
                 mapData.put(AppConstant.ClASS_NAME, "" + className);
+                mapData.put(AppConstant.SDK,""+AppConstant.SDKVERSION);
                 mapData.put(AppConstant.ANDROIDVERSION,"" + Build.VERSION.RELEASE);
                 mapData.put(AppConstant.DEVICENAME,"" + Util.getDeviceName());
                 RestClient.postRequest(RestClient.APP_EXCEPTION_URL, mapData,null, new RestClient.ResponseHandler() {
@@ -527,12 +527,11 @@ public class Util {
             list.add(value);
         }   return list;
     }
-    public static String getTimeWithoutDate() {
+    static String getTimeWithoutDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
         String currentDate = sdf.format(new Date());
         return currentDate;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void trackClickOffline(Context context, String apiUrl, String constantValue, String rid, String cid, int click) {
         if (context == null)
             return;
@@ -569,7 +568,7 @@ public class Util {
         }
 
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
     static void trackMediation_Impression_Click(Context context, String hitName, String impressionORClickDATA) {
         if (context == null)
             return;
@@ -607,4 +606,5 @@ public class Util {
             return "App Version  is not Found";
         }
     }
+
 }
