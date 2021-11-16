@@ -12,7 +12,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 izooto_app_id:"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"// "794f882d998a83f8afa26d96c8e254f74625e4af"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
-                ]
+        ]
     }
 
     buildTypes {
@@ -38,7 +38,7 @@ android {
 dependencies {
     implementation project(path: ':izooto')
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    implementation  'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation  'com.google.firebase:firebase-messaging:23.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

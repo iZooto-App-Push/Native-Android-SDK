@@ -54,14 +54,12 @@ public class NotificationPreview {
                          String data = Util.getIntegerToBinary(payload.getCfg());
                          if (data != null && !data.isEmpty()) {
                              clickIndex = String.valueOf(data.charAt(data.length() - 2));
-                             impressionIndex = String.valueOf(data.charAt(data.length() - 1));
                              lastclickIndex = String.valueOf(data.charAt(data.length() - 3));
                              lastViewIndex = String.valueOf(data.charAt(data.length() - 3));
                              lastSeventhIndex = String.valueOf(data.charAt(data.length() - 7));
                              lastNinthIndex = String.valueOf(data.charAt(data.length() - 9));
                          } else {
                              clickIndex = "0";
-                             impressionIndex = "0";
                              lastclickIndex = "0";
                              lastViewIndex = "0";
                              lastSeventhIndex = "0";
@@ -85,8 +83,6 @@ public class NotificationPreview {
                          intent = NotificationEventManager.notificationClick(payload, payload.getLink(), payload.getAct1link(), payload.getAct2link(), AppConstant.NO, clickIndex, lastclickIndex, 100, 0);
                          Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-                       // PendingIntent pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
-                                // PendingIntent.FLAG_ONE_SHOT |PendingIntent.FLAG_IMMUTABLE |PendingIntent.FLAG_UPDATE_CURRENT);
                          PendingIntent pendingIntent=null;
                          if(Build.VERSION.SDK_INT>Build.VERSION_CODES.R) {
                              Log.e("Response","AppVersion");
@@ -140,9 +136,7 @@ public class NotificationPreview {
                              if (iZooto.bannerImage != 0)
                                  expandedView.setImageViewResource(R.id.iv_banner_ig, iZooto.bannerImage);
                          }
-
                          expandedView.setTextViewText(R.id.tv_display_time, "" + Util.getTimeWithoutDate());
-
 
                          notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId)
                                  .setSmallIcon(icon)
@@ -155,7 +149,6 @@ public class NotificationPreview {
                                  .setCustomContentView(collapsedView)
                                  .setCustomBigContentView(expandedView)
                                  .setAutoCancel(true);
-
 
                          if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                              notificationBuilder.setCustomHeadsUpContentView(collapsedView);
@@ -178,7 +171,6 @@ public class NotificationPreview {
 
                          NotificationManager notificationManager =
                                  (NotificationManager) iZooto.appContext.getSystemService(Context.NOTIFICATION_SERVICE);
-//                int notificaitionId = (int) System.currentTimeMillis();
                          int notificaitionId;
                          if (payload.getTag() != null && !payload.getTag().isEmpty())
                              notificaitionId = Util.convertStringToDecimal(payload.getTag());

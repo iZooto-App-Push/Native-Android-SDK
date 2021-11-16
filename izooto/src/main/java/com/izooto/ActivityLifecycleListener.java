@@ -34,7 +34,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
 
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
-        DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted","[Log.e]->");
+        DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         Log.e("Response","onActivityStarted");
 
 
@@ -44,7 +44,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
         iZooto.onActivityResumed(activity);
-        DebugFileManager.createExternalStoragePublic(activity,"onActivityResumed","[Log.e]->");
+        DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         Log.e("Response","onActivityResumed");
 
 
@@ -53,7 +53,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
 
     @Override
     public void onActivityPaused(@NonNull Activity activity) {
-        DebugFileManager.createExternalStoragePublic(activity,"onActivityPaused","[Log.e]->");
+        DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         Log.e("Response","onActivityPaused");
 
 
@@ -61,7 +61,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
 
     @Override
     public void onActivityStopped(@NonNull Activity activity) {
-        DebugFileManager.createExternalStoragePublic(activity,"onActivityStopped","[Log.e]->");
+        DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         Log.e("Response","onActivityStopped");
 
 
@@ -69,14 +69,14 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
 
     @Override
     public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-        DebugFileManager.createExternalStoragePublic(activity,"onActivitySaveInstanceState","[Log.e]->");
+        DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         Log.e("Response","onActivitySaveInstanceState");
 
     }
 
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
-        DebugFileManager.createExternalStoragePublic(activity,"onActivityDestroyed","[Log.e]->");
+        DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         Log.e("Response","onActivityDestroyed");
 
     }

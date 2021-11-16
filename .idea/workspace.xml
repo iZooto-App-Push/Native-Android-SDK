@@ -6,7 +6,8 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="R" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
@@ -15,44 +16,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e526a21-7e02-402a-a6d1-94a81cce592b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____izooto_libs_MiPush_SDK_Client_4_8_3_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_experimental_1_1_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_startup_startup_runtime_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_work_work_runtime_ktx_2_7_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_1_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_cloud_messaging_17_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_gson_gson_2_8_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_messaging_23_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_guava_listenablefuture_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_agconnect_agconnect_core_1_0_0_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hmf_tasks_1_4_1_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_availableupdate_4_0_4_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_base_4_0_4_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_device_4_0_4_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_log_4_0_4_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_network_common_4_0_2_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_network_grs_4_0_2_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_opendevice_5_0_0_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_push_5_0_0_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_stats_4_0_4_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_ui_4_0_4_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_update_2_0_6_300_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_annotations_13_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlin_kotlin_stdlib_1_5_30.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlin_kotlin_stdlib_common_1_5_30.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlin_kotlin_stdlib_jdk7_1_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlin_kotlin_stdlib_jdk8_1_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlinx_kotlinx_coroutines_android_1_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlinx_kotlinx_coroutines_core_jvm_1_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/DatabaseHandler/DatabaseHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/DebugFileManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/HMSTokenGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/HMSTokenListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/XiaomiPushReceiver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/XiaomiSDKHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/XiaomiSDKHandlerListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/XiaomiTokenListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/xml/provider_path.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
@@ -64,409 +27,45 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_2_4_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_2_4_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_experimental_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_experimental_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_experimental_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_3_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_3_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_1_0_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_1_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_work_work_runtime_2_7_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cardview_cardview_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cardview_cardview_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_2_0_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_2_0_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_2_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_2_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_5_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_5_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_dynamicanimation_dynamicanimation_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_dynamicanimation_dynamicanimation_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_3_6_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_3_6_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_utils_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_utils_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_utils_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_v4_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_v4_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_v4_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_3_1_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_3_1_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_3_1_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_3_1_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_3_1_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_3_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_savedstate_2_3_1_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_savedstate_2_3_1_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_6_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_savedstate_savedstate_1_1_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_savedstate_savedstate_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_savedstate_savedstate_1_1_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_core_1_4_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_core_1_4_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_core_3_4_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_core_3_4_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_idling_resource_3_4_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_espresso_espresso_idling_resource_3_4_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_ext_junit_1_1_3_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_ext_junit_1_1_3_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_monitor_1_4_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_monitor_1_4_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_runner_1_4_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_runner_1_4_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_services_storage_1_4_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_test_services_storage_1_4_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_0_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_2_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_2_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_1_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_1_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager2_viewpager2_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager2_viewpager2_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_datatransport_transport_api_3_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_datatransport_transport_api_3_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_datatransport_transport_backend_cct_3_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_datatransport_transport_backend_cct_3_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_datatransport_transport_runtime_3_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_datatransport_transport_runtime_3_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_0_1_aar 2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_1_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_2_1_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_3_1_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_3_1_aar2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_3_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_3_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_savedstate_2_3_1_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_savedstate_2_3_1_aar2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_savedstate_2_3_1_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_savedstate_2_3_1_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_media_media_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_ads_identifier_17_0_1_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_0_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_cloud_messaging_16_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_cloud_messaging_16_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_stats_17_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar 2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_tasks_17_0_0_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_0_0_aar 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_4_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_4_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_common_20_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_common_20_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_components_17_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_components_17_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_datatransport_18_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_datatransport_18_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_encoders_json_18_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_encoders_json_18_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_iid_interop_17_1_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_iid_interop_17_1_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_installations_17_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_installations_17_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_installations_interop_17_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_installations_interop_17_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_19_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_measurement_connector_19_0_0_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_messaging_22_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_messaging_22_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_0_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_basement_17_0_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_gms_play_services_cloud_messaging_16_0_0_aar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_firebase_firebase_messaging_22_0_0_aar.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/androidHotfix.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/androidHotfix.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-anydpi-v21/cancel 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-anydpi-v21/cancel.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-anydpi-v21/ic_baseline_share_24.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-anydpi-v21/ic_launcher_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-anydpi-v21/ic_notifications_black_24dp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-anydpi-v24/ic_launcher_foreground.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-hdpi/cancel 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-hdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-hdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-hdpi/ic_launcher_background 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-hdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-hdpi/ic_notifications_black_24dp 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-hdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-ldpi/cancel 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-ldpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-ldpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-ldpi/ic_launcher_background 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-ldpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-ldpi/ic_notifications_black_24dp 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-ldpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-mdpi/cancel 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-mdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-mdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-mdpi/ic_launcher_background 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-mdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-mdpi/ic_notifications_black_24dp 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-mdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xhdpi/cancel 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xhdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xhdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xhdpi/ic_launcher_background 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xhdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xhdpi/ic_notifications_black_24dp 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xhdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxhdpi/cancel 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxhdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxhdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxhdpi/ic_launcher_background 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxhdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxhdpi/ic_notifications_black_24dp 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxhdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxxhdpi/cancel 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxxhdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxxhdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxxhdpi/ic_launcher_background 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxxhdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxxhdpi/ic_notifications_black_24dp 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/res/pngs/debug/drawable-xxxhdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/source/buildConfig/debug/com/izooto/BuildConfig 2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/generated/source/buildConfig/debug/com/izooto/BuildConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata 2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/aar_metadata/debug/aar-metadata 3.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/aar_metadata/debug/aar-metadata.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/annotation_processor_list/debug/annotationProcessors 3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/annotation_processor_list/debug/annotationProcessors.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/compile_symbol_list/debug/R 2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/compile_symbol_list/debug/R.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/mergeDebugJniLibFolders/merger 3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/mergeDebugJniLibFolders/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/mergeDebugShaders/merger 3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/mergeDebugShaders/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/packageDebugAssets/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/packageDebugResources/compile-file-map 2.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/packageDebugResources/merged.dir/values/values 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/packageDebugResources/merged.dir/values/values.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/packageDebugResources/merger 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/incremental/packageDebugResources/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/library_manifest/debug/AndroidManifest 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/library_manifest/debug/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/local_only_symbol_list/debug/R-def 2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/local_only_symbol_list/debug/R-def.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report 2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/navigation_json/debug/navigation 3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/navigation_json/debug/navigation.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_manifests/debug/output-metadata 3.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_manifests/debug/output-metadata.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-anydpi-v21/cancel 3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-anydpi-v21/cancel.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-anydpi-v21/ic_baseline_share_24.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-anydpi-v21/ic_launcher_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-anydpi-v21/ic_notifications_black_24dp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-anydpi-v24/ic_launcher_foreground.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-hdpi-v4/cancel 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-hdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-hdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-hdpi-v4/ic_launcher_background 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-hdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-hdpi-v4/ic_notifications_black_24dp 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-hdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-ldpi-v4/cancel 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-ldpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-ldpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-ldpi-v4/ic_launcher_background 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-ldpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-ldpi-v4/ic_notifications_black_24dp 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-ldpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-mdpi-v4/cancel 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-mdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-mdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-mdpi-v4/ic_launcher_background 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-mdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-mdpi-v4/ic_notifications_black_24dp 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-mdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xhdpi-v4/cancel 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xhdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xhdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xhdpi-v4/ic_launcher_background 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xhdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xhdpi-v4/ic_notifications_black_24dp 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xhdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxhdpi-v4/cancel 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxhdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxhdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxhdpi-v4/ic_launcher_background 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxhdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxhdpi-v4/ic_notifications_black_24dp 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxhdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/cancel 4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/ic_launcher_background 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/ic_notifications_black_24dp 2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable/black_bg_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable/gradient_bg.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable/roundned_corner 3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable/roundned_corner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable/transparent_image 3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/drawable/transparent_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/layout/activity_webview.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/layout/layout_custom_notification.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/layout/layout_custom_notification_expand.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/layout/remote_view.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/layout/remote_view_expands.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/menu/menu_main 3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/menu/menu_main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher 3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher_round 3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-hdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-hdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-mdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-mdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-xhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-xhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-xxhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-xxhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-xxxhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/mipmap-xxxhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/values/values 2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/packaged_res/debug/values/values.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/public_res/debug/public.txt" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoHmsMessagingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/symbol_list_with_package_name/debug/package-aware-r 2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 2/outputs/logs/manifest-merger-debug-report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-anydpi-v21/cancel.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-anydpi-v21/ic_baseline_share_24.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-anydpi-v21/ic_launcher_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-anydpi-v21/ic_notifications_black_24dp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-anydpi-v24/ic_launcher_foreground.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-hdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-hdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-hdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-hdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-ldpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-ldpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-ldpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-ldpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-mdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-mdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-mdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-mdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xhdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xhdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xhdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xhdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xxhdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xxhdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xxhdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xxhdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xxxhdpi/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xxxhdpi/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xxxhdpi/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/res/pngs/debug/drawable-xxxhdpi/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/generated/source/buildConfig/debug/com/izooto/BuildConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/aar_metadata/debug/aar-metadata.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/annotation_processor_list/debug/annotationProcessors.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/compile_symbol_list/debug/R.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/incremental/mergeDebugJniLibFolders/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/incremental/mergeDebugShaders/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/incremental/packageDebugAssets/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/incremental/packageDebugResources/merged.dir/values/values.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/incremental/packageDebugResources/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/library_manifest/debug/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/local_only_symbol_list/debug/R-def.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/navigation_json/debug/navigation.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_manifests/debug/output-metadata.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-anydpi-v21/cancel.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-anydpi-v21/ic_baseline_share_24.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-anydpi-v21/ic_launcher_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-anydpi-v21/ic_notifications_black_24dp.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-anydpi-v24/ic_launcher_foreground.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-hdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-hdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-hdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-hdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-ldpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-ldpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-ldpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-ldpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-mdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-mdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-mdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-mdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xhdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xhdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xhdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xhdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xxhdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xxhdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xxhdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xxhdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/ic_baseline_share_24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/ic_launcher_background.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable-xxxhdpi-v4/ic_notifications_black_24dp.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable/black_bg_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable/gradient_bg.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable/roundned_corner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/drawable/transparent_image.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/layout/activity_webview.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/layout/layout_custom_notification.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/layout/layout_custom_notification_expand.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/layout/remote_view.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/layout/remote_view_expands.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/menu/menu_main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-hdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-hdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-mdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-mdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-xhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-xhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-xxhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-xxhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-xxxhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/mipmap-xxxhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/packaged_res/debug/values/values.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/public_res/debug/public.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build 4/outputs/logs/manifest-merger-debug-report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/proguard-rules.pro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ActivityLifecycleListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ActivityLifecycleListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AdMediation.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AdMediation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/FCMTokenGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/FCMTokenGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationCustomView.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationPreview.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Payload.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Payload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationPreview.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationPreview.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ShortpayloadConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ShortpayloadConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoMessagingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoMessagingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoWebViewActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoWebViewActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TargetActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TargetActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[12211JECB06549]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[ZY3228V9B7]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -550,7 +149,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DEBUGGABLE_DEVICE" value="google-pixel_4a__5g_-12211JECB06549" />
+    <property name="DEBUGGABLE_DEVICE" value="motorola-moto_g__5s_-ZY3228V9B7" />
     <property name="DEBUGGABLE_PROCESS" value="com.app.izoototest" />
     <property name="DEBUGGER_ID" value="Auto" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="YBH9K20913900804" />
@@ -569,8 +168,8 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="recommended.upgrade.last.time.stamp" value="1612273968475" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
+    <property name="recommended.upgrade.last.time.stamp" value="1637064338760" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="PsdUISettings">
@@ -890,6 +489,22 @@
     <MESSAGE value="&#10;Gradle file handled" />
     <MESSAGE value="&#10;Uploaded the bintray module" />
     <option name="LAST_COMMIT_MESSAGE" value="&#10;Uploaded the bintray module" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/AdMediation.java</url>
+          <line>1451</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/izooto/src/main/java/com/izooto/AdMediation.java</url>
+          <line>1550</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="masterDetails">
     <states>

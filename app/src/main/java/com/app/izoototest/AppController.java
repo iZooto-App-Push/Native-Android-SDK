@@ -5,11 +5,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
-
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.izooto.NotificationWebViewListener;
 import com.izooto.iZooto;
 import com.izooto.NotificationHelperListener;

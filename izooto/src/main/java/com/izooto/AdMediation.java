@@ -1337,7 +1337,7 @@ public class AdMediation {
                 if(successList.size()>0) {
                     long end = System.currentTimeMillis();
                     JSONObject finalData = new JSONObject();
-                    finalData.put("pid", payload1.getKey());
+                    finalData.put("pid",PreferenceUtil.getInstance(iZooto.appContext).getiZootoID(AppConstant.APPPID));
                     finalData.put("rid", payload1.getRid());
                     finalData.put("type", payload1.getAd_type());
                     finalData.put("ta", (end - payload1.getStartTime()));
@@ -1429,7 +1429,7 @@ public class AdMediation {
             try {
                 long end = System.currentTimeMillis();
                 JSONObject finalData = new JSONObject();
-                finalData.put("pid", payload.getKey());
+                finalData.put("pid",PreferenceUtil.getInstance(iZooto.appContext).getiZootoID(AppConstant.APPPID));
                 finalData.put("rid", payload.getRid());
                 finalData.put("type", payload.getAd_type());
                 finalData.put("ta", (end - payload.getStartTime()));
@@ -1510,7 +1510,7 @@ public class AdMediation {
             if(payload1.getTitle()!=null && !payload1.getTitle().equalsIgnoreCase("")) {
                 long end = System.currentTimeMillis();
                 JSONObject finalData=new JSONObject();
-                finalData.put("pid",payload1.getKey());
+                finalData.put("pid",PreferenceUtil.getInstance(iZooto.appContext).getiZootoID(AppConstant.APPPID));
                 finalData.put("rid",payload1.getRid());
                 finalData.put("type",payload1.getAd_type());
                 finalData.put("ta",(end-payload1.getStartTime()));

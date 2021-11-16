@@ -48,35 +48,7 @@ public class TargetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // Intent intent =getIntent();
         context=TargetActivity.this;
-        Log.e("Response","TargetActivity");
-//        getBundleData(TargetActivity.this,intent);
-//        Log.e("MURL",langingURL);
-//        try {
-//            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(TargetActivity.this);
-//            if (clickIndex.equalsIgnoreCase("1")) {
-//                String clkURL;
-//                int dataCfg = Util.getBinaryToDecimal(cfg);
-//
-//                if (dataCfg > 0) {
-//                    clkURL = "https://clk" + dataCfg + ".izooto.com/clk" + dataCfg;
-//                } else {
-//                    clkURL = RestClient.NOTIFICATIONCLICK;
-//                }
-//
-//                NotificationActionReceiver.notificationClickAPI(TargetActivity.this, clkURL, cid, rid, btnCount, -1, pushType);
-//            }
-//        }catch (Exception ex)
-//        {
-//
-//        }
-//
-//        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(langingURL));
-//        browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-//        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(browserIntent);
-//        finish();
         if(context!=null) {
             Intent intent =getIntent();
             context=TargetActivity.this;
@@ -85,7 +57,6 @@ public class TargetActivity extends AppCompatActivity {
             if(Build.VERSION.SDK_INT <Build.VERSION_CODES.R) {
                 context.sendBroadcast(it);
             }
-Log.e("MURL",langingURL);
             getBundleData(context, intent);
             mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
             getBundleData(context, intent);

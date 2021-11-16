@@ -474,18 +474,23 @@ public class NotificationEventManager {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
             if (Util.isAppInForeground(iZooto.appContext)){
                 if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)){
-                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)== PushTemplate.TEXT_OVERLAY)
+                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)== PushTemplate.TEXT_OVERLAY) {
                         NotificationPreview.receiveCustomNotification(payload);
-                    else
+                    }
+
+                    else {
                         receivedNotification(payload);
+                    }
                 }else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)){
                     showAlert(payload);
                 }
             }else {
-                if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)==PushTemplate.TEXT_OVERLAY)
+                if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)==PushTemplate.TEXT_OVERLAY) {
                     NotificationPreview.receiveCustomNotification(payload);
-                else
+                }
+                else {
                     receivedNotification(payload);
+                }
             }
         }
     }    public static void receiveAds(final Payload payload){
