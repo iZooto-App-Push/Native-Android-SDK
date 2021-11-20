@@ -4,9 +4,11 @@ package com.izooto;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +26,7 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -61,6 +64,29 @@ public class Util {
 
     private static String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
     private static int CIPHER_KEY_LEN = 16;
+    private static final String SERVICE_ACTION = "android.support.customtabs.action.CustomTabsService";
+    private static final String CHROME_PACKAGE = "com.android.chrome";
+    public enum SchemaType {
+        DATA("data"),
+        HTTPS("https"),
+        HTTP("http"),
+        ;
+
+        private final String text;
+
+        SchemaType(final String text) {
+            this.text = text;
+        }
+
+        public static SchemaType fromString(String text) {
+            for (SchemaType type : SchemaType.values()) {
+                if (type.text.equalsIgnoreCase(text)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+    }
 
     public static String decrypt(String key, String data) {
         try {
@@ -392,7 +418,32 @@ public class Util {
             return false;
         }
     }
+    private static boolean hasBrowserLibrary(Context context) {
+        try {
+           if(isChromeCustomTabsSupported(context))
+           {
+               return true;
+           }
+           else
+           {
+               return false;
 
+           }
+        } catch (NoClassDefFoundError e) {
+            return false;
+        }
+    }
+
+     static boolean isChromeCustomTabsSupported(@NonNull final Context context) {
+        try
+        {
+            return true;
+        }
+        catch (Exception ex)
+        {
+        return false;
+        }
+    }
     public static void sleepTime(int time) {
         try {
             Thread.sleep(time);
@@ -606,5 +657,46 @@ public class Util {
             return "App Version  is not Found";
         }
     }
-
+    @NonNull
+    static Intent openURLInBrowserIntent(@NonNull Uri uri) {
+        SchemaType type = uri.getScheme() != null ? SchemaType.fromString(uri.getScheme()) : null;
+        if (type == null) {
+            type = SchemaType.HTTP;
+            if (!uri.toString().contains("://")) {
+                uri = Uri.parse("http://" + uri.toString());
+            }
+        }
+        Intent intent;
+        switch (type) {
+            case DATA:
+                intent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER);
+                intent.setData(uri);
+                break;
+            case HTTPS:
+            case HTTP:
+            default:
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                break;
+        }
+        intent.addFlags(
+                Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK
+        );
+        return intent;
+    }
+    @SuppressWarnings("ConstantConditions")
+    public static void setPackageNameFromResolveInfoList(Context context, Intent launchIntent) {
+        List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(launchIntent, 0);
+        if (resolveInfoList != null) {
+            String appPackageName = context.getPackageName();
+            for (ResolveInfo resolveInfo : resolveInfoList) {
+                if (appPackageName.equals(resolveInfo.activityInfo.packageName)) {
+                    launchIntent.setPackage(appPackageName);
+                    break;
+                }
+            }
+        }
+    }
 }

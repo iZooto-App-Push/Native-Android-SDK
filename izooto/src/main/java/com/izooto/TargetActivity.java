@@ -14,6 +14,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,10 +54,9 @@ public class TargetActivity extends AppCompatActivity {
             Intent intent =getIntent();
             context=TargetActivity.this;
             getBundleData(TargetActivity.this,intent);
-            Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-            if(Build.VERSION.SDK_INT <Build.VERSION_CODES.R) {
-                context.sendBroadcast(it);
-            }
+            String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
+            Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
+            context.sendBroadcast(it);
             getBundleData(context, intent);
             mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
             getBundleData(context, intent);
@@ -73,7 +73,6 @@ public class TargetActivity extends AppCompatActivity {
                     }
 
                     notificationClickAPI(context, clkURL, cid, rid, btnCount, -1,pushType);
-
                     String lastEighthIndex = "0";
                     String lastTenthIndex = "0";
                     String dataInBinary = Util.getIntegerToBinary(cfg);
@@ -197,9 +196,9 @@ public class TargetActivity extends AppCompatActivity {
 
 
                                 } else {
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    context.startActivity(browserIntent);
+                                    CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder().build();
+                                    customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    customTabsIntent.launchUrl(iZooto.appContext, Uri.parse(mUrl));
                                     finish();
                                 }
 

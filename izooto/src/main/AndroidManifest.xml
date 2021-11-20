@@ -45,6 +45,8 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="actionBtnOne" />
                 <action android:name="actionBtnTwo" />
+                <action android:name="android.intent.action.VIEW" />
+
             </intent-filter>
         </receiver>
         <service

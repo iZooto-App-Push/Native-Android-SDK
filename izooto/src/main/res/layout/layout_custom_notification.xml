@@ -35,9 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:textSize="13sp"
                 android:textColor="@color/notificationMBg"
-                style="@style/TextAppearance.Compat.Notification.Info"
+                style="@style/TextAppearance.Compat.Notification.Title"
                 android:ellipsize="end"
                 android:maxLines="2"/>
         </LinearLayout>
@@ -47,10 +46,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:text="3:45 PM"
+        android:text=""
         android:textColor="@color/notificationMBg"
         android:layout_marginRight="10dp"
-        style="@style/TextAppearance.Compat.Notification.Info"
-        android:textSize="11sp"/>
+        style="@style/TextAppearance.Compat.Notification.Title"
+       />
 
 </LinearLayout>

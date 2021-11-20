@@ -47,7 +47,6 @@ import java.util.Objects;
 public class iZootoMessagingService extends FirebaseMessagingService {
     private  Payload payload = null;
     private final String Name="iZootoMessagingService";
-    private static Bitmap bitmap;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -56,6 +55,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 Log.v("Push Type","fcm");
                 Map<String, String> data = remoteMessage.getData();
                 handleNow(data);
+                Log.e("PayloadData",data.toString());
             }
             if (remoteMessage.getNotification() != null) {
                 sendNotification(remoteMessage);

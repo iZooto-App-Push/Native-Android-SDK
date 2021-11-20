@@ -1,25 +1,33 @@
 package com.izooto;
 
+import static com.izooto.Util.openURLInBrowserIntent;
+
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
 
@@ -45,26 +53,16 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     public  static  String medClick="";
     private String pushType;
     private int cfg;
-    @SuppressLint("MissingPermission")
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onReceive(Context context, Intent intent) {
         if(context!=null) {
-
-            Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-           if(Build.VERSION.SDK_INT <Build.VERSION_CODES.R) {
-               context.sendBroadcast(it);
-           }
-//           if(Build.VERSION.SDK_INT>Build.VERSION_CODES.R)
-//           {
-//
-//
-//           }
-//           else
-//           {
-//               Log.e("Response","Below Android 12");
-//           }
-
+            String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
+            Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
+            if(Build.VERSION.SDK_INT<Build.VERSION_CODES.S) {
+                context.sendBroadcast(it);
+            }
             getBundleData(context, intent);
             mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
             getBundleData(context, intent);
@@ -194,20 +192,38 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     try {
                         if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                             if(mUrl!=null && !mUrl.isEmpty()) {
+                                    openURLInBrowser(mUrl);
+                               // }
 
-                                if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
-                                    String url = "https://" + mUrl;
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                    browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    context.startActivity(browserIntent);
+//                                if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
+//                                    String url = "https://" + mUrl;
+//                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                                    browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+//                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                    context.startActivity(browserIntent);
+//
+//
+//                                } else {
+//
+//                                   if(isChromeCustomTabsSupported(iZooto.appContext)) {
+//                                       Log.e("OpenBrowser","Browser");
+//
+//                                       CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder().build();
+//                                       customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                       customTabsIntent.launchUrl(iZooto.appContext, Uri.parse(mUrl));
+//                                   }
+//                                   else
+//                                   {
+//                                       Log.e("OpenBrowser","Browser1");
+//
+//                                       Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+//                                       browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                        context.startActivity(browserIntent);
+//                                   }
+//
+//
 
-
-                                } else {
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    context.startActivity(browserIntent);
-                                }
+                              //  }
 
                             }
 
@@ -235,6 +251,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
 
     }
+    static void openURLInBrowser(@NonNull String url) {
+        openURLInBrowser(Uri.parse(url.trim()));
+    }
+    private static void openURLInBrowser(@NonNull Uri uri) {
+        Intent intent = openURLInBrowserIntent(uri);
+        iZooto.appContext.startActivity(intent);
+    }
+
+
     static void lastClickAPI(Context context, String lciURL, String rid, int i){
         if (context == null)
             return;
@@ -487,4 +512,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
         }
     }
+
+
+
 }
