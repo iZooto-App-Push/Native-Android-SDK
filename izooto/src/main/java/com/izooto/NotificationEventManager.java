@@ -277,9 +277,10 @@ public class NotificationEventManager {
     }
 
     static void processPayload(final Payload payload) {
+
         if(payload!=null) {
             String fetchURL=fetchURL(payload.getFetchURL());
-            RestClient.getRequest(fetchURL,5000, new RestClient.ResponseHandler() {
+            RestClient.get(fetchURL, new RestClient.ResponseHandler() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onSuccess(String response) {
@@ -294,21 +295,13 @@ public class NotificationEventManager {
 
                             } else if (json instanceof JSONArray) {
                                 JSONArray jsonArray = new JSONArray(response);
-                                if(jsonArray.getJSONObject(0).getString("msgCode").equalsIgnoreCase("Campaign Not Found"))
-                                {
-                                    String fallBackURL = AdMediation.callFallbackAPI(payload);
-                                    AdMediation.ShowFallBackResponse(fallBackURL, payload);
-                                }
-                                else
-                                {
-                                    JSONObject jsonObject = new JSONObject();
-                                    jsonObject.put("", jsonArray);
-                                    parseJson(payload, jsonObject);
-                                }
-
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("", jsonArray);
+                                parseJson(payload, jsonObject);
                             }
                         } catch (JSONException e) {
                             DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Fetcher"+e.toString()+response,"[Log.e]->");
+
                             String fallBackURL = AdMediation.callFallbackAPI(payload);
                             AdMediation.ShowFallBackResponse(fallBackURL, payload);
                         }
@@ -323,7 +316,6 @@ public class NotificationEventManager {
 
                     String fallBackURL = AdMediation.callFallbackAPI(payload);
                     AdMediation.ShowFallBackResponse(fallBackURL, payload);
-                    Log.e("Response1",response);
 
 
                 }
@@ -347,52 +339,53 @@ public class NotificationEventManager {
         }
     }
 
-    private static void parseJson(Payload payload, JSONObject jsonObject) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    static void parseJson(Payload payload, JSONObject jsonObject) {
         try {
-
-
-            payload.setTitle(getParsedValue(jsonObject, payload.getTitle()));
-
-
-
-
-
-            payload.setLink(getParsedValue(jsonObject, payload.getLink()));
+            if(payload.getLink()!=null && !payload.getLink().isEmpty())
+                payload.setLink(getParsedValue(jsonObject, payload.getLink().replace("~","")));
             if (!payload.getLink().startsWith("http://") && !payload.getLink().startsWith("https://")) {
                 String url = payload.getLink();
-                url = "http://" + url;
+                url = "https://" + url;
                 payload.setLink(url);
 
             }
-            payload.setBanner(getParsedValue(jsonObject, payload.getBanner()));
-            payload.setMessage(getParsedValue(jsonObject, payload.getMessage()));
-            payload.setIcon(getParsedValue(jsonObject, payload.getIcon()));
-            payload.setAct1name(getParsedValue(jsonObject,payload.getAct1name()));
-            payload.setAct1link(getParsedValue(jsonObject,payload.getAct1link()));
+            if(payload.getTitle()!=null && !payload.getTitle().isEmpty())
+                payload.setTitle(getParsedValue(jsonObject, payload.getTitle().replace("~","")));
+            if(payload.getMessage()!=null && !payload.getMessage().isEmpty())
+                payload.setMessage(getParsedValue(jsonObject, payload.getMessage().replace("~","")));
+            if(payload.getBanner()!=null && !payload.getBanner().isEmpty())
+                payload.setBanner(getParsedValue(jsonObject, payload.getBanner().replace("~","")));
+            if(payload.getIcon()!=null && !payload.getIcon().isEmpty())
+                payload.setIcon(getParsedValue(jsonObject, payload.getIcon().replace("~","")));
+            if(payload.getAct1name()!=null && !payload.getAct1name().isEmpty())
+                payload.setAct1name(payload.getAct1name().replace("~",""));
+
+            payload.setAct1link(getParsedValue(jsonObject,payload.getAct1link()).replace("~",""));
             if (!payload.getAct1link().startsWith("http://") && !payload.getAct1link().startsWith("https://")) {
                 String url = payload.getAct1link();
-                url = "http://" + url;
+                url = "https://" + url;
                 payload.setAct1link(url);
 
             }
+
             payload.setAp("");
             payload.setInapp(0);
             if(payload.getTitle()!=null && !payload.getTitle().equalsIgnoreCase("")) {
-                showNotification(payload);
-                Log.v("Notification Send","Yes");
+                receiveAds(payload);
+                AdMediation.ShowClickAndImpressionData(payload);
+
             }
             else {
-                Log.v("Notification Send","No");
+                String fallBackURL = AdMediation.callFallbackAPI(payload);
+                AdMediation.ShowFallBackResponse(fallBackURL, payload);
             }
-
 
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("Exception ",e.toString());
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,e.toString(),"[Log-> e]->fetcherPayloadResponse");
         }
     }
-
     private static String getParsedValue(JSONObject jsonObject, String sourceString) {
         try {
             if (sourceString.startsWith("~"))

@@ -37,8 +37,8 @@
             android:layout_gravity="right">
             <ImageView
                 android:id="@+id/iv_share_icon"
-                android:layout_width="17dp"
-                android:layout_height="17dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/ic_baseline_share_24"
                 tools:ignore="VectorDrawableCompat" />
 

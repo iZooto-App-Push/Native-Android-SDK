@@ -109,6 +109,7 @@ private static void init(Builder builder) {
                         super.onSuccess(response);
                         if (!response.isEmpty() && response.length() > 20 && response != null) {
                             try {
+
                                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                                 JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
                                 senderId = jsonObject.getString(AppConstant.SENDERID);
@@ -119,6 +120,7 @@ private static void init(Builder builder) {
                                 String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
                                 mIzooToAppId = jsonObject.optString(APPPID);
                                 preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
+                                Log.e("JSONObject",jsonObject.toString());
                                 trackAdvertisingId();
                                 if(!mKey.isEmpty() && !mId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_XIAOMI_TOKEN)){
                                     XiaomiSDKHandler xiaomiSDKHandler = new XiaomiSDKHandler(iZooto.appContext, mId, mKey);
