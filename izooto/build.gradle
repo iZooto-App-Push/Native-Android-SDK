@@ -34,7 +34,7 @@ dependencies {
     testImplementation 'org.testng:testng:7.3.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
-    api 'androidx.browser:browser:1.4.0'
+    compileOnly 'androidx.browser:browser:1.4.0'
 
 
 }
