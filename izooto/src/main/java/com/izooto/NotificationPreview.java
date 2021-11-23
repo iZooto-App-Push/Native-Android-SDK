@@ -131,7 +131,6 @@ public class NotificationPreview {
                                  .setContentIntent(pendingIntent)
                                  .setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_SOUND).setVibrate(new long[]{1000, 1000})
                                  .setSound(defaultSoundUri)
-                                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                                  .setVisibility(lockScreenVisibility)
                                  .setCustomContentView(collapsedView)
                                  .setCustomBigContentView(expandedView)
@@ -175,7 +174,6 @@ public class NotificationPreview {
                              expandedView.setTextViewText(R.id.tv_btn1, "" + button1);
                              String phone = NotificationEventManager.getPhone(payload.getAct1link());
                              Intent btn1 = cnotificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastclickIndex, notificaitionId, 1);
-                            // PendingIntent pendingIntent1 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                              if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                                  btn1.setPackage(Util.getPackageName(iZooto.appContext));
 
@@ -204,7 +202,6 @@ public class NotificationPreview {
                              expandedView.setTextViewText(R.id.tv_btn2, "" + button2);
                              String phone = NotificationEventManager.getPhone(payload.getAct2link());
                              Intent btn2 = NotificationEventManager.notificationClick(payload, payload.getAct2link(), payload.getLink(), payload.getAct1link(), phone, clickIndex, lastclickIndex, notificaitionId, 2);
-                            // PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                              if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                                  btn2.setPackage(Util.getPackageName(iZooto.appContext));
@@ -220,16 +217,9 @@ public class NotificationPreview {
                              expandedView.setOnClickPendingIntent(R.id.tv_btn2, pendingIntent);
                          }
 
-//                if (payload.getSi() == 1){
-//                    expandedView.setViewVisibility(R.id.ll_share_notification,0);
-//                    if (!payload.getsIcon().isEmpty() && shareIcon != null)
-//                        expandedView.setImageViewBitmap(R.id.iv_share_icon, shareIcon);
-//                    if (!payload.getsText().isEmpty())
-//                        expandedView.setTextViewText(R.id.tv_share_icon, ""+payload.getsText());
-//                    Intent intentShareBtn = notificationClick(payload, payload.getLink(), payload.getAct1link(), payload.getAct2link(), AppConstant.NO, clickIndex, lastclickIndex, notificaitionId,3);
-//                    PendingIntent sendPendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), intentShareBtn, PendingIntent.FLAG_UPDATE_CURRENT);
+//
                          expandedView.setOnClickPendingIntent(R.id.ll_share_notification, shareNotification(payload.getLink()));
-//                }
+//
                          assert notificationManager != null;
                          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                              NotificationChannel channel;
@@ -244,7 +234,6 @@ public class NotificationPreview {
                                          AppConstant.CHANNEL_NAME, priority);
                              }
 
-                             //To set custom notification sound
 
                              if (iZooto.soundID != null) {
                                  priority = NotificationManagerCompat.IMPORTANCE_HIGH;

@@ -164,12 +164,13 @@ public class NotificationEventManager {
                             preferenceUtil.setStringData(AppConstant.NOTIFICATION_DUPLICATE, jsonArray.toString());
                         }
                     } catch (Exception ex) {
-                        Log.v("AdException", ex.toString());
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,ex.toString(),"[Log.e]->");
                     }
 
                 }
             } catch (Exception ex) {
-                Log.v("AdPush", ex.toString());
+                DebugFileManager.createExternalStoragePublic(iZooto.appContext,ex.toString(),"[Log.e]->");
+
             }
         }
 
@@ -269,7 +270,7 @@ public class NotificationEventManager {
 
 
             } catch (Exception ex) {
-                Log.v("Data", "0" + ex.toString());
+                DebugFileManager.createExternalStoragePublic(iZooto.appContext,ex.toString(),"[Log.e]->");
 
             }
         }
@@ -468,7 +469,14 @@ public class NotificationEventManager {
             if (Util.isAppInForeground(iZooto.appContext)){
                 if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)){
                     if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)== PushTemplate.TEXT_OVERLAY) {
-                        NotificationPreview.receiveCustomNotification(payload);
+                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+                            receivedNotification(payload);
+
+                        }
+                        else
+                        {
+                            NotificationPreview.receiveCustomNotification(payload);
+                        }
                     }
 
                     else {
@@ -479,7 +487,13 @@ public class NotificationEventManager {
                 }
             }else {
                 if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)==PushTemplate.TEXT_OVERLAY) {
-                    NotificationPreview.receiveCustomNotification(payload);
+                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+                        receivedNotification(payload);
+                    }
+                    else
+                    {
+                        NotificationPreview.receiveCustomNotification(payload);
+                    }
                 }
                 else {
                     receivedNotification(payload);
@@ -540,24 +554,14 @@ public class NotificationEventManager {
 
                 PendingIntent pendingIntent=null;
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-//                    if (Util.isAppInForeground(iZooto.appContext)) {
-//                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
-//                                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-//                    } else {
-                        Log.e("Response","AppVersion1");
-
                         pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
                                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-                   // }
+
                 }
                 else {
-                    Log.e("Response","AppVersion2");
-
                     pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
                             PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                 }
-
-
                 notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId)
                         .setSmallIcon(icon)
                         .setContentTitle(payload.getTitle())
@@ -640,7 +644,6 @@ public class NotificationEventManager {
                 if (payload.getAct1name() != null && !payload.getAct1name().isEmpty()) {
                     String phone = getPhone(payload.getAct1link());
                     Intent btn1 = notificationClick(payload,payload.getAct1link(),payload.getLink(),payload.getAct2link(),phone,clickIndex,lastView_Click,notificationId,1);
-                  //  PendingIntent pendingIntent1=null;
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn1.setPackage(Util.getPackageName(iZooto.appContext));
 
@@ -663,13 +666,10 @@ public class NotificationEventManager {
 
 
                 if (payload.getAct2name() != null && !payload.getAct2name().isEmpty()) {
-//                    btn2.setAction(AppConstant.ACTION_BTN_TWO);
                     String phone = getPhone(payload.getAct2link());
                     Intent btn2 = notificationClick(payload,payload.getAct2link(),payload.getLink(),payload.getAct1link(),phone,clickIndex,lastView_Click,notificationId,2);
-                   // PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn2.setPackage(Util.getPackageName(iZooto.appContext));
-
                         pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                     }
@@ -1006,7 +1006,6 @@ public class NotificationEventManager {
                 if (payload.getAct1name() != null && !payload.getAct1name().isEmpty()) {
                     String phone = getPhone(payload.getAct1link());
                     Intent btn1 = notificationClick(payload,payload.getAct1link(),payload.getLink(),payload.getAct2link(),phone,clickIndex,lastView_Click,notificationID,1);
-                   // PendingIntent pendingIntent1 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT |PendingIntent.FLAG_IMMUTABLE);
 
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn1.setPackage(Util.getPackageName(iZooto.appContext));
@@ -1030,8 +1029,6 @@ public class NotificationEventManager {
                 if (payload.getAct2name() != null && !payload.getAct2name().isEmpty()) {
                     String phone = getPhone(payload.getAct2link());
                     Intent btn2 = notificationClick(payload,payload.getAct2link(),payload.getLink(),payload.getAct1link(),phone,clickIndex,lastView_Click,notificationID,2);
-                   // PendingIntent pendingIntent2 = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT |PendingIntent.FLAG_IMMUTABLE);
-
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn2.setPackage(Util.getPackageName(iZooto.appContext));
 
@@ -1129,7 +1126,6 @@ public class NotificationEventManager {
                     }
                     handler.post(notificationRunnable);
                 } catch (Exception e) {
-                    Lg.e("Error", e.getMessage());
                     e.printStackTrace();
                     handler.post(notificationRunnable);
                 }
@@ -1310,7 +1306,7 @@ public class NotificationEventManager {
                     try {
 
                         if(impressionIndex.equalsIgnoreCase("1")) {
-                            impressionNotificationApi(payload);
+                            //impressionNotificationApi(payload);
                         }
                         if (lastView_Click.equalsIgnoreCase("1") || lastSeventhIndex.equalsIgnoreCase("1")){
                             lastViewNotificationApi(payload, lastView_Click, lastSeventhIndex, lastNinthIndex);

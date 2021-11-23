@@ -89,7 +89,7 @@ public class OSTaskManager {
     }
 
     /**
-     * Called by DATB.initHanlder() as last step on the initHandler
+     * Called by iZooto.initHanlder() as last step on the initHandler
      * Run available pending tasks on an Executor
      */
     void startPendingTasks() {

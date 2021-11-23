@@ -196,9 +196,10 @@ public class TargetActivity extends AppCompatActivity {
 
 
                                 } else {
-                                    CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder().build();
-                                    customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    customTabsIntent.launchUrl(iZooto.appContext, Uri.parse(mUrl));
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                                    browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    context.startActivity(browserIntent);
                                     finish();
                                 }
 

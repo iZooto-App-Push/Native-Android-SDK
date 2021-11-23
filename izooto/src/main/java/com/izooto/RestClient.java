@@ -157,11 +157,9 @@ public class RestClient {
                 if (httpResponse == HttpURLConnection.HTTP_OK) {
                     DebugFileManager.createExternalStoragePublic(iZooto.appContext,"->"+url,"[Log.V]->URL");
                     if(data!=null) {
-                        Log.e("Response",data.toString()+url);
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + data, "[Log.V]->URL");
                     }
                     if(jsonBody!=null) {
-                        Log.e("Response",jsonBody.toString()+url);
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + jsonBody.toString(), "[Log.V]->URL");
                     }
                     if (url.equals(AppConstant.CDN + iZooto.mIzooToAppId + AppConstant.DAT))

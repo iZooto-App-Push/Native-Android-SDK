@@ -193,37 +193,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                             if(mUrl!=null && !mUrl.isEmpty()) {
                                     openURLInBrowser(mUrl);
-                               // }
 
-//                                if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
-//                                    String url = "https://" + mUrl;
-//                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                                    browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-//                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                    context.startActivity(browserIntent);
-//
-//
-//                                } else {
-//
-//                                   if(isChromeCustomTabsSupported(iZooto.appContext)) {
-//                                       Log.e("OpenBrowser","Browser");
-//
-//                                       CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder().build();
-//                                       customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                       customTabsIntent.launchUrl(iZooto.appContext, Uri.parse(mUrl));
-//                                   }
-//                                   else
-//                                   {
-//                                       Log.e("OpenBrowser","Browser1");
-//
-//                                       Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-//                                       browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                        context.startActivity(browserIntent);
-//                                   }
-//
-//
-
-                              //  }
 
                             }
 

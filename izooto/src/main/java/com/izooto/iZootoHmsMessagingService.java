@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi;
 
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
+import com.izooto.DatabaseHandler.DatabaseHandler;
 
 import org.json.JSONObject;
 
@@ -36,6 +37,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleNow(Context context, String data) {
         try {
+            DatabaseHandler db =new DatabaseHandler(this);
             PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(context);
             JSONObject payloadObj = new JSONObject(data);
             if(payloadObj.has(AppConstant.AD_NETWORK) || payloadObj.has(AppConstant.GLOBAL) || payloadObj.has(AppConstant.GLOBAL_PUBLIC_KEY))
@@ -136,6 +138,10 @@ public class iZootoHmsMessagingService extends HmsMessageService {
 
                 } else {
                     return;
+                }
+                if(db.isTableExists(true)) {
+                    if(payload.getFetchURL()==null && payload.getFetchURL().isEmpty())
+                        db.addNotificationInDB(payload);
                 }
                 if (iZooto.appContext == null)
                     iZooto.appContext = context;

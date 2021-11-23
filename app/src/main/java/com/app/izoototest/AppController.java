@@ -45,7 +45,6 @@ public class AppController extends Application implements TokenReceivedListener,
 
     @Override
     public void onNotificationOpened(String data) {
-     Log.e("DeepLinkData",data);
          Intent intent=new Intent(this,MainActivity.class);// launch activity name
          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
          startActivity(intent);
