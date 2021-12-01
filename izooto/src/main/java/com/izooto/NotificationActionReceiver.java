@@ -479,6 +479,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
 
         } catch (Exception e) {
+
             Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
         }
     }

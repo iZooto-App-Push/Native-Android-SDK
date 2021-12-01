@@ -214,7 +214,7 @@ public interface AppConstant {
     String BADGE_COUNT = "badgeCount";
     String ADVERTISEMENT_ID = "advertisementID";
     String ISINSTALL="isInstall";
-    String CHANNEL_NAME="iZooto Notification";
+    String CHANNEL_NAME="Push Notification";
     String DIALOG_DISMISS="Dismiss";
     String DIALOG_OK="Take me there";
     String URL_FWD="&frwd";
@@ -255,7 +255,7 @@ public interface AppConstant {
  String IS_HYBRID_SDK = "hybrid";
  String CURRENT_DATE_VIEW = "currentDateView";
  String CURRENT_DATE_CLICK = "currentDateClick";
- String SDKVERSION="1.4.0";
+ String SDKVERSION="1.4.1";
  String QSDK_VERSION="av";
  String SDK="SDKVERSION";
  String AD_NETWORK="an";
@@ -290,8 +290,8 @@ public interface AppConstant {
  String SET_SUBSCRIPTION_DATA="iz_setSubscription";
  String EVENT_LOCAL_DATA_EN = "eventLocalDataEN";
  String EVENT_LOCAL_DATA_EV = "eventLocalDataEV";
-    String SET_SUBSCRITION_LOCAL_DATA = "setSubscriptionLocalData";
-    String IS_SET_SUBSCRIPTION_METHOD = "isSetSubscriptionMethod";
+ String SET_SUBSCRITION_LOCAL_DATA = "setSubscriptionLocalData";
+ String IS_SET_SUBSCRIPTION_METHOD = "isSetSubscriptionMethod";
     String NOTIFICATION_PREVIEW = "iz_notification_preview";
     String DEVICE_ID = "{~DEVICEID~}";
     String ANDROID_TOKEN = "{~TOKEN~}";
@@ -316,11 +316,6 @@ public interface AppConstant {
     String MED_CLICK="iz_mClick";
     String IZ_ADD_TOPIC_OFFLINE = "iz_add_topic_offline";
     String IZ_REMOVE_TOPIC_OFFLINE = "iz_remove_topic_offline";
-
-
-
-
-
     ///////// JSON Payload Data
 
 

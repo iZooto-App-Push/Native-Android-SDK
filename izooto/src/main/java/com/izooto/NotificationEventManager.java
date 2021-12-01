@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -732,8 +733,11 @@ public class NotificationEventManager {
                     if (lastView_Click.equalsIgnoreCase("1") || lastSeventhIndex.equalsIgnoreCase("1")){
                         lastViewNotificationApi(payload, lastView_Click, lastSeventhIndex, lastNinthIndex);
                     }
+                    PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
 
-                    iZooto.notificationView(payload);
+                    if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                        iZooto.notificationView(payload);
+
                     if (payload.getMaxNotification() != 0){
                         getMaximumNotificationInTray(iZooto.appContext, payload.getMaxNotification());}
 
@@ -1064,8 +1068,12 @@ public class NotificationEventManager {
                         channel = new NotificationChannel(channelId,
                                 AppConstant.CHANNEL_NAME, priority);
                         Uri uri = Util.getSoundUri(iZooto.appContext, iZooto.soundID);
+                        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                .setUsage(AudioAttributes.USAGE_ALARM)
+                                .build();
                         if (uri != null)
-                            channel.setSound(uri, null);
+                            channel.setSound(uri, audioAttributes);
                         else
                             channel.setSound(null, null);
                     }
@@ -1094,8 +1102,15 @@ public class NotificationEventManager {
                     if (lastView_Click.equalsIgnoreCase("1") || lastSeventhIndex.equalsIgnoreCase("1")){
                         lastViewNotificationApi(payload, lastView_Click, lastSeventhIndex, lastNinthIndex);
                     }
-                    iZooto.notificationView(payload);
 
+                    PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
+                    if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                        iZooto.notificationView(payload);
+                    else {
+                        NotificationEventManager.onReceiveNotificationHybrid(iZooto.appContext, payload);
+                        NotificationEventManager.iZootoReceivedPayload = preferenceUtil.getStringData(AppConstant.PAYLOAD_JSONARRAY);
+                        iZooto.notificationViewHybrid(NotificationEventManager.iZootoReceivedPayload, payload);
+                    }
                     if (payload.getMaxNotification() != 0){
                         getMaximumNotificationInTray(iZooto.appContext, payload.getMaxNotification());}
 
@@ -1711,7 +1726,6 @@ public class NotificationEventManager {
             mapData.put(AppConstant.NOTIFICATION_OP, "view");
             mapData.put(AppConstant.PUSH,pushName);
             mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
-
             RestClient.postRequest(impURL, mapData,null, new RestClient.ResponseHandler() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override

@@ -136,6 +136,8 @@ private static void init(Builder builder) {
                                 if ( mIzooToAppId!= null && preferenceUtil.getBoolean(AppConstant.IS_CONSENT_STORED)) {
                                     preferenceUtil.setIntData(AppConstant.CAN_STORED_QUEUE, 1);
                                 }
+                                if (iZooto.isHybrid)
+                                    preferenceUtil.setBooleanData(AppConstant.IS_HYBRID_SDK, iZooto.isHybrid);
                             } catch (JSONException e) {
                                 if (context != null) {
                                     DebugFileManager.createExternalStoragePublic(context,e.toString(),"[Log.e]-->init");
@@ -206,8 +208,8 @@ private static void init(final Context context, String apiKey, String appId) {
             if (util.isInitializationValid()) {
                 Lg.i(AppConstant.APP_NAME_TAG, AppConstant.DEVICETOKEN  + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                 registerToken();
-                if (iZooto.isHybrid)
-                    preferenceUtil.setBooleanData(AppConstant.IS_HYBRID_SDK, iZooto.isHybrid);
+//
+
                 ActivityLifecycleListener.registerActivity((Application)appContext);
                 setCurActivity(context);
                 areNotificationsEnabledForSubscribedState(appContext);

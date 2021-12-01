@@ -1165,6 +1165,7 @@ public class AdMediation {
                         payload.setBanner(jsonObject.optString(ShortpayloadConstant.BANNER));
                         payload.setAct1link(jsonObject.optString(ShortpayloadConstant.ACT1LINK));
                         payload.setRid(payload.getRid());
+                        Log.e("PayloadData","Data");
                         NotificationEventManager.receiveAds(payload);
                         ShowCLCIKAndImpressionData(payload);
 

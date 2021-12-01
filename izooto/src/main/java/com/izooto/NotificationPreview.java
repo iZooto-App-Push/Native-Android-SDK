@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -31,7 +32,6 @@ public class NotificationPreview {
     private static int icon;
     private static  int badgeColor;
     private static int priority,lockScreenVisibility;
-    public static String iZootoReceivedPayload;
 
      static void receiveCustomNotification(final Payload payload){
          if(iZooto.appContext !=null) {
@@ -171,7 +171,7 @@ public class NotificationPreview {
                              } else {
                                  button1 = payload.getAct1name();
                              }
-                             expandedView.setTextViewText(R.id.tv_btn1, "" + button1);
+                             expandedView.setTextViewText(R.id.tv_btn1, "" + button1.replace("~",""));
                              String phone = NotificationEventManager.getPhone(payload.getAct1link());
                              Intent btn1 = cnotificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastclickIndex, notificaitionId, 1);
                              if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
@@ -199,7 +199,7 @@ public class NotificationPreview {
                              } else {
                                  button2 = payload.getAct2name();
                              }
-                             expandedView.setTextViewText(R.id.tv_btn2, "" + button2);
+                             expandedView.setTextViewText(R.id.tv_btn2, "" + button2.replace("~",""));
                              String phone = NotificationEventManager.getPhone(payload.getAct2link());
                              Intent btn2 = NotificationEventManager.notificationClick(payload, payload.getAct2link(), payload.getLink(), payload.getAct1link(), phone, clickIndex, lastclickIndex, notificaitionId, 2);
 
@@ -239,9 +239,13 @@ public class NotificationPreview {
                                  priority = NotificationManagerCompat.IMPORTANCE_HIGH;
                                  channel = new NotificationChannel(channelId,
                                          AppConstant.CHANNEL_NAME, priority);
+                                 AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                                         .setUsage(AudioAttributes.USAGE_ALARM)
+                                         .build();
                                  Uri uri = Util.getSoundUri(iZooto.appContext, iZooto.soundID);
                                  if (uri != null)
-                                     channel.setSound(uri, null);
+                                     channel.setSound(uri, audioAttributes);
                                  else
                                      channel.setSound(null, null);
                              } else {
@@ -266,7 +270,7 @@ public class NotificationPreview {
                          else {
                              NotificationEventManager.onReceiveNotificationHybrid(iZooto.appContext, payload);
                              NotificationEventManager.iZootoReceivedPayload = preferenceUtil.getStringData(AppConstant.PAYLOAD_JSONARRAY);
-                             iZooto.notificationViewHybrid(iZootoReceivedPayload, payload);
+                             iZooto.notificationViewHybrid(NotificationEventManager.iZootoReceivedPayload, payload);
                          }
 
                          //Set Max notification in tray

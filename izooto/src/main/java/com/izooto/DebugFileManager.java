@@ -52,14 +52,12 @@ public class DebugFileManager {
 
                     File fileDirectory = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORYNAME);
                     if (fileDirectory.exists() && fileDirectory.isDirectory()) {
-                        Log.e("File is already created", "File");
                         // File outputDirectory = new File(fileDirectory, Util.getPackageName(DATB.appContext));
 
                     } else {
                         if (!fileDirectory.exists()) {
                             if (fileDirectory.mkdir()) ;
                             createExternalStoragePublic(context, "", "");
-                            Log.e("File is created", "Created");
                             PreferenceUtil.getInstance(context).setBooleanData(AppConstant.FILE_EXIST, false);
 
                         }
@@ -177,8 +175,6 @@ public class DebugFileManager {
                     String path = String.valueOf(Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORYNAME + "/pid.debug"));
                     File file = new File(path);
                     Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
-                    Log.e("FileLocation", "\n" + uri.toString());
-                    // Uri path1 = Uri.fromFile(new File("file://" + fileLocation));
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -197,8 +193,6 @@ public class DebugFileManager {
 
                     Uri pngUri = Uri.fromFile(file);
 
-                    Log.e("FileLocation", "\n" + pngUri.toString());
-                    // Uri path1 = Uri.fromFile(new File("file://" + fileLocation));
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -224,6 +218,8 @@ public class DebugFileManager {
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "");
 
                     }
+                    // Add line -> fixed the flutter issue
+                    emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
 
                 }

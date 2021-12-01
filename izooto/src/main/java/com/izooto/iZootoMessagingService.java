@@ -55,7 +55,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 Log.v("Push Type","fcm");
                 Map<String, String> data = remoteMessage.getData();
                 handleNow(data);
-                Log.e("PayloadData",data.toString());
             }
             if (remoteMessage.getNotification() != null) {
                 sendNotification(remoteMessage);
@@ -72,7 +71,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
 
     private void sendNotification(RemoteMessage remoteMessage) {
-
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -135,6 +133,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     }
                     catch (Exception ex)
                     {
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
                         Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
                     }
 
@@ -153,6 +152,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     catch (Exception ex)
                     {
                         Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
 
                     }
                 }

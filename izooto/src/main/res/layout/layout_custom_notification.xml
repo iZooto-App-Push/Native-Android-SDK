@@ -49,6 +49,6 @@
         android:text=""
         android:textColor="@color/notificationMBg"
         android:layout_marginRight="10dp"
-        style="@style/TextAppearance.Compat.Notification.Title" />
+        style="@style/TextAppearance.Compat.Notification.Info" />
 
 </LinearLayout>
