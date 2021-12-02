@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:componentverifysdk:11.2.1.301@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d4a953515f95c14d039906dd71f007a/jetified-componentverifysdk-11.2.1.301/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c0dd4ca884560dde2cb802bd9433313f/jetified-componentverifysdk-11.2.1.301/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d4a953515f95c14d039906dd71f007a/jetified-componentverifysdk-11.2.1.301/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d4a953515f95c14d039906dd71f007a/jetified-componentverifysdk-11.2.1.301/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d4a953515f95c14d039906dd71f007a/jetified-componentverifysdk-11.2.1.301/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

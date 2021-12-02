@@ -29,9 +29,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
     implementation 'com.google.firebase:firebase-messaging'
     implementation files('libs/MiPush_SDK_Client_4_8_3.jar')
-    compileOnly 'com.huawei.hms:push:5.0.0.300'
+    compileOnly 'com.huawei.hms:push:6.1.0.300'
     testImplementation 'org.testng:testng:7.3.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
     compileOnly 'androidx.browser:browser:1.4.0'
 
