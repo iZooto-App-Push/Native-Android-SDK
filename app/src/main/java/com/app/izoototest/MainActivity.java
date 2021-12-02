@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.izooto.Util;
 import com.izooto.iZooto;
 
 import java.util.ArrayList;
@@ -30,7 +31,10 @@ public class MainActivity extends AppCompatActivity
         Log.e("HMS",Build.MANUFACTURER);
         HashMap<String,Object> data =new HashMap<>();
         data.put("language","bhojpuri");
-     //   iZooto.addUserProperty(data);
+        String versionName = BuildConfig.VERSION_NAME;
+        Log.e("Version Name",versionName);
+
+        //   iZooto.addUserProperty(data);
 
     }
     @Override

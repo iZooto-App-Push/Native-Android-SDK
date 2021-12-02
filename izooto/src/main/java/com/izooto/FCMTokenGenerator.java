@@ -50,9 +50,12 @@ public class FCMTokenGenerator implements TokenGenerator {
                                         String token = task.getResult();
                                         if (token != null && !token.isEmpty()) {
                                             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-                                            if (!token.equals(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)) || !AppConstant.SDKVERSION.equals(preferenceUtil.getStringData(AppConstant.CHECK_SDK_UPDATE))) {
+                                            if (!token.equals(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)) || !AppConstant.SDKVERSION.equals(preferenceUtil.getStringData(AppConstant.CHECK_SDK_UPDATE))
+                                                  || !preferenceUtil.getStringData(AppConstant.CHECK_APP_VERSION).equalsIgnoreCase(Util.getAppVersion(context)))
+                                            {
                                                 preferenceUtil.setBooleanData(AppConstant.IS_TOKEN_UPDATED, false);
                                                 preferenceUtil.setStringData(AppConstant.CHECK_SDK_UPDATE, AppConstant.SDKVERSION);
+                                                preferenceUtil.setStringData(AppConstant.CHECK_APP_VERSION,Util.getAppVersion(context));
                                             }
                                             preferenceUtil.setStringData(AppConstant.FCM_DEVICE_TOKEN, token);
                                             if (callback != null)

@@ -127,6 +127,7 @@ private static void init(Builder builder) {
                                 }
                                 if (!hms_appId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Huawei")  && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_HUAWEI_TOKEN)) {
                                     initHmsService(appContext);
+
                                 }
                                 if (senderId != null && !senderId.isEmpty()) {
                                     init(context, apiKey, appId);
@@ -141,9 +142,9 @@ private static void init(Builder builder) {
                             } catch (JSONException e) {
                                 if (context != null) {
                                     DebugFileManager.createExternalStoragePublic(context,e.toString(),"[Log.e]-->init");
-
                                     Util.setException(context, e.toString(), "init", AppConstant.APP_NAME_TAG);
-                                }                                }
+                                }
+                            }
                         }
                         else
                         {
