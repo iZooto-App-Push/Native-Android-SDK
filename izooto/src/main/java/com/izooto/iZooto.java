@@ -819,8 +819,8 @@ static void registerToken() {
         if(context!=null) {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             try {
-                if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && Util.isNetworkAvailable(context)) {
-                    if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() ) {
+                if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() &&   preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
+                    if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(context));
@@ -887,8 +887,7 @@ static void registerToken() {
                     JSONObject jsonObject = new JSONObject(filterEventData);
 
                     if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty()  && preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
-                        if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() ) {
-
+                        if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                             Map<String, String> mapData = new HashMap<>();
                             mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                             mapData.put(AppConstant.ACT, eventName);

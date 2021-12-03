@@ -183,7 +183,23 @@ public class DebugFileManager {
                     String to[] = {"amit@datability.co"};
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
                     emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Token->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN)+"Mi Token ->"+PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken));
+                    if(Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
+                        if(PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken)!=null)
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "MI Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken) + "");
+                        else
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "");
+
+                    }
+                    if(Build.MANUFACTURER.equalsIgnoreCase("Huawei"))
+                    {
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "");
+                    }
+                    else
+                    {
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "");
+
+                    }
+                    emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
                 }
                 else

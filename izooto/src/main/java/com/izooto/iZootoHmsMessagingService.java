@@ -37,6 +37,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleNow(Context context, String data) {
         try {
+
             DatabaseHandler db =new DatabaseHandler(this);
             PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(context);
             JSONObject payloadObj = new JSONObject(data);
@@ -63,6 +64,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                     }
                     catch (Exception ex)
                     {
+
                         Util.setException(context,ex.toString()+"PayloadError"+data.toString(),"HMSMessagingService","handleNow");
                     }
 
@@ -157,6 +159,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                 mainHandler.post(myRunnable);
             }
         } catch (Exception e) {
+
             DebugFileManager.createExternalStoragePublic(context,e.toString()+data,"[Log.e]-> HMS ->");
             Util.setException(context, e.toString(), "HMSMessagingServices", "handleNow");
 

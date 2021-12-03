@@ -133,6 +133,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     }
                     catch (Exception ex)
                     {
+
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
                         Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
                     }
@@ -244,6 +245,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
 
         } catch (Exception e) {
+
             Util.setException(this, e.toString(), Name, "handleNow");
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,e.toString(),"[Log.e]-Exception");
 
