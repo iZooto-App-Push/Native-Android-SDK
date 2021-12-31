@@ -28,7 +28,7 @@ public class AppController extends Application implements TokenReceivedListener,
                 .build();
       //iZooto.setNotificationSound("pikachu");// no use extesnion  name
         iZooto.setDefaultTemplate(PushTemplate.TEXT_OVERLAY);
-        iZooto.setDefaultNotificationBanner(R.drawable.splash_image);
+       // iZooto.setDefaultNotificationBanner(R.drawable.splash_image);
     }
 
     @Override

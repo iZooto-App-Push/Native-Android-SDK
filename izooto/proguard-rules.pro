@@ -25,3 +25,4 @@
 -keep class com.izooto.HMSTokenGenerator{*;}
 -dontwarn com.huawei.**
 
+

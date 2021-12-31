@@ -357,13 +357,20 @@ public class Util {
         return title;
     }
     public static Bitmap makeCornerRounded(Bitmap image){
-        Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
-        Canvas canvas = new Canvas(imageRounded);
-        Paint mpaint = new Paint();
-        mpaint.setAntiAlias(true);
-        mpaint.setShader(new BitmapShader(image, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
-        canvas.drawRoundRect((new RectF(0.0f, 0.0f, image.getWidth(), image.getHeight())), 10, 10, mpaint);
-        return imageRounded;
+        try {
+            Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
+            Canvas canvas = new Canvas(imageRounded);
+            Paint mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setShader(new BitmapShader(image, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+            canvas.drawRoundRect((new RectF(0.0f, 0.0f, image.getWidth(), image.getHeight())), 10, 10, mPaint);
+            return imageRounded;
+        }
+        catch (Exception ex)
+        {
+            Log.e("Bit Map Exception ",ex.toString());
+            return null;
+        }
     }
     public static boolean isAppInForeground(Context context) {
         List<ActivityManager.RunningTaskInfo> task =

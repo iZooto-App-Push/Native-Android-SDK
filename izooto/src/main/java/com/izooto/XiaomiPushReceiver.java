@@ -61,7 +61,27 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                         if(jsonObject.toString()!=null && urlData!=null && !urlData.isEmpty()) {
                             String cid = jsonObject.optString(ShortpayloadConstant.ID);
                             String rid = jsonObject.optString(ShortpayloadConstant.RID);
-                            NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL,cid,rid,-1,AppConstant.PUSH_XIAOMI);
+                            int cfg=jsonObject.optInt(ShortpayloadConstant.CFG);
+                            String cfgData=Util.getIntegerToBinary(cfg);
+                            if(cfgData!=null && !cfgData.isEmpty()) {
+                                String impIndex = String.valueOf(cfgData.charAt(cfgData.length() - 1));
+                                if(impIndex.equalsIgnoreCase("1"))
+                                {
+                                    NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_FCM);
+
+                                }
+
+                            }
+
+
+
+
+
+
+
+
+
+                           // NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL,cid,rid,-1,AppConstant.PUSH_XIAOMI);
                             AdMediation.getMediationGPL(context, jsonObject, urlData);
                             preferenceUtil.setBooleanData(AppConstant.MEDIATION, false);
 
@@ -82,10 +102,20 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                         JSONObject jsonObject = new JSONObject(payloadObj.optString(AppConstant.GLOBAL));
                         String cid = jsonObject.optString(ShortpayloadConstant.ID);
                         String rid = jsonObject.optString(ShortpayloadConstant.RID);
-                        NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_XIAOMI);
+                        int cfg=jsonObject.optInt(ShortpayloadConstant.CFG);
+                        String cfgData=Util.getIntegerToBinary(cfg);
+                        if(cfgData!=null && !cfgData.isEmpty()) {
+                            String impIndex = String.valueOf(cfgData.charAt(cfgData.length() - 1));
+                            if(impIndex.equalsIgnoreCase("1"))
+                            {
+                                NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_FCM);
+
+                            }
+
+                        }
+
                         JSONObject jsonObject1=new JSONObject(data.toString());
                         AdMediation.getMediationData(context, jsonObject1,AppConstant.PUSH_XIAOMI,"");
-                        // AdMediation.getAdNotificationData(this,jsonObject1,"FCM");
                         preferenceUtil.setBooleanData(AppConstant.MEDIATION, true);
                     }
                     catch (Exception ex)

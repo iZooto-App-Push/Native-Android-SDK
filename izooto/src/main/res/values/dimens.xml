@@ -1,3 +1,19 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+   <!-- fab size-->
+    <dimen name="fab_margin35">35dp</dimen>
+    <!-- width -->
+    <dimen name="width_35dp">35dp</dimen>
+    <dimen name="width_17dp">17dp</dimen>
+    <!-- height -->
+    <dimen name="height_17dp">17dp</dimen>
+    <dimen name="height_35dp">35dp</dimen>
+    <dimen name="height_256dp">256dp</dimen>
+    <!-- margin  -->
+    <dimen name="margin_1dp">1dp</dimen>
+    <dimen name="margin_5dp">5dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_15dp">15dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+
 </resources>
