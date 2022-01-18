@@ -1330,7 +1330,7 @@ public class AdMediation {
                 finalData.put("rid", payload.getRid());
                 finalData.put("type", payload.getAd_type());
                 finalData.put("ta", (end - payload.getStartTime()));
-                finalData.put("av", AppConstant.SDK);
+                finalData.put("av", AppConstant.SDKVERSION);
                 JSONObject servedObject = new JSONObject();
                 servedObject.put("a", 0);
                 servedObject.put("b", 0);

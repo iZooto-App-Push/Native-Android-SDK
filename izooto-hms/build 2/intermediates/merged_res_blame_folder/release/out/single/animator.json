@@ -1,0 +1,102 @@
+[
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/linear_indeterminate_line2_head_interpolator.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/linear_indeterminate_line2_head_interpolator.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_fab_transformation_sheet_expand_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_fab_transformation_sheet_expand_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/fragment_fade_exit.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/5213164f2165221dda1acf8da5dd8234/fragment-1.3.6/res/animator/fragment_fade_exit.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_extended_fab_change_size_expand_motion_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_extended_fab_change_size_expand_motion_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_extended_fab_hide_motion_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_extended_fab_hide_motion_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/linear_indeterminate_line1_tail_interpolator.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/linear_indeterminate_line1_tail_interpolator.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_btn_unelevated_state_list_anim.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_btn_unelevated_state_list_anim.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/design_fab_show_motion_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/design_fab_show_motion_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/fragment_open_enter.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/5213164f2165221dda1acf8da5dd8234/fragment-1.3.6/res/animator/fragment_open_enter.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_extended_fab_show_motion_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_extended_fab_show_motion_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_fab_show_motion_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_fab_show_motion_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/design_fab_hide_motion_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/design_fab_hide_motion_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_extended_fab_change_size_collapse_motion_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_extended_fab_change_size_collapse_motion_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/fragment_close_enter.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/5213164f2165221dda1acf8da5dd8234/fragment-1.3.6/res/animator/fragment_close_enter.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/fragment_close_exit.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/5213164f2165221dda1acf8da5dd8234/fragment-1.3.6/res/animator/fragment_close_exit.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_chip_state_list_anim.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_chip_state_list_anim.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/linear_indeterminate_line1_head_interpolator.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/linear_indeterminate_line1_head_interpolator.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_btn_state_list_anim.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_btn_state_list_anim.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/linear_indeterminate_line2_tail_interpolator.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/linear_indeterminate_line2_tail_interpolator.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_fab_hide_motion_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_fab_hide_motion_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/fragment_open_exit.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/5213164f2165221dda1acf8da5dd8234/fragment-1.3.6/res/animator/fragment_open_exit.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_extended_fab_state_list_animator.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_extended_fab_state_list_animator.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_card_state_list_anim.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_card_state_list_anim.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/mtrl_fab_transformation_sheet_collapse_spec.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/animator/mtrl_fab_transformation_sheet_collapse_spec.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/animator/fragment_fade_enter.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/5213164f2165221dda1acf8da5dd8234/fragment-1.3.6/res/animator/fragment_fade_enter.xml"
+    }
+]

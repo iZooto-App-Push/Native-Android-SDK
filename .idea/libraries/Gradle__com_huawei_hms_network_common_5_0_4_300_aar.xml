@@ -8,6 +8,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/61c0f9d2dedf37be9832698cf4f196a2/jetified-network-common-5.0.4.300/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/61c0f9d2dedf37be9832698cf4f196a2/jetified-network-common-5.0.4.300/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/61c0f9d2dedf37be9832698cf4f196a2/jetified-network-common-5.0.4.300/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8c43055ea04a49c2f17ccefb57618909/jetified-network-common-5.0.4.300/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8c43055ea04a49c2f17ccefb57618909/jetified-network-common-5.0.4.300/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8c43055ea04a49c2f17ccefb57618909/jetified-network-common-5.0.4.300/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/network-common/5.0.4.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/network-common-5.0.4.300-javadoc.jar!/" />

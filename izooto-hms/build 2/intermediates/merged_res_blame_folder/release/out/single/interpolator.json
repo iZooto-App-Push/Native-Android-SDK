@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/interpolator/btn_checkbox_checked_mtrl_animation_interpolator_1.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/interpolator/btn_checkbox_checked_mtrl_animation_interpolator_1.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/interpolator/btn_radio_to_off_mtrl_animation_interpolator_0.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/interpolator/btn_radio_to_off_mtrl_animation_interpolator_0.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/interpolator/btn_checkbox_checked_mtrl_animation_interpolator_0.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/interpolator/btn_checkbox_checked_mtrl_animation_interpolator_0.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/interpolator/fast_out_slow_in.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/interpolator/fast_out_slow_in.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/interpolator/btn_radio_to_on_mtrl_animation_interpolator_0.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/interpolator/btn_radio_to_on_mtrl_animation_interpolator_0.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/interpolator/mtrl_linear.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/interpolator/mtrl_linear.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/interpolator/btn_checkbox_unchecked_mtrl_animation_interpolator_1.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/interpolator/btn_checkbox_unchecked_mtrl_animation_interpolator_1.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/interpolator/btn_checkbox_unchecked_mtrl_animation_interpolator_0.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/interpolator/btn_checkbox_unchecked_mtrl_animation_interpolator_0.xml"
+    }
+]

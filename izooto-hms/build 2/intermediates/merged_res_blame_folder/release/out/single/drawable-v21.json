@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/drawable-v21/abc_list_divider_material.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/drawable-v21/abc_list_divider_material.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/drawable-v21/abc_dialog_material_background.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/drawable-v21/abc_dialog_material_background.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/drawable-v21/mtrl_navigation_bar_item_background.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/drawable-v21/mtrl_navigation_bar_item_background.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/drawable-v21/notification_action_background.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f653203bf8ef2e1730dd6ceac55a6c5e/core-1.7.0/res/drawable-v21/notification_action_background.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/drawable-v21/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/drawable-v21/abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/drawable-v21/material_cursor_drawable.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/2cd343a869467772ff1f68e0f7e6d09f/material-1.4.0/res/drawable-v21/material_cursor_drawable.xml"
+    },
+    {
+        "merged": "/Users/amit/Documents/androidHotfix/izooto-hms/build/intermediates/res/merged/release/drawable-v21/abc_edit_text_material.xml",
+        "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/drawable-v21/abc_edit_text_material.xml"
+    }
+]
