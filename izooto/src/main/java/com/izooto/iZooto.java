@@ -196,7 +196,7 @@ private static void initHmsService(final Context context){
         });
     }
 
-
+/* start */
 private static void init(final Context context, String apiKey, String appId) {
     if(context==null)
         return;
