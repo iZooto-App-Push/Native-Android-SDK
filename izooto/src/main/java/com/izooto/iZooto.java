@@ -166,7 +166,8 @@ private static void init(Builder builder) {
     }
 
 }
-    private static void initHmsService(final Context context){
+/* HMS Integration */
+private static void initHmsService(final Context context){
         if (context == null)
             return;
 
@@ -181,8 +182,8 @@ private static void init(Builder builder) {
                     if (!preferenceUtil.getBoolean(AppConstant.IS_UPDATED_HMS_TOKEN)) {
                         preferenceUtil.setBooleanData(AppConstant.IS_UPDATED_HMS_TOKEN, true);
                         preferenceUtil.setBooleanData(AppConstant.IS_TOKEN_UPDATED, false);
-                        iZooto.registerToken();
                     }
+                    iZooto.registerToken();
                 }
             }
 

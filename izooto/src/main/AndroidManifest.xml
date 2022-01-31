@@ -67,6 +67,7 @@
         <service
             android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
+            android:exported="false"
             android:process=":pushservice" />
 
         <service
@@ -83,11 +84,11 @@
 
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
+            android:exported="false"
             android:enabled="true" />
         <receiver
             android:exported="true"
             android:name=".XiaomiPushReceiver">
-            <!--Here change com.xiaomi.mipushdemo.DemoMessageRreceiver to the class name defined in your app-->
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
             </intent-filter>
