@@ -255,7 +255,7 @@ public interface AppConstant {
  String IS_HYBRID_SDK = "hybrid";
  String CURRENT_DATE_VIEW = "currentDateView";
  String CURRENT_DATE_CLICK = "currentDateClick";
- String SDKVERSION="1.4.5";
+ String SDKVERSION="1.4.4.1";
  String QSDK_VERSION="av";
  String SDK="SDKVERSION";
  String AD_NETWORK="an";

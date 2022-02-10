@@ -1,9 +1,9 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 30
         versionCode 21
         versionName "1.5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -21,19 +21,19 @@ android {
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.4.0'
+    //noinspection GradleDependency
+    implementation 'androidx.appcompat:appcompat:1.3.1'
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'org.testng:testng:7.3.0'
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation 'com.google.android.gms:play-services-ads-identifier:17.1.0'
+    //implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
     implementation 'com.google.firebase:firebase-messaging'
-    implementation files('libs/MiPush_SDK_Client_4_8_3.jar')
-    compileOnly 'com.huawei.hms:push:6.1.0.300'
+    implementation files('libs/MiPush_SDK_Client_4_8_6-G.jar')
+    compileOnly 'com.huawei.hms:push:6.3.0.302'
     testImplementation 'org.testng:testng:7.3.0'
     implementation 'com.google.code.gson:gson:2.8.8'
    // implementation 'androidx.work:work-runtime-ktx:2.7.1'
-    compileOnly 'androidx.browser:browser:1.4.0'
 
 
 }

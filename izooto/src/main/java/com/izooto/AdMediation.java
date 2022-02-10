@@ -1108,13 +1108,13 @@ public class AdMediation {
                     finalData.put("bids", jsonArray);
                     dataValue = finalData.toString().replaceAll("\\\\", " ");
                     mediationImpression(dataValue, 0);
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-                        TargetActivity.medClick = dataValue;
-                    }
-                    else {
+//                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+//                        TargetActivity.medClick = dataValue;
+//                    }
+//                    else {
                         NotificationActionReceiver.medClick = dataValue;
 
-                    }
+                   // }
                     if(payload1.getTitle()!=null && !payload1.getTitle().isEmpty()) {
                         NotificationEventManager.receiveAds(payload1);
                         Log.v(AppConstant.NOTIFICATION_MESSAGE, AppConstant.YES);
@@ -1211,13 +1211,13 @@ public class AdMediation {
                 finalData.put("bids", jsonArray);
                 String dataValue = finalData.toString().replaceAll("\\\\", " ");
                 mediationImpression(dataValue,0);
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-                    TargetActivity.medClick = dataValue;
-                }
-                else {
+//                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+//                    TargetActivity.medClick = dataValue;
+//                }
+//                else {
                     NotificationActionReceiver.medClick = dataValue;
 
-                }
+               // }
                 Log.v(AppConstant.NOTIFICATION_MESSAGE, AppConstant.YES);
             } catch (Exception ex) {
                   DebugFileManager.createExternalStoragePublic(iZooto.appContext,ex.toString(),"[Log.e]->");
@@ -1294,13 +1294,13 @@ public class AdMediation {
                 finalData.put("bids",jsonArray);
                 dataValue=finalData.toString().replaceAll("\\\\", " ");
                 mediationImpression(dataValue,0);
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-                    TargetActivity.medClick = dataValue;
-                }
-                else {
+//                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+//                    TargetActivity.medClick = dataValue;
+//                }
+//                else {
                     NotificationActionReceiver.medClick = dataValue;
 
-                }
+                //}
                // NotificationActionReceiver.medClick=dataValue;
                 NotificationEventManager.receiveAds(payload1);
                 Log.v(AppConstant.NOTIFICATION_MESSAGE,AppConstant.YES);

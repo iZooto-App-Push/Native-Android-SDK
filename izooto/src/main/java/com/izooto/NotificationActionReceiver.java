@@ -18,7 +18,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -60,9 +59,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         if(context!=null) {
             String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
-            if(Build.VERSION.SDK_INT<Build.VERSION_CODES.S) {
-                context.sendBroadcast(it);
-            }
+//            if(Build.VERSION.SDK_INT<Build.VERSION_CODES.S) {
+//                context.sendBroadcast(it);
+//            }
+            context.sendBroadcast(it);
             getBundleData(context, intent);
             mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
             getBundleData(context, intent);

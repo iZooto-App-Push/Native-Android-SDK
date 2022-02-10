@@ -66,7 +66,7 @@ public class DebugFileManager {
                 }
             }
         } catch (Exception ex) {
-            Log.e("Error", ex.toString());
+            Log.v("Error", ex.toString());
         }
 
     }
@@ -94,7 +94,7 @@ public class DebugFileManager {
                             } else {
                                 boolean deleted = file.delete();
                                 if (!deleted) {
-                                    Log.e("Not a directory ", fileDirectory.getAbsolutePath());
+                                    Log.v("Not a directory ", fileDirectory.getAbsolutePath());
                                 }
                             }
                         }
@@ -115,7 +115,7 @@ public class DebugFileManager {
 
             }
         } catch (Exception ex) {
-            Log.e("Error", ex.toString());
+            Log.v("Error", ex.toString());
         }
     }
 
