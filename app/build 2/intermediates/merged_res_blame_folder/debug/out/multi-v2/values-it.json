@@ -1,0 +1,94 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/amit/Documents/androidHotfix/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-it/values-it.xml",
+            "map": [
+                {
+                    "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/0ad86791253193e35ff46e202a1eaed3/jetified-firebase-messaging-23.0.0/res/values-it/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "207",
+                        "endColumns": "69",
+                        "endOffsets": "276"
+                    },
+                    "to": {
+                        "startLines": "34",
+                        "startColumns": "4",
+                        "startOffsets": "3405",
+                        "endColumns": "73",
+                        "endOffsets": "3474"
+                    }
+                },
+                {
+                    "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/6eea310da9c4277c4382d35d1568b774/jetified-play-services-basement-17.0.0/res/values-it/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "247",
+                        "endColumns": "194",
+                        "endOffsets": "441"
+                    },
+                    "to": {
+                        "startLines": "29",
+                        "startColumns": "4",
+                        "startOffsets": "2799",
+                        "endColumns": "194",
+                        "endOffsets": "2989"
+                    }
+                },
+                {
+                    "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/c373d137069296b7ad18df1057dbc29a/browser-1.4.0/res/values-it/values-it.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,155,253,363",
+                        "endColumns": "99,97,109,102",
+                        "endOffsets": "150,248,358,461"
+                    },
+                    "to": {
+                        "startLines": "30,31,32,33",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "2994,3094,3192,3302",
+                        "endColumns": "99,97,109,102",
+                        "endOffsets": "3089,3187,3297,3400"
+                    }
+                },
+                {
+                    "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f33139490def0ba8b141c2861912b416/appcompat-1.4.0/res/values-it/values-it.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,210,313,422,506,611,730,808,883,975,1069,1162,1256,1357,1451,1548,1643,1735,1827,1908,2014,2121,2219,2323,2429,2536,2699,2799",
+                        "endColumns": "104,102,108,83,104,118,77,74,91,93,92,93,100,93,96,94,91,91,80,105,106,97,103,105,106,162,99,81",
+                        "endOffsets": "205,308,417,501,606,725,803,878,970,1064,1157,1251,1352,1446,1543,1638,1730,1822,1903,2009,2116,2214,2318,2424,2531,2694,2794,2876"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,35",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,210,313,422,506,611,730,808,883,975,1069,1162,1256,1357,1451,1548,1643,1735,1827,1908,2014,2121,2219,2323,2429,2536,2699,3479",
+                        "endColumns": "104,102,108,83,104,118,77,74,91,93,92,93,100,93,96,94,91,91,80,105,106,97,103,105,106,162,99,81",
+                        "endOffsets": "205,308,417,501,606,725,803,878,970,1064,1157,1251,1352,1446,1543,1638,1730,1822,1903,2009,2116,2214,2318,2424,2531,2694,2794,3556"
+                    }
+                },
+                {
+                    "source": "/Users/amit/.gradle/caches/transforms-2/files-2.1/f653203bf8ef2e1730dd6ceac55a6c5e/core-1.7.0/res/values-it/values-it.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "36",
+                        "startColumns": "4",
+                        "startOffsets": "3561",
+                        "endColumns": "100",
+                        "endOffsets": "3657"
+                    }
+                }
+            ]
+        }
+    ]
+}

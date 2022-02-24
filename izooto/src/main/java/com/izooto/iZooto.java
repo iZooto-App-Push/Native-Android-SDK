@@ -427,8 +427,6 @@ static void registerToken() {
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
                             super.onFailure(statusCode, response, throwable);
-                            DebugFileManager.createExternalStoragePublic(appContext,response.toString(),"[Log.e]->RegisterTokenFailure->");
-
                         }
                     });
 
@@ -1691,7 +1689,7 @@ static void registerToken() {
                    if(jsonObject.getString(AppConstant.STORE_MED_API).equals(AppConstant.MED_CLICK))
                    {
                        String jsonData= jsonObject.getString(AppConstant.STORE_MED_DATA);
-                       NotificationActionReceiver.callMediationClicks(jsonData,i);
+                       NotificationActionReceiver.callMediationClicks(context,jsonData,i);
                    }
                }
 

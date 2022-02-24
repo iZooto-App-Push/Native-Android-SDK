@@ -1,6 +1,7 @@
 package com.izooto;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,6 +22,8 @@ import java.util.Objects;
 public class XiaomiPushReceiver extends PushMessageReceiver {
     private String TAG="XiaomiPushReceiver  PAYLOAD";
     private Payload payload;
+
+    // data payload notification received
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onReceivePassThroughMessage(Context context, MiPushMessage miPushMessage) {
@@ -32,17 +35,22 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
 
     }
 
+    // notification received
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onNotificationMessageArrived(Context context, MiPushMessage miPushMessage) {
         super.onNotificationMessageArrived(context, miPushMessage);
-        Log.v(TAG, miPushMessage.getContent());
-        miPushMessage.getMessageId();
-        String payload = miPushMessage.getContent();
-        if(payload!=null && !payload.isEmpty())
-            handleNow(context,payload);
+        notificationBarView(context, miPushMessage.getContent());
+
+    }
+    // notification click
+    @Override
+    public void onNotificationMessageClicked(Context context, MiPushMessage miPushMessage) {
+        super.onNotificationMessageClicked(context, miPushMessage);
+        notificationBarClick(context, miPushMessage.getContent());
     }
 
+    // notification received
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleNow(Context context, String data) {
         Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);
@@ -72,16 +80,6 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                                 }
 
                             }
-
-
-
-
-
-
-
-
-
-                           // NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL,cid,rid,-1,AppConstant.PUSH_XIAOMI);
                             AdMediation.getMediationGPL(context, jsonObject, urlData);
                             preferenceUtil.setBooleanData(AppConstant.MEDIATION, false);
 
@@ -211,6 +209,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
         super.onReceiveRegisterResult(context, miPushCommandMessage);
     }
 
+    // register device
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onCommandResult(Context context, MiPushCommandMessage miPushCommandMessage) {
@@ -317,8 +316,110 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
         }
 
     }
+// notification view api
+    static void notificationBarView(Context context, String content) {
+        if (context == null)
+            return;
+
+        if (content == null)
+            return;
+
+        try {
+            JSONObject jsonObject = new JSONObject(content);
+            Payload payload = new Payload();
+            payload.setRid(jsonObject.optString(ShortpayloadConstant.RID));
+            payload.setId(jsonObject.optString(ShortpayloadConstant.ID));
+            payload.setCfg(jsonObject.optInt(ShortpayloadConstant.CFG));
+
+            String lastView_Click = "0";
+            String lastSeventhIndex = "0";
+            String lastNinthIndex = "0";
+            String data = Util.getIntegerToBinary(payload.getCfg());
+
+            if (data != null && !data.isEmpty()) {
+                lastView_Click = String.valueOf(data.charAt(data.length() - 3));
+                lastSeventhIndex = String.valueOf(data.charAt(data.length() - 7));
+                lastNinthIndex = String.valueOf(data.charAt(data.length() - 9));
+            } else {
+                lastView_Click = "0";
+                lastSeventhIndex = "0";
+                lastNinthIndex = "0";
+            }
+
+            NotificationEventManager.handleImpressionAPI(payload, AppConstant.PUSH_XIAOMI);
+
+            if (lastView_Click.equalsIgnoreCase("1") || lastSeventhIndex.equalsIgnoreCase("1")) {
+                NotificationEventManager.lastViewNotificationApi(payload, lastView_Click, lastSeventhIndex, lastNinthIndex);
+            }
+
+        } catch (Exception e) {
+            Log.e("TAG", "onNotificationMessageArrived: -- " + e );
+            Util.setException(context, e.toString(), "XiaomiPushReceiver", "onNotificationMessageArrived");
+            DebugFileManager.createExternalStoragePublic(context, "onNotificationMessageArrived -> " + e.toString(),"[Log.e]->");
+        }
+    }
+
+    // notification click track
+    static void notificationBarClick(Context context, String payload) {
+        if (context == null)
+            return;
+
+        if (payload == null)
+            return;
+
+        try {
+            JSONObject jsonObject = new JSONObject(payload);
+            String rid = jsonObject.optString(ShortpayloadConstant.RID);
+            String cid = jsonObject.optString(ShortpayloadConstant.ID);
+            int ia = jsonObject.optInt(ShortpayloadConstant.INAPP);
+            String ln = jsonObject.optString(ShortpayloadConstant.LINK);
+            String key = jsonObject.optString(ShortpayloadConstant.KEY);
+            int cfg = jsonObject.optInt(ShortpayloadConstant.CFG);
+            String ap = jsonObject.optString(ShortpayloadConstant.ADDITIONALPARAM);
+
+            String clickIndex = "0";
+            String lastView_Click = "0";
+            String data = Util.getIntegerToBinary(cfg);
+
+            if (data != null && !data.isEmpty()) {
+                clickIndex = String.valueOf(data.charAt(data.length() - 2));
+                lastView_Click = String.valueOf(data.charAt(data.length() - 3));
+            } else {
+                clickIndex = "0";
+                lastView_Click = "0";
+            }
+
+            Intent intent = null;
+
+            intent = new Intent(context, NotificationActionReceiver.class);
 
 
+            intent.putExtra(AppConstant.KEY_WEB_URL, ln);
+            intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, 100);
+            intent.putExtra(AppConstant.KEY_IN_APP, ia);
+            intent.putExtra(AppConstant.KEY_IN_CID, cid);
+            intent.putExtra(AppConstant.KEY_IN_RID, rid);
+            intent.putExtra(AppConstant.KEY_IN_BUTOON, 0);
+            intent.putExtra(AppConstant.KEY_IN_ADDITIONALDATA, ap);
+            intent.putExtra(AppConstant.KEY_IN_PHONE, AppConstant.NO);
+            intent.putExtra(AppConstant.KEY_IN_ACT1ID, "");
+            intent.putExtra(AppConstant.KEY_IN_ACT2ID, "");
+            intent.putExtra(AppConstant.LANDINGURL, ln);
+            intent.putExtra(AppConstant.ACT1TITLE, "");
+            intent.putExtra(AppConstant.ACT2TITLE, "");
+            intent.putExtra(AppConstant.ACT1URL, "");
+            intent.putExtra(AppConstant.ACT2URL, "");
+            intent.putExtra(AppConstant.CLICKINDEX, clickIndex);
+            intent.putExtra(AppConstant.LASTCLICKINDEX, lastView_Click);
+            intent.putExtra(AppConstant.PUSH, AppConstant.PUSH_XIAOMI);
+            intent.putExtra(AppConstant.CFGFORDOMAIN, cfg);
+            context.sendBroadcast(intent);
 
+        } catch (Exception e) {
+            Util.setException(context, e.toString(), "XiaomiPushReceiver", "notificationBarClick");
+            DebugFileManager.createExternalStoragePublic(context, "notificationBarClick -> " + e.toString(),"[Log.e]->");
+        }
+
+    }
 }
 

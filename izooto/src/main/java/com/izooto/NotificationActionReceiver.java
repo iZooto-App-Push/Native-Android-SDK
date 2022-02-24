@@ -126,7 +126,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
                 if (AdMediation.clicksData.size() > 0) {
                     for (int i = 0; i < AdMediation.clicksData.size(); i++) {
@@ -138,7 +138,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 }
             }
             if (medClick != "") {
-                callMediationClicks(medClick,0);
+                callMediationClicks(context,medClick,0);
             }
 
             if (additionalData.equalsIgnoreCase("")) {
@@ -192,7 +192,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     try {
                         if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                             if(mUrl!=null && !mUrl.isEmpty()) {
-                                    openURLInBrowser(mUrl);
+                                    openURLInBrowser(context,mUrl);
 
 
                             }
@@ -202,7 +202,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
 
                                 Util.setException(context, "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
-                                DebugFileManager.createExternalStoragePublic(iZooto.appContext,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
+                                DebugFileManager.createExternalStoragePublic(context,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
 
                             }
                         } else {
@@ -213,7 +213,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
                     } catch (Exception ex) {
                         Util.setException(context,ex.toString()+ "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
+                        DebugFileManager.createExternalStoragePublic(context,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
 
                     }
                 }
@@ -221,12 +221,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
 
     }
-    static void openURLInBrowser(@NonNull String url) {
-        openURLInBrowser(Uri.parse(url.trim()));
+    static void openURLInBrowser(Context context,@NonNull String url) {
+        openURLInBrowser(context ,Uri.parse(url.trim()));
     }
-    private static void openURLInBrowser(@NonNull Uri uri) {
+    private static void openURLInBrowser(Context context,@NonNull Uri uri) {
         Intent intent = openURLInBrowserIntent(uri);
-        iZooto.appContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
 
@@ -261,7 +261,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, null);
                         }
                     } catch (Exception e) {
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"LastClick"+e.toString(),"[Log.V]->");
+                        DebugFileManager.createExternalStoragePublic(context,"LastClick"+e.toString(),"[Log.V]->");
                     }
                 }
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -277,7 +277,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         } else
                             Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
                     } catch (Exception e) {
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"LastClick"+e.toString(),"[Log.V]->");
+                        DebugFileManager.createExternalStoragePublic(context,"LastClick"+e.toString(),"[Log.V]->");
 
                     }
 
@@ -306,17 +306,17 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    static void callMediationClicks(final String medClick, int cNUmber) {
+    static void callMediationClicks(Context context,final String medClick, int cNUmber) {
         try {
             if(!medClick.isEmpty()) {
-                DebugFileManager.createExternalStoragePublic(iZooto.appContext,medClick,"mediationClick");
+                DebugFileManager.createExternalStoragePublic(context,medClick,"mediationClick");
                 JSONObject jsonObject = new JSONObject(medClick);
                 RestClient.postRequest(RestClient.MEDIATION_CLICKS, null,jsonObject, new RestClient.ResponseHandler() {
                     @SuppressLint("NewApi")
                     @Override
                     void onSuccess(String response) {
                         super.onSuccess(response);
-                        PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
+                        PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(context);
                         if (!preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS).isEmpty() && cNUmber >= 0) {
                             try {
                                 JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS));
@@ -325,7 +325,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             }
                             catch (Exception ex)
                             {
-                                DebugFileManager.createExternalStoragePublic(iZooto.appContext,"MediationCLick"+ex.toString(),"[Log.V]->");
+                                DebugFileManager.createExternalStoragePublic(context,"MediationCLick"+ex.toString(),"[Log.V]->");
 
 
                             }
@@ -337,7 +337,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     @Override
                     void onFailure(int statusCode, String response, Throwable throwable) {
                         super.onFailure(statusCode, response, throwable);
-                        Util.trackMediation_Impression_Click(iZooto.appContext,AppConstant.MED_CLICK,medClick);
+                        Util.trackMediation_Impression_Click(context,AppConstant.MED_CLICK,medClick);
 
 
                     }
@@ -346,7 +346,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
         catch (Exception ex)
         {
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"MediationCLick"+ex.toString(),"[Log.V]->");
+            DebugFileManager.createExternalStoragePublic(context,"MediationCLick"+ex.toString(),"[Log.V]->");
 
         }
     }
@@ -439,7 +439,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             mapData.put("op","click");
             if (btnCount != 0)
                 mapData.put("btn","" + btnCount);
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,mapData.toString(),"clickData");
+            DebugFileManager.createExternalStoragePublic(context,mapData.toString(),"clickData");
 
             RestClient.postRequest(clkURL, mapData,null, new RestClient.ResponseHandler() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -455,7 +455,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
                         }
                     } catch (Exception e) {
-                        Util.setException(iZooto.appContext,e.toString(),AppConstant.APPName_3,"notificationClickAPI");
+                        Util.setException(context,e.toString(),AppConstant.APPName_3,"notificationClickAPI");
                     }
 
                 }
@@ -472,7 +472,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
                         }
                     } catch (Exception e) {
-                        Util.setException(iZooto.appContext,e.toString(),AppConstant.APPName_3,"notificationClickAPI->onFailure");
+                        Util.setException(context,e.toString(),AppConstant.APPName_3,"notificationClickAPI->onFailure");
                     }
                 }
             });
