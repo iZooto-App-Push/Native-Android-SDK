@@ -367,6 +367,24 @@ public interface AppConstant {
     String DIRECTORYNAME="DATB.907135001.debug";
     String CHECK_APP_VERSION="iz_app_version";
 
+    // NewsHub
+
+    String SET_PAGE_NO = "izPageNo";
+    String JSON_NEWS_HUB = "newsHub";
+    String JSON_NEWS_HUB_STATUS = "newsHubStatus";
+    String JSON_NEWS_HUB_TITLE = "newsHubTitle";
+    String JSON_NEWS_HUB_TITLE_COLOR="newsHubTitleColor";
+    String JSON_NEWS_HUB_ICON_TYPE = "newsHubIconType";
+    String JSON_NEWS_HUB_COLOR = "newsHubColor";
+    String JSON_NEWS_HUB_IS_FULL_SCREEN = "newsHubIsFullScreen";
+    String JSON_NEWS_HUB_IS_DESCRIPTION = "newsHubIsDescription";
+    String JSON_NEWS_HUB_BRANDING = "newsHubBranding";
+    String JSON_NEWS_HUB_WIDGET = "newsHubWidget";
+    String JSON_NEWS_HUB_FALLBACK_IMAGE_URL = "newsHubFallbakImageUrl";
+    String SET_JSON_NEWS_HUB = "izSetJsonNewsHub";
+    String NEWS_HUB_CLICK_KEY="cs";
+    String NEWS_HUB_CLICK_VALUE="1";
+    String IZ_G_BRANDING = "branding";
 }
 
 

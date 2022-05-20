@@ -4,8 +4,17 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidHotfix.iml" filepath="$PROJECT_DIR$/.idea/modules/androidHotfix.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/androidHotfix.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.main.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto-hms/androidHotfix.izooto-hms.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.main.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/androidHotfix.izooto.unitTest.iml" />
     </modules>
   </component>
 </project>

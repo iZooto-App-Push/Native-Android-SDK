@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.izooto.AppConstant;
 import com.izooto.PreferenceUtil;
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity
                         intent.putExtra(Intent.EXTRA_TEXT, tokenData);
                         intent.setData(Uri.parse("mailto:"));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                         startActivity(intent);
                        // finish();
                     } catch(Exception e)  {
@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+        LinearLayout mainLayout=findViewById(R.id.mainLayout);
+        iZooto.setNewsHub(MainActivity.this,mainLayout);
 
 
     }

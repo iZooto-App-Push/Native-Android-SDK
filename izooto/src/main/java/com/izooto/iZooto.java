@@ -4,16 +4,23 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -61,6 +68,8 @@ public class iZooto {
         return initCompleted;
     }
     private static OSTaskManager osTaskManager = new OSTaskManager();
+    private static LOG_LEVEL visualLogLevel = LOG_LEVEL.NONE;
+    private static LOG_LEVEL logCatLevel = LOG_LEVEL.WARN;
 
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
@@ -119,8 +128,13 @@ private static void init(Builder builder) {
                                 String mId =jsonObject.optString(AppConstant.MIAPPID);
                                 String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
                                 mIzooToAppId = jsonObject.optString(APPPID);
+                                preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_BRANDING, jsonObject.optBoolean(AppConstant.IZ_G_BRANDING));
                                 preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
+                                String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                 trackAdvertisingId();
+                                Log.e("JSONObject",jsonObject.toString());
+                                if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB))
+                                    fetchNewsHubData(context, newsHub);
                                 if(!mKey.isEmpty() && !mId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_XIAOMI_TOKEN)){
                                     XiaomiSDKHandler xiaomiSDKHandler = new XiaomiSDKHandler(iZooto.appContext, mId, mKey);
                                     xiaomiSDKHandler.onMIToken();
@@ -1716,5 +1730,130 @@ static void registerToken() {
     {
 
         DebugFileManager.shareDebuginfo(context,name,emailID);
+    }
+    public static void setNewsHub(Activity context, LinearLayout view) {
+        if (context == null)
+            return;
+
+        setFloatingButton(context, view);
+    }
+
+    public static void setNewsHub(Activity context, LinearLayout view, String jsonString) {
+        if (context == null)
+            return;
+        try {
+
+            if (jsonString != null && !jsonString.isEmpty()) {
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                JSONObject jsonObject = new JSONObject(jsonString);
+                fetchNewsHubData(context, jsonObject.optString(AppConstant.JSON_NEWS_HUB));
+                preferenceUtil.setBooleanData(AppConstant.SET_JSON_NEWS_HUB, true);
+                setFloatingButton(context, view);
+            }
+            else
+                Log.w(AppConstant.APP_NAME_TAG, "Your json string is null");
+
+
+        } catch (Exception e) {
+            Log.w(AppConstant.APP_NAME_TAG, e.toString());
+        }
+    }
+
+    private static void fetchNewsHubData(Context context, String newsHubJsonData) {
+        if (context == null)
+            return;
+
+        try {
+            if (!newsHubJsonData.isEmpty()) {
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                JSONObject jsonObject = new JSONObject(newsHubJsonData);
+                preferenceUtil.setIntData(AppConstant.JSON_NEWS_HUB_STATUS, jsonObject.optInt("status"));
+                preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_IS_FULL_SCREEN, jsonObject.optBoolean("isFullScreen"));
+                preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_COLOR,jsonObject.optString("mainColor"));
+                preferenceUtil.setIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE, jsonObject.optInt("iconType"));
+                preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_IS_DESCRIPTION, jsonObject.optBoolean("isDescription"));
+                preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_TITLE,"Notification Alerts");//jsonObject.optString("title"));
+              //  preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_BRANDING, jsonObject.optBoolean("branding"));
+                preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_WIDGET, jsonObject.optString("widget"));
+                preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_FALLBACK_IMAGE_URL, jsonObject.optString("fallbackImageURL"));
+                preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_TITLE_COLOR,jsonObject.optString("titleColor"));
+            }
+        } catch (Exception e) {
+            Log.w(AppConstant.APP_NAME_TAG, e.toString());
+        }
+    }
+
+    private static void changeFloatingActionDynamically(Context context, FloatingActionButton floatingActionButton) {
+        if (context == null)
+            return;
+
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+
+            if (!preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR).isEmpty()) {
+                int color = Color.parseColor(preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR));
+                floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(color));
+            }
+
+            switch (preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE)) {
+                case 2:
+                    floatingActionButton.setImageResource(R.drawable.ic_ring_bell);
+                    break;
+                case 3:
+                    floatingActionButton.setImageResource(R.drawable.ic_lighting);
+                    break;
+                case 4:
+                    floatingActionButton.setImageResource(R.drawable.ic_shout_out);
+                    break;
+                case 5:
+                    floatingActionButton.setImageResource(R.drawable.ic_megaphone);
+                    break;
+                default:
+                    floatingActionButton.setImageResource(R.drawable.ic_bell);
+                    break;
+            }
+        } catch (Exception e) {
+            Log.w(AppConstant.APP_NAME_TAG, e.toString());
+        }
+    }
+
+    private static void setFloatingButton(Activity context, LinearLayout view) {
+        if (context == null)
+            return;
+
+        try {
+            if (view != null) {
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                FloatingActionButton floatingActionButton = new FloatingActionButton(context);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(-2, -2);
+                layoutParams.setMargins(32, 32, 32, 32);
+                layoutParams.gravity = Gravity.LEFT;
+                floatingActionButton.setLayoutParams(layoutParams);
+                changeFloatingActionDynamically(context, floatingActionButton);
+                floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (preferenceUtil.getBoolean(AppConstant.JSON_NEWS_HUB_IS_FULL_SCREEN)) {
+                            context.startActivity(new Intent(context, NewsHubActivity.class));
+
+                        }
+                        else {
+                            NewsHubAlert newsHubAlert = new NewsHubAlert();
+                            newsHubAlert.showAlertData(context);
+                        }
+                    }
+                });
+
+                view.addView(floatingActionButton);
+
+            } else {
+                context.startActivity(new Intent(context, NewsHubActivity.class));
+            }
+        } catch (Exception e) {
+             Log.w("Warning", e.toString());
+        }
+    }
+
+    public enum LOG_LEVEL {
+        NONE, FATAL, ERROR, WARN, INFO, DEBUG, VERBOSE
     }
 }

@@ -20,6 +20,8 @@
     <style name="AppTheme.Progressbar_Accent">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
-
+    <style name="NH_ALERT_DIALOG" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/iz_nh_background</item>
+    </style>
 
 </resources>

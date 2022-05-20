@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+<!--    <color name="colorPrimary">#969696</color>-->
+<!--    <color name="colorPrimaryDark">#969696</color>-->
+<!--    <color name="colorAccent">#969696</color>-->
     <color name="gray">#E69E9C9C</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="notificationBg">#ffffff</color>
     <color name="notificationMBg">#000</color>
+    <color name="azure">#1E90FF</color>
+    <color name="dawn">#B7A69F9F</color>
+    <color name="granite">#867F7F</color>
 </resources>

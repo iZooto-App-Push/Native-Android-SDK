@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/nh_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/azure">
+
+        <ImageView
+            android:id="@+id/iv_toolbar_back_button"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"
+            android:src="@drawable/ic_iz_back_icon"
+            app:tint="@color/white"/>
+
+        <TextView
+            android:id="@+id/tv_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/news_hub"
+            android:maxLines="1"
+            android:maxLength="25"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100"
+        android:orientation="vertical">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="96"
+            android:id="@+id/idNestedSV_alert">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/staticListData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/news_hub_items" />
+                <ProgressBar
+                    android:id="@+id/progress_bar_alert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/ll_no_data_found"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="96"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_iz_nh_not_found"
+                tools:ignore="UseAppTint" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_new_update"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/watch_this_space_to_get_latest_updates"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/brandingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:background="#B7A69F9F"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_powered_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:text="@string/news_hub_powered_by"/>
+
+            <TextView
+                android:id="@+id/tv_izooto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/azure"
+                android:textSize="13sp"
+                android:text="@string/iz_brand_name"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

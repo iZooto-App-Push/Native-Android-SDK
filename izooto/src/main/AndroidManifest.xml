@@ -124,6 +124,12 @@
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+        <activity android:name=".NewsHubActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"/>
 
     </application>
 

@@ -139,60 +139,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
    public void addNotificationInDB(Payload payload) {
-        if(payload!=null) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(NOTIFICATION_TITLE, payload.getTitle());
-            values.put(SUBTITLE,payload.getSubTitle());
-            values.put(NOTIFICATION_MESSAGE, payload.getMessage());
-            values.put(NOTIFICATION_ICON, payload.getIcon());
-            values.put(NOTIFICATION_BANNER_IMAGE, payload.getBanner());
-            values.put(NOTIFICATION_CID, payload.getId());
-            values.put(NOTIFICATION_RID, payload.getRid());
-            values.put(NOTIFICATION_BADGE_ICON, payload.getBadgeicon());
-            values.put(NOTIFICATION_BADGE_COLOR, payload.getBadgecolor());
-            values.put(FETCH_URL, payload.getFetchURL());
-            values.put(LANDING_URL, payload.getLink());
-            values.put(ACT1ID, payload.getAct1ID());
-            values.put(BUTTON1_NAME, payload.getAct1name());
-            values.put(BUTTON1_URL, payload.getAct1link());
-            values.put(ACT2ID, payload.getAct2ID());
-            values.put(BUTTON2_NAME, payload.getAct2name());
-            values.put(BUTTON2_URL, payload.getAct2link());
-            values.put(BADGE_COUNT, "0");
-            values.put(INAPP, payload.getInapp());
-
-            values.put(ADDITIONALPARAM, payload.getAp());
-            values.put(MAX_NOTIFICATION, payload.getMaxNotification());
-            values.put(FALL_BACK_DOMAIN, payload.getFallBackDomain());
-            values.put(FALLBACK_SUB_DOMAIN, payload.getFallBackSubDomain());
-            values.put(FAll_BACK_PATH, payload.getFallBackPath());
-            values.put(TEXTOVERLAY, payload.getDefaultNotificationPreview());
-            values.put(BGCOLOR, payload.getBadgecolor());
-            values.put(ICONCOLOR, payload.getSmallIconAccentColor());
-            values.put(LEDCOLOR, payload.getLedColor());
-            values.put(COLLAPSEID, payload.getCollapseId());
-            values.put(PRIORITY, payload.getPriority());
-            values.put(CFG, payload.getCfg());
-            values.put(PUSH_TYPE, payload.getPush_type());
-            values.put(VISIBILITY, payload.getLockScreenVisibility());
-            values.put(GMESSAGE, payload.getMessage());
-            values.put(GKEY, payload.getKey());
-            values.put(CREATE_ON,payload.getCreated_Time());
-            values.put(DEVICE_ID, Util.getAndroidId(context));
-            values.put(DEVICE_TOKEN, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-            values.put(APP_ID, PreferenceUtil.getInstance(context).getStringData(AppConstant.APPPID));
-            values.put(TAG,payload.getTag());
-            values.put(REQUIREDINT,payload.getReqInt());
-            values.put(BUTTONCOUNT,payload.getAct_num());
-            values.put(TTL,payload.getTime_to_live());
-            values.put(NOTIFCATIONBANNERDATA,""+Util.getBitmapFromURL(payload.getBanner()));
-            db.insert(TABLE_NAME, null, values);
-            db.close();
-        }
-        else
+        try {
+            if (payload != null) {
+                SQLiteDatabase db = this.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(NOTIFICATION_TITLE, payload.getTitle());
+                values.put(SUBTITLE, payload.getSubTitle());
+                values.put(NOTIFICATION_MESSAGE, payload.getMessage());
+                values.put(NOTIFICATION_ICON, payload.getIcon());
+                values.put(NOTIFICATION_BANNER_IMAGE, payload.getBanner());
+                values.put(NOTIFICATION_CID, payload.getId());
+                values.put(NOTIFICATION_RID, payload.getRid());
+                values.put(NOTIFICATION_BADGE_ICON, payload.getBadgeicon());
+                values.put(NOTIFICATION_BADGE_COLOR, payload.getBadgecolor());
+                values.put(FETCH_URL, payload.getFetchURL());
+                values.put(LANDING_URL, payload.getLink());
+                values.put(ACT1ID, payload.getAct1ID());
+                values.put(BUTTON1_NAME, payload.getAct1name());
+                values.put(BUTTON1_URL, payload.getAct1link());
+                values.put(ACT2ID, payload.getAct2ID());
+                values.put(BUTTON2_NAME, payload.getAct2name());
+                values.put(BUTTON2_URL, payload.getAct2link());
+                values.put(BADGE_COUNT, "0");
+                values.put(INAPP, payload.getInapp());
+                values.put(ADDITIONALPARAM, payload.getAp());
+                values.put(MAX_NOTIFICATION, payload.getMaxNotification());
+                values.put(FALL_BACK_DOMAIN, payload.getFallBackDomain());
+                values.put(FALLBACK_SUB_DOMAIN, payload.getFallBackSubDomain());
+                values.put(FAll_BACK_PATH, payload.getFallBackPath());
+                values.put(TEXTOVERLAY, payload.getDefaultNotificationPreview());
+                values.put(BGCOLOR, payload.getBadgecolor());
+                values.put(ICONCOLOR, payload.getSmallIconAccentColor());
+                values.put(LEDCOLOR, payload.getLedColor());
+                values.put(COLLAPSEID, payload.getCollapseId());
+                values.put(PRIORITY, payload.getPriority());
+                values.put(CFG, payload.getCfg());
+                values.put(PUSH_TYPE, payload.getPush_type());
+                values.put(VISIBILITY, payload.getLockScreenVisibility());
+                values.put(GMESSAGE, payload.getMessage());
+                values.put(GKEY, payload.getKey());
+                values.put(CREATE_ON, payload.getCreated_Time());
+                values.put(DEVICE_ID, Util.getAndroidId(context));
+                values.put(DEVICE_TOKEN, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
+                values.put(APP_ID, PreferenceUtil.getInstance(context).getStringData(AppConstant.APPPID));
+                values.put(TAG, payload.getTag());
+                values.put(REQUIREDINT, payload.getReqInt());
+                values.put(BUTTONCOUNT, payload.getAct_num());
+                values.put(TTL, payload.getTime_to_live());
+                values.put(NOTIFCATIONBANNERDATA, "" + Util.getBitmapFromURL(payload.getBanner()));
+                db.insert(TABLE_NAME, null, values);
+                db.close();
+            } else {
+                Log.e("response", "PayLoad Error");
+            }
+        }catch (Exception ex)
         {
-            Log.e("response","PayLoad Error");
+            Log.e("Exception ex",ex.toString());
         }
     }
    @SuppressLint("Range")

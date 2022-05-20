@@ -108,7 +108,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
     public   void handleNow(final Map<String, String> data) {
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
         PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(this);
-        DatabaseHandler db =new DatabaseHandler(this);
+        NewsHubDBHelper db =new NewsHubDBHelper(this);
         try {
             if(data.get(AppConstant.AD_NETWORK) !=null || data.get(AppConstant.GLOBAL)!=null || data.get(AppConstant.GLOBAL_PUBLIC_KEY)!=null)
             {
@@ -247,9 +247,17 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 if (iZooto.appContext == null)
                     iZooto.appContext = this;
                 if(db.isTableExists(true)) {
-                    if(payload.getFetchURL()==null && payload.getFetchURL().isEmpty())
-                        db.addNotificationInDB(payload);
-                }
+                    db.addNewsHubPayload(payload);
+
+                    if(payload.getFetchURL()==null && payload.getFetchURL().isEmpty()) {
+                        db.addNewsHubPayload(payload);
+                        Log.e("Data", "Data");
+                    }
+                    else {
+                        Log.e("Data1", "Data");
+
+                    }
+               }
                 Handler mainHandler = new Handler(Looper.getMainLooper());
                 Runnable myRunnable = new Runnable() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
