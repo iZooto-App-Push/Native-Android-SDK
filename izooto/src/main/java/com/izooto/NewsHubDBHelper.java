@@ -129,7 +129,6 @@ public class NewsHubDBHelper extends SQLiteOpenHelper {
 
     public void addNewsHubPayload(Payload payload) {
         try {
-            Log.e("Insert","Insert");
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM sqlite_master WHERE name ='" + TABLE_NAME + "' and type='table'", null);
             if (cursor.getCount() > 0) {
@@ -184,13 +183,9 @@ public class NewsHubDBHelper extends SQLiteOpenHelper {
                 // database after adding database.
                 db.close();
             }
-            else
-            {
-                Log.e("Data","issue occured");
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("Data","Data1"+e.toString());
 
         }
     }
@@ -290,7 +285,6 @@ public class NewsHubDBHelper extends SQLiteOpenHelper {
     }
     public boolean isTableExists(boolean openDb) {
         SQLiteDatabase db = this.getWritableDatabase();
-Log.e("Check","ddfdfdf");
         if(openDb) {
 
             if(db == null || !db.isOpen()) {

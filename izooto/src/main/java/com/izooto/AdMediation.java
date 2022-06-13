@@ -744,14 +744,14 @@ public class AdMediation {
                 payload.setAp("");
                 payload.setInapp(0);
                 JSONObject data = new JSONObject();
-                data.put("b", payload.getCpc());
+                data.put("b", Double.parseDouble(payload.getCpc()));
                 data.put("a", payload.getAdID());
                 if (payload.getResponseTime() == 0)
                     data.put("t", -1);
                 else
                     data.put("t", payload.getResponseTime());
                 if (payload.getReceived_bid() != null && !payload.getReceived_bid().isEmpty())
-                    data.put("rb", payload.getReceived_bid());
+                    data.put("rb", Double.parseDouble(payload.getReceived_bid()));
                 successList.add(data);
 
                 if (adIndex == 4) {
@@ -828,7 +828,7 @@ public class AdMediation {
                             if (passiveList.size() > 0) {
                                 JSONObject jsonObject1 = new JSONObject();
                                 jsonObject1.put("b", -1);
-                                jsonObject1.put("rb",passiveList.get(passiveIndex).getReceived_bid());
+                                jsonObject1.put("rb",Double.parseDouble(passiveList.get(passiveIndex).getReceived_bid()));
                                 jsonObject1.put("a", passiveList.get(passiveIndex).getAdID());
                                 jsonObject1.put("t", -1);
                                 successList.add(jsonObject1);
@@ -873,8 +873,8 @@ public class AdMediation {
 
 
                         JSONObject jsonObject1 = new JSONObject();
-                        jsonObject1.put("b", payload.getCpc());
-                        jsonObject1.put("rb",payload.getReceived_bid());
+                        jsonObject1.put("b", Double.parseDouble(payload.getCpc()));
+                        jsonObject1.put("rb",Double.parseDouble(payload.getReceived_bid()));
                         jsonObject1.put("a", payload.getAdID());
                         jsonObject1.put("t", (end-start));
                         successList.add(jsonObject1);
@@ -1098,10 +1098,10 @@ public class AdMediation {
                     finalData.put("av", AppConstant.SDKVERSION);
                     JSONObject servedObject = new JSONObject();
                     servedObject.put("a", payload1.getAdID());
-                    servedObject.put("b", payload1.getCpc());
+                    servedObject.put("b", Double.parseDouble(payload1.getCpc()));
                     servedObject.put("t", payload1.getResponseTime());
                     if (payload1.getReceived_bid() != null && !payload1.getReceived_bid().isEmpty() && payload1.getReceived_bid() != "")
-                        servedObject.put("rb", payload1.getReceived_bid());
+                        servedObject.put("rb", Double.parseDouble(payload1.getReceived_bid()));
                     finalData.put("served", servedObject);
                     successList.addAll(failsList);
                     JSONArray jsonArray = new JSONArray(successList);
@@ -1284,10 +1284,10 @@ public class AdMediation {
                 finalData.put("av",AppConstant.SDKVERSION);
                 JSONObject servedObject=new JSONObject();
                 servedObject.put("a",payload1.getAdID());
-                servedObject.put("b",payload1.getCpc());
+                servedObject.put("b",Double.parseDouble(payload1.getCpc()));
                 servedObject.put("t",payload1.getResponseTime());
                 if(payload1.getReceived_bid()!=null && !payload1.getReceived_bid().isEmpty() && payload1.getReceived_bid()!="")
-                    servedObject.put("rb",payload1.getReceived_bid());
+                    servedObject.put("rb",Double.parseDouble(payload1.getReceived_bid()));
                 finalData.put("served",servedObject);
                 failsList.addAll(successList);
                 JSONArray jsonArray =new JSONArray(failsList);

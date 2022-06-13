@@ -10,7 +10,7 @@
         android:id="@+id/nh_toolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/azure">
+        android:background="@color/iz_azure">
 
         <ImageView
             android:id="@+id/iv_toolbar_back_button"
@@ -20,17 +20,17 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="30dp"
             android:src="@drawable/ic_iz_back_icon"
-            app:tint="@color/white"/>
+            app:tint="@color/iz_white"/>
 
         <TextView
             android:id="@+id/tv_toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/news_hub"
+            android:text="@string/iz_news_hub"
             android:maxLines="1"
             android:maxLength="25"
-            android:textColor="@color/white"
+            android:textColor="@color/iz_white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -80,20 +80,20 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/no_new_update"
+                android:text="@string/iz_no_new_update"
                 android:gravity="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginTop="@dimen/margin_10dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/iz_black"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/watch_this_space_to_get_latest_updates"
+                android:text="@string/iz_watch_this_space_to_get_latest_updates"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/margin_10dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/iz_black"/>
         </LinearLayout>
 
 
@@ -109,15 +109,15 @@
                 android:id="@+id/tv_powered_by"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/iz_black"
                 android:textSize="13sp"
-                android:text="@string/news_hub_powered_by"/>
+                android:text="@string/iz_news_hub_powered_by"/>
 
             <TextView
                 android:id="@+id/tv_izooto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/azure"
+                android:textColor="@color/iz_azure"
                 android:textSize="13sp"
                 android:text="@string/iz_brand_name"/>
         </LinearLayout>

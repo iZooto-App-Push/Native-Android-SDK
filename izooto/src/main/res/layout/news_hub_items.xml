@@ -13,7 +13,7 @@
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UselessParent"
-        android:background="@color/notificationBg">
+        android:background="@color/iz_notificationBg">
 
         <LinearLayout
             android:id="@+id/l1"
@@ -52,7 +52,7 @@
                     android:maxLines="3"
                     android:text=""
                     android:textSize="14sp"
-                    android:textColor="@color/notificationMBg"
+                    android:textColor="@color/iz_notificationMBg"
                     android:textStyle="bold"/>
 
                 <RelativeLayout
@@ -68,7 +68,7 @@
                         android:layout_centerVertical="true"
                         android:singleLine="true"
                         android:text=""
-                        android:textColor="@color/granite"
+                        android:textColor="@color/iz_granite"
                         android:textSize="12sp" />
 
                     <ImageView
@@ -88,7 +88,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.4dp"
-            android:background="@color/dawn"/>
+            android:background="@color/iz_dawn"/>
 
 
     </LinearLayout>

@@ -10,7 +10,7 @@
         android:id="@+id/nh_toolbar_alert"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/azure">
+        android:background="@color/iz_azure">
 
         <ImageView
             android:id="@+id/iv_bell"
@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="30dp"
             android:src="@drawable/ic_news_hub"
-            app:tint="@color/white" />
+            app:tint="@color/iz_white" />
 
         <TextView
             android:id="@+id/tv_toolbar_alert"
@@ -29,8 +29,8 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/iv_bell"
             android:layout_marginStart="@dimen/margin_10dp"
-            android:text="@string/news_hub"
-            android:textColor="@color/white"
+            android:text="@string/iz_news_hub"
+            android:textColor="@color/iz_white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
             android:src="@drawable/cancel"
             android:layout_marginEnd="30dp"
             android:layout_alignParentEnd="true"
-            app:tint="@color/white"/>
+            app:tint="@color/iz_white"/>
 
 
     </RelativeLayout>
@@ -95,19 +95,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/no_new_update"
+                android:text="@string/iz_no_new_update"
                 android:gravity="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/iz_black"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/watch_this_space_to_get_latest_updates"
+                android:text="@string/iz_watch_this_space_to_get_latest_updates"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/margin_10dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/iz_black"/>
         </LinearLayout>
 
 
@@ -124,15 +124,15 @@
             android:id="@+id/tv_powered_by_alert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/iz_black"
             android:textSize="13sp"
-            android:text="@string/news_hub_powered_by"/>
+            android:text="@string/iz_news_hub_powered_by"/>
 
         <TextView
             android:id="@+id/tv_izooto_alert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/azure"
+            android:textColor="@color/iz_azure"
             android:textSize="13sp"
             android:text="iZooto"/>
         </LinearLayout>

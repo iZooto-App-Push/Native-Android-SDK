@@ -132,7 +132,6 @@ private static void init(Builder builder) {
                                 preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
                                 String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                 trackAdvertisingId();
-                                Log.e("JSONObject",jsonObject.toString());
                                 if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB))
                                     fetchNewsHubData(context, newsHub);
                                 if(!mKey.isEmpty() && !mId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_XIAOMI_TOKEN)){
@@ -1731,14 +1730,14 @@ static void registerToken() {
 
         DebugFileManager.shareDebuginfo(context,name,emailID);
     }
-    public static void setNewsHub(Activity context, LinearLayout view) {
+    private static void setNewsHub(Activity context, LinearLayout view) {
         if (context == null)
             return;
 
         setFloatingButton(context, view);
     }
 
-    public static void setNewsHub(Activity context, LinearLayout view, String jsonString) {
+    private static void setNewsHub(Activity context, LinearLayout view, String jsonString) {
         if (context == null)
             return;
         try {

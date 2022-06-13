@@ -4,7 +4,7 @@
     android:id="@+id/linear_layout_collapse"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/notificationBg">
+    android:background="@color/iz_notificationBg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:layout_marginEnd="@dimen/margin_10dp"
             android:text=""
             android:singleLine="true"
-            android:textColor="@color/notificationMBg"
+            android:textColor="@color/iz_notificationMBg"
             android:layout_marginRight="@dimen/margin_10dp" />
 
     </LinearLayout>

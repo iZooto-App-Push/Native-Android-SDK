@@ -59,8 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/margin_5dp"
-                android:text="@string/share"
-                android:textColor="@color/white"
+                android:text="@string/iz_share"
+                android:textColor="@color/iz_white"
                 android:layout_marginLeft="@dimen/margin_5dp" />
 
         </LinearLayout>
@@ -82,7 +82,7 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text=""
-                android:textColor="@color/white" />
+                android:textColor="@color/iz_white" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                         android:maxLength="17"
                         android:singleLine="true"
                         android:text=""
-                        android:textColor="@color/white"
+                        android:textColor="@color/iz_white"
                         android:visibility="gone" />
 
                     <TextView
@@ -121,7 +121,7 @@
                         android:maxLength="17"
                         android:singleLine="true"
                         android:text=""
-                        android:textColor="@color/white"
+                        android:textColor="@color/iz_white"
                         android:visibility="gone"
                         android:layout_marginLeft="@dimen/margin_10dp"
                         android:layout_marginRight="@dimen/margin_1dp"
@@ -138,7 +138,7 @@
                     android:maxLength="11"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="@color/white"
+                    android:textColor="@color/iz_white"
                     android:layout_alignParentRight="true" />
 
             </RelativeLayout>

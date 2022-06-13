@@ -1,12 +1,12 @@
 <resources>
     <string name="something_wrong_fcm_sender_id">\"Some thing is wrong with FCM sender id.\"</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
-    <string name="share">Share</string>
-    <string name="action_settings">Settings</string>
-    <string name="news_hub_powered_by">News Hub Powered by </string>
-    <string name="no_new_update">You have no new updates.</string>
-    <string name="news_hub">News Hub</string>
+    <string name="iz_share">Share</string>
+    <string name="iz_action_settings">Settings</string>
+    <string name="iz_news_hub_powered_by">News Hub Powered by </string>
+    <string name="iz_no_new_update">You have no new updates.</string>
+    <string name="iz_news_hub">News Hub</string>
     <string name="iz_brand_name">iZooto</string>
-    <string name="watch_this_space_to_get_latest_updates">Watch this space to get latest updates.</string>
+    <string name="iz_watch_this_space_to_get_latest_updates">Watch this space to get latest updates.</string>
     <string name="iz_title_name">Title</string>
 </resources>

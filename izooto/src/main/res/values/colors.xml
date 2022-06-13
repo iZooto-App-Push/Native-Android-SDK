@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <color name="colorPrimary">#969696</color>-->
-<!--    <color name="colorPrimaryDark">#969696</color>-->
-<!--    <color name="colorAccent">#969696</color>-->
-    <color name="gray">#E69E9C9C</color>
-    <color name="black">#000000</color>
-    <color name="white">#ffffff</color>
-    <color name="notificationBg">#ffffff</color>
-    <color name="notificationMBg">#000</color>
-    <color name="azure">#1E90FF</color>
-    <color name="dawn">#B7A69F9F</color>
-    <color name="granite">#867F7F</color>
+    <color name="iz_colorPrimary">#969696</color>
+    <color name="iz_colorPrimaryDark">#969696</color>
+    <color name="iz_colorAccent">#969696</color>
+    <color name="iz_gray">#E69E9C9C</color>
+    <color name="iz_black">#000000</color>
+    <color name="iz_white">#ffffff</color>
+    <color name="iz_notificationBg">#ffffff</color>
+    <color name="iz_notificationMBg">#000</color>
+    <color name="iz_azure">#1E90FF</color>
+    <color name="iz_dawn">#B7A69F9F</color>
+    <color name="iz_granite">#867F7F</color>
 </resources>

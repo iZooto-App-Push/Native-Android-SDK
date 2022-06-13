@@ -340,18 +340,18 @@ public class Util {
     }
     public static CharSequence  makeBoldString(CharSequence title) {
         if (Build.VERSION.SDK_INT >= 24) {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\"><b>"+title+"</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
         } else {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\"><b>"+title+"</b></font>"); // or for older api
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\"><b>"+title+"</b></font>"); // or for older api
         }
         return title;
     }
 
     public static CharSequence makeBlackString(CharSequence title) {
         if (Build.VERSION.SDK_INT >= 24) {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\">"+title+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
         } else {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.black) + "\">"+title+"</font>"); // or for older api
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\">"+title+"</font>"); // or for older api
         }
         return title;
     }
