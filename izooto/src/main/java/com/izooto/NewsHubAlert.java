@@ -237,7 +237,6 @@ public class NewsHubAlert {
                                 mPayload.setFallBackPath(jsonObject1.optString(ShortpayloadConstant.FAll_BACK_PATH));
                                 mPayload.setDefaultNotificationPreview(jsonObject1.optInt(ShortpayloadConstant.TEXTOVERLAY));
                                 mPayload.setNotification_bg_color(jsonObject1.optString(ShortpayloadConstant.BGCOLOR));
-Log.e("Insert","insert");
                                 newsHubDBHelper.addNewsHubPayload(mPayload);
 
                                 if (preferenceUtil.getIntData(AppConstant.SET_PAGE_NO) < 4)

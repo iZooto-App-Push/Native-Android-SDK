@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class NewsHubActivity extends AppCompatActivity {
     private ImageView backButton;
     private NestedScrollView nestedScrollViewAlert;
-    private ProgressBar loadingPBAlert;
+    private ProgressBar loadingPBAlert,progress_bar_alert1;
     private RecyclerView recyclerViewAlert;
     private RelativeLayout toolbarLayout;
     private TextView poweredByText, toolbarText, iZootoText;
@@ -49,21 +49,17 @@ public class NewsHubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newshub);
-
-        Log.e("TAG", "onCreate: entry in activity" );
-
         context = NewsHubActivity.this;
         defineIds();
-
         NewsHubAlert.preferenceUtil = PreferenceUtil.getInstance(context);
         NewsHubAlert.newsHubDBHelper = new NewsHubDBHelper(context);
-
+        loadingPBAlert.setVisibility(View.GONE);
         if (NewsHubAlert.preferenceUtil.getIntData(AppConstant.SET_PAGE_NO) < 4)
             NewsHubAlert.limit = 4;
         else
             NewsHubAlert.limit = 0;
 
-        NewsHubAlert.getDataFromAPI(NewsHubActivity.this, NewsHubAlert.page, NewsHubAlert.limit, recyclerViewAlert, loadingPBAlert, noDataFound, nestedScrollViewAlert);
+        NewsHubAlert.getDataFromAPI(NewsHubActivity.this, NewsHubAlert.page, NewsHubAlert.limit, recyclerViewAlert, progress_bar_alert1, noDataFound, nestedScrollViewAlert);
         SpannableString spannableString = new SpannableString("News Hub Powered by ");
         spannableString.setSpan(new StyleSpan(BOLD), 0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -111,6 +107,7 @@ public class NewsHubActivity extends AppCompatActivity {
         backButton =  findViewById(R.id.iv_toolbar_back_button);
         nestedScrollViewAlert =  findViewById(R.id.idNestedSV_alert);
         loadingPBAlert =  findViewById(R.id.progress_bar_alert);
+        progress_bar_alert1 =findViewById(R.id.progress_bar_alert1);
         recyclerViewAlert =  findViewById(R.id.staticListData);
         poweredByText =  findViewById(R.id.tv_powered_by);
         noDataFound =  findViewById(R.id.ll_no_data_found);

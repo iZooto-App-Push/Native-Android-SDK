@@ -15,16 +15,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e526a21-7e02-402a-a6d1-94a81cce592b" name="Default Changelist" comment="&#10;Uploaded the bintray module">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_exifinterface_exifinterface_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_3_10_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_okio_okio_1_14_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_picasso_picasso_2_71828_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.androidTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.unitTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.unitTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubAlert.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubAlert.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RoundedCornersTransform.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RoundedCornersTransform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/layout/activity_newshub.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/activity_newshub.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

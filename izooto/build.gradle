@@ -32,7 +32,7 @@ dependencies {
     implementation files('libs/MiPush_SDK_Client_4_8_6-G.jar')
     compileOnly 'com.huawei.hms:push:6.3.0.304'
     testImplementation 'org.testng:testng:7.3.0'
-   // implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
 }
