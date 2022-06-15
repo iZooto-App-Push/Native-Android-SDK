@@ -28,7 +28,10 @@ public class OSTaskManager {
     static final String ADD_TAG = "addTag()";
     static final String REMOVE_TAG = "removeTag()";
     static final String SET_CUSTOM_TEMPLATE = "setCustomTemplate()";
-    static final String SET_SUBSCRIBER_ID="setSubscriberID()";
+    static final String SET_SUBSCRIBER_ID = "setSubscriberID()";
+    static final String UNSUBSCRIBE_WHEN_NOTIFICATIONS_ARE_DISABLED ="unsubscribeWhenNotificationsAreDisabled()";
+    static final String NOTIFICATION_HELPER_LISTENER ="setNotificationReceiveListener()";
+    static final String NOTIFICATION_WEBVIEW_LISTENER ="setLandingURLListener()";
     static final HashSet<String> METHODS_ADD_IN_QUEUE_FOR = new HashSet<>(Arrays.asList(
             ADD_USERPROPERTY,
             ADD_EVENT,
@@ -37,7 +40,10 @@ public class OSTaskManager {
             ADD_TAG,
             REMOVE_TAG,
             SET_CUSTOM_TEMPLATE,
-            SET_SUBSCRIBER_ID
+            SET_SUBSCRIBER_ID,
+            UNSUBSCRIBE_WHEN_NOTIFICATIONS_ARE_DISABLED,
+            NOTIFICATION_HELPER_LISTENER,
+            NOTIFICATION_WEBVIEW_LISTENER
     ));
 
     boolean shouldQueueTaskForInit(String task) {
@@ -72,16 +78,16 @@ public class OSTaskManager {
         task.taskId = lastTaskId.incrementAndGet();
 
         if (pendingTaskExecutor == null) {
-            Log.d(AppConstant.APP_NAME_TAG, "Adding a task to the pending queue with ID:" + task.taskId);
+            iZooto.Log(iZooto.LOG_LEVEL.DEBUG, "Adding a task to the pending queue with ID:" + task.taskId);
             // The tasks haven't been executed yet...add them to the waiting queue
             taskQueueWaitingForInit.add(task);
         } else if (!pendingTaskExecutor.isShutdown()) {
-            Log.d(AppConstant.APP_NAME_TAG, "Executor is still running, add to the executor with ID:" + task.taskId);
+            iZooto.Log(iZooto.LOG_LEVEL.DEBUG, "Executor is still running, add to the executor with ID:" + task.taskId);
             try {
                 // If the executor isn't done with tasks, submit the task to the executor
                 pendingTaskExecutor.submit(task);
             } catch (RejectedExecutionException e) {
-                Log.d(AppConstant.APP_NAME_TAG,"Executor is shutdown, running task manually with ID: " + task.taskId);
+                iZooto.Log(iZooto.LOG_LEVEL.DEBUG,"Executor is shutdown, running task manually with ID: " + task.taskId);
                 task.run();
                 e.printStackTrace();
             }
@@ -112,7 +118,7 @@ public class OSTaskManager {
 
     private void onTaskRan(long taskId) {
         if (lastTaskId.get() == taskId) {
-            Log.d(AppConstant.APP_NAME_TAG, "Last Pending Task has ran, shutting down");
+            iZooto.Log(iZooto.LOG_LEVEL.DEBUG, "Last Pending Task has ran, shutting down");
             pendingTaskExecutor.shutdown();
         }
     }

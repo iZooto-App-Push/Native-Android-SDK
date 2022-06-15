@@ -247,16 +247,11 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 if (iZooto.appContext == null)
                     iZooto.appContext = this;
                 if(db.isTableExists(true)) {
-                    db.addNewsHubPayload(payload);
 
                     if(payload.getFetchURL()==null && payload.getFetchURL().isEmpty()) {
                         db.addNewsHubPayload(payload);
-                        Log.e("Data", "Data");
                     }
-                    else {
-                        Log.e("Data1", "Data");
 
-                    }
                }
                 Handler mainHandler = new Handler(Looper.getMainLooper());
                 Runnable myRunnable = new Runnable() {

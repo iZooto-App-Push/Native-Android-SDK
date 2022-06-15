@@ -13,7 +13,7 @@ import com.izooto.Payload;
 import com.izooto.TokenReceivedListener;
 import com.izooto.PushTemplate;
 
-public class AppController extends Application implements TokenReceivedListener,NotificationHelperListener, NotificationWebViewListener
+public class AppController extends Application
 
 {
 
@@ -22,40 +22,31 @@ public class AppController extends Application implements TokenReceivedListener,
     @Override
     public void onCreate() {
         super.onCreate();
-        iZooto.initialize(this)
-                .setNotificationReceiveListener(this)
-                .setTokenReceivedListener(this)
-                .build();
-      //iZooto.setNotificationSound("pikachu");// no use extesnion  name
-        iZooto.setDefaultTemplate(PushTemplate.TEXT_OVERLAY);
-       // iZooto.setDefaultNotificationBanner(R.drawable.splash_image);
-    }
+        iZooto.initWithContext(this);
+        iZooto.setAppId("09f06385e06cc10d0fc7a5e1c002cd9338a2c94f");
+        iZooto.setTokenReceivedListener(new TokenReceivedListener() {
+            @Override
+            public void onTokenReceived(String token) {
+                Log.e("Token",token);
+            }
+        });
+        iZooto.setDefaultTemplate(PushTemplate.DEFAULT);
+        iZooto.setNotificationReceiveListener(new NotificationHelperListener() {
+            @Override
+            public void onNotificationReceived(Payload payload) {
+                Log.e("Received Payload",payload.getTitle());
+            }
 
-    @Override
-    public void onTokenReceived(String token) {
-        Log.e("TokenData",token);
+            @Override
+            public void onNotificationOpened(String data) {
+                Log.e("onNotificationOpened",data);
 
-    }
 
-    @Override
-    public void onNotificationReceived(Payload payload) {
-        Log.e("Payload",payload.getTitle());
+            }
+        });
 
-    }
-
-    @Override
-    public void onNotificationOpened(String data) {
-         Intent intent=new Intent(this,MainActivity.class);// launch activity name
-         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-         startActivity(intent);
     }
 
 
-    @Override
-    public void onWebView(String landingUrl) {
-        Log.e("LandingURL",landingUrl);
-        Intent intent=new Intent(this,MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
+
 }

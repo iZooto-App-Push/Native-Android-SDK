@@ -10,11 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -59,10 +57,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         if(context!=null) {
             String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
-//            if(Build.VERSION.SDK_INT<Build.VERSION_CODES.S) {
-//                context.sendBroadcast(it);
-//            }
-            context.sendBroadcast(it);
+            if(Build.VERSION.SDK_INT<Build.VERSION_CODES.S) {
+                context.sendBroadcast(it);
+            }
             getBundleData(context, intent);
             mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
             getBundleData(context, intent);
@@ -138,7 +135,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 }
             }
             if (medClick != "") {
-                callMediationClicks(context,medClick,0);
+                callMediationClicks(context, medClick,0);
             }
 
             if (additionalData.equalsIgnoreCase("")) {
@@ -174,7 +171,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     {
-                        if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                        if (iZooto.mWebViewListener != null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             iZooto.notificationInAppAction(mUrl);
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             if (Util.isAppInForeground(context))
@@ -192,15 +189,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     try {
                         if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                             if(mUrl!=null && !mUrl.isEmpty()) {
-                                    openURLInBrowser(context,mUrl);
-
-
+                                openURLInBrowser(context, mUrl);
                             }
-
                             else
                             {
-
-
                                 Util.setException(context, "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
                                 DebugFileManager.createExternalStoragePublic(context,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
 
@@ -221,14 +213,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
 
     }
-    static void openURLInBrowser(Context context,@NonNull String url) {
-        openURLInBrowser(context ,Uri.parse(url.trim()));
+    public static void openURLInBrowser(Context context, @NonNull String url) {
+        openURLInBrowser(context, Uri.parse(url.trim()));
     }
-    private static void openURLInBrowser(Context context,@NonNull Uri uri) {
+    private static void openURLInBrowser(Context context, @NonNull Uri uri) {
         Intent intent = openURLInBrowserIntent(uri);
         context.startActivity(intent);
     }
-
 
     static void lastClickAPI(Context context, String lciURL, String rid, int i){
         if (context == null)
@@ -288,7 +279,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
 
     }
-     static void callRandomClick(String rv) {
+    static void callRandomClick(String rv) {
         if(!rv.isEmpty()) {
             RestClient.get(rv, new RestClient.ResponseHandler() {
                 @Override
@@ -306,10 +297,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    static void callMediationClicks(Context context,final String medClick, int cNUmber) {
+    static void callMediationClicks(Context context, final String medClick, int cNUmber) {
+        if (context == null)
+            return;
+
         try {
             if(!medClick.isEmpty()) {
-                DebugFileManager.createExternalStoragePublic(context,medClick,"mediationClick");
+                DebugFileManager.createExternalStoragePublic(context, medClick,"mediationClick");
                 JSONObject jsonObject = new JSONObject(medClick);
                 RestClient.postRequest(RestClient.MEDIATION_CLICKS, null,jsonObject, new RestClient.ResponseHandler() {
                     @SuppressLint("NewApi")
@@ -337,7 +331,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     @Override
                     void onFailure(int statusCode, String response, Throwable throwable) {
                         super.onFailure(statusCode, response, throwable);
-                        Util.trackMediation_Impression_Click(context,AppConstant.MED_CLICK,medClick);
+                        Util.trackMediation_Impression_Click(context, AppConstant.MED_CLICK,medClick);
 
 
                     }
@@ -366,7 +360,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intentAppLaunch);
             }
-            Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
+            iZooto.Log(iZooto.LOG_LEVEL.DEBUG,  "Found it:" + name);
         } catch (PackageManager.NameNotFoundException e) {
             Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
 
@@ -413,8 +407,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             if(tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
                 cfg=tempBundle.getInt(AppConstant.CFGFORDOMAIN);
 
-
-
             if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -439,7 +431,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             mapData.put("op","click");
             if (btnCount != 0)
                 mapData.put("btn","" + btnCount);
-            DebugFileManager.createExternalStoragePublic(context,mapData.toString(),"clickData");
+            DebugFileManager.createExternalStoragePublic(context, mapData.toString(),"clickData");
 
             RestClient.postRequest(clkURL, mapData,null, new RestClient.ResponseHandler() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)

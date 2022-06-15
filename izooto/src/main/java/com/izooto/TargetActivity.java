@@ -150,8 +150,10 @@ public class TargetActivity extends Activity {
                 hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
                 hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
                 JSONObject jsonObject = new JSONObject(hashMap);
-                if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                     iZooto.notificationActionHandler(jsonObject.toString());
+                    finish();
+                }
                 else {
                     if (Util.isAppInForeground(context))
                         iZooto.notificationActionHandler(jsonObject.toString());
@@ -165,7 +167,7 @@ public class TargetActivity extends Activity {
 
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     {
-                        if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                        if (iZooto.mWebViewListener != null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             iZooto.notificationInAppAction(mUrl);
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             if (Util.isAppInForeground(context))
@@ -176,6 +178,7 @@ public class TargetActivity extends Activity {
                             }
                         } else
                             iZootoWebViewActivity.startActivity(context, mUrl);
+                        finish();
                     }
                 } else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     NotificationActionReceiver.launchApp(context);
@@ -313,7 +316,6 @@ public class TargetActivity extends Activity {
                     } catch (Exception e) {
                         Util.setException(iZooto.appContext,e.toString(),AppConstant.APPName_3,"notificationClickAPI");
                     }
-
                 }
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
@@ -474,7 +476,7 @@ public class TargetActivity extends Activity {
                 intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intentAppLaunch);
             }
-            Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
+            iZooto.Log(iZooto.LOG_LEVEL.DEBUG, "Found it:" + name);
         } catch (PackageManager.NameNotFoundException e) {
             Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
 

@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-       // LinearLayout mainLayout=findViewById(R.id.mainLayout);
-       // iZooto.setNewsHub(MainActivity.this,mainLayout);
+
 
 
     }

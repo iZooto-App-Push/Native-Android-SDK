@@ -385,6 +385,23 @@ public interface AppConstant {
     String NEWS_HUB_CLICK_KEY="cs";
     String NEWS_HUB_CLICK_VALUE="1";
     String IZ_G_BRANDING = "branding";
+
+
+
+    //////////naming convention
+
+    String IZOOTO_APP_ID_INTEGRATION = "\niZooto.initialize(this)\n" +
+            ".setiZootoID(\"YOUR_IZOOTO_APP_ID\")\n" +
+            ".build();";
+    String INIT_FAILURE = "Please verify your iZooto App ID.";
+    String IZOOTO_PAYLOAD = "iZootoPayload";
+    String INIT_WITH_CONTEXT_NULL = "initWithContext: called with null context, ignoring!";
+    String INIT_WITH_CONTEXT_OLD_ID_NULL = "appContext set, but please call setAppId(appId) with a valid appId to complete iZooto init!";
+    String INIT_WITH_CONTEXT_OLD_ID_NOT_NULL = "appContext set and cached app id found, calling setAppId with: ";
+    String SET_APP_ID_WITH_NULL_CONTEXT = "appId set, but please call initWithContext(appContext) with Application context to complete iZooto init!";
+    String GIVEN_STRING_NOT_JSON_STRING = "Given String is Not Valid JSON String";
+    String _HMS_APPID = "HuaweiAppId";
+    String _iZOOTO_MI_TOKEN = "iZootoMiToken";
 }
 
 

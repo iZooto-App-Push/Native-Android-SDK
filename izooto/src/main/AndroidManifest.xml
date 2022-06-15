@@ -61,9 +61,6 @@
         <activity android:name=".TargetActivity"
             android:exported="true"/>
 
-        <meta-data
-            android:name="izooto_app_id"
-            android:value="${izooto_app_id}" />
         <service
             android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
