@@ -43,7 +43,7 @@ import static com.izooto.AppConstant.FCM_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.HUAWEI_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.TAG;
 import static com.izooto.AppConstant.XIAOMI_TOKEN_FROM_JSON;
-
+@SuppressWarnings("unchecked")
 public class iZooto {
     static Context appContext;
     private static String senderId;
