@@ -915,7 +915,6 @@ public class AdMediation {
 
         if(iZooto.appContext!=null) {
             String fetchURL=NotificationEventManager.fetchURL(payload.getFetchURL());
-
             RestClient.get(fetchURL, new RestClient.ResponseHandler() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override

@@ -1730,14 +1730,14 @@ static void registerToken() {
 
         DebugFileManager.shareDebuginfo(context,name,emailID);
     }
-    private static void setNewsHub(Activity context, LinearLayout view) {
+    public static void setNewsHub(Activity context, LinearLayout view) {
         if (context == null)
             return;
 
         setFloatingButton(context, view);
     }
 
-    private static void setNewsHub(Activity context, LinearLayout view, String jsonString) {
+    public static void setNewsHub(Activity context, LinearLayout view, String jsonString) {
         if (context == null)
             return;
         try {

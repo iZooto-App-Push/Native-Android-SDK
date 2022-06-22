@@ -24,6 +24,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -63,6 +66,7 @@ public class NewsHubAdapter extends RecyclerView.Adapter<NewsHubAdapter.ViewHold
 
             long longTime = Long.parseLong(userModal.getCreated_Time());
             holder.newsHubTime.setText(IZTimeAgo.getTimeAgo(longTime));
+
 
            // Picasso.get().load(userModal.getBanner()).placeholder(R.drawable.nh_rounded_corner).transform(new RoundedCornersTransform(50,0)).into(holder.bannerImage);
             holder.news_hub_share_icon.setOnClickListener(new View.OnClickListener() {
