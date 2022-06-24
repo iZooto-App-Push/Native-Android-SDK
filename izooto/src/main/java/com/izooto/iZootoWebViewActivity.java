@@ -22,6 +22,7 @@ public class iZootoWebViewActivity extends AppCompatActivity {
     public static void startActivity(Context context, String url) {
         context.startActivity(createIntent(context, url));
 
+
     }
 
     public static Intent createIntent(Context context, String url) {

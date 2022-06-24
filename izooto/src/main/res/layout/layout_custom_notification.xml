@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_5dp"
             android:layout_marginStart="@dimen/margin_10dp"
+            android:layout_marginTop="@dimen/margin_5dp"
             android:layout_marginEnd="@dimen/margin_10dp"
             android:orientation="horizontal">
 
@@ -28,19 +28,21 @@
                 android:layout_width="@dimen/width_35dp"
                 android:layout_height="@dimen/height_35dp"
                 android:layout_gravity="center"
-                android:scaleType="fitXY"
-                />
+                android:visibility="visible"
+                android:scaleType="fitXY" />
 
             <TextView
                 android:id="@+id/tv_message"
                 style="@style/TextAppearance.Compat.Notification.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text=""
-                android:layout_marginLeft="@dimen/margin_8dp" />
+                android:layout_marginStart="@dimen/margin_8dp"
+                android:layout_marginLeft="@dimen/margin_8dp"
+            android:text=""
+                />
+
 
         </LinearLayout>
 
@@ -50,10 +52,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/margin_10dp"
-            android:text=""
+            android:layout_marginRight="@dimen/margin_10dp"
             android:singleLine="true"
-            android:textColor="@color/iz_notificationMBg"
-            android:layout_marginRight="@dimen/margin_10dp" />
+            android:text=""
+            android:textColor="@color/iz_notificationMBg" />
 
     </LinearLayout>
 </RelativeLayout>

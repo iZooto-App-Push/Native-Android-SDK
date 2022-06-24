@@ -43,7 +43,7 @@ import static com.izooto.AppConstant.FCM_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.HUAWEI_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.TAG;
 import static com.izooto.AppConstant.XIAOMI_TOKEN_FROM_JSON;
-
+@SuppressWarnings("unchecked")
 public class iZooto {
     static Context appContext;
     private static String senderId;
@@ -1772,7 +1772,6 @@ static void registerToken() {
                 preferenceUtil.setIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE, jsonObject.optInt("iconType"));
                 preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_IS_DESCRIPTION, jsonObject.optBoolean("isDescription"));
                 preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_TITLE,"Notification Alerts");//jsonObject.optString("title"));
-              //  preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_BRANDING, jsonObject.optBoolean("branding"));
                 preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_WIDGET, jsonObject.optString("widget"));
                 preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_FALLBACK_IMAGE_URL, jsonObject.optString("fallbackImageURL"));
                 preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_TITLE_COLOR,jsonObject.optString("titleColor"));

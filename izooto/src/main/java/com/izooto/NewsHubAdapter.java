@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -59,22 +60,32 @@ public class NewsHubAdapter extends RecyclerView.Adapter<NewsHubAdapter.ViewHold
 
         try {
             // getting data from our array list in our modal class.
-            Payload userModal = payloadModalArrayList.get(position);
+            Payload newsHubModel = payloadModalArrayList.get(position);
 
             // on below line we are setting data to our text view.
-            holder.title.setText(userModal.getTitle());
+            holder.title.setText(newsHubModel.getTitle());
 
-            long longTime = Long.parseLong(userModal.getCreated_Time());
+            long longTime = Long.parseLong(newsHubModel.getCreated_Time());
             holder.newsHubTime.setText(IZTimeAgo.getTimeAgo(longTime));
+            if(newsHubModel.getBanner()!=null && newsHubModel.getBanner()!="")
+            {
+                Picasso.get().load(newsHubModel.getBanner()).placeholder(R.drawable.nh_rounded_corner).transform(new RoundedCornersTransform(50,0)).into(holder.bannerImage);
+            }
+            else
+            {
+                Drawable appICon = Util.getApplicationIcon(context);
+                holder.bannerImage.setImageDrawable(appICon);
+            }
 
-            Picasso.get().load(userModal.getBanner()).placeholder(R.drawable.nh_rounded_corner).transform(new RoundedCornersTransform(50,0)).into(holder.bannerImage);
+
+
             holder.news_hub_share_icon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Intent myIntent = new Intent(Intent.ACTION_SEND);
                     myIntent.setType("text/plain");
-                    String body = userModal.getLink();
+                    String body = newsHubModel.getLink();
                     String sub = "Share Link ";
                     myIntent.putExtra(Intent.EXTRA_SUBJECT,sub);
                     myIntent.putExtra(Intent.EXTRA_TEXT,body);
@@ -204,7 +215,7 @@ public class NewsHubAdapter extends RecyclerView.Adapter<NewsHubAdapter.ViewHold
                 }
             });
         } catch (Exception e) {
-            Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
+            Util.setException(context, e.toString(), "NewsHubAdapter", "NewsHubAdapter");
         }
     }
 

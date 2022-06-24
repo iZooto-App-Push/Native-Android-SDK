@@ -1,6 +1,7 @@
 package com.izooto;
 
 import static android.graphics.Typeface.BOLD;
+import static android.graphics.Typeface.NORMAL;
 
 import android.content.Context;
 import android.content.Intent;
@@ -59,9 +60,12 @@ public class NewsHubActivity extends AppCompatActivity {
         else
             NewsHubAlert.limit = 0;
 
+
+
+
         NewsHubAlert.getDataFromAPI(NewsHubActivity.this, NewsHubAlert.page, NewsHubAlert.limit, recyclerViewAlert, progress_bar_alert1, noDataFound, nestedScrollViewAlert);
         SpannableString spannableString = new SpannableString("News Hub Powered by ");
-        spannableString.setSpan(new StyleSpan(BOLD), 0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new StyleSpan(NORMAL), 0, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         poweredByText.setText(spannableString);
 
@@ -74,6 +78,7 @@ public class NewsHubActivity extends AppCompatActivity {
                 if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
                     // in this method we are incrementing page number,
                     // making progress bar visible and calling get data method.
+                     progress_bar_alert1.setVisibility(View.GONE);
                     if (NewsHubAlert.preferenceUtil.getIntData(AppConstant.SET_PAGE_NO) < 4 && Util.isNetworkAvailable(context)) {
                         NewsHubAlert.page++;
                         loadingPBAlert.setVisibility(View.VISIBLE);
@@ -95,7 +100,7 @@ public class NewsHubActivity extends AppCompatActivity {
         iZootoText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "https://www.izooto.com";
+                String url = "https://www.izooto.com/campaign/getting-started-with-izooto?utm_source=referral&utm_medium=news_hub&utm_campaign="+Util.getPackageName(NewsHubActivity.this);
                 Uri uri = Uri.parse(url);
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
             }

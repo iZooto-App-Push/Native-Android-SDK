@@ -15,11 +15,11 @@
 
         <ImageView
             android:id="@+id/iv_toolbar_back_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:src="@drawable/ic_iz_back_icon"
             app:tint="@color/iz_white"/>
 
@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:text="@string/iz_news_hub"
             android:maxLines="1"
-            android:maxLength="25"
+            android:maxLength="20"
             android:textColor="@color/iz_white"
             android:textSize="18sp"
             android:textStyle="bold" />

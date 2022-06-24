@@ -59,6 +59,7 @@
             </intent-filter>
         </service>
         <activity android:name=".TargetActivity"
+
             android:exported="true"/>
 
         <meta-data

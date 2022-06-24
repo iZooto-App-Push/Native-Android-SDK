@@ -6,7 +6,7 @@
     <color name="iz_gray">#E69E9C9C</color>
     <color name="iz_black">#000000</color>
     <color name="iz_white">#ffffff</color>
-    <color name="iz_notificationBg">#ffffff</color>
+    <color name="iz_notificationBg">#00ffffff</color>
     <color name="iz_notificationMBg">#000</color>
     <color name="iz_azure">#1E90FF</color>
     <color name="iz_dawn">#B7A69F9F</color>

@@ -174,8 +174,10 @@ public class TargetActivity extends Activity {
                                 WebViewClick = mUrl;
                                 NotificationActionReceiver.launchApp(context);
                             }
-                        } else
+                        } else {
                             iZootoWebViewActivity.startActivity(context, mUrl);
+                            finish();
+                        }
                     }
                 } else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     NotificationActionReceiver.launchApp(context);

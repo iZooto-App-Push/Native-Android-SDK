@@ -257,10 +257,15 @@ public class NewsHubAlert {
                                     nestedSV.setVisibility(View.GONE);
                                     notFoundLayout.setVisibility(View.VISIBLE);
                                 }
+                                progressBar.setVisibility(View.GONE);
+
 
                             }
                         } catch (JSONException e) {
+                            progressBar.setVisibility(View.GONE);
+
                             e.printStackTrace();
+
                         }
 
                     }
@@ -271,6 +276,7 @@ public class NewsHubAlert {
             @Override
             void onFailure(int statusCode, String response, Throwable throwable) {
                 super.onFailure(statusCode, response, throwable);
+                progressBar.setVisibility(View.GONE);
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
