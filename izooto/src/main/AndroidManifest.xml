@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.izooto">
 
-    <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS" />
+    <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -59,6 +60,7 @@
             </intent-filter>
         </service>
         <activity android:name=".TargetActivity"
+            android:launchMode="singleInstance"
             android:exported="true"/>
 
         <meta-data
@@ -124,12 +126,12 @@
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <activity android:name=".NewsHubActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask"/>
+<!--        <activity android:name=".NewsHubActivity"-->
+<!--            android:exported="false"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:noHistory="true"-->
+<!--            android:theme="@style/AppTheme.NoActionBar"-->
+<!--            android:launchMode="singleTask"/>-->
 
     </application>
 

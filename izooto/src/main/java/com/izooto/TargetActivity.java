@@ -150,16 +150,21 @@ public class TargetActivity extends Activity {
                 hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
                 hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
                 JSONObject jsonObject = new JSONObject(hashMap);
-                if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                     iZooto.notificationActionHandler(jsonObject.toString());
+                    this.finish();
+                }
                 else {
-                    if (Util.isAppInForeground(context))
+                    if (Util.isAppInForeground(context)) {
                         iZooto.notificationActionHandler(jsonObject.toString());
+                        this.finish();
+                    }
                     else
                         notificationClick = jsonObject.toString();
                 }
                 if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                     launchApp(context);
+                    this.finish();
                 }
             } else {
 
@@ -167,15 +172,20 @@ public class TargetActivity extends Activity {
                     {
                         if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             iZooto.notificationInAppAction(mUrl);
+                            this.finish();
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                            if (Util.isAppInForeground(context))
+                            if (Util.isAppInForeground(context)) {
                                 iZooto.notificationInAppAction(mUrl);
+                                this.finish();
+                            }
                             else {
                                 WebViewClick = mUrl;
                                 NotificationActionReceiver.launchApp(context);
                             }
-                        } else
+                        } else {
                             iZootoWebViewActivity.startActivity(context, mUrl);
+                            this.finish();
+                        }
                     }
                 } else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     NotificationActionReceiver.launchApp(context);
