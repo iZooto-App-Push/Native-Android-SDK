@@ -137,8 +137,14 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
                 }
             }
-            if (medClick != "") {
-                callMediationClicks(context,medClick,0);
+//            if (medClick != "") {
+//                callMediationClicks(context,medClick,0);
+//            }
+            if(preferenceUtil.getStringData("MEDIATIONCLICKDATA")!="")
+            {
+                String medClickData = preferenceUtil.getStringData("MEDIATIONCLICKDATA");
+                callMediationClicks(context,medClickData,0);
+
             }
 
             if (additionalData.equalsIgnoreCase("")) {
@@ -250,7 +256,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             mapData.put(AppConstant.ET_,"" + AppConstant.USERP_);
 
             RestClient.postRequest(lciURL, mapData,null, new RestClient.ResponseHandler() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onSuccess(final String response) {
                     super.onSuccess(response);
@@ -264,7 +269,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         DebugFileManager.createExternalStoragePublic(context,"LastClick"+e.toString(),"[Log.V]->");
                     }
                 }
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
@@ -331,7 +335,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             }
                         }
                         else {
-                            NotificationActionReceiver.medClick = "";
+                            preferenceUtil.setStringData("MEDIATIONCLICKDATA","");
+
+                           // NotificationActionReceiver.medClick = "";
                         }
                     }
                     @Override

@@ -8,15 +8,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,9 +123,16 @@ public class TargetActivity extends Activity {
 
                 }
             }
-            if (medClick != "") {
-                callMediationClicks(medClick,0);
+//            if (medClick != "") {
+//                callMediationClicks(medClick,0);
+//            }
+            if(preferenceUtil.getStringData("MEDIATIONCLICKDATA")!="")
+            {
+                String medClickData = preferenceUtil.getStringData("MEDIATIONCLICKDATA");
+                callMediationClicks(medClickData,0);
+
             }
+
 
             if (additionalData.equalsIgnoreCase("")) {
                 additionalData = "1";
@@ -288,7 +290,6 @@ public class TargetActivity extends Activity {
             }
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void notificationClickAPI(Context context, String clkURL, String cid, String rid, int btnCount, int i,String pushType) {
         if (context == null)
             return;
@@ -308,7 +309,6 @@ public class TargetActivity extends Activity {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,mapData.toString(),"clickData");
 
             RestClient.postRequest(clkURL, mapData,null, new RestClient.ResponseHandler() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onSuccess(final String response) {
                     super.onSuccess(response);
@@ -368,7 +368,6 @@ public class TargetActivity extends Activity {
             mapData.put(AppConstant.ET_,"" + AppConstant.USERP_);
 
             RestClient.postRequest(lciURL, mapData,null, new RestClient.ResponseHandler() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onSuccess(final String response) {
                     super.onSuccess(response);
@@ -382,7 +381,6 @@ public class TargetActivity extends Activity {
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,"LastClick"+e.toString(),"[Log.V]->");
                     }
                 }
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
@@ -423,18 +421,19 @@ public class TargetActivity extends Activity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void callMediationClicks(final String medClick, int cNUmber) {
         try {
+
             if(!medClick.isEmpty()) {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext,medClick,"mediationClick");
                 JSONObject jsonObject = new JSONObject(medClick);
+                PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
+                Log.e("ServerData",medClick);
                 RestClient.postRequest(RestClient.MEDIATION_CLICKS, null,jsonObject, new RestClient.ResponseHandler() {
                     @SuppressLint("NewApi")
                     @Override
                     void onSuccess(String response) {
                         super.onSuccess(response);
-                        PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
                         if (!preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS).isEmpty() && cNUmber >= 0) {
                             try {
                                 JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS));
@@ -447,9 +446,11 @@ public class TargetActivity extends Activity {
 
 
                             }
+                            preferenceUtil.setStringData("MEDIATIONCLICKDATA","");
                         }
                         else {
-                            NotificationActionReceiver.medClick = "";
+                            preferenceUtil.setStringData("MEDIATIONCLICKDATA","");
+                           // NotificationActionReceiver.medClick = "";
                         }
                     }
                     @Override
@@ -467,6 +468,7 @@ public class TargetActivity extends Activity {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,"MediationCLick"+ex.toString(),"[Log.V]->");
 
         }
+
     }
 
 

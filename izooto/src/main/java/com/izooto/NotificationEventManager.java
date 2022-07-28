@@ -1700,7 +1700,6 @@ public class NotificationEventManager {
         }
 
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void viewNotificationApi(final Payload payload,String pushName) {
         if(iZooto.appContext!=null) {
 
@@ -1715,7 +1714,6 @@ public class NotificationEventManager {
 
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void impressionNotification(String impURL, String cid, String rid, int i,String pushName){
         if (iZooto.appContext == null)
             return;
@@ -1731,38 +1729,17 @@ public class NotificationEventManager {
             mapData.put(AppConstant.PUSH,pushName);
             mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
             RestClient.postRequest(impURL, mapData,null, new RestClient.ResponseHandler() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onSuccess(final String response) {
                     super.onSuccess(response);
-
-                    try {
-                        if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_VIEW_OFFLINE).isEmpty() && i >= 0) {
-                            JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_VIEW_OFFLINE));
-                            jsonArrayOffline.remove(i);
-                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_VIEW_OFFLINE, null);
-                        }
-                    } catch (Exception e) {
-                        Util.setException(iZooto.appContext,e.toString(),AppConstant.APPName_2,"impressionNotification");
-
-
-                    }
                 }
 
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
-                    try {
-                        if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_VIEW_OFFLINE).isEmpty()) {
-                            JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_VIEW_OFFLINE));
-                            if (!Util.ridExists(jsonArrayOffline, rid)) {
-                                Util.trackClickOffline(iZooto.appContext, impURL, AppConstant.IZ_NOTIFICATION_VIEW_OFFLINE, rid, cid, 0);
-                            }
-                        } else
-                            Util.trackClickOffline(iZooto.appContext, impURL, AppConstant.IZ_NOTIFICATION_VIEW_OFFLINE, rid, cid, 0);
-                    } catch (Exception e) {
-                        Util.setException(iZooto.appContext,e.toString(),AppConstant.APPName_2,"impressionNotification");
-                    }
+
+                        Util.setException(iZooto.appContext,mapData.toString()+"Failure",AppConstant.APPName_2,"impressionNotification");
+
                 }
             });
         } catch (Exception e) {

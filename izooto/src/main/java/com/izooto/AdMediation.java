@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +21,6 @@ public class AdMediation {
     private static List<JSONObject> successList=new ArrayList<>();
     static List<String> storeList=new ArrayList<>();
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void getMediationData(Context context , JSONObject data, String pushType, String globalPayloadObject)
     {
         if(context!=null) {
@@ -181,7 +179,6 @@ public class AdMediation {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static  void getMediationGPL(Context context , JSONObject payloadObj, String url)
     {
         if(context==null)
@@ -223,14 +220,12 @@ public class AdMediation {
             }
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static  void globalPayload(String url, Payload payload, JSONObject globalPayloadObject) {
         if (url != null && iZooto.appContext != null) {
 
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
             if (preferenceUtil.getStringData(AppConstant.STORAGE_PAYLOAD_DATA) != null && !url.equalsIgnoreCase(checkURL(preferenceUtil.getStringData(AppConstant.STORAGE_PAYLOAD_DATA)))) {
                 RestClient.get(url, new RestClient.ResponseHandler() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     void onSuccess(String response) {
                         super.onSuccess(response);
@@ -548,7 +543,6 @@ public class AdMediation {
 
         String fetchURL=NotificationEventManager.fetchURL(payload.getFetchURL());
         RestClient.getRequest(fetchURL,calculateTime*1000, new RestClient.ResponseHandler(){
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             void onSuccess(String response) {
                 super.onSuccess(response);
@@ -613,7 +607,6 @@ public class AdMediation {
             }
 
 
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             void onFailure(int statusCode, String response, Throwable throwable) {
                 super.onFailure(statusCode, response, throwable);
@@ -653,7 +646,6 @@ public class AdMediation {
             }
         });
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void parseJson(Payload payload, JSONObject jsonObject, int adIndex, int adNetwork) {
         if(iZooto.appContext !=null) {
             try {
@@ -861,7 +853,6 @@ public class AdMediation {
         final long start = System.currentTimeMillis(); //fetch start time
 
         RestClient.get(payload.getFetchURL(), new RestClient.ResponseHandler() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             void onSuccess(String response) {
                 super.onSuccess(response);
@@ -916,7 +907,6 @@ public class AdMediation {
         if(iZooto.appContext!=null) {
             String fetchURL=NotificationEventManager.fetchURL(payload.getFetchURL());
             RestClient.get(fetchURL, new RestClient.ResponseHandler() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
@@ -989,7 +979,6 @@ public class AdMediation {
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void parseAgain1Json(Payload payload1, JSONObject jsonObject) {
         if(iZooto.appContext!=null) {
             String dataValue = "";
@@ -1107,10 +1096,16 @@ public class AdMediation {
                     finalData.put("bids", jsonArray);
                     dataValue = finalData.toString().replaceAll("\\\\", " ");
                     mediationImpression(dataValue, 0);
+                    PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         TargetActivity.medClick = dataValue;
+
+                        preferenceUtil.setStringData("MEDIATIONCLICKDATA",dataValue);
+
                     }
                     else {
+                        preferenceUtil.setStringData("MEDIATIONCLICKDATA",dataValue);
+
                         NotificationActionReceiver.medClick = dataValue;
 
                     }
@@ -1143,12 +1138,12 @@ public class AdMediation {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext,e.toString(),"[Log.e]->AdMediation 868");
             }
         }
+
     }
 
 
     static void ShowFallBackResponse(String fallBackAPI,  final Payload payload) {
         RestClient.get(fallBackAPI, new RestClient.ResponseHandler() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             void onSuccess(String response) {
                 super.onSuccess(response);
@@ -1182,7 +1177,6 @@ public class AdMediation {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void ShowCLCIKAndImpressionData(Payload payload) {
         if(iZooto.appContext!=null) {
             try {
@@ -1209,10 +1203,23 @@ public class AdMediation {
                 finalData.put("bids", jsonArray);
                 String dataValue = finalData.toString().replaceAll("\\\\", " ");
                 mediationImpression(dataValue,0);
+//                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+//                    TargetActivity.medClick = dataValue;
+//                }
+//                else {
+//                    NotificationActionReceiver.medClick = dataValue;
+//
+//                }
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                     TargetActivity.medClick = dataValue;
+
+                    preferenceUtil.setStringData("MEDIATIONCLICKDATA",dataValue);
+
                 }
                 else {
+                    preferenceUtil.setStringData("MEDIATIONCLICKDATA",dataValue);
+
                     NotificationActionReceiver.medClick = dataValue;
 
                 }
@@ -1224,7 +1231,6 @@ public class AdMediation {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void parseAgainJson(Payload payload1, JSONObject jsonObject) {
         String dataValue = "";
         try {
@@ -1292,15 +1298,27 @@ public class AdMediation {
                 finalData.put("bids",jsonArray);
                 dataValue=finalData.toString().replaceAll("\\\\", " ");
                 mediationImpression(dataValue,0);
+                NotificationEventManager.receiveAds(payload1);
+
+//                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+//                    TargetActivity.medClick = dataValue;
+//                }
+//                else {
+//                    NotificationActionReceiver.medClick = dataValue;
+//
+//                }
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                     TargetActivity.medClick = dataValue;
+                    preferenceUtil.setStringData("MEDIATIONCLICKDATA",dataValue);
+
                 }
                 else {
+                    preferenceUtil.setStringData("MEDIATIONCLICKDATA",dataValue);
                     NotificationActionReceiver.medClick = dataValue;
 
                 }
                // NotificationActionReceiver.medClick=dataValue;
-                NotificationEventManager.receiveAds(payload1);
                 Log.v(AppConstant.NOTIFICATION_MESSAGE,AppConstant.YES);
             }
             else {
@@ -1317,7 +1335,6 @@ public class AdMediation {
             e.printStackTrace();
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void ShowClickAndImpressionData(Payload payload) {
         if(iZooto.appContext!=null) {
             try {
@@ -1356,7 +1373,6 @@ public class AdMediation {
             }
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void mediationImpression(String finalData, int impNUmber) {
         if(iZooto.appContext!=null) {
             try {
@@ -1400,7 +1416,7 @@ public class AdMediation {
                 String data2=preferenceUtil.getStringData("iz_AdMediation_EXCEPTION_AdType_15");
                 if (!data2.equalsIgnoreCase(Util.getTime())) {
                     preferenceUtil.setStringData("iz_AdMediation_EXCEPTION_AdType_15", Util.getTime());
-                    Util.setException(iZooto.appContext, ex.toString()+finalData, "AdMediation", "mediationImpression");
+                    Util.setException(iZooto.appContext,ex+finalData, "AdMediation", "mediationImpression");
 
                 }
 

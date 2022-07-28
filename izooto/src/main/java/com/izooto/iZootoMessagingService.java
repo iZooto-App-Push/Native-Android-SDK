@@ -30,14 +30,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.izooto.DatabaseHandler.DatabaseHandler;
-
 import org.json.JSONObject;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +43,6 @@ import java.util.Objects;
 public class iZootoMessagingService extends FirebaseMessagingService {
     private  Payload payload = null;
     private final String Name="iZootoMessagingService";
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         try {
@@ -63,7 +58,9 @@ public class iZootoMessagingService extends FirebaseMessagingService {
         }
         catch (Exception ex)
         {
-            Log.e(AppConstant.FIREBASEEXCEPTION,ex.toString());
+            Log.e(AppConstant.FIREBASEEXCEPTION,"iZootoMessagingService"+ex);
+            Util.setException(this, remoteMessage+ex.toString(), Name, "handleNow");
+
         }
 
 
@@ -103,8 +100,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+/* Handle the iZooto Push Notification Payload*/
     public   void handleNow(final Map<String, String> data) {
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
         PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(this);
@@ -146,7 +142,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     {
 
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
-                        Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
+                        Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"iZootoMessagingServices","handleNow");
                     }
 
                 }
@@ -173,7 +169,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
+                        Util.setException(this,ex+"PayloadError"+data.toString(),"iZootoMessagingServices","handleNow");
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
 
                     }
@@ -253,7 +249,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                }
                 Handler mainHandler = new Handler(Looper.getMainLooper());
                 Runnable myRunnable = new Runnable() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     public void run() {
                         NotificationEventManager.handleImpressionAPI(payload,AppConstant.PUSH_FCM);
@@ -268,7 +263,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
         } catch (Exception e) {
 
-            Util.setException(this, e.toString(), Name, "handleNow");
+            Util.setException(this, data+e.toString(), Name, "handleNow");
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,e.toString(),"[Log.e]-Exception");
 
         }
