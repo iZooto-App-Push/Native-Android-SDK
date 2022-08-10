@@ -155,10 +155,10 @@ public class Util {
         return null;
     }
 
-    public static Bitmap getBitmapFromURL(String name) {
-        if (name == null)
+    public static Bitmap getBitmapFromURL(String url) {
+        if (url == null)
             return null;
-        String trimmedName = name.trim();
+        String trimmedName = url.trim();
         trimmedName = trimmedName.replace("///", "/");
         trimmedName = trimmedName.replace("//", "/");
         trimmedName = trimmedName.replace("http:/", "https://");
@@ -174,7 +174,8 @@ public class Util {
         }
         else
         {
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,name,"[Log-> e]->getBitmapFromURL");
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,url,"[Log-> e]->getBitmapFromURL");
+            Util.setException(iZooto.appContext,"Error"+url,"Utils","getBitmapURL");
             return null;
         }
         return null;
@@ -369,7 +370,6 @@ public class Util {
         }
         catch (Exception ex)
         {
-            Log.e("Bit Map Exception ",ex.toString());
             return null;
         }
     }

@@ -135,7 +135,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                         }
                         else
                         {
-                            NotificationEventManager.handleNotificationError("Payload Error",data.toString(),"MessagingSevices","HandleNow");
+                            NotificationEventManager.handleNotificationError("Payload Error",data.toString(),"iZootoMessagingServices","handleNow");
                         }
                     }
                     catch (Exception ex)

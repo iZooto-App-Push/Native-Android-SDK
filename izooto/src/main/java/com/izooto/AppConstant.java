@@ -342,7 +342,7 @@ public interface AppConstant {
     String HMS="Huawei";
     String PUSH_HMS="hms";
     String PUSH_FCM="fcm";
-    String PUSH_XIAOMI="xiomi";
+    String PUSH_XIAOMI="xiaomi";
     String Check_Notification="CheckData";
     String Check_YES="true";
     String Check_NO="false";

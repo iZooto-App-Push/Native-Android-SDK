@@ -31,7 +31,6 @@ public class FCMTokenGenerator implements TokenGenerator {
             return;
         }
         new Thread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void run() {
                 try {
@@ -44,7 +43,7 @@ public class FCMTokenGenerator implements TokenGenerator {
 
                                     try {
                                         if (!task.isSuccessful()) {
-                                            Util.setException(context, task.getException().toString(), "getToken", "FCMTokenGenerator");
+                                            Util.setException(context, task.getException().toString()+"Token Generate Failure", "getToken", "FCMTokenGenerator");
                                             return;
                                         }
                                         String token = task.getResult();
@@ -85,9 +84,6 @@ public class FCMTokenGenerator implements TokenGenerator {
     public   void initFireBaseApp(final String senderId) {
         if (firebaseApp != null)
             return;
-
-
-
         if(get_Project_ID()!="" && get_Project_ID()!="" && getAPI_KEY()!="" && senderId!="") {
             FirebaseOptions firebaseOptions =
                     new FirebaseOptions.Builder()

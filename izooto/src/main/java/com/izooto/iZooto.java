@@ -86,7 +86,6 @@ public class iZooto {
     public enum OSInAppDisplayOption {
         None, InAppAlert, Notification
     }
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 private static void init(Builder builder) {
     final Context context = builder.mContext;
     appContext = context.getApplicationContext();
@@ -112,7 +111,6 @@ private static void init(Builder builder) {
                         super.onFailure(statusCode, response, throwable);
                     }
 
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                     @Override
                     void onSuccess(String response) {
                         super.onSuccess(response);
@@ -130,10 +128,10 @@ private static void init(Builder builder) {
                                 mIzooToAppId = jsonObject.optString(APPPID);
                                 preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_BRANDING, jsonObject.optBoolean(AppConstant.IZ_G_BRANDING));
                                 preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
-                                String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
+                               // String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                 trackAdvertisingId();
-                                if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB))
-                                    fetchNewsHubData(context, newsHub);
+//                                if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB))
+//                                    fetchNewsHubData(context, newsHub);
                                 if(!mKey.isEmpty() && !mId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_XIAOMI_TOKEN)){
                                     XiaomiSDKHandler xiaomiSDKHandler = new XiaomiSDKHandler(iZooto.appContext, mId, mKey);
                                     xiaomiSDKHandler.onMIToken();
@@ -200,7 +198,6 @@ private static void initHmsService(final Context context){
                 }
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void failure(String errorMessage) {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext,errorMessage,"[Log.v]->");
@@ -337,7 +334,6 @@ private static void init(final Context context, String apiKey, String appId) {
         });
     }
 
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 static void registerToken() {
     if(appContext!=null) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
@@ -545,7 +541,8 @@ static void registerToken() {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }    private static void setCurActivity(Context context) {
+    }
+    private static void setCurActivity(Context context) {
         boolean foreground = isContextActivity(context);
         if (foreground) {
             iZooto.curActivity = (Activity) context;
@@ -557,7 +554,6 @@ static void registerToken() {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void processNotificationReceived(Context context,Payload payload) {
         if(payload!=null) {
             NotificationEventManager.manageNotification(payload);
@@ -1191,7 +1187,6 @@ static void registerToken() {
     public static void setDefaultNotificationBanner(int setBanner){
         bannerImage = setBanner;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void iZootoHandleNotification(Context context, final Map<String,String> data)
     {
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
@@ -1326,7 +1321,6 @@ static void registerToken() {
             Util.setException(context,e.toString(),AppConstant.APP_NAME_TAG,"handleNotification");
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void addTag(final List<String> topicName){
         if (osTaskManager.shouldQueueTaskForInit(OSTaskManager.ADD_TAG) && appContext == null) {
             osTaskManager.addTaskToQueue(new Runnable() {
@@ -1380,7 +1374,6 @@ static void registerToken() {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void removeTag(final List<String> topicName){
 
         if (osTaskManager.shouldQueueTaskForInit(OSTaskManager.REMOVE_TAG) && appContext == null) {
@@ -1436,7 +1429,6 @@ static void registerToken() {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void topicApi(String action, List<String> topic){
         if (appContext == null)
             return;
@@ -1550,6 +1542,7 @@ static void registerToken() {
 
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("NewApi")
     static void lastVisitApi(Context context){
         if(context!=null) {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
@@ -1561,7 +1554,6 @@ static void registerToken() {
                     data.put(AppConstant.LAST_WEBSITE_VISIT, true);
                     data.put(AppConstant.LANG_, Util.getDeviceLanguageTag());
                     JSONObject jsonObject = new JSONObject(data);
-
                     Map<String, String> mapData = new HashMap<>();
                     mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                     mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
@@ -1593,7 +1585,6 @@ static void registerToken() {
         String currentDate = sdf.format(new Date());
         return currentDate;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static iZooto.Builder initialize(Context context, String tokenJson) {
         if (context == null)
             return null;
@@ -1649,7 +1640,6 @@ static void registerToken() {
         return true;
     }
 
-   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
    private static void sendOfflineDataToServer(Context context) {
        if (context == null)
            return;
@@ -1716,7 +1706,6 @@ static void registerToken() {
 
 
    }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void  createDirectory(Context context)
     {
         DebugFileManager.createPublicDirectory(context);

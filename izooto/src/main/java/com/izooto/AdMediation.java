@@ -1299,14 +1299,6 @@ public class AdMediation {
                 dataValue=finalData.toString().replaceAll("\\\\", " ");
                 mediationImpression(dataValue,0);
                 NotificationEventManager.receiveAds(payload1);
-
-//                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-//                    TargetActivity.medClick = dataValue;
-//                }
-//                else {
-//                    NotificationActionReceiver.medClick = dataValue;
-//
-//                }
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                     TargetActivity.medClick = dataValue;
@@ -1318,7 +1310,6 @@ public class AdMediation {
                     NotificationActionReceiver.medClick = dataValue;
 
                 }
-               // NotificationActionReceiver.medClick=dataValue;
                 Log.v(AppConstant.NOTIFICATION_MESSAGE,AppConstant.YES);
             }
             else {
