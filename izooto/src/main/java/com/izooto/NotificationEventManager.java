@@ -1737,14 +1737,13 @@ public class NotificationEventManager {
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
-
-                        Util.setException(iZooto.appContext,mapData.toString()+"Failure",AppConstant.APPName_2,"impressionNotification");
+                        Util.setException(iZooto.appContext,mapData+"Failure",AppConstant.APPName_2,"impressionNotification");
 
                 }
             });
         } catch (Exception e) {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,"impressionNotificationApi"+e.toString(),"[Log.V]->NotificationEventManager->");
-            Util.setException(iZooto.appContext,e.toString(),AppConstant.APPName_2,"impressionNotification");
+            Util.setException(iZooto.appContext,e+"RID"+rid+"CID"+cid,AppConstant.APPName_2,"impressionNotification");
         }
 
     }
