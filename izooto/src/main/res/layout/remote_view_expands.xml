@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -54,14 +54,13 @@
             android:maxLines="1"
             style="@style/TextAppearance.Compat.Notification"/>
     </RelativeLayout>
-
-
     <ImageView
         android:id="@+id/iv_banner"
         android:layout_width="match_parent"
-        android:layout_height="139dp"
+        android:layout_height="wrap_content"
         android:visibility="gone"
-        android:layout_marginTop="5dp"
-        android:scaleType="fitXY"/>
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
 
+        />
 </LinearLayout>
