@@ -374,6 +374,7 @@ static void registerToken() {
                     mapData.put(AppConstant.KEY_HMS, "" + preferenceUtil.getStringData(AppConstant.HMS_TOKEN));
                     mapData.put(AppConstant.ANDROIDVERSION, "" + Build.VERSION.RELEASE);
                     mapData.put(AppConstant.DEVICENAME, "" + Util.getDeviceName());
+                    mapData.put(AppConstant.H_PLUGIN_VERSION,preferenceUtil.getStringData(AppConstant.HYBRID_PLUGIN_VERSION));
 
                     RestClient.postRequest(RestClient.BASE_URL, mapData, null, new RestClient.ResponseHandler() {
                         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -1724,6 +1725,18 @@ static void registerToken() {
             return;
 
         setFloatingButton(context, view);
+    }
+    public static void setPluginVersion(String pluginVersion)
+    {
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+        if(pluginVersion!=null)
+        {
+           preferenceUtil.setStringData(AppConstant.HYBRID_PLUGIN_VERSION,pluginVersion);
+        }
+        else
+        {
+            preferenceUtil.setStringData(AppConstant.HYBRID_PLUGIN_VERSION,"");
+        }
     }
 
     private static void setNewsHub(Activity context, LinearLayout view, String jsonString) {

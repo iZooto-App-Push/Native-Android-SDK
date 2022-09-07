@@ -468,10 +468,10 @@ public class NotificationEventManager {
         }else {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
             if (Util.isAppInForeground(iZooto.appContext)){
-                if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_)){
+
+                if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_ ) || iZooto.inAppOption.equalsIgnoreCase("None")){
                     if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)== PushTemplate.TEXT_OVERLAY) {
                         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-                           // receivedNotification(payload);
                             NotificationPreview.receiveCustomNotification(payload);
 
 
@@ -486,20 +486,20 @@ public class NotificationEventManager {
                         receivedNotification(payload);
                     }
                 }else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)){
-                    showAlert(payload);
+                       showAlert(payload);
                 }
             }else {
-                if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)==PushTemplate.TEXT_OVERLAY) {
-                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-                        // receivedNotification(payload);
 
-                        NotificationPreview.receiveCustomNotification(payload);
+                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW) == PushTemplate.TEXT_OVERLAY) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            // receivedNotification(payload);
+
+                            NotificationPreview.receiveCustomNotification(payload);
+                        } else {
+                            NotificationPreview.receiveCustomNotification(payload);
+                        }
                     }
-                    else
-                    {
-                        NotificationPreview.receiveCustomNotification(payload);
-                    }
-                }
+
                 else {
                     receivedNotification(payload);
                 }
@@ -1263,7 +1263,6 @@ public class NotificationEventManager {
         final Activity activity = iZooto.curActivity;
         if (activity!=null) {
             activity.runOnUiThread(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void run() {
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(activity);
@@ -1305,15 +1304,22 @@ public class NotificationEventManager {
                         }
                     });
                     final String finalClickIndex1 = clickIndex;
-                    // final String finalLastclickIndex = lastView_Click;
                     mBuilder.setPositiveButton(AppConstant.DIALOG_OK,
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
                                     dialog.dismiss();
-                                    Intent intent = notificationClick(payload, payload.getLink(), payload.getAct1link(), payload.getAct2link(), AppConstant.NO, finalClickIndex1, lastView_Click, 100, 0);
-                                    activity.sendBroadcast(intent);
+
+                                    if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+                                        Intent intent = notificationClick(payload, payload.getLink(), payload.getAct1link(), payload.getAct2link(), AppConstant.NO, finalClickIndex1, lastView_Click, 100, 0);
+                                         activity.startActivity(intent);
+                                         activity.finish();
+
+                                    }
+                                    else {
+                                        Intent intent = notificationClick(payload, payload.getLink(), payload.getAct1link(), payload.getAct2link(), AppConstant.NO, finalClickIndex1, lastView_Click, 100, 0);
+                                        activity.sendBroadcast(intent);
+                                    }
                                 }
                             });
 

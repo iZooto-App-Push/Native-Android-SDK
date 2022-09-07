@@ -24,6 +24,7 @@ public class FCMTokenGenerator implements TokenGenerator {
     public void getToken(final Context context, final String senderId, final String apiKey, final String appId, final TokenGenerationHandler callback) {
         if (context == null)
             return;
+
         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
         if (preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_FCM_TOKEN)) {
             if (callback != null)
@@ -64,7 +65,7 @@ public class FCMTokenGenerator implements TokenGenerator {
                                         }
 
                                     } catch (Exception e) {
-                                        Util.setException(context, e.getMessage(), "getToken", "FCMTokenGenerator");
+
                                         if (callback != null)
                                             callback.failure(e.getMessage());
                                     }
@@ -72,7 +73,12 @@ public class FCMTokenGenerator implements TokenGenerator {
                             });
 
                 } catch (Exception e) {
-                    Util.setException(context, e.getMessage(), "getToken", "FCMTokenGenerator");
+                    if(!preferenceUtil.getBoolean("FCMEXCEPTION"))
+                    {
+                        preferenceUtil.setBooleanData("FCMEXCEPTION",true);
+                        Util.setException(context,e.getMessage()+senderId,"FCMGenerator","getToken");
+                    }
+
                     if (callback != null)
                         callback.failure(e.getMessage());
                 }

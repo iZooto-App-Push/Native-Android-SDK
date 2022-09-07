@@ -98,6 +98,7 @@ public interface AppConstant {
     String BUTTON_URL_2 ="button2URL";
     String ACTION_TYPE ="actionType";
     String NOTIFICATION_ ="Notification";
+    String NONE_NOTIFCATION = "None";
     String INAPPALERT ="InAppAlert";
     String DEFAULT_ICON ="default";
     int GE = 1;
@@ -255,7 +256,7 @@ public interface AppConstant {
  String IS_HYBRID_SDK = "hybrid";
  String CURRENT_DATE_VIEW = "currentDateView";
  String CURRENT_DATE_CLICK = "currentDateClick";
- String SDKVERSION="1.5.1";
+ String SDKVERSION="1.5.2";
  String QSDK_VERSION="av";
  String SDK="SDKVERSION";
  String AD_NETWORK="an";
@@ -385,6 +386,8 @@ public interface AppConstant {
     String NEWS_HUB_CLICK_KEY="cs";
     String NEWS_HUB_CLICK_VALUE="1";
     String IZ_G_BRANDING = "branding";
+    String H_PLUGIN_VERSION = "pv";
+    String HYBRID_PLUGIN_VERSION = "HYBRID_PLUGIN_VERSION";
 }
 
 

@@ -264,6 +264,8 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                 mapData.put(AppConstant.KEY_HMS,"" + preferenceUtil.getStringData(AppConstant.HMS_TOKEN));
                 mapData.put(AppConstant.ANDROIDVERSION,"" + Build.VERSION.RELEASE);
                 mapData.put(AppConstant.DEVICENAME,"" + Util.getDeviceName());
+                mapData.put(AppConstant.H_PLUGIN_VERSION,preferenceUtil.getStringData(AppConstant.HYBRID_PLUGIN_VERSION));
+
                 if (!preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                     preferenceUtil.setIntData(AppConstant.CLOUD_PUSH, 3);
                 } else if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {

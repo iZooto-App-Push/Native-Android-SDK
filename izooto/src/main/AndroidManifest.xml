@@ -25,7 +25,6 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            tools:replace="android:authorities"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
@@ -126,12 +125,7 @@
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-<!--        <activity android:name=".NewsHubActivity"-->
-<!--            android:exported="false"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:noHistory="true"-->
-<!--            android:theme="@style/AppTheme.NoActionBar"-->
-<!--            android:launchMode="singleTask"/>-->
+
 
     </application>
 
