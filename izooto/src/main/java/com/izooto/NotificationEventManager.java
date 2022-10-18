@@ -1392,7 +1392,9 @@ public class NotificationEventManager {
 
         Intent intent=null;
        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+           Log.e("Target Activity","calling");
                intent = new Intent(iZooto.appContext, TargetActivity.class);
+
        }
          else {
            intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);

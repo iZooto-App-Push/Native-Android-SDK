@@ -1,9 +1,9 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 23
         versionName "1.6.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -21,7 +21,7 @@ android {
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     api 'androidx.legacy:legacy-support-v4:1.0.0'
    // implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.android.material:material:1.6.1'

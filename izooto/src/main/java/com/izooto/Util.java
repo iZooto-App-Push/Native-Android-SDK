@@ -158,25 +158,31 @@ public class Util {
     public static Bitmap getBitmapFromURL(String url) {
         if (url == null)
             return null;
-        String trimmedName = url.trim();
-        trimmedName = trimmedName.replace("///", "/");
-        trimmedName = trimmedName.replace("//", "/");
-        trimmedName = trimmedName.replace("http:/", "https://");
-        trimmedName = trimmedName.replace("https:/", "https://");
-        if(trimmedName.contains(".jpeg") || trimmedName.contains(".jpg") || trimmedName.contains(".png") || trimmedName.contains(".webp") || trimmedName.contains(".WEBP") || trimmedName.contains(".PNG") || trimmedName.contains(".JPEG") || trimmedName.contains(".JPG"))
-        {
-            if (trimmedName.startsWith("http://") || trimmedName.startsWith("https://")) {
-                Bitmap bmp =getBitMap(trimmedName);
-                if(bmp!=null) {
-                    return bmp;
+        if(url!=null && !url.isEmpty()) {
+            String trimmedName = url.trim();
+            trimmedName = trimmedName.replace("///", "/");
+            trimmedName = trimmedName.replace("//", "/");
+            trimmedName = trimmedName.replace("http:/", "https://");
+            trimmedName = trimmedName.replace("https:/", "https://");
+            if (trimmedName.contains(".jpeg") || trimmedName.contains(".jpg") || trimmedName.contains(".png") || trimmedName.contains(".webp") || trimmedName.contains(".WEBP") || trimmedName.contains(".PNG") || trimmedName.contains(".JPEG") || trimmedName.contains(".JPG")) {
+                if (trimmedName.startsWith("http://") || trimmedName.startsWith("https://")) {
+                    Bitmap bmp = getBitMap(trimmedName);
+                    if (bmp != null) {
+                        return bmp;
+                    }
                 }
+            } else {
+                Log.e("Handle API","api Data"+url);
+                DebugFileManager.createExternalStoragePublic(iZooto.appContext, url, "[Log-> e]->getBitmapFromURL");
+                Util.setException(iZooto.appContext, "Error" + url, "Utils", "getBitmapURL");
+                return null;
             }
         }
         else
         {
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,url,"[Log-> e]->getBitmapFromURL");
-            Util.setException(iZooto.appContext,"Error"+url,"Utils","getBitmapURL");
-            return null;
+            Log.e("Handle API","api1 Data"+url);
+
+            return  null;
         }
         return null;
 

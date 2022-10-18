@@ -24,7 +24,6 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
     private Payload payload;
 
     // data payload notification received
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onReceivePassThroughMessage(Context context, MiPushMessage miPushMessage) {
         super.onReceivePassThroughMessage(context, miPushMessage);
@@ -36,7 +35,6 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
     }
 
     // notification received
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onNotificationMessageArrived(Context context, MiPushMessage miPushMessage) {
         super.onNotificationMessageArrived(context, miPushMessage);
@@ -51,7 +49,6 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
     }
 
     // notification received
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleNow(Context context, String data) {
         Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);
         try {
@@ -106,7 +103,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                             String impIndex = String.valueOf(cfgData.charAt(cfgData.length() - 1));
                             if(impIndex.equalsIgnoreCase("1"))
                             {
-                                NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_FCM);
+                                NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_XIAOMI);
 
                             }
 

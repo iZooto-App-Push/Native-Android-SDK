@@ -53,7 +53,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private String pushType;
     private int cfg;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onReceive(Context context, Intent intent) {
         if(context!=null) {
@@ -309,7 +308,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void callMediationClicks(Context context,final String medClick, int cNUmber) {
         try {
             if(!medClick.isEmpty()) {

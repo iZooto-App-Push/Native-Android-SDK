@@ -26,7 +26,6 @@ public class iZootoHmsMessagingService extends HmsMessageService {
         HMSTokenGenerator.getTokenFromOnNewToken(s);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -34,11 +33,9 @@ public class iZootoHmsMessagingService extends HmsMessageService {
         handleNow(this, remoteMessage.getData());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void handleNow(Context context, String data) {
         try {
 
-            DatabaseHandler db =new DatabaseHandler(this);
             PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(context);
             JSONObject payloadObj = new JSONObject(data);
             if(payloadObj.has(AppConstant.AD_NETWORK) || payloadObj.has(AppConstant.GLOBAL) || payloadObj.has(AppConstant.GLOBAL_PUBLIC_KEY))
@@ -165,10 +162,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                 } else {
                     return;
                 }
-                if(db.isTableExists(true)) {
-                    if(payload.getFetchURL()==null && payload.getFetchURL().isEmpty())
-                        db.addNotificationInDB(payload);
-                }
+
                 if (iZooto.appContext == null)
                     iZooto.appContext = context;
                 Handler mainHandler = new Handler(Looper.getMainLooper());

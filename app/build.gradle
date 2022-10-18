@@ -2,17 +2,19 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 31
+    compileSdkVersion 32
     defaultConfig {
         applicationId "com.app.izoototest"
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 14
         versionName "1.4.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
                 izooto_app_id:"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"// "794f882d998a83f8afa26d96c8e254f74625e4af"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
         ]
+        multiDexEnabled true
+
     }
 
     buildTypes {
@@ -37,10 +39,11 @@ android {
 }
 dependencies {
     implementation project(path: ':izooto')
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation  'com.google.firebase:firebase-messaging:23.0.6'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.android.support:multidex:1.0.3'
 
 }
 apply plugin: 'com.google.gms.google-services'

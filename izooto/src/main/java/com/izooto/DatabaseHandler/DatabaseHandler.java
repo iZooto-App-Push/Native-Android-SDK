@@ -137,7 +137,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
-   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
    public void addNotificationInDB(Payload payload) {
         try {
             if (payload != null) {
@@ -186,7 +185,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 values.put(REQUIREDINT, payload.getReqInt());
                 values.put(BUTTONCOUNT, payload.getAct_num());
                 values.put(TTL, payload.getTime_to_live());
-                values.put(NOTIFCATIONBANNERDATA, "" + Util.getBitmapFromURL(payload.getBanner()));
+                values.put(NOTIFCATIONBANNERDATA, payload.getBanner());
                 db.insert(TABLE_NAME, null, values);
                 db.close();
             } else {

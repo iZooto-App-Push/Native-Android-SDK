@@ -33,12 +33,13 @@ public class TargetActivity extends Activity {
     private String btn2Title;
     private String clickIndex = "0";
     private String lastClickIndex = "0";
-    public static String notificationClick = "";
+    public static String mNotificationClick = "";
     public static String WebViewClick = "";
     public  static  String medClick="";
     private String pushType;
     private int cfg;
     private Context context;
+    public static String mWebViewClick;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,11 +159,15 @@ public class TargetActivity extends Activity {
                 }
                 else {
                     if (Util.isAppInForeground(context)) {
+                        launchApp(context);
+                        TargetActivity.mNotificationClick = jsonObject.toString();
                         iZooto.notificationActionHandler(jsonObject.toString());
                         this.finish();
                     }
-                    else
-                        notificationClick = jsonObject.toString();
+                    else {
+                        launchApp(context);
+                        TargetActivity.mNotificationClick = jsonObject.toString();
+                    }
                 }
                 if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                     launchApp(context);
@@ -172,17 +177,20 @@ public class TargetActivity extends Activity {
 
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     {
+
                         if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             iZooto.notificationInAppAction(mUrl);
                             this.finish();
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             if (Util.isAppInForeground(context)) {
+                                launchApp(context);
+                                TargetActivity.mWebViewClick = mUrl;
                                 iZooto.notificationInAppAction(mUrl);
                                 this.finish();
                             }
                             else {
-                                WebViewClick = mUrl;
-                                NotificationActionReceiver.launchApp(context);
+                                launchApp(context);
+                                TargetActivity.mWebViewClick = mUrl;
                             }
                         } else {
                             iZootoWebViewActivity.startActivity(context, mUrl);
@@ -190,7 +198,7 @@ public class TargetActivity extends Activity {
                         }
                     }
                 } else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
-                    NotificationActionReceiver.launchApp(context);
+                    launchApp(context);
                 } else {
                     try {
                         if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
@@ -485,6 +493,19 @@ public class TargetActivity extends Activity {
                 Intent intentAppLaunch = launchIntent; // new Intent();
                 intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intentAppLaunch);
+                Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
+
+            }
+            else
+            {
+                ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                name = (String) pm.getApplicationLabel(app);
+                launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                Intent intentAppLaunch = launchIntent; // new Intent();
+                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intentAppLaunch);
+                Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
+
             }
             Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
         } catch (PackageManager.NameNotFoundException e) {
