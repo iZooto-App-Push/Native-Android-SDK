@@ -20,13 +20,10 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.izooto.DatabaseHandler.DatabaseHandler;
 import com.izooto.shortcutbadger.ShortcutBadger;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -603,8 +600,12 @@ static void registerToken() {
     }
 
     public static void notificationInAppAction(String url){
-        if (mBuilder!=null && mBuilder.mWebViewListener!=null)
-            mBuilder.mWebViewListener.onWebView(url);
+        if (!url.isEmpty()){
+            if(mBuilder!=null && mBuilder.mWebViewListener!=null) {
+                mBuilder.mWebViewListener.onWebView(url);
+            }
+        }
+
 
     }
     /*
@@ -621,18 +622,19 @@ static void registerToken() {
     private static void runNotificationWebViewCallback() {
         runOnMainUIThread(new Runnable() {
             public void run() {
-                if (!NotificationActionReceiver.WebViewClick.isEmpty() || !TargetActivity.mWebViewClick.isEmpty()) {
+                if (!NotificationActionReceiver.WebViewClick.isEmpty()) {
+                    iZooto.mBuilder.mWebViewListener.onWebView(NotificationActionReceiver.WebViewClick);//
+                    NotificationActionReceiver.WebViewClick = "";
+                }
+
                     if(!TargetActivity.mWebViewClick.isEmpty())
                     {
                         iZooto.mBuilder.mWebViewListener.onWebView(TargetActivity.mWebViewClick);//
                         TargetActivity.mWebViewClick = "";
 
                     }
-                    else {
-                        iZooto.mBuilder.mWebViewListener.onWebView(NotificationActionReceiver.WebViewClick);//
-                        NotificationActionReceiver.WebViewClick = "";
-                    }
-                }
+
+
             }
         });
     }
@@ -727,7 +729,7 @@ static void registerToken() {
     public static class Builder {
         Context mContext;
         private TokenReceivedListener mTokenReceivedListener;
-        private NotificationHelperListener mNotificationHelper;
+        public NotificationHelperListener mNotificationHelper;
         public NotificationWebViewListener mWebViewListener;
         OSInAppDisplayOption mDisplayOption;
         public NotificationReceiveHybridListener mNotificationReceivedHybridlistener;
@@ -776,7 +778,6 @@ static void registerToken() {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void areNotificationsEnabledForSubscribedState(Context context){
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
         if (context!=null) {
@@ -801,7 +802,6 @@ static void registerToken() {
         }
 
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void setDefaultTemplate(int templateID){
         if (osTaskManager.shouldQueueTaskForInit(OSTaskManager.SET_CUSTOM_TEMPLATE) && appContext == null) {
             osTaskManager.addTaskToQueue(new Runnable() {
@@ -824,7 +824,6 @@ static void registerToken() {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void getNotificationAPI(Context context, int value){
 
         if(context!=null) {
@@ -873,7 +872,6 @@ static void registerToken() {
 
 
     // send events  with event name and event data
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void addEvent(String eventName, HashMap<String,Object> data) {
         if (data != null && eventName != null&&eventName.length()>0&&data.size()>0) {
             eventName = eventName.substring(0, Math.min(eventName.length(), 32)).replace(" ","_");
@@ -888,7 +886,6 @@ static void registerToken() {
                 addEventAPI(eventName,newListEvent);
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void addEventAPI(String eventName,HashMap<String,Object> data){
         if(appContext!=null) {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
@@ -962,7 +959,6 @@ static void registerToken() {
         }
         return newList;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void addUserProperty(HashMap<String, Object> object) {
 
         if (osTaskManager.shouldQueueTaskForInit(OSTaskManager.ADD_USERPROPERTY) && appContext == null) {

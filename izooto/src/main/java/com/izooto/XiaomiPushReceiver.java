@@ -72,7 +72,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                                 String impIndex = String.valueOf(cfgData.charAt(cfgData.length() - 1));
                                 if(impIndex.equalsIgnoreCase("1"))
                                 {
-                                    NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_FCM);
+                                    NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_XIAOMI);
 
                                 }
 

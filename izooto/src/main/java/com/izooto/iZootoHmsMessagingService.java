@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi;
 
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
-import com.izooto.DatabaseHandler.DatabaseHandler;
 
 import org.json.JSONObject;
 
@@ -55,7 +54,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                                 String impIndex = String.valueOf(cfgData.charAt(cfgData.length() - 1));
                                 if(impIndex.equalsIgnoreCase("1"))
                                 {
-                                    NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_FCM);
+                                    NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_HMS);
 
                                 }
 

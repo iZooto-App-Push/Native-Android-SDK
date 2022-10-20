@@ -40,6 +40,7 @@ public class TargetActivity extends Activity {
     private int cfg;
     private Context context;
     public static String mWebViewClick;
+    public static boolean isForeground = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,47 +158,40 @@ public class TargetActivity extends Activity {
                     iZooto.notificationActionHandler(jsonObject.toString());
                     this.finish();
                 }
-                else {
-                    if (Util.isAppInForeground(context)) {
-                        launchApp(context);
-                        TargetActivity.mNotificationClick = jsonObject.toString();
+                else if (iZooto.mBuilder != null && iZooto.mBuilder.mNotificationHelper != null) {
                         iZooto.notificationActionHandler(jsonObject.toString());
                         this.finish();
                     }
                     else {
-                        launchApp(context);
                         TargetActivity.mNotificationClick = jsonObject.toString();
+                        launchApp(context);
+                        this.finish();
                     }
-                }
-                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                    launchApp(context);
-                    this.finish();
-                }
-            } else {
+            }
 
-                if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+             else {
+                if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO))
                     {
-
-                        if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                        if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             iZooto.notificationInAppAction(mUrl);
                             this.finish();
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                            if (Util.isAppInForeground(context)) {
-                                launchApp(context);
-                                TargetActivity.mWebViewClick = mUrl;
+                            if(iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null){
                                 iZooto.notificationInAppAction(mUrl);
                                 this.finish();
                             }
                             else {
+                                 TargetActivity.mWebViewClick = mUrl;
                                 launchApp(context);
-                                TargetActivity.mWebViewClick = mUrl;
+                                this.finish();
+
                             }
                         } else {
                             iZootoWebViewActivity.startActivity(context, mUrl);
                             this.finish();
                         }
                     }
-                } else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+                 else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                     launchApp(context);
                 } else {
                     try {
@@ -507,7 +501,6 @@ public class TargetActivity extends Activity {
                 Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
 
             }
-            Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
         } catch (PackageManager.NameNotFoundException e) {
             Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
 

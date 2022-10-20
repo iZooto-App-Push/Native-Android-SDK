@@ -172,7 +172,6 @@ public class Util {
                     }
                 }
             } else {
-                Log.e("Handle API","api Data"+url);
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext, url, "[Log-> e]->getBitmapFromURL");
                 Util.setException(iZooto.appContext, "Error" + url, "Utils", "getBitmapURL");
                 return null;
@@ -180,8 +179,6 @@ public class Util {
         }
         else
         {
-            Log.e("Handle API","api1 Data"+url);
-
             return  null;
         }
         return null;
@@ -711,6 +708,20 @@ public class Util {
                     break;
                 }
             }
+        }
+    }
+    public static boolean isCheckState()
+    {
+        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(myProcess);
+       boolean isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+        if(!isInBackground) {
+            Log.e("Foreground","Foregroundstate");
+            return true;
+        }else{
+            Log.e("Foreground","backgroundstate");
+
+            return false;
         }
     }
 }
