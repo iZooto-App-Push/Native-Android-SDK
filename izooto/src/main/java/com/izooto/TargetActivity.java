@@ -26,15 +26,15 @@ public class TargetActivity extends Activity {
     private String phoneNumber;
     private String act1ID;
     private String act2ID;
-    private String langingURL;
+    private String landingURL;
     private String act2URL;
     private String act1URL;
     private String btn1Title;
     private String btn2Title;
     private String clickIndex = "0";
     private String lastClickIndex = "0";
-    public static String mNotificationClick = "";
-    public static String WebViewClick = "";
+    public static String mNotificationClick;
+   // public static String WebViewClick = "";
     public  static  String medClick="";
     private String pushType;
     private int cfg;
@@ -148,7 +148,7 @@ public class TargetActivity extends Activity {
                 hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
                 hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
                 hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
-                hashMap.put(AppConstant.LANDING_URL, langingURL);
+                hashMap.put(AppConstant.LANDING_URL, landingURL);
                 hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
                 hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
                 hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
@@ -163,37 +163,38 @@ public class TargetActivity extends Activity {
                         this.finish();
                     }
                     else {
-                        TargetActivity.mNotificationClick = jsonObject.toString();
+                      //  TargetActivity.mNotificationClick = jsonObject.toString();
+                        NotificationActionReceiver.notificationClick = jsonObject.toString();
                         launchApp(context);
                         this.finish();
                     }
             }
-
              else {
-                if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO))
+                if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL!="" && !landingURL.isEmpty())
                     {
+
                         if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             iZooto.notificationInAppAction(mUrl);
                             this.finish();
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                            if(iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null){
+                            if(iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null)
+                            {
+
                                 iZooto.notificationInAppAction(mUrl);
                                 this.finish();
                             }
-                            else {
-                                 TargetActivity.mWebViewClick = mUrl;
+                            else
+                            {
+                                NotificationActionReceiver.WebViewClick = mUrl;
                                 launchApp(context);
                                 this.finish();
-
                             }
                         } else {
                             iZootoWebViewActivity.startActivity(context, mUrl);
                             this.finish();
                         }
                     }
-                 else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
-                    launchApp(context);
-                } else {
+                 else {
                     try {
                         if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                             if(mUrl!=null && !mUrl.isEmpty()) {
@@ -216,13 +217,11 @@ public class TargetActivity extends Activity {
                                 }
 
                             }
-
                             else
                             {
 
-
-                                Util.setException(context, "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
-                                DebugFileManager.createExternalStoragePublic(iZooto.appContext,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
+                                launchApp(iZooto.appContext);
+                                this.finish();
 
                             }
                         } else {
@@ -233,9 +232,8 @@ public class TargetActivity extends Activity {
                         }
 
                     } catch (Exception ex) {
-                        Util.setException(context,ex.toString()+ "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
-
+                        launchApp(iZooto.appContext);
+                        this.finish();
                     }
                 }
             }
@@ -265,7 +263,7 @@ public class TargetActivity extends Activity {
             if(tempBundle.containsKey(AppConstant.KEY_IN_ACT2ID))
                 act2ID=tempBundle.getString(AppConstant.KEY_IN_ACT2ID);
             if(tempBundle.containsKey(AppConstant.LANDINGURL))
-                langingURL=tempBundle.getString(AppConstant.LANDINGURL);
+                landingURL=tempBundle.getString(AppConstant.LANDINGURL);
             if(tempBundle.containsKey(AppConstant.ACT1URL))
                 act1URL=tempBundle.getString(AppConstant.ACT1URL);
             if(tempBundle.containsKey(AppConstant.ACT2URL))

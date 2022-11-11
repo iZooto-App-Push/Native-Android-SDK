@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class NotificationPreview {
     private static Bitmap notificationIcon, notificationBanner;
-    private static int icon;
+   // private static int icon;
     private static  int badgeColor;
     private static int priority,lockScreenVisibility;
 
@@ -75,12 +75,12 @@ public class NotificationPreview {
                          Notification summaryNotification = null;
                          Intent intent = null;
 
-                         icon = NotificationEventManager.getBadgeIcon(payload.getBadgeicon());
+                      //   icon = NotificationEventManager.getBadgeIcon(payload.getBadgeicon());
                          badgeColor = NotificationEventManager.getBadgeColor(payload.getBadgecolor());
                          lockScreenVisibility = NotificationEventManager.setLockScreenVisibility(payload.getLockScreenVisibility());
 
                          intent = NotificationEventManager.notificationClick(payload, payload.getLink(), payload.getAct1link(), payload.getAct2link(), AppConstant.NO, clickIndex, lastclickIndex, 100, 0);
-                         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        // Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
                          PendingIntent pendingIntent=null;
                          if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
@@ -158,19 +158,24 @@ public class NotificationPreview {
                              expandedView.setTextViewText(R.id.tv_display_time, "" + Util.getTimeWithoutDate());
                          }
 
+                         Uri uri = Util.getSoundUri(iZooto.appContext, iZooto.soundID);
 
                          notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId)
-                                 .setSmallIcon(icon)
+                                 .setSmallIcon(getDefaultSmallIconId())
                                  .setContentTitle(payload.getTitle())
                                  .setContentText(payload.getMessage())
                                  .setContentIntent(pendingIntent)
-                                 .setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_SOUND).setVibrate(new long[]{1000, 1000})
-                                 .setSound(defaultSoundUri)
+                               //  .setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_SOUND).setVibrate(new long[]{1000, 1000})
+                                // .setSound(defaultSoundUri)
                                  .setVisibility(lockScreenVisibility)
                                  .setCustomContentView(collapsedView)
                                  .setCustomBigContentView(expandedView)
                                  .setAutoCancel(true);
-
+                         if (uri != null) {
+                             notificationBuilder.setSound(uri);
+                         } else {
+                             notificationBuilder.setDefaults(NotificationCompat.DEFAULT_LIGHTS | NotificationCompat.DEFAULT_SOUND).setVibrate(new long[]{1000, 1000});
+                         }
                          if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                              notificationBuilder.setCustomHeadsUpContentView(collapsedView);
                          }
@@ -278,7 +283,7 @@ public class NotificationPreview {
                                          .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                                          .setUsage(AudioAttributes.USAGE_ALARM)
                                          .build();
-                                 Uri uri = Util.getSoundUri(iZooto.appContext, iZooto.soundID);
+                               //  Uri uri = Util.getSoundUri(iZooto.appContext, iZooto.soundID);
                                  if (uri != null)
                                      channel.setSound(uri, audioAttributes);
                                  else
@@ -413,9 +418,6 @@ public class NotificationPreview {
         else {
             intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
         }
-
-
-        // Intent intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
         intent.putExtra(AppConstant.KEY_WEB_URL, link);
         intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificationId);
         intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
@@ -455,5 +457,16 @@ public class NotificationPreview {
                 .build();
         return builtUri.toString();
     }
+    // notification default icon
+    private static int getDefaultSmallIconId() {
+        int notificationIcon = getDrawableId("ic_stat_izooto_default");
+        if (notificationIcon != 0) {
+            return notificationIcon;
+        }
+        return android.R.drawable.ic_popup_reminder;
+    }
 
+    private static int getDrawableId(String name) {
+        return iZooto.appContext.getResources().getIdentifier(name, "drawable", iZooto.appContext.getPackageName());
+    }
 }

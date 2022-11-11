@@ -1,32 +1,21 @@
 package com.izooto;
 
 import static com.izooto.Util.openURLInBrowserIntent;
-
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
 
@@ -40,7 +29,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private String phoneNumber;
     private String act1ID;
     private String act2ID;
-    private String langingURL;
+    private String landingURL;
     private String act2URL;
     private String act1URL;
     private String btn1Title;
@@ -158,7 +147,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
                 hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
                 hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
-                hashMap.put(AppConstant.LANDING_URL, langingURL);
+                hashMap.put(AppConstant.LANDING_URL, landingURL);
                 hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
                 hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
                 hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
@@ -174,51 +163,41 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 }
                 if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                     launchApp(context);
+
                 }
             } else {
 
-                if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+                if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL!="" && !landingURL.isEmpty()) {
 
-                        if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                    if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                        iZooto.notificationInAppAction(mUrl);
+                    }
+                    else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                        if (Util.isAppInForeground(context)){
                             iZooto.notificationInAppAction(mUrl);
                         }
-                        else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                            if (Util.isAppInForeground(context)){
-                                iZooto.notificationInAppAction(mUrl);
-                            }
-                            else {
-                                WebViewClick = mUrl;
-                                iZooto.notificationInAppAction(WebViewClick);
-
-                                launchApp(context);
-                                Log.e("Launch URL","Launch1"+WebViewClick);
-                            }
+                        else {
+                            WebViewClick = mUrl;
+                            iZooto.notificationInAppAction(WebViewClick);
+                            launchApp(context);
                         }
-                        else
-                        {
-                            iZootoWebViewActivity.startActivity(context, mUrl);
-
-                        }
+                    }
+                    else
+                    {
+                        iZootoWebViewActivity.startActivity(context, mUrl);
 
                     }
-                else if (inApp == 2 && phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
-                    launchApp(context);
-                } else {
+
+                }
+                else {
                     try {
                         if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                             if(mUrl!=null && !mUrl.isEmpty()) {
-                                    openURLInBrowser(context,mUrl);
-
-
+                                openURLInBrowser(context,mUrl);
                             }
-
                             else
                             {
-
-
-                                Util.setException(context, "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
-                                DebugFileManager.createExternalStoragePublic(context,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
-
+                                launchApp(iZooto.appContext);
                             }
                         } else {
                             Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
@@ -227,9 +206,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         }
 
                     } catch (Exception ex) {
-                        Util.setException(context,ex.toString()+ "URL is not defined"+mUrl+"Browser is not present", AppConstant.APPName_3, "onReceived");
-                        DebugFileManager.createExternalStoragePublic(context,"URL is not correct or Browser is not present","[Log.e]->URL ERROR");
-
+                        launchApp(iZooto.appContext);
                     }
                 }
             }
@@ -301,7 +278,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
 
     }
-     static void callRandomClick(String rv) {
+    static void callRandomClick(String rv) {
         if(!rv.isEmpty()) {
             RestClient.get(rv, new RestClient.ResponseHandler() {
                 @Override
@@ -345,7 +322,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         else {
                             preferenceUtil.setStringData("MEDIATIONCLICKDATA","");
 
-                           // NotificationActionReceiver.medClick = "";
+                            // NotificationActionReceiver.medClick = "";
                         }
                     }
                     @Override
@@ -409,7 +386,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             if(tempBundle.containsKey(AppConstant.KEY_IN_ACT2ID))
                 act2ID=tempBundle.getString(AppConstant.KEY_IN_ACT2ID);
             if(tempBundle.containsKey(AppConstant.LANDINGURL))
-                langingURL=tempBundle.getString(AppConstant.LANDINGURL);
+                landingURL=tempBundle.getString(AppConstant.LANDINGURL);
             if(tempBundle.containsKey(AppConstant.ACT1URL))
                 act1URL=tempBundle.getString(AppConstant.ACT1URL);
             if(tempBundle.containsKey(AppConstant.ACT2URL))
@@ -436,7 +413,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             }
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void notificationClickAPI(Context context, String clkURL, String cid, String rid, int btnCount, int i,String pushType) {
         if (context == null)
             return;
@@ -456,7 +432,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             DebugFileManager.createExternalStoragePublic(context,mapData.toString(),"clickData");
 
             RestClient.postRequest(clkURL, mapData,null, new RestClient.ResponseHandler() {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onSuccess(final String response) {
                     super.onSuccess(response);

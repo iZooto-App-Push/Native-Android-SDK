@@ -31,7 +31,6 @@ public class DebugFileManager {
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void createExternalStoragePublic(Context context, String data, String requestName) {
         try {
             File outputDirectory = CheckDirectory_ExitsORNot(AppConstant.DIRECTORYNAME);
@@ -39,11 +38,11 @@ public class DebugFileManager {
             GenerateTimeStampAppData(context, outputDirectory, "pid.debug", data, requestName);
 
         } catch (Exception e) {
-            // Log.w("ExternalStorage", "Error writing " );
+            Log.v("File", "No File Exits");
+
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static void createPublicDirectory(Context context) {
         try {
             if (context != null) {
@@ -66,7 +65,8 @@ public class DebugFileManager {
                 }
             }
         } catch (Exception ex) {
-            Log.v("Error", ex.toString());
+            Log.v("File", "No File Exits");
+
         }
 
     }
@@ -115,7 +115,8 @@ public class DebugFileManager {
 
             }
         } catch (Exception ex) {
-            Log.v("Error", ex.toString());
+            Log.v("File", "No File Exits");
+
         }
     }
 
@@ -136,6 +137,7 @@ public class DebugFileManager {
                 }
             } catch (Exception e) {
                 preferenceUtil.setBooleanData(AppConstant.FILE_EXIST, false);
+                Log.v("File", "No File Exits");
 
             }
         }
@@ -240,7 +242,7 @@ public class DebugFileManager {
 
                 }
             } else {
-                Log.e("File", "No File Exits");
+                Log.v("File", "No File Exits");
             }
 
         }
