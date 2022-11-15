@@ -9,6 +9,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,7 +42,7 @@ public class TargetActivity extends Activity {
     private int cfg;
     private Context context;
     public static String mWebViewClick;
-    public static boolean isForeground = true;
+    public static boolean isRunningApp = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,16 +160,33 @@ public class TargetActivity extends Activity {
                     iZooto.notificationActionHandler(jsonObject.toString());
                     this.finish();
                 }
-                else if (iZooto.mBuilder != null && iZooto.mBuilder.mNotificationHelper != null) {
-                        iZooto.notificationActionHandler(jsonObject.toString());
-                        this.finish();
-                    }
-                    else {
-                      //  TargetActivity.mNotificationClick = jsonObject.toString();
-                        NotificationActionReceiver.notificationClick = jsonObject.toString();
-                        launchApp(context);
-                        this.finish();
-                    }
+//                else if (iZooto.mBuilder != null && iZooto.mBuilder.mNotificationHelper != null) {
+//                        iZooto.notificationActionHandler(jsonObject.toString());
+//                        this.finish();
+//                    }
+//                    else {
+//                      //  TargetActivity.mNotificationClick = jsonObject.toString();
+//                        NotificationActionReceiver.notificationClick = jsonObject.toString();
+//                        launchApp(context);
+//                        this.finish();
+//                    }
+                else {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(() -> {
+                        if (preferenceUtil.getBoolean("isRunning")) {
+                            iZooto.notificationActionHandler(jsonObject.toString());
+                            isRunningApp = true;
+                            this.finish();
+                        }
+                        if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isRunningApp) {
+                            launchApp(this.context);
+                            mNotificationClick = jsonObject.toString();
+                            this.finish();
+                        }
+
+                    }, 2000L);
+                    this.finish();
+                }
             }
              else {
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL!="" && !landingURL.isEmpty())
@@ -177,18 +196,35 @@ public class TargetActivity extends Activity {
                             iZooto.notificationInAppAction(mUrl);
                             this.finish();
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                            if(iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null)
-                            {
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(() -> {
+                                if (preferenceUtil.getBoolean("isRunning")) {
+                                    iZooto.notificationInAppAction(this.mUrl);
+                                    isRunningApp = true;
+                                    this.finish();
+                                }
 
-                                iZooto.notificationInAppAction(mUrl);
-                                this.finish();
-                            }
-                            else
-                            {
-                                NotificationActionReceiver.WebViewClick = mUrl;
-                                launchApp(context);
-                                this.finish();
-                            }
+                                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isRunningApp) {
+                                    launchApp(this.context);
+                                    mWebViewClick = this.mUrl;
+                                    this.finish();
+                                }
+
+                            }, 2000L);
+                            this.finish();
+//                            if(iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null)
+//                            {
+//
+//                                iZooto.notificationInAppAction(mUrl);
+//                                this.finish();
+//                            }
+//                            else
+//                            {
+//                                NotificationActionReceiver.WebViewClick = mUrl;
+//                                launchApp(context);
+//                                this.finish();
+//                            }
+
                         } else {
                             iZootoWebViewActivity.startActivity(context, mUrl);
                             this.finish();
@@ -232,8 +268,10 @@ public class TargetActivity extends Activity {
                         }
 
                     } catch (Exception ex) {
-                        launchApp(iZooto.appContext);
-                        this.finish();
+                       // launchApp(iZooto.appContext);
+                       // this.finish();
+                        Util.setException(iZooto.appContext,ex.toString(),AppConstant.APPName_3,"notificationClickAPI->onFailure"+mUrl);
+
                     }
                 }
             }
@@ -490,14 +528,25 @@ public class TargetActivity extends Activity {
             }
             else
             {
-                ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
-                name = (String) pm.getApplicationLabel(app);
-                launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
-                Intent intentAppLaunch = launchIntent; // new Intent();
-                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intentAppLaunch);
-                Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
-
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                if (pm != null && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                    ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                    name = (String) pm.getApplicationLabel(app);
+                    launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                    Intent intentAppLaunch = launchIntent; // new Intent();
+                    intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intentAppLaunch);
+                    Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                }
+                else {
+                    ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                    name = (String) pm.getApplicationLabel(app);
+                    launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                    Intent intentAppLaunch = launchIntent; // new Intent();
+                    intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intentAppLaunch);
+                    Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                }
             }
         } catch (PackageManager.NameNotFoundException e) {
             Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");

@@ -23,11 +23,12 @@ public class AppController extends Application implements TokenReceivedListener,
         super.onCreate();
         iZooto.initialize(this)
                 .setNotificationReceiveListener(this)
+                .setLandingURLListener(this)
                 .setTokenReceivedListener(this)
                 .build();
 
 
-        iZooto.setDefaultTemplate(PushTemplate.DEFAULT);
+        iZooto.setDefaultTemplate(PushTemplate.TEXT_OVERLAY);
 
     }
 

@@ -30,6 +30,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
+        storeForegroundData(activity,true);
 
 
     }
@@ -38,6 +39,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     public void onActivityResumed(@NonNull Activity activity) {
         iZooto.onActivityResumed(activity);
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
+        storeForegroundData(activity,true);
 
 
 
@@ -52,6 +54,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     @Override
     public void onActivityStopped(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
+        storeForegroundData(activity,false);
 
 
     }
@@ -65,6 +68,11 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
-
+        storeForegroundData(activity,false);
+    }
+    public  void storeForegroundData(Activity activity, boolean isForeground)
+    {
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
+        preferenceUtil.setBooleanData("isRunning",isForeground);
     }
 }

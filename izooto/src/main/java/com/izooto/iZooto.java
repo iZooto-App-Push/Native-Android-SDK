@@ -613,26 +613,48 @@ public class iZooto {
         }
     }
 
+//    private static void runNotificationWebViewCallback() {
+//        runOnMainUIThread(new Runnable() {
+//            public void run() {
+//                try {
+//                    if (!NotificationActionReceiver.WebViewClick.isEmpty()) {
+//                        iZooto.mBuilder.mWebViewListener.onWebView(NotificationActionReceiver.WebViewClick);//
+//                        NotificationActionReceiver.WebViewClick = "";
+//                    }
+////                    if (!TargetActivity.mWebViewClick.isEmpty()) {
+////                        iZooto.mBuilder.mWebViewListener.onWebView(TargetActivity.mWebViewClick);//
+////                        TargetActivity.mWebViewClick = "";
+////
+////                    }
+//
+//
+//                }catch (Exception ex){
+//                    Log.e("Exception ex",ex.toString());
+//                }
+//            }
+//
+//        });
+//    }
+
     private static void runNotificationWebViewCallback() {
         runOnMainUIThread(new Runnable() {
             public void run() {
                 try {
                     if (!NotificationActionReceiver.WebViewClick.isEmpty()) {
-                        iZooto.mBuilder.mWebViewListener.onWebView(NotificationActionReceiver.WebViewClick);//
+                        iZooto.mBuilder.mWebViewListener.onWebView(NotificationActionReceiver.WebViewClick);
                         NotificationActionReceiver.WebViewClick = "";
                     }
-//                    if (!TargetActivity.mWebViewClick.isEmpty()) {
-//                        iZooto.mBuilder.mWebViewListener.onWebView(TargetActivity.mWebViewClick);//
-//                        TargetActivity.mWebViewClick = "";
-//
-//                    }
 
-
-                }catch (Exception ex){
-                    Log.e("Exception ex",ex.toString());
+                    PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+                    if (!TargetActivity.mWebViewClick.isEmpty() && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                        iZooto.mBuilder.mWebViewListener.onWebView(TargetActivity.mWebViewClick);
+                        TargetActivity.mWebViewClick = "";
+                    }
+                } catch (Exception var2) {
+                    Log.e("Exception ex", var2.toString());
                 }
-            }
 
+            }
         });
     }
 
@@ -645,24 +667,41 @@ public class iZooto {
         }
     }
 
-    private static void runNotificationOpenedCallback() {
-        runOnMainUIThread(new Runnable() {
-            public void run() {
-                if (!NotificationActionReceiver.notificationClick.isEmpty()) {
-                    iZooto.mBuilder.mNotificationHelper.onNotificationOpened(NotificationActionReceiver.notificationClick);
-                    NotificationActionReceiver.notificationClick = "";
-                }
-//                else
-//                {
-//                    if(!TargetActivity.mNotificationClick.isEmpty())
-//                    {
-//                        iZooto.mBuilder.mNotificationHelper.onNotificationOpened(TargetActivity.mNotificationClick);
-//                        TargetActivity.mNotificationClick = "";
-//                    }
+//    private static void runNotificationOpenedCallback() {
+//        runOnMainUIThread(new Runnable() {
+//            public void run() {
+//                if (!NotificationActionReceiver.notificationClick.isEmpty()) {
+//                    iZooto.mBuilder.mNotificationHelper.onNotificationOpened(NotificationActionReceiver.notificationClick);
+//                    NotificationActionReceiver.notificationClick = "";
 //                }
+////                else
+////                {
+////                    if(!TargetActivity.mNotificationClick.isEmpty())
+////                    {
+////                        iZooto.mBuilder.mNotificationHelper.onNotificationOpened(TargetActivity.mNotificationClick);
+////                        TargetActivity.mNotificationClick = "";
+////                    }
+////                }
+//            }
+//        });
+//    }
+private static void runNotificationOpenedCallback() {
+    runOnMainUIThread(new Runnable() {
+        public void run() {
+            if (!NotificationActionReceiver.notificationClick.isEmpty()) {
+                iZooto.mBuilder.mNotificationHelper.onNotificationOpened(NotificationActionReceiver.notificationClick);
+                NotificationActionReceiver.notificationClick = "";
             }
-        });
-    }
+
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+            if (!TargetActivity.mNotificationClick.isEmpty() && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                iZooto.mBuilder.mNotificationHelper.onNotificationOpened(TargetActivity.mNotificationClick);
+                TargetActivity.mNotificationClick = "";
+            }
+
+        }
+    });
+}
 
     // handle the execution
     static void runOnMainUIThread(Runnable runnable) {

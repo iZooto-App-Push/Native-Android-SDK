@@ -710,18 +710,4 @@ public class Util {
             }
         }
     }
-    public static boolean isCheckState()
-    {
-        ActivityManager.RunningAppProcessInfo myProcess = new ActivityManager.RunningAppProcessInfo();
-        ActivityManager.getMyMemoryState(myProcess);
-       boolean isInBackground = myProcess.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
-        if(!isInBackground) {
-            Log.e("Foreground","Foregroundstate");
-            return true;
-        }else{
-            Log.e("Foreground","backgroundstate");
-
-            return false;
-        }
-    }
 }
