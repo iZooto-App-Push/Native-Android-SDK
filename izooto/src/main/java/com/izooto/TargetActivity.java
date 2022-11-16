@@ -179,8 +179,8 @@ public class TargetActivity extends Activity {
                             this.finish();
                         }
                         if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isRunningApp) {
+                           NotificationActionReceiver.notificationClick = jsonObject.toString();
                             launchApp(this.context);
-                            mNotificationClick = jsonObject.toString();
                             this.finish();
                         }
 
@@ -255,10 +255,8 @@ public class TargetActivity extends Activity {
                             }
                             else
                             {
-
-                                launchApp(iZooto.appContext);
-                                this.finish();
-
+                                   launchApp(iZooto.appContext);
+                                   this.finish();
                             }
                         } else {
                             Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));

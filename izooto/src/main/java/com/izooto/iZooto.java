@@ -688,15 +688,20 @@ public class iZooto {
 private static void runNotificationOpenedCallback() {
     runOnMainUIThread(new Runnable() {
         public void run() {
-            if (!NotificationActionReceiver.notificationClick.isEmpty()) {
-                iZooto.mBuilder.mNotificationHelper.onNotificationOpened(NotificationActionReceiver.notificationClick);
-                NotificationActionReceiver.notificationClick = "";
-            }
+            try {
+                if (!NotificationActionReceiver.notificationClick.isEmpty()) {
+                    iZooto.mBuilder.mNotificationHelper.onNotificationOpened(NotificationActionReceiver.notificationClick);
+                    NotificationActionReceiver.notificationClick = "";
+                }
 
-            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-            if (!TargetActivity.mNotificationClick.isEmpty() && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                iZooto.mBuilder.mNotificationHelper.onNotificationOpened(TargetActivity.mNotificationClick);
-                TargetActivity.mNotificationClick = "";
+//                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+//                if (!TargetActivity.mNotificationClick.isEmpty() && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+//                    iZooto.mBuilder.mNotificationHelper.onNotificationOpened(TargetActivity.mNotificationClick);
+//                    TargetActivity.mNotificationClick = "";
+//                }
+            }catch (Exception ex)
+            {
+
             }
 
         }
