@@ -206,7 +206,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         }
 
                     } catch (Exception ex) {
-                        launchApp(iZooto.appContext);
+                        Util.setException(context, ex.toString(), "notification action", "landing url issues"+mUrl);
                     }
                 }
             }

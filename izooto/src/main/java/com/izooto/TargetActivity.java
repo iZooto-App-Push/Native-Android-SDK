@@ -266,8 +266,6 @@ public class TargetActivity extends Activity {
                         }
 
                     } catch (Exception ex) {
-                       // launchApp(iZooto.appContext);
-                       // this.finish();
                         Util.setException(iZooto.appContext,ex.toString(),AppConstant.APPName_3,"notificationClickAPI->onFailure"+mUrl);
 
                     }

@@ -299,7 +299,6 @@ public class NotificationEventManager {
                     }
                 }
 
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
                     super.onFailure(statusCode, response, throwable);
@@ -361,7 +360,9 @@ public class NotificationEventManager {
             payload.setAp("");
             payload.setInapp(0);
             if(payload.getTitle()!=null && !payload.getTitle().equalsIgnoreCase("")) {
-                receiveAds(payload);
+                //receiveAds(payload);
+                notificationPreview(iZooto.appContext,payload);
+
                 AdMediation.ShowClickAndImpressionData(payload);
 
             }
@@ -448,50 +449,54 @@ public class NotificationEventManager {
         if (iZooto.appContext == null)
             return;
 
-        if (addCheck){
-            receiveAds(payload);
-
-        }else {
-            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-            if (Util.isAppInForeground(iZooto.appContext)){
-
-                if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_ ) || iZooto.inAppOption.equalsIgnoreCase("None")){
-                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)== PushTemplate.TEXT_OVERLAY) {
-                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-                            NotificationPreview.receiveCustomNotification(payload);
+        notificationPreview(iZooto.appContext,payload);
 
 
-                        }
-                        else
-                        {
-                            NotificationPreview.receiveCustomNotification(payload);
-                        }
-                    }
+//        if (addCheck){
+//            receiveAds(payload);
+//
+//        }else {
+//            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+//            if (Util.isAppInForeground(iZooto.appContext)){
+//
+//                if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_ ) || iZooto.inAppOption.equalsIgnoreCase("None")){
+//                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)== PushTemplate.TEXT_OVERLAY) {
+//                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+//                            NotificationPreview.receiveCustomNotification(payload);
+//
+//
+//                        }
+//                        else
+//                        {
+//                            NotificationPreview.receiveCustomNotification(payload);
+//                        }
+//                    }
+//
+//                    else {
+//                        receivedNotification(payload);
+//                    }
+//                }else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)){
+//                       showAlert(payload);
+//                }
+//            }else {
+//
+//                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW) == PushTemplate.TEXT_OVERLAY) {
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+//                            // receivedNotification(payload);
+//
+//                            NotificationPreview.receiveCustomNotification(payload);
+//                        } else {
+//                            NotificationPreview.receiveCustomNotification(payload);
+//                        }
+//                    }
+//
+//                else {
+//                    receivedNotification(payload);
+//                }
+//            }
 
-                    else {
-                        receivedNotification(payload);
-                    }
-                }else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)){
-                       showAlert(payload);
-                }
-            }else {
-
-                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW) == PushTemplate.TEXT_OVERLAY) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            // receivedNotification(payload);
-
-                            NotificationPreview.receiveCustomNotification(payload);
-                        } else {
-                            NotificationPreview.receiveCustomNotification(payload);
-                        }
-                    }
-
-                else {
-                    receivedNotification(payload);
-                }
-            }
-        }
     }
+
 
     //handle ads notifications
 
@@ -1798,6 +1803,26 @@ public class NotificationEventManager {
         return iZooto.appContext.getResources().getIdentifier(name, "drawable", iZooto.appContext.getPackageName());
     }
 
+    static void notificationPreview(Context context,Payload payload)
+    {
+        if(context==null)
+            return;
 
+        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+
+        if(payload.getDefaultNotificationPreview()==2 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW) == PushTemplate.TEXT_OVERLAY)
+        {
+            NotificationPreview.receiveCustomNotification(payload);
+        }
+        else if(payload.getDefaultNotificationPreview()==3 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW) == PushTemplate.DEVICE_NOTIFICATION_OVERLAY)
+        {
+            receiveAds(payload);
+        }
+        else
+        {
+            receivedNotification(payload);
+        }
+
+    }
 
 }

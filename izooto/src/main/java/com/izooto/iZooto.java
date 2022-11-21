@@ -47,7 +47,6 @@ public class iZooto {
     protected static Listener mListener;
     protected static Handler mHandler;
     private static FirebaseAnalyticsTrack firebaseAnalyticsTrack;
-    public static String inAppOption;
     @SuppressLint("StaticFieldLeak")
     static Activity curActivity;
     private static String advertisementID;
@@ -74,9 +73,7 @@ public class iZooto {
     public static iZooto.Builder initialize(Context context) {
         return new iZooto.Builder(context);
     }
-//    public enum OSInAppDisplayOption {
-//        None, InAppAlert, Notification
-//    }
+
     private static void init(Builder builder) {
         final Context context = builder.mContext;
         appContext = context.getApplicationContext();
@@ -96,7 +93,7 @@ public class iZooto {
                 }
                 else {
                     Lg.i(AppConstant.APP_NAME_TAG, mIzooToAppId + "");
-                    RestClient.get(AppConstant.GOOGLE_JSON_URL + mIzooToAppId +".dat", new RestClient.ResponseHandler() {
+                    RestClient.get(RestClient.P_GOOGLE_JSON_URL + mIzooToAppId +".dat", new RestClient.ResponseHandler() {
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
                             super.onFailure(statusCode, response, throwable);
@@ -208,8 +205,6 @@ public class iZooto {
                 if (util.isInitializationValid()) {
                     Lg.i(AppConstant.APP_NAME_TAG, AppConstant.DEVICETOKEN  + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                     registerToken();
-//
-
                     ActivityLifecycleListener.registerActivity((Application)appContext);
                     setCurActivity(context);
                     areNotificationsEnabledForSubscribedState(appContext);
@@ -1125,10 +1120,6 @@ private static void runNotificationOpenedCallback() {
             }
         }
         return newList;
-    }
-    private static void setIcon(int icon1)
-    {
-        icon=icon1;
     }
 
     public static void setSubscription(Boolean enable) {

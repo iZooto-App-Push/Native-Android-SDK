@@ -1110,7 +1110,9 @@ public class AdMediation {
 
                     }
                     if(payload1.getTitle()!=null && !payload1.getTitle().isEmpty()) {
-                        NotificationEventManager.receiveAds(payload1);
+                       // NotificationEventManager.receiveAds(payload1);
+                        NotificationEventManager.notificationPreview(iZooto.appContext,payload1);
+
                         Log.v(AppConstant.NOTIFICATION_MESSAGE, AppConstant.YES);
                     }
                     else{
@@ -1159,7 +1161,9 @@ public class AdMediation {
                         payload.setBanner(jsonObject.optString(ShortpayloadConstant.BANNER));
                         payload.setAct1link(jsonObject.optString(ShortpayloadConstant.ACT1LINK));
                         payload.setRid(payload.getRid());
-                        NotificationEventManager.receiveAds(payload);
+                        NotificationEventManager.notificationPreview(iZooto.appContext,payload);
+
+                        // NotificationEventManager.receiveAds(payload);
                         ShowCLCIKAndImpressionData(payload);
 
                     }
@@ -1298,7 +1302,9 @@ public class AdMediation {
                 finalData.put("bids",jsonArray);
                 dataValue=finalData.toString().replaceAll("\\\\", " ");
                 mediationImpression(dataValue,0);
-                NotificationEventManager.receiveAds(payload1);
+               // NotificationEventManager.receiveAds(payload1);
+                NotificationEventManager.notificationPreview(iZooto.appContext,payload1);
+
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                     TargetActivity.medClick = dataValue;

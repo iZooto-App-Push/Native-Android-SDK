@@ -2,9 +2,7 @@ package com.izooto;
 
 
 
-import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import org.json.JSONObject;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -16,23 +14,22 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class RestClient {
-
-    public static final String BASE_URL = "https://aevents.izooto.com/app.php";
-    public static final int GET_TIMEOUT = 60000;
-    public static final String EVENT_URL="https://et.izooto.com/evt";
-    public static final String PROPERTIES_URL="https://prp.izooto.com/prp";
-    public static final String IMPRESSION_URL="https://impr.izooto.com/imp";
-    public static  final String NOTIFICATIONCLICK="https://clk.izooto.com/clk";
-    public static final String SUBSCRIPTION_API="https://usub.izooto.com/sunsub";
-    public static final String LASTNOTIFICATIONCLICKURL="https://lci.izooto.com/lci";
-    public static final String LASTNOTIFICATIONVIEWURL="https://lim.izooto.com/lim";
-    public static final String LASTVISITURL="https://lvi.izooto.com/lvi";
-    public static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
-    public static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
-    public static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
-
+     //production url
+     static final String BASE_URL = "https://aevents.izooto.com/app.php";
+     static String P_GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
+     static final int GET_TIMEOUT = 60000;
+     static final String EVENT_URL="https://et.izooto.com/evt";
+     static final String PROPERTIES_URL="https://prp.izooto.com/prp";
+     static final String IMPRESSION_URL="https://impr.izooto.com/imp";
+     static  final String NOTIFICATIONCLICK="https://clk.izooto.com/clk";
+     static final String SUBSCRIPTION_API="https://usub.izooto.com/sunsub";
+     static final String LASTNOTIFICATIONCLICKURL="https://lci.izooto.com/lci";
+     static final String LASTNOTIFICATIONVIEWURL="https://lim.izooto.com/lim";
+     static final String LASTVISITURL="https://lvi.izooto.com/lvi";
+     static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
+     static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
+     static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }

@@ -28,7 +28,7 @@ public class AppController extends Application implements TokenReceivedListener,
                 .build();
 
 
-        iZooto.setDefaultTemplate(PushTemplate.DEFAULT);
+      //  iZooto.setDefaultTemplate(PushTemplate.DEFAULT);
 
     }
 

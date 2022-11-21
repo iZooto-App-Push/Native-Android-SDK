@@ -21,18 +21,40 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.androidTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.unitTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.unitTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/maven-push.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/maven-push.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AdMediation.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AdMediation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/FCMTokenGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/FCMTokenGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/PushTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/PushTemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RoundedCornersTransform.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TargetActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TargetActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoHmsMessagingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoHmsMessagingService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/amit_sdk_develoer/.android/avd/Samsung.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[18261JEC201175]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
