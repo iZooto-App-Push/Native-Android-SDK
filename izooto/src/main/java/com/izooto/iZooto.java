@@ -646,7 +646,7 @@ public class iZooto {
                         TargetActivity.mWebViewClick = "";
                     }
                 } catch (Exception var2) {
-                    Log.e("Exception ex", var2.toString());
+                    Log.v("Exception ex", var2.toString());
                 }
 
             }

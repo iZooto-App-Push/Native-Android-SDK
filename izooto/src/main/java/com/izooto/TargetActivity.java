@@ -255,8 +255,15 @@ public class TargetActivity extends Activity {
                             }
                             else
                             {
-                                   launchApp(iZooto.appContext);
-                                   this.finish();
+                                  if(preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                                      Util.sleepTime(2000);
+                                      launchApp(context);
+                                      this.finish();
+                                  }else
+                                  {
+                                      launchApp(context);
+                                      this.finish();
+                                  }
                             }
                         } else {
                             Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
@@ -266,7 +273,7 @@ public class TargetActivity extends Activity {
                         }
 
                     } catch (Exception ex) {
-                        Util.setException(iZooto.appContext,ex.toString(),AppConstant.APPName_3,"notificationClickAPI->onFailure"+mUrl);
+                        Util.setException(context,ex.toString(),AppConstant.APPName_3,"notificationClickAPI->onFailure"+mUrl);
 
                     }
                 }
@@ -506,7 +513,7 @@ public class TargetActivity extends Activity {
     }
 
 
-    static void launchApp(Context context){
+    private static void launchApp(Context context){
 
         PackageManager pm = context.getPackageManager();
         Intent launchIntent = null;

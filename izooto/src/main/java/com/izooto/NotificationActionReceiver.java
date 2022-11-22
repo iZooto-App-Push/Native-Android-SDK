@@ -197,7 +197,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             }
                             else
                             {
-                                launchApp(iZooto.appContext);
+                                if(preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                                    Util.sleepTime(2000);
+                                    launchApp(context);
+
+                                }else
+                                {
+                                    launchApp(context);
+
+                                }
                             }
                         } else {
                             Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
@@ -343,26 +351,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
 
-    static void launchApp(Context context){
-
-        PackageManager pm = context.getPackageManager();
-        Intent launchIntent = null;
-        String name = "";
-        try {
-            if (pm != null && !Util.isAppInForeground(context)) {
-                ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
-                name = (String) pm.getApplicationLabel(app);
-                launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
-                Intent intentAppLaunch = launchIntent; // new Intent();
-                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intentAppLaunch);
-            }
-            Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
-        } catch (PackageManager.NameNotFoundException e) {
-            Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
-
-        }
-    }
 
     private void getBundleData(Context context, Intent intent) {
         Bundle tempBundle = intent.getExtras();
@@ -473,6 +461,47 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
     }
 
+    private static void launchApp(Context context){
+
+        PackageManager pm = context.getPackageManager();
+        Intent launchIntent = null;
+        String name = "";
+        try {
+            if (pm != null && !Util.isAppInForeground(context)) {
+                ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                name = (String) pm.getApplicationLabel(app);
+                launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                Intent intentAppLaunch = launchIntent; // new Intent();
+                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intentAppLaunch);
+
+            }
+            else
+            {
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                if (pm != null && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                    ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                    name = (String) pm.getApplicationLabel(app);
+                    launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                    Intent intentAppLaunch = launchIntent; // new Intent();
+                    intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(intentAppLaunch);
+                }
+                else {
+                    ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                    name = (String) pm.getApplicationLabel(app);
+                    launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                    Intent intentAppLaunch = launchIntent; // new Intent();
+                    intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intentAppLaunch);
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
+
+        }
+    }
 
 
 }
