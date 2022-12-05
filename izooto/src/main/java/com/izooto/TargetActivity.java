@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class TargetActivity extends Activity {
     private String mUrl;
@@ -35,14 +36,13 @@ public class TargetActivity extends Activity {
     private String btn2Title;
     private String clickIndex = "0";
     private String lastClickIndex = "0";
-    public static String mNotificationClick;
-   // public static String WebViewClick = "";
     public  static  String medClick="";
     private String pushType;
     private int cfg;
     private Context context;
     public static String mWebViewClick;
     public static boolean isRunningApp = false;
+    static  boolean isDeepLinkCheck = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,27 +124,17 @@ public class TargetActivity extends Activity {
                         }
                         callRandomClick(AdMediation.clicksData.get(i));
                     }
-
                 }
             }
-//            if (medClick != "") {
-//                callMediationClicks(medClick,0);
-//            }
-            if(preferenceUtil.getStringData("MEDIATIONCLICKDATA")!="")
+            if(preferenceUtil.getStringData(AppConstant.MEDIATION_CLICK_DATA)!="")
             {
-                String medClickData = preferenceUtil.getStringData("MEDIATIONCLICKDATA");
+                String medClickData = preferenceUtil.getStringData(AppConstant.MEDIATION_CLICK_DATA);
                 callMediationClicks(medClickData,0);
-
             }
-
-
             if (additionalData.equalsIgnoreCase("")) {
                 additionalData = "1";
             }
-
-
             if (!additionalData.equalsIgnoreCase("1") && inApp >= 0) {
-
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put(AppConstant.BUTTON_ID_1, act1ID);
                 hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
@@ -160,33 +150,22 @@ public class TargetActivity extends Activity {
                     iZooto.notificationActionHandler(jsonObject.toString());
                     this.finish();
                 }
-//                else if (iZooto.mBuilder != null && iZooto.mBuilder.mNotificationHelper != null) {
-//                        iZooto.notificationActionHandler(jsonObject.toString());
-//                        this.finish();
-//                    }
-//                    else {
-//                      //  TargetActivity.mNotificationClick = jsonObject.toString();
-//                        NotificationActionReceiver.notificationClick = jsonObject.toString();
-//                        launchApp(context);
-//                        this.finish();
-//                    }
                 else {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (preferenceUtil.getBoolean("isRunning")) {
-                            iZooto.notificationActionHandler(jsonObject.toString());
-                            isRunningApp = true;
-                            this.finish();
-                        }
-                        if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isRunningApp) {
-                           NotificationActionReceiver.notificationClick = jsonObject.toString();
-                            launchApp(this.context);
-                            this.finish();
-                        }
-
-                    }, 2000L);
-                    this.finish();
-                }
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(() -> {
+                            if (preferenceUtil.getBoolean(AppConstant.DEEPLINK_STATE)) {
+                                iZooto.notificationActionHandler(jsonObject.toString());
+                                isDeepLinkCheck = true;
+                                this.finish();
+                            }
+                            if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isDeepLinkCheck) {
+                                NotificationActionReceiver.notificationClick = jsonObject.toString();
+                                launchApp(this.context);
+                                this.finish();
+                            }
+                        }, 2000L);
+                        this.finish();
+                    }
             }
              else {
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL!="" && !landingURL.isEmpty())
@@ -196,35 +175,22 @@ public class TargetActivity extends Activity {
                             iZooto.notificationInAppAction(mUrl);
                             this.finish();
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.postDelayed(() -> {
-                                if (preferenceUtil.getBoolean("isRunning")) {
-                                    iZooto.notificationInAppAction(this.mUrl);
-                                    isRunningApp = true;
-                                    this.finish();
-                                }
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.postDelayed(() -> {
+                                    if (preferenceUtil.getBoolean(AppConstant.DEEPLINK_STATE)) {
+                                        iZooto.notificationInAppAction(this.mUrl);
+                                        isDeepLinkCheck = true;
+                                        this.finish();
+                                    }
 
-                                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isRunningApp) {
-                                    launchApp(this.context);
-                                    mWebViewClick = this.mUrl;
-                                    this.finish();
-                                }
+                                    if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isDeepLinkCheck) {
+                                        launchApp(this.context);
+                                        mWebViewClick = this.mUrl;
+                                        this.finish();
+                                    }
 
-                            }, 2000L);
-                            this.finish();
-//                            if(iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null)
-//                            {
-//
-//                                iZooto.notificationInAppAction(mUrl);
-//                                this.finish();
-//                            }
-//                            else
-//                            {
-//                                NotificationActionReceiver.WebViewClick = mUrl;
-//                                launchApp(context);
-//                                this.finish();
-//                            }
-
+                                }, 2000L);
+                                this.finish();
                         } else {
                             iZootoWebViewActivity.startActivity(context, mUrl);
                             this.finish();
@@ -255,15 +221,24 @@ public class TargetActivity extends Activity {
                             }
                             else
                             {
-                                  if(preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                                      Util.sleepTime(2000);
-                                      launchApp(context);
-                                      this.finish();
-                                  }else
-                                  {
-                                      launchApp(context);
-                                      this.finish();
-                                  }
+                                if(preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                                    if(Util.isAppInForeground(this) && preferenceUtil.getBoolean(AppConstant.DEVICE_STATE_CHECK)){
+                                        this.finish();
+                                        if(preferenceUtil.getBoolean(AppConstant.DEVICE_BACKGROUND_STATE) && !Util.isAppInForeground(this))
+                                        {
+                                            preferenceUtil.setBooleanData(AppConstant.DEVICE_BACKGROUND_STATE,false);
+                                            launchAppHybrid(context);
+                                            this.finish();
+                                        }
+                                    }else {
+                                        launchAppHybrid(context);
+                                        this.finish();
+                                    }
+
+                                }else {
+                                    launchApp(context);
+                                    this.finish();
+                                }
                             }
                         } else {
                             Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
@@ -279,8 +254,6 @@ public class TargetActivity extends Activity {
                 }
             }
         }
-
-
     }
     private void getBundleData(Context context, Intent intent) {
         Bundle tempBundle = intent.getExtras();
@@ -461,7 +434,6 @@ public class TargetActivity extends Activity {
             });
         }
     }
-
     static void callMediationClicks(final String medClick, int cNUmber) {
         try {
 
@@ -511,8 +483,6 @@ public class TargetActivity extends Activity {
         }
 
     }
-
-
     private static void launchApp(Context context){
 
         PackageManager pm = context.getPackageManager();
@@ -556,5 +526,22 @@ public class TargetActivity extends Activity {
 
         }
     }
-
+    private static void launchAppHybrid(Context context){
+        PackageManager pm = context.getPackageManager();
+        Intent launchIntent = null;
+        String name = "";
+        try {
+            if (pm != null) {
+                ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
+                name = (String) pm.getApplicationLabel(app);
+                launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+                Intent intentAppLaunch = launchIntent; // new Intent();
+                Objects.requireNonNull(intentAppLaunch).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intentAppLaunch);
+                Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
+        }
+    }
 }

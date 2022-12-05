@@ -3,6 +3,8 @@ package com.izooto;
 
 
 
+import android.util.Log;
+
 import org.json.JSONObject;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,12 +32,11 @@ public class RestClient {
      static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
      static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
      static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
-    private static int getThreadTimeout(int timeout) {
+
+     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }
-
-
-    static void get(final String url, final ResponseHandler responseHandler) {
+     static void get(final String url, final ResponseHandler responseHandler) {
         new Thread(new Runnable() {
             public void run() {
                 makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT);

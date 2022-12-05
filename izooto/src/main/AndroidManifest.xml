@@ -40,14 +40,12 @@
         <receiver
             android:name="com.izooto.NotificationActionReceiver"
             android:exported="true"
-            android:enabled="true"
-           >
+            android:enabled="true">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="actionBtnOne" />
                 <action android:name="actionBtnTwo" />
                 <action android:name="android.intent.action.VIEW" />
-
             </intent-filter>
         </receiver>
         <service
@@ -58,8 +56,12 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".TargetActivity"
-            android:launchMode="singleInstance"
+        <activity
+            android:name=".TargetActivity"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true"/>
 
         <meta-data

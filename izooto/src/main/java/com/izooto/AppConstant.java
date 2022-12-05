@@ -256,7 +256,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION="1.5.5";
+    String SDKVERSION="1.5.6";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -388,6 +388,11 @@ public interface AppConstant {
     String IZ_G_BRANDING = "branding";
     String H_PLUGIN_VERSION = "pv";
     String HYBRID_PLUGIN_VERSION = "HYBRID_PLUGIN_VERSION";
+    String ACCOUNT_ID_EXCEPTION ="Account id is not sync properly on panel";
+    String DEVICE_STATE_CHECK ="isRunning";
+    String DEVICE_BACKGROUND_STATE ="isBackground";
+    String DEEPLINK_STATE ="isDeepLink";
+    String MEDIATION_CLICK_DATA="MEDIATIONCLICKDATA";
 }
 
 

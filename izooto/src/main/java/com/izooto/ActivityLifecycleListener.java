@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -24,15 +25,15 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     }
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-       DebugFileManager.createExternalStoragePublic(activity,"onActivityCreated","[Log.e]->");
+        DebugFileManager.createExternalStoragePublic(activity,"onActivityCreated","[Log.e]->");
+        storeForegroundData(activity,true);
     }
 
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,true);
-
-
+        isStoreDataKilledState(activity,true);
     }
 
     @Override
@@ -40,39 +41,45 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
         iZooto.onActivityResumed(activity);
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,true);
-
-
-
+        isStoreDataKilledState(activity,true);
     }
 
     @Override
     public void onActivityPaused(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
-
+        storeForegroundData(activity,false);
     }
 
     @Override
     public void onActivityStopped(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
-        storeForegroundData(activity,false);
-
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
+        preferenceUtil.setBooleanData(AppConstant.DEVICE_BACKGROUND_STATE,true);
+        isStoreDataKilledState(activity,false);
 
     }
 
     @Override
     public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
-
+        storeForegroundData(activity,false);
     }
 
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,false);
+        isStoreDataKilledState(activity,false);
     }
-    public  void storeForegroundData(Activity activity, boolean isForeground)
+
+    public  void storeForegroundData(Activity activity, boolean isForeground){
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
+        preferenceUtil.setBooleanData(AppConstant.DEVICE_STATE_CHECK,isForeground);
+    }
+
+    public void isStoreDataKilledState(Activity activity,boolean isData)
     {
         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
-        preferenceUtil.setBooleanData("isRunning",isForeground);
+        preferenceUtil.setBooleanData(AppConstant.DEEPLINK_STATE,isData);
     }
 }

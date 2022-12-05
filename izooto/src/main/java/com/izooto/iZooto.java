@@ -144,7 +144,7 @@ public class iZooto {
                             }
                             else
                             {
-                                DebugFileManager.createExternalStoragePublic(context,"Account id is not sync properly on panel","[Log.e]-->");
+                                DebugFileManager.createExternalStoragePublic(context,AppConstant.ACCOUNT_ID_EXCEPTION,"[Log.e]-->");
                             }
                         }
 
