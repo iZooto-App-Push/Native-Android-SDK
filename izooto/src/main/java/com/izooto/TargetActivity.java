@@ -230,6 +230,15 @@ public class TargetActivity extends Activity {
                                             launchAppHybrid(context);
                                             this.finish();
                                         }
+                                        else
+                                        {
+                                            if(preferenceUtil.getBoolean(AppConstant.DEVICE_ONPAUSE_STATE) && preferenceUtil.getBoolean(AppConstant.DEVICE_ONCREATE_STATE)) {
+                                                preferenceUtil.setBooleanData(AppConstant.DEVICE_ONPAUSE_STATE, false);
+                                                preferenceUtil.setBooleanData(AppConstant.DEVICE_ONCREATE_STATE, false);
+                                                launchAppHybrid(context);
+                                                this.finish();
+                                            }
+                                        }
                                     }else {
                                         launchAppHybrid(context);
                                         this.finish();

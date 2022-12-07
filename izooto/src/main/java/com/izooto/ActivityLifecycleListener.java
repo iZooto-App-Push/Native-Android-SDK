@@ -27,6 +27,8 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityCreated","[Log.e]->");
         storeForegroundData(activity,true);
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
+        preferenceUtil.setBooleanData(AppConstant.DEVICE_ONCREATE_STATE, true);
     }
 
     @Override
@@ -56,6 +58,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
         preferenceUtil.setBooleanData(AppConstant.DEVICE_BACKGROUND_STATE,true);
         isStoreDataKilledState(activity,false);
+        preferenceUtil.setBooleanData(AppConstant.DEVICE_ONPAUSE_STATE,true);
 
     }
 

@@ -1397,13 +1397,10 @@ public class NotificationEventManager {
         Intent intent=null;
        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                intent = new Intent(iZooto.appContext, TargetActivity.class);
-
        }
          else {
            intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
        }
-
-
         intent.putExtra(AppConstant.KEY_WEB_URL, link);
         intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificationId);
         intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());

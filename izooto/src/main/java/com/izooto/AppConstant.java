@@ -256,7 +256,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION="1.5.6";
+    String SDKVERSION="1.5.7";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -393,6 +393,8 @@ public interface AppConstant {
     String DEVICE_BACKGROUND_STATE ="isBackground";
     String DEEPLINK_STATE ="isDeepLink";
     String MEDIATION_CLICK_DATA="MEDIATIONCLICKDATA";
+    String DEVICE_ONCREATE_STATE = "isOnCreate";
+    String DEVICE_ONPAUSE_STATE = "isOnPause";
 }
 
 
