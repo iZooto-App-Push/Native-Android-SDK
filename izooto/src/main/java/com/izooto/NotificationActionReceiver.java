@@ -156,15 +156,16 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
                     iZooto.notificationActionHandler(jsonObject.toString());
                 else {
-                    if (Util.isAppInForeground(context))
+                    if (Util.isAppInForeground(context)) {
                         iZooto.notificationActionHandler(jsonObject.toString());
-                    else
+                    }
+                    else {
                         notificationClick = jsonObject.toString();
-                }
-                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                    launchApp(context);
+                        launchApp(context);
+                    }
 
                 }
+
             } else {
 
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL!="" && !landingURL.isEmpty()) {
@@ -187,7 +188,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         iZootoWebViewActivity.startActivity(context, mUrl);
 
                     }
-
+                // launchApp(context); // new  line added
                 }
                 else {
                     try {

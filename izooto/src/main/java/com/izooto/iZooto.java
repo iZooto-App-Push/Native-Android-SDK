@@ -110,8 +110,8 @@ public class iZooto {
                                     senderId = jsonObject.getString(AppConstant.SENDERID);
                                     String appId = jsonObject.optString(AppConstant.APPID);
                                     String apiKey = jsonObject.optString(AppConstant.APIKEY);
-                                    String mKey =jsonObject.optString(AppConstant.MIAPIKEY);
-                                    String mId =jsonObject.optString(AppConstant.MIAPPID);
+                                    String mKey =jsonObject.optString(AppConstant.MIAPIKEY);//"5611892047046";//
+                                    String mId =jsonObject.optString(AppConstant.MIAPPID);//"2882303761518920046";//
                                     String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
                                     mIzooToAppId = jsonObject.optString(APPPID);
                                     preferenceUtil.setiZootoID(APPPID, mIzooToAppId);

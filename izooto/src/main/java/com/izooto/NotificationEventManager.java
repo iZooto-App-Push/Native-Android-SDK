@@ -56,7 +56,13 @@ public class NotificationEventManager {
     public static void manageNotification(Payload payload) {
         if (payload.getFetchURL() == null || payload.getFetchURL().isEmpty()) {
             addCheck = false;
-            allCloudPush(payload);
+            try {
+                Thread.sleep(2000);
+                allCloudPush(payload);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
         else{
             addCheck = true;

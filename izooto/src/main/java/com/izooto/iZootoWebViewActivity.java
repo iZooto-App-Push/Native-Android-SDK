@@ -54,7 +54,7 @@ public class iZootoWebViewActivity extends AppCompatActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setJavaScriptEnabled(false);
         settings.setDomStorageEnabled(false);
-        settings.setAppCacheEnabled(false);
+      //  settings.setAppCacheEnabled(false);
         settings.setAllowFileAccess(false);
         settings.setAllowFileAccessFromFileURLs(false);
         settings.setAllowUniversalAccessFromFileURLs(false);

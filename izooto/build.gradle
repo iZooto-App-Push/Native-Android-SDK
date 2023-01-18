@@ -3,7 +3,7 @@ android {
     compileSdkVersion 32
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 23
         versionName "1.6.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -21,17 +21,16 @@ android {
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     api 'androidx.legacy:legacy-support-v4:1.0.0'
-   // implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.google.android.material:material:1.6.1'
-    testImplementation 'org.testng:testng:7.3.0'
+    implementation 'com.google.android.material:material:1.6.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
    // implementation platform('com.google.firebase:firebase-bom:29.0.0')
-    implementation 'com.google.firebase:firebase-messaging:23.1.0'
-    implementation files('libs/MiPush_SDK_Client_4_8_6-G.jar')
-    compileOnly 'com.huawei.hms:push:6.5.0.300'
-    testImplementation 'org.testng:testng:7.3.0'
+    implementation 'com.google.firebase:firebase-messaging:23.1.1'
+   // implementation files('libs/MiPush_SDK_Client_4_8_6-G.jar') //MiPush_SDK_Client_5_1_1-G_3rd.aar
+    compileOnly 'com.huawei.hms:push:6.7.0.300'
+    testImplementation 'org.testng:testng:7.4.0'
+    implementation files('libs/MiPush_SDK_Client_5_1_1-G.jar')
 
 
 }

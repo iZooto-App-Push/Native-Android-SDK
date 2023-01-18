@@ -3,10 +3,7 @@ package com.izooto;
 
 public interface AppConstant {
     String APP_NAME_TAG = "iZooto";
-
     String FCM_DEVICE_TOKEN = "deviceToken";
-    String IZOOTO_SENDER_ID_KEY = "izooto_sender_id";
-    String GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
     String SDKNAME = "IZOOTO";
     String DEVICETOKEN="DEVICE TOKEN   ->  ";
     String UTF="UTF-8";
@@ -36,8 +33,6 @@ public interface AppConstant {
     String TRACK_NOTIFICATION_ID = "notificationId";
     String IS_NOTIFICATION_ID_UPDATED = "notificationIdUpdated";
     String NOTIFICATION_COUNT = "count";
-    String PAYLOAD_BADGE_COUNT = "payloadBadgeCount";
-    String WEB_LANDING_URL = "webLandingUrl";
     String LOG_EVENT = "logEvent";
     String GET_FIREBASE_INSTANCE = "getInstance";
     String UTM_SOURCE = "utm_source";
@@ -76,7 +71,6 @@ public interface AppConstant {
     String FIREBASE_6to8AM = "6-8 AM";
     String FIREBASE_8to10AM = "8-10 AM";
     String FIREBASE_10to12PM = "10-12 PM";
-    String API_PID = "?pid=";
     String PTE_="pte";
     String CID_="cid";
     String RID_="rid";
@@ -97,25 +91,14 @@ public interface AppConstant {
     String BUTTON_TITLE_2 ="button2Title";
     String BUTTON_URL_2 ="button2URL";
     String ACTION_TYPE ="actionType";
-    String NOTIFICATION_ ="Notification";
-    String NONE_NOTIFCATION = "None";
-    String INAPPALERT ="InAppAlert";
     String DEFAULT_ICON ="default";
     int GE = 1;
-
-
-    String UPDATE_DEVICE_TOKEN = "https://aevents.izooto.com/izooto/api.php";
-    String IZOOTO_ENCRYPTION_KEY = "izooto_enc_key";
     String IZOOTO_APP_ID = "izooto_app_id";
-
-    String ACTION_BTN_ONE = "actionBtnOne";
-    String ACTION_BTN_TWO = "actionBtnTwo";
     String KEY_WEB_URL = "WEB_URL";
     String KEY_NOTIFICITON_ID = "keyNotificationId";
     String IS_TOKEN_UPDATED = "isTokenUpdated";
     String DEVICE_REGISTRATION_TIMESTAMP = "deviceRegistrationTimeStamp";
     String KEY_IN_APP = "keyInApp";
-    String EVENT_URL="https://et.izooto.com/";
     String  KEY_IN_CID = "cid";
     String KEY_IN_RID = "rid";
     String KEY_IN_BUTOON="btn";
@@ -133,73 +116,28 @@ public interface AppConstant {
     String FCMERROR = "Unable to generate FCM token, there may be something wrong with sender id";
     String SUCCESS = " Request Successful: ";
     String FAILURE = " Request Failed: ";
-
     String ATTACHREQUEST = "IZooTo RestClient: ResponseHandler is not attached for the Request: ";
     String EXCEPTIONERROR = "Thrown Error";
-    String UNEXCEPTION ="unsupported encoding exception";
     String CDN = "https://cdn.izooto.com/app/app_";
-    //String CDN = "https://cdn.izooto.com/app/";
-
     String MISSINGID="App Id is missing.";
     // Register String
-
     String SENDERID ="senderId";
     String APPID = "appId";
     String APIKEY="apiKey";
-    //https://cdn.izooto.com/app/app_b7d70ad86cbd3664ec38d8a7c294bfd6452cf5e8.dat
-    ///////// JSON Payload Data
-
-    String CAMPNAME = "campaignDetails";
-    String CREATEDON= "created_on";
-    String FETCHURL = "fetchURL";
-    String KEY = "key";
     String ID ="id";
     String RID= "rid";
-    String LINK ="link";
-    String TITLE = "title";
-    String NMESSAGE = "message";
-    String ICON = "icon";
-    String REQINT = "reqInt";
     String TAG= "tag";
-    String BANNER = "banner";
-    String ACTNUM= "act_num";
-    String ACT1NAME= "act1name";
-    String ACT1LINK= "act1link";
-    String ACT2NAME= "act2name";
-    String ACT2LINK= "act2link";
-    String INAPP= "inapp";
-    String TARYICON="trayicon";
-    String ICONCOLOR="iconcolor";
-    String SOUND= "sound";
-    String LEDCOLOR="ledColor";
-    String VISIBILITY = "visibility";
-    String GKEY = "gKey";
-    String GMESSAGE="gMessage";
-    String PROJECTNUMBER="projectNumber";
-    String COLLAPSEID = "collapseID";
-    String PRIORITY="priority";
-    String RAWDATA="rawData";
-    String ADDITIONALPARAM ="ap";
-    String PAYLOAD ="Payload";
-    String ACT1ICON="act1icon";
-    String ACT2ICON="act2icon";
     String ACT1ID="act1id";
     String ACT2ID ="act2id";
-    String CFG="cfg";
-
-
-    String NOTIFICATIONBODY="notifcationbody";
     String FIREBASEEXCEPTION ="exception";
     String FCMNAME = "FireBase Name";
     String NOTIFICATIONRECEIVED ="Short lived task is done.";
-    String FAILEDTOKEN = "Unable to generate FCM token, there may be something wrong with sender id";
     String CHECKFCMLIBRARY="The FCM library is missing! Please make sure to include it in your project.";
     //API
     String APISUCESS ="API SUCCESS";
     String APIFAILURE ="API FAILURE";
     String TELIPHONE = "tel:";
     String NO = "NO";
-
     //// short payload
     String webViewData = "WebViewClient: shouldOverrideUrlLoading";
     String LANDINGURL="landingURL";
@@ -207,14 +145,6 @@ public interface AppConstant {
     String ACT2URL="act2URL";
     String ACT1TITLE="act1title";
     String ACT2TITLE="act2title";
-
-    String BADGE_ICON= "badgeicon";
-    String BADGE_COLOR= "badgecolor";
-    String SUBTITLE = "subtitle";
-    String GROUP = "group";
-    String BADGE_COUNT = "badgeCount";
-    String ADVERTISEMENT_ID = "advertisementID";
-    String ISINSTALL="isInstall";
     String CHANNEL_NAME="Push Notification";
     String DIALOG_DISMISS="Dismiss";
     String DIALOG_OK="Take me there";
@@ -228,7 +158,6 @@ public interface AppConstant {
     String URL_FRWD___="frwd";
     String FCM_TIME_FORMAT="hh:mm:ss aa";
     String NULL="null";
-    String FONT_COLOR="<font color=\"\"";
     String POST="POST";
     String CONTENT_TYPE="Content-Type";
     String FORM_URL_ENCODED="application/x-www-form-urlencoded";
@@ -238,7 +167,6 @@ public interface AppConstant {
     String HTTP="http:";
     String IMPR="impr.izooto.com";
     String KEY_NOT_FOUND="KEY NOT FOUND";
-    String INSTLLED_FAILED="getInstanceId failed";
     String GET_TOPIC_NAME = "getTopicName";
     String REMOVE_TOPIC_NAME = "removeTopicName";
     String ADD_TOPIC ="add_topic";
@@ -250,13 +178,12 @@ public interface AppConstant {
     String LAST_WEBSITE_VISIT= "last_website_visit";
     String LANG_= "lang";
     String CURRENT_DATE= "currentDate";
-    String IS_LAUNCH_FIRST_TIME= "isLaunchFirstTime";
     String VER_= "ver";
     String ISID_= "isid";
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION="1.5.7";
+    String SDKVERSION="1.5.8";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -267,9 +194,6 @@ public interface AppConstant {
     String PACKAGE_NAME="mpn";
     String MEDIATION="Mediation";
     String SDKTYPE="sn";
-    String SDKDES="native";
-    String CURRENT_DAYS_VIEW = "currentDaysView";
-    String CURRENT_DAYS_CLICK = "currentDaysClick";
     String CFGFORDOMAIN= "cfgfordomain";
     String LAST_NOTIFICAION_CLICKED= "last_notification_clicked";
     String LAST_NOTIFICAION_VIEWED= "last_notification_viewed";
@@ -288,7 +212,6 @@ public interface AppConstant {
     String APPName_2="NotificationEventManager";
     String APPName_3="NotificationActionManager";
     String USER_LOCAL_DATA = "iz_userLocalData";
-    String SET_SUBSCRIPTION_DATA="iz_setSubscription";
     String EVENT_LOCAL_DATA_EN = "eventLocalDataEN";
     String EVENT_LOCAL_DATA_EV = "eventLocalDataEV";
     String SET_SUBSCRITION_LOCAL_DATA = "setSubscriptionLocalData";
@@ -301,7 +224,6 @@ public interface AppConstant {
     String FCM_TOKEN_FROM_JSON = "fcmToken";
     String CHECK_SDK_UPDATE="IZ_SDK_UPDATE";
     String GLOBAL_PUBLIC_KEY= "gpl";
-    String STORAGE_GPL_DATA="iz_gpl_url";
     String STORAGE_PAYLOAD_DATA="iz_payload_data";
     String IZ_NOTIFICATION_CLICK_OFFLINE = "iZ_Notification_Click_Offline";
     String IZ_NOTIFICATION_VIEW_OFFLINE = "iZ_Notification_View_Offline";
@@ -318,25 +240,15 @@ public interface AppConstant {
     String IZ_ADD_TOPIC_OFFLINE = "iz_add_topic_offline";
     String IZ_REMOVE_TOPIC_OFFLINE = "iz_remove_topic_offline";
     ///////// JSON Payload Data
-
-
     String XIAOMITOKEN = "mt";
     String XiaomiToken = "xiaomi_token";
     String MIAPIKEY = "Mi_api_key";
     String MIAPPID="Mi_app_id";
-    String CHECK_PAYLOAD="Title";
-    String BRAND_NAME="Xiaomi";
-    String ADD_CHECK="RID";
-
-    String CHECK_MESSAGE="MESSAGE";
-
     String CHECK_CREATED_ON="CT";
     String CHECK_RID="RID";
     String CHECK_TTL="TTL";
     String NOTIFICATION_DUPLICATE="Add";
-    String PUSH_TYPE="&ct=";
     String PUSH="push_type";
-    String CHECK_XIAOMI="Check";
     String HMS_TOKEN = "hms_token";
     String KEY_HMS="ht";
     String HMS_APP_ID="hms_app_id";
@@ -347,45 +259,20 @@ public interface AppConstant {
     String Check_Notification="CheckData";
     String Check_YES="true";
     String Check_NO="false";
-
     String IS_UPDATED_XIAOMI_TOKEN = "iz_xiaomi_token_updated";
     String IS_UPDATED_HMS_TOKEN = "iz_hms_token_updated";
-    String CUSTOM_NOTIFICATION = "iz_customNotification";
-
     String R_XIAOMI_TOKEN = "{~MITOKEN~}";
     String R_HMS_TOKEN = "{~HMSTOKEN~}";
-
     String ACCOUNT_ID="{~PID~}";
     String ADID="{~ADID~}";
     String CAN_GENERATE_HUAWEI_TOKEN = "iz_canGenerateHuaweiToken";
     String CAN_GENERATE_XIAOMI_TOKEN = "iz_canGenerateXiaomiToken";
-
     String XIAOMI_TOKEN_FROM_JSON = "xiaomiToken";
     String HUAWEI_TOKEN_FROM_JSON = "huaweiToken";
     String CLOUD_PUSH="iz_Counter";
-
     String FILE_EXIST="iz_fileExits";
     String DIRECTORYNAME="DATB.907135001.debug";
     String CHECK_APP_VERSION="iz_app_version";
-
-    // NewsHub
-
-    String SET_PAGE_NO = "izPageNo";
-    String JSON_NEWS_HUB = "newsHub";
-    String JSON_NEWS_HUB_STATUS = "newsHubStatus";
-    String JSON_NEWS_HUB_TITLE = "newsHubTitle";
-    String JSON_NEWS_HUB_TITLE_COLOR="newsHubTitleColor";
-    String JSON_NEWS_HUB_ICON_TYPE = "newsHubIconType";
-    String JSON_NEWS_HUB_COLOR = "newsHubColor";
-    String JSON_NEWS_HUB_IS_FULL_SCREEN = "newsHubIsFullScreen";
-    String JSON_NEWS_HUB_IS_DESCRIPTION = "newsHubIsDescription";
-    String JSON_NEWS_HUB_BRANDING = "newsHubBranding";
-    String JSON_NEWS_HUB_WIDGET = "newsHubWidget";
-    String JSON_NEWS_HUB_FALLBACK_IMAGE_URL = "newsHubFallbakImageUrl";
-    String SET_JSON_NEWS_HUB = "izSetJsonNewsHub";
-    String NEWS_HUB_CLICK_KEY="cs";
-    String NEWS_HUB_CLICK_VALUE="1";
-    String IZ_G_BRANDING = "branding";
     String H_PLUGIN_VERSION = "pv";
     String HYBRID_PLUGIN_VERSION = "HYBRID_PLUGIN_VERSION";
     String ACCOUNT_ID_EXCEPTION ="Account id is not sync properly on panel";

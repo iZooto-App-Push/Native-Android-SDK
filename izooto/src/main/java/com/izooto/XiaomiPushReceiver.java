@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class XiaomiPushReceiver extends PushMessageReceiver {
-    private String TAG="XiaomiPushReceiver  PAYLOAD";
+    static final  String XIAOMI_TAG="XiaomiPushReceiver";
     private Payload payload;
 
     // data payload notification received
@@ -50,7 +50,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
 
     // notification received
     private void handleNow(Context context, String data) {
-        Log.d(TAG, AppConstant.NOTIFICATIONRECEIVED);
+        Log.d(XIAOMI_TAG, AppConstant.NOTIFICATIONRECEIVED);
         try {
 
             PreferenceUtil preferenceUtil =PreferenceUtil.getInstance(context);
@@ -83,12 +83,12 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                         }
                         else
                         {
-                            NotificationEventManager.handleNotificationError("Payload Error",data.toString(),"MessagingSevices","HandleNow");
+                            NotificationEventManager.handleNotificationError("Payload Error",data,"XiaomiPushReceiver","HandleNow");
                         }
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(context,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
+                        Util.setException(context,ex+"PayloadError"+data,"XiaomiPushReceiver","handleNow");
                     }
 
                 }
@@ -115,7 +115,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(context,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
+                        Util.setException(context,ex+"PayloadError"+data,"XiaomiPushReceiver","handleNow");
 
                     }
                 }
@@ -176,7 +176,6 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     payload.setFallBackPath(payloadObj.optString(ShortpayloadConstant.FAll_BACK_PATH));
                     payload.setDefaultNotificationPreview(payloadObj.optInt(ShortpayloadConstant.TEXTOVERLAY));
                     payload.setNotification_bg_color(payloadObj.optString(ShortpayloadConstant.BGCOLOR));
-
                 }
                 else {
                     return;
@@ -189,16 +188,15 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     public void run() {
                         NotificationEventManager.handleImpressionAPI(payload,AppConstant.PUSH_XIAOMI);
                         iZooto.processNotificationReceived(context,payload);
-
-                    } // This is your code
+                    }
                 };
                 mainHandler.post(myRunnable);
             }
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"MIPush",data.toString());
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,XIAOMI_TAG,data.toString());
 
         } catch (Exception e) {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext, e.toString(),"[Log.e]->MIPush");
-            Util.setException(context, e.toString(), TAG, "handleNow");
+            Util.setException(context, e.toString(), XIAOMI_TAG, "handleNow");
         }
     }
     @Override
@@ -387,35 +385,29 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                 clickIndex = "0";
                 lastView_Click = "0";
             }
-
-            Intent intent = null;
-
-            intent = new Intent(context, NotificationActionReceiver.class);
-
-
-            intent.putExtra(AppConstant.KEY_WEB_URL, ln);
-            intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, 100);
-            intent.putExtra(AppConstant.KEY_IN_APP, ia);
-            intent.putExtra(AppConstant.KEY_IN_CID, cid);
-            intent.putExtra(AppConstant.KEY_IN_RID, rid);
-            intent.putExtra(AppConstant.KEY_IN_BUTOON, 0);
-            intent.putExtra(AppConstant.KEY_IN_ADDITIONALDATA, ap);
-            intent.putExtra(AppConstant.KEY_IN_PHONE, AppConstant.NO);
-            intent.putExtra(AppConstant.KEY_IN_ACT1ID, "");
-            intent.putExtra(AppConstant.KEY_IN_ACT2ID, "");
-            intent.putExtra(AppConstant.LANDINGURL, ln);
-            intent.putExtra(AppConstant.ACT1TITLE, "");
-            intent.putExtra(AppConstant.ACT2TITLE, "");
-            intent.putExtra(AppConstant.ACT1URL, "");
-            intent.putExtra(AppConstant.ACT2URL, "");
-            intent.putExtra(AppConstant.CLICKINDEX, clickIndex);
-            intent.putExtra(AppConstant.LASTCLICKINDEX, lastView_Click);
-            intent.putExtra(AppConstant.PUSH, AppConstant.PUSH_XIAOMI);
-            intent.putExtra(AppConstant.CFGFORDOMAIN, cfg);
-            context.sendBroadcast(intent);
-
+            Intent intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
+                intent.putExtra(AppConstant.KEY_WEB_URL, ln);
+                intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, 100);
+                intent.putExtra(AppConstant.KEY_IN_APP, ia);
+                intent.putExtra(AppConstant.KEY_IN_CID, cid);
+                intent.putExtra(AppConstant.KEY_IN_RID, rid);
+                intent.putExtra(AppConstant.KEY_IN_BUTOON, 0);
+                intent.putExtra(AppConstant.KEY_IN_ADDITIONALDATA, ap);
+                intent.putExtra(AppConstant.KEY_IN_PHONE, AppConstant.NO);
+                intent.putExtra(AppConstant.KEY_IN_ACT1ID, "");
+                intent.putExtra(AppConstant.KEY_IN_ACT2ID, "");
+                intent.putExtra(AppConstant.LANDINGURL, ln);
+                intent.putExtra(AppConstant.ACT1TITLE, "");
+                intent.putExtra(AppConstant.ACT2TITLE, "");
+                intent.putExtra(AppConstant.ACT1URL, "");
+                intent.putExtra(AppConstant.ACT2URL, "");
+                intent.putExtra(AppConstant.CLICKINDEX, clickIndex);
+                intent.putExtra(AppConstant.LASTCLICKINDEX, lastView_Click);
+                intent.putExtra(AppConstant.PUSH, AppConstant.PUSH_XIAOMI);
+                intent.putExtra(AppConstant.CFGFORDOMAIN, cfg);
+                context.sendBroadcast(intent);
         } catch (Exception e) {
-            Util.setException(context, e.toString(), "XiaomiPushReceiver", "notificationBarClick");
+            Util.setException(context, e.toString(), XIAOMI_TAG, "notificationBarClick");
             DebugFileManager.createExternalStoragePublic(context, "notificationBarClick -> " + e.toString(),"[Log.e]->");
         }
 
