@@ -37,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -456,58 +457,11 @@ public class NotificationEventManager {
             return;
 
         notificationPreview(iZooto.appContext,payload);
-
-
-//        if (addCheck){
-//            receiveAds(payload);
-//
-//        }else {
-//            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-//            if (Util.isAppInForeground(iZooto.appContext)){
-//
-//                if (iZooto.inAppOption==null || iZooto.inAppOption.equalsIgnoreCase(AppConstant.NOTIFICATION_ ) || iZooto.inAppOption.equalsIgnoreCase("None")){
-//                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW)== PushTemplate.TEXT_OVERLAY) {
-//                        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-//                            NotificationPreview.receiveCustomNotification(payload);
-//
-//
-//                        }
-//                        else
-//                        {
-//                            NotificationPreview.receiveCustomNotification(payload);
-//                        }
-//                    }
-//
-//                    else {
-//                        receivedNotification(payload);
-//                    }
-//                }else if (iZooto.inAppOption.equalsIgnoreCase(AppConstant.INAPPALERT)){
-//                       showAlert(payload);
-//                }
-//            }else {
-//
-//                    if (payload.getCustomNotification() == 1 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW) == PushTemplate.TEXT_OVERLAY) {
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                            // receivedNotification(payload);
-//
-//                            NotificationPreview.receiveCustomNotification(payload);
-//                        } else {
-//                            NotificationPreview.receiveCustomNotification(payload);
-//                        }
-//                    }
-//
-//                else {
-//                    receivedNotification(payload);
-//                }
-//            }
-
     }
 
 
     //handle ads notifications
-
-    public static void receiveAds(final Payload payload){
-
+     static void receiveAds(final Payload payload){
         final Handler handler = new Handler(Looper.getMainLooper());
         final Runnable notificationRunnable = new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -576,6 +530,11 @@ public class NotificationEventManager {
                         //.setSound(defaultSoundUri)
                         .setVisibility(lockScreenVisibility)
                         .setAutoCancel(true);
+                try {
+                    BigInteger accentColor = Util.getAccentColor();
+                    if (accentColor != null)
+                        notificationBuilder.setColor(accentColor.intValue());
+                } catch (Throwable t) {}
 
                 if (uri != null) {
                     notificationBuilder.setSound(uri);
@@ -941,6 +900,12 @@ public class NotificationEventManager {
                         .setCustomBigContentView(expandedView)
                         .setAutoCancel(true);
 
+                try {
+                    BigInteger accentColor = Util.getAccentColor();
+                    if (accentColor != null)
+                        notificationBuilder.setColor(accentColor.intValue());
+                } catch (Throwable t) {}
+
                 if (uri != null) {
                     notificationBuilder.setSound(uri);
                 } else {
@@ -1162,7 +1127,7 @@ public class NotificationEventManager {
         });
     }
 
-    public static boolean isInt(String s) {
+     static boolean isInt(String s) {
         if (s.isEmpty())
             return false;
 
@@ -1199,8 +1164,6 @@ public class NotificationEventManager {
     }
     public static String decodeURL(String url)
     {
-
-
         if(url.contains(AppConstant.URL_FWD)) {
             String[] arrOfStr = url.split(AppConstant.URL_FWD_);
             String[] second = arrOfStr[1].split(AppConstant.URL_BKEY);

@@ -27,6 +27,7 @@ import android.text.Html;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -710,4 +712,34 @@ public class Util {
             }
         }
     }
+    @Nullable
+    static BigInteger getAccentColor() {
+        try {
+            if(iZooto.appContext == null)
+                return null;
+            String defaultColor = getResourceString(iZooto.appContext, AppConstant.NOTIFICATION_ACCENT_COLOR, null);
+            if(defaultColor.charAt(0)=='#'){
+                String default_Color="";
+                default_Color= defaultColor.replace("#","");
+                if (default_Color != null) {
+                    return new BigInteger(default_Color, 16);
+                }
+            }
+            else
+            {
+                if (defaultColor != null) {
+                    return new BigInteger(defaultColor, 16);
+                }
+            }
+        } catch (Throwable t) {}
+        return null;
+    }
+    static String getResourceString(@NonNull Context context, String key, String defaultStr) {
+        Resources resources = context.getResources();
+        int bodyResId = resources.getIdentifier(key, AppConstant.STRING_RESOURCE_NAME, context.getPackageName());
+        if (bodyResId != 0)
+            return resources.getString(bodyResId);
+        return defaultStr;
+    }
+
 }

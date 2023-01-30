@@ -139,7 +139,10 @@
                 android:name="supportStyle"
                 android:value="scene|voip" />
         </activity>
-
+        <activity
+            android:name=".NotificationPermission"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="false" />
     </application>
 
 </manifest>

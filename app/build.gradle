@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.app.izoototest"
         minSdkVersion 19
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 14
         versionName "1.4.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -14,16 +13,13 @@ android {
                 izooto_app_id:"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"// "794f882d998a83f8afa26d96c8e254f74625e4af"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
         ]
         multiDexEnabled true
-
     }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     dependencies {
         implementation fileTree(dir: 'libs', include: ['*.jar'])
         //noinspection GradleCompatible

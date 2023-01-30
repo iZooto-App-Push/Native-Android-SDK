@@ -32,8 +32,11 @@ public class RestClient {
      static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
      static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
      static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
+     static final String NOTIFICATION_PERMISSION_ALLOW_URL="https://enp.izooto.com/enp";
+     static final String NOTIFICATION_PERMISSION_DISALLOW_URL="https://sbp.izooto.com/nblk";
 
-     private static int getThreadTimeout(int timeout) {
+
+    private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }
      static void get(final String url, final ResponseHandler responseHandler) {

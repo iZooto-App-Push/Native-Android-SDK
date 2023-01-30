@@ -29,7 +29,10 @@ public class iZootoHmsMessagingService extends HmsMessageService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Log.i("Push Type", AppConstant.HMS);
-        handleNow(this, remoteMessage.getData());
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(this);
+        if (preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
+            handleNow(this, remoteMessage.getData());
+        }
     }
 
     private void handleNow(Context context, String data) {

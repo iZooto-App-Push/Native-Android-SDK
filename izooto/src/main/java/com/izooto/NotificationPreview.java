@@ -23,6 +23,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.util.Random;
 
 public class NotificationPreview {
@@ -171,6 +172,14 @@ public class NotificationPreview {
                                  .setCustomContentView(collapsedView)
                                  .setCustomBigContentView(expandedView)
                                  .setAutoCancel(true);
+
+
+                         try {
+                             BigInteger accentColor = Util.getAccentColor();
+                             if (accentColor != null)
+                                 notificationBuilder.setColor(accentColor.intValue());
+                         } catch (Throwable t) {}
+
                          if (uri != null) {
                              notificationBuilder.setSound(uri);
                          } else {

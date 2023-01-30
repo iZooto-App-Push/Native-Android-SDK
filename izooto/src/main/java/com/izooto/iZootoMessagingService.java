@@ -48,8 +48,11 @@ public class iZootoMessagingService extends FirebaseMessagingService {
         try {
             if (remoteMessage.getData().size() > 0) {
                 Log.v("Push Type","fcm");
-                Map<String, String> data = remoteMessage.getData();
-                handleNow(data);
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(this);
+                if (preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
+                    Map<String, String> data = remoteMessage.getData();
+                    handleNow(data);
+                }
             }
             if (remoteMessage.getNotification() != null) {
                 sendNotification(remoteMessage);

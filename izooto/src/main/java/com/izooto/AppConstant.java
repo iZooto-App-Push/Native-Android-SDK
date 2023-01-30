@@ -183,7 +183,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION="1.5.8";
+    String SDKVERSION="1.5.9";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -282,6 +282,19 @@ public interface AppConstant {
     String MEDIATION_CLICK_DATA="MEDIATIONCLICKDATA";
     String DEVICE_ONCREATE_STATE = "isOnCreate";
     String DEVICE_ONPAUSE_STATE = "isOnPause";
+    String NOTIFICATION_ENABLE_DISABLE = "isEnable";
+    String NOTIFICATION_ACCENT_COLOR = "izooto_notification_accent_color";
+    String STRING_RESOURCE_NAME = "string";
+    String SDC_ ="sdc";
+    String NDC_ ="ndc";
+    String OPTIN_ ="optin";
+    String DENIED_ ="denied";
+    int DENIED = 1;
+    int SDC = 1;
+    int NDC = 1;
+    int OPTIN = 0;
+    String NOTIFICATION_PROMPT_DISALLOW = "permissionDisAllow";
+    String NOTIFICATION_PROMPT_ALLOW = "permissionAllow";
 }
 
 

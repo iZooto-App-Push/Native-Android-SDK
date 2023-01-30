@@ -25,6 +25,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     }
     @Override
     public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        iZooto.curActivity =activity;
         DebugFileManager.createExternalStoragePublic(activity,"onActivityCreated","[Log.e]->");
         storeForegroundData(activity,true);
         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
@@ -33,6 +34,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
 
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
+        iZooto.curActivity =activity;
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,true);
         isStoreDataKilledState(activity,true);
@@ -40,6 +42,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
 
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
+        iZooto.curActivity =activity;
         iZooto.onActivityResumed(activity);
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,true);

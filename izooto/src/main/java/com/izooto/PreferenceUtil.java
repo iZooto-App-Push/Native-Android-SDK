@@ -137,6 +137,8 @@ public class PreferenceUtil {
     {
         return mSpref.getString(key, "");
     }
-
+    public boolean getEnableState(String key) {
+        return mSpref.getBoolean(key, true);
+    }
 
 }

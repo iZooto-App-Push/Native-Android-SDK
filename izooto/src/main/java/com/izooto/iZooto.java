@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -123,7 +124,6 @@ public class iZooto {
                                     }
                                     if (!hms_appId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Huawei")  && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_HUAWEI_TOKEN)) {
                                         initHmsService(appContext);
-
                                     }
                                     if (senderId != null && !senderId.isEmpty()) {
                                         init(context, apiKey, appId);
@@ -1134,7 +1134,7 @@ private static void runNotificationOpenedCallback() {
         }
 
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-
+        preferenceUtil.setBooleanData(AppConstant.NOTIFICATION_ENABLE_DISABLE, enable);
         try {
             int value = 2;
             if (enable != null) {
@@ -1757,12 +1757,22 @@ private static void runNotificationOpenedCallback() {
             preferenceUtil.setStringData(AppConstant.HYBRID_PLUGIN_VERSION,"");
         }
     }
-
-
-
-
-
     public enum LOG_LEVEL {
         NONE, FATAL, ERROR, WARN, INFO, DEBUG, VERBOSE
+    }
+    public static void promptForPushNotifications() {
+        if(iZooto.appContext!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                try {
+
+                    Intent intent = new Intent(iZooto.appContext, NotificationPermission.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    iZooto.appContext.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 }

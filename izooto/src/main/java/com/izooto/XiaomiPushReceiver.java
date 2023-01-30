@@ -29,9 +29,12 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
         super.onReceivePassThroughMessage(context, miPushMessage);
         String payload = miPushMessage.getContent();
         Log.v("Push Type","Xiaomi");
-        if(payload!=null && !payload.isEmpty())
-            handleNow(context,payload);
 
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+        if (preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
+            if (payload != null && !payload.isEmpty())
+                handleNow(context, payload);
+        }
     }
 
     // notification received
