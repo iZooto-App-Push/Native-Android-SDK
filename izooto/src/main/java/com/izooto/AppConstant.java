@@ -295,6 +295,10 @@ public interface AppConstant {
     int OPTIN = 0;
     String NOTIFICATION_PROMPT_DISALLOW = "permissionDisAllow";
     String NOTIFICATION_PROMPT_ALLOW = "permissionAllow";
+
+    String IZ_MEDIATION_CLICK_DATA="MEDIATIONCLICKDATA";
+    String IZ_GPL_URL="GPLURL";
+    String iZ_STORE_CHANNEL_NAME ="ChannelName";
 }
 
 

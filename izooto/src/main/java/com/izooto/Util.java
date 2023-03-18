@@ -742,4 +742,28 @@ public class Util {
         return defaultStr;
     }
 
+    /**
+     * getApplication name
+     */
+    public static String getApplicationName(Context context) {
+        return context.getApplicationInfo().loadLabel(context.getPackageManager()).toString();
+    }
+
+    /**
+     * getChannelName
+     */
+    static String getChannelName(Context context) {
+        if (context != null) {
+            String channelName = "";
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+            if (preferenceUtil.getStringData(AppConstant.iZ_STORE_CHANNEL_NAME) != "" && !preferenceUtil.getStringData(AppConstant.iZ_STORE_CHANNEL_NAME).isEmpty()) {
+                channelName = preferenceUtil.getStringData(AppConstant.iZ_STORE_CHANNEL_NAME);
+            } else {
+                channelName = AppConstant.CHANNEL_NAME;
+            }
+            return channelName;
+        }
+        return AppConstant.CHANNEL_NAME;
+    }
+
 }

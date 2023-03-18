@@ -275,24 +275,24 @@ public class NotificationPreview {
                              if (payload.getPriority() == 0) {
                                  priority = NotificationManagerCompat.IMPORTANCE_HIGH;
                                  channel = new NotificationChannel(channelId,
-                                         AppConstant.CHANNEL_NAME, priority);
+                                         Util.getChannelName(iZooto.appContext), priority);
                              } else {
 
                                  priority = NotificationEventManager.priorityForImportance(payload.getPriority());
                                  channel = new NotificationChannel(channelId,
-                                         AppConstant.CHANNEL_NAME, priority);
+                                         Util.getChannelName(iZooto.appContext), priority);
                              }
 
 
                              if (iZooto.soundID != null) {
                                  priority = NotificationManagerCompat.IMPORTANCE_HIGH;
                                  channel = new NotificationChannel(channelId,
-                                         AppConstant.CHANNEL_NAME, priority);
+                                         Util.getChannelName(iZooto.appContext), priority);
                                  AudioAttributes audioAttributes = new AudioAttributes.Builder()
                                          .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                                          .setUsage(AudioAttributes.USAGE_ALARM)
                                          .build();
-                               //  Uri uri = Util.getSoundUri(iZooto.appContext, iZooto.soundID);
+                                 //  Uri uri = Util.getSoundUri(iZooto.appContext, iZooto.soundID);
                                  if (uri != null)
                                      channel.setSound(uri, audioAttributes);
                                  else
@@ -304,7 +304,8 @@ public class NotificationPreview {
                              notificationManager.createNotificationChannel(channel);
                          }
 
-                if (payload.getTag()!=null && !payload.getTag().isEmpty()){
+
+                         if (payload.getTag()!=null && !payload.getTag().isEmpty()){
                     int notifyId = Util.convertStringToDecimal(payload.getTag());
                     notificationManager.notify(notifyId, notificationBuilder.build());
                 }else

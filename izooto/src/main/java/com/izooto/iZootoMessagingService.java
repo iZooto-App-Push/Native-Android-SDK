@@ -56,7 +56,9 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 }
             }
             if (remoteMessage.getNotification() != null) {
-                sendNotification(remoteMessage);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    sendNotification(remoteMessage);
+                }
 
             }
         }

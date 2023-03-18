@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -1774,5 +1775,47 @@ private static void runNotificationOpenedCallback() {
             }
         }
 
+    }
+
+    /**     setNotificationChannelName      */
+    public static void setNotificationChannelName(String channelName) {
+        if(iZooto.appContext!= null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+            if (channelName != null && !channelName.isEmpty()){
+                if(channelName.charAt(0)!= ' '){
+                    if(channelName.length()<=30){
+                        preferenceUtil.setStringData(AppConstant.iZ_STORE_CHANNEL_NAME, channelName);
+                    }
+                    else{
+                        preferenceUtil.setStringData(AppConstant.iZ_STORE_CHANNEL_NAME, Util.getApplicationName(iZooto.appContext) + " Notification");
+                    }
+                }else{
+                    Log.e(AppConstant.APP_NAME_TAG,"Channel Name not allowed with whitespace at first index");
+                    preferenceUtil.setStringData(AppConstant.iZ_STORE_CHANNEL_NAME, Util.getApplicationName(iZooto.appContext) + " Notification");
+                }
+            }else {
+                preferenceUtil.setStringData(AppConstant.iZ_STORE_CHANNEL_NAME, Util.getApplicationName(iZooto.appContext) + " Notification");
+            }
+        }
+    }
+
+    /** navigate to Notification settings */
+
+    public static  void navigateToSettings(Activity activity)
+    {
+        try {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                Intent settingsIntent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .putExtra(Settings.EXTRA_APP_PACKAGE, Util.getPackageName(activity));
+                activity.startActivity(settingsIntent);
+            }
+            else {
+                Log.e(AppConstant.APP_NAME_TAG,"Method require API level 26 or Above");
+            }
+        }catch (Exception ex)
+        {
+            Log.e("Exception ex",ex.toString());
+        }
     }
 }
