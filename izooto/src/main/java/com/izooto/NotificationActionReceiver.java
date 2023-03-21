@@ -331,7 +331,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         else {
                             preferenceUtil.setStringData("MEDIATIONCLICKDATA","");
 
-                            // NotificationActionReceiver.medClick = "";
                         }
                     }
                     @Override

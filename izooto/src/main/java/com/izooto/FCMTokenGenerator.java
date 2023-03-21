@@ -73,12 +73,6 @@ public class FCMTokenGenerator implements TokenGenerator {
                             });
 
                 } catch (Exception e) {
-                    if(!preferenceUtil.getBoolean("FCMEXCEPTION"))
-                    {
-                        preferenceUtil.setBooleanData("FCMEXCEPTION",true);
-                        Util.setException(context,e.getMessage()+senderId,"FCMGenerator","getToken"+AppConstant.SDKVERSION);
-                    }
-
                     if (callback != null)
                         callback.failure(e.getMessage());
                 }

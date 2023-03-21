@@ -367,7 +367,6 @@ public class NotificationEventManager {
             payload.setInapp(0);
             if(payload.getTitle()!=null && !payload.getTitle().equalsIgnoreCase("")) {
                 notificationPreview(iZooto.appContext,payload);
-                Log.e("Notification setting",payload.getAct2name());
                 AdMediation.ShowClickAndImpressionData(payload);
 
             }
