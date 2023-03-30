@@ -367,6 +367,8 @@ public class NotificationEventManager {
             payload.setInapp(0);
             if(payload.getTitle()!=null && !payload.getTitle().equalsIgnoreCase("")) {
                 notificationPreview(iZooto.appContext,payload);
+                AdMediation.successList.clear();
+                AdMediation.failsList.clear();
                 AdMediation.ShowClickAndImpressionData(payload);
 
             }
@@ -502,6 +504,7 @@ public class NotificationEventManager {
 
         } catch (Exception e) {
             e.printStackTrace();
+            return  null;
         }
 
         return null;

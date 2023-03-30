@@ -18,9 +18,9 @@ public class AdMediation {
     private static final List<Payload> payloadList = new ArrayList<>();
     private static final List<Payload> adPayload = new ArrayList<>();
     private static final List<Payload> passiveList = new ArrayList<>();
-    private static final List<JSONObject> failsList = new ArrayList<>();
+     static final List<JSONObject> failsList = new ArrayList<>();
     public static List<String> clicksData = new ArrayList<>();
-    private static final List<JSONObject> successList=new ArrayList<>();
+     static final List<JSONObject> successList=new ArrayList<>();
     static List<String> storeList=new ArrayList<>();
     static  int counterIndex = 0;
     // handle the mediation payload data
@@ -28,6 +28,7 @@ public class AdMediation {
     {
         if(context!=null) {
             try {
+                iZooto.appContext = context;
                 counterIndex= 0;
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                 payloadList.clear();
@@ -175,6 +176,7 @@ public class AdMediation {
         else
         {
             try {
+                iZooto.appContext = context;
                 if (payloadObj != null && url != null && !url.isEmpty()) {
                     if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(context).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
                         payload = new Payload();
@@ -855,7 +857,6 @@ public class AdMediation {
             }
         });
     }
-
     private static void finalAdPayload(final Payload payloadData)
     {
         if(iZooto.appContext!=null) {
@@ -1268,6 +1269,21 @@ public class AdMediation {
                 String dataValue = finalData.toString().replaceAll("\\\\", " ");
                 mediationImpression(dataValue,0);
                 NotificationActionReceiver.medClick = dataValue;
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
+                    TargetActivity.medClick = dataValue;
+                    preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA,dataValue);
+                }
+                else {
+                    preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA,dataValue);
+                    NotificationActionReceiver.medClick = dataValue;
+                }
+
+
+
+
+
+
+
             } catch (Exception ex) {
                 PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
                 String data2=preferenceUtil.getStringData("iz_AdMediation_EXCEPTION_AdType_14");

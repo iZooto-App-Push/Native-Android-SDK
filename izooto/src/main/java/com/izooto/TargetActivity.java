@@ -126,11 +126,17 @@ public class TargetActivity extends Activity {
                     }
                 }
             }
-            if(preferenceUtil.getStringData(AppConstant.MEDIATION_CLICK_DATA)!="")
+            if(preferenceUtil.getStringData(AppConstant.IZ_MEDIATION_CLICK_DATA)!="")
             {
-                String medClickData = preferenceUtil.getStringData(AppConstant.MEDIATION_CLICK_DATA);
+                Log.e("ABCD",TargetActivity.medClick);
+                String medClickData = preferenceUtil.getStringData(AppConstant.IZ_MEDIATION_CLICK_DATA);
                 callMediationClicks(medClickData,0);
             }
+//            if(TargetActivity.medClick!="")
+//            {
+//                Log.e("ABCD",TargetActivity.medClick);
+//                callMediationClicks(TargetActivity.medClick,0);
+//            }
             if (additionalData.equalsIgnoreCase("")) {
                 additionalData = "1";
             }
@@ -450,7 +456,7 @@ public class TargetActivity extends Activity {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext,medClick,"mediationClick");
                 JSONObject jsonObject = new JSONObject(medClick);
                 PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
-                Log.e("ServerData",medClick);
+
                 RestClient.postRequest(RestClient.MEDIATION_CLICKS, null,jsonObject, new RestClient.ResponseHandler() {
                     @SuppressLint("NewApi")
                     @Override
@@ -468,11 +474,13 @@ public class TargetActivity extends Activity {
 
 
                             }
-                            preferenceUtil.setStringData("MEDIATIONCLICKDATA","");
+                            preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA,"");
+                            TargetActivity.medClick = "";
+
                         }
                         else {
-                            preferenceUtil.setStringData("MEDIATIONCLICKDATA","");
-                           // NotificationActionReceiver.medClick = "";
+                            preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA,"");
+                            TargetActivity.medClick = "";
                         }
                     }
                     @Override
