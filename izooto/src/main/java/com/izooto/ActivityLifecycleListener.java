@@ -15,8 +15,9 @@ import androidx.annotation.Nullable;
 public class ActivityLifecycleListener implements Application.ActivityLifecycleCallbacks {
 
     @Nullable private static ActivityLifecycleListener mActivityLifecycleListener;
+    static  boolean isCheckForeground = false;
 
-    static void registerActivity(@NonNull final Application application) {
+   public static void registerActivity(@NonNull final Application application) {
 
         if (mActivityLifecycleListener == null) {
             mActivityLifecycleListener = new ActivityLifecycleListener();
@@ -38,6 +39,8 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,true);
         isStoreDataKilledState(activity,true);
+        isCheckForeground = true;
+
     }
 
     @Override
@@ -53,6 +56,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     public void onActivityPaused(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,false);
+
     }
 
     @Override
@@ -69,13 +73,16 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
     public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,false);
+
     }
+
 
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,false);
         isStoreDataKilledState(activity,false);
+
     }
 
     public  void storeForegroundData(Activity activity, boolean isForeground){

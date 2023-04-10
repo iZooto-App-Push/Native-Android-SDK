@@ -467,12 +467,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         Intent launchIntent = null;
         String name = "";
         try {
+
             if (pm != null && !Util.isAppInForeground(context)) {
+                Log.e("AppLaunch","app1");
                 ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                 name = (String) pm.getApplicationLabel(app);
                 launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                 Intent intentAppLaunch = launchIntent; // new Intent();
                 intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intentAppLaunch);
 
             }
@@ -480,6 +483,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             {
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                 if (pm != null && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                    Log.e("AppLaunch","app2");
+
                     ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
@@ -489,6 +494,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     context.startActivity(intentAppLaunch);
                 }
                 else {
+                    Log.e("AppLaunch","app3");
+
                     ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());

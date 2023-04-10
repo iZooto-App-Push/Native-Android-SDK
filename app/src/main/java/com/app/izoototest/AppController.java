@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
+
+import com.izooto.ActivityLifecycleListener;
 import com.izooto.NotificationWebViewListener;
 import com.izooto.iZooto;
 import com.izooto.NotificationHelperListener;

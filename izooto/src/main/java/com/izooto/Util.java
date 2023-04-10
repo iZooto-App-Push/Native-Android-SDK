@@ -383,7 +383,6 @@ public class Util {
                 ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
                         .getRunningTasks(1);
         if (task.isEmpty()) {
-            // app is in background
             return false;
         }
         return task

@@ -2,12 +2,15 @@ package com.izooto;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +18,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -159,17 +163,43 @@ public class TargetActivity extends Activity {
                 else {
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.postDelayed(() -> {
+
                             if (preferenceUtil.getBoolean(AppConstant.DEEPLINK_STATE)) {
                                 iZooto.notificationActionHandler(jsonObject.toString());
                                 isDeepLinkCheck = true;
                                 this.finish();
                             }
                             if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isDeepLinkCheck) {
-                                NotificationActionReceiver.notificationClick = jsonObject.toString();
-                                launchApp(this.context);
-                                this.finish();
+
+                                   if(isAppBackground(context) && Util.isAppInForeground(context))
+                                   {
+                                       NotificationActionReceiver.notificationClick = jsonObject.toString();
+                                       Log.e("Flutter","Come4");
+                                       Log.e("Flutter","isAppBackground"+isAppBackground(context));
+                                       Log.e("Flutter","isAppInForeground"+Util.isAppInForeground(context));
+
+                                       launchApp(this.context);
+                                       this.finish();
+
+                                   }
+                                   else if(Util.isAppInForeground(context))
+                                   {
+                                       Log.e("Flutter","Come3");
+
+                                       Log.e("Flutter","isAppInForeground"+Util.isAppInForeground(context));
+
+                                       iZooto.notificationActionHandler(jsonObject.toString());
+                                   }
+                                   else
+                                   {
+                                       NotificationActionReceiver.notificationClick = jsonObject.toString();
+                                       Log.e("Flutter","Come5");
+                                       launchApp(this.context);
+                                       this.finish();
+                                   }
+
                             }
-                        }, 2000L);
+                        }, 1000L);
                         this.finish();
                     }
             }
@@ -188,7 +218,6 @@ public class TargetActivity extends Activity {
                                         isDeepLinkCheck = true;
                                         this.finish();
                                     }
-
                                     if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isDeepLinkCheck) {
                                         launchApp(this.context);
                                         mWebViewClick = this.mUrl;
@@ -269,6 +298,31 @@ public class TargetActivity extends Activity {
                 }
             }
         }
+    }
+    public static boolean isAppBackground(Context context){
+        boolean isBackground=true;
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH){
+            List<ActivityManager.RunningAppProcessInfo> runningProcesses =activityManager.getRunningAppProcesses();
+            for(ActivityManager.RunningAppProcessInfo processInfo:runningProcesses){
+                if(processInfo.importance==ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND){
+                    for(String activeProcess:processInfo.pkgList){
+                        if(activeProcess.equals(context.getPackageName())){
+                            isBackground = false;
+                        }
+                    }
+                }
+            }
+        }else{
+            List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
+            if(taskInfo.size()>0) {
+                ComponentName componentName = taskInfo.get(0).topActivity;
+                if(componentName.getPackageName().equals(context.getPackageName())){
+                    isBackground = false;
+                }
+            }
+        }
+        return isBackground;
     }
     private void getBundleData(Context context, Intent intent) {
         Bundle tempBundle = intent.getExtras();
