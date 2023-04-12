@@ -132,7 +132,6 @@ public class TargetActivity extends Activity {
             }
             if(preferenceUtil.getStringData(AppConstant.IZ_MEDIATION_CLICK_DATA)!="")
             {
-                Log.e("ABCD",TargetActivity.medClick);
                 String medClickData = preferenceUtil.getStringData(AppConstant.IZ_MEDIATION_CLICK_DATA);
                 callMediationClicks(medClickData,0);
             }
@@ -174,32 +173,25 @@ public class TargetActivity extends Activity {
                                    if(isAppBackground(context) && Util.isAppInForeground(context))
                                    {
                                        NotificationActionReceiver.notificationClick = jsonObject.toString();
-                                       Log.e("Flutter","Come4");
-                                       Log.e("Flutter","isAppBackground"+isAppBackground(context));
-                                       Log.e("Flutter","isAppInForeground"+Util.isAppInForeground(context));
-
                                        launchApp(this.context);
                                        this.finish();
 
                                    }
                                    else if(Util.isAppInForeground(context))
                                    {
-                                       Log.e("Flutter","Come3");
-
-                                       Log.e("Flutter","isAppInForeground"+Util.isAppInForeground(context));
-
                                        iZooto.notificationActionHandler(jsonObject.toString());
+                                       this.finish();
+
                                    }
                                    else
                                    {
                                        NotificationActionReceiver.notificationClick = jsonObject.toString();
-                                       Log.e("Flutter","Come5");
                                        launchApp(this.context);
                                        this.finish();
                                    }
 
                             }
-                        }, 1000L);
+                        }, 2000L);
                         this.finish();
                     }
             }
@@ -219,9 +211,23 @@ public class TargetActivity extends Activity {
                                         this.finish();
                                     }
                                     if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isDeepLinkCheck) {
-                                        launchApp(this.context);
-                                        mWebViewClick = this.mUrl;
-                                        this.finish();
+                                        if(isAppBackground(context) && Util.isAppInForeground(context)) {
+                                            launchApp(this.context);
+                                            mWebViewClick = this.mUrl;
+                                            this.finish();
+                                        }
+                                        else if(Util.isAppInForeground(context))
+                                        {
+                                            iZooto.notificationInAppAction(this.mUrl);
+                                            this.finish();
+
+
+                                        }
+                                        else {
+                                            launchApp(this.context);
+                                            mWebViewClick = this.mUrl;
+                                            this.finish();
+                                        }
                                     }
 
                                 }, 2000L);

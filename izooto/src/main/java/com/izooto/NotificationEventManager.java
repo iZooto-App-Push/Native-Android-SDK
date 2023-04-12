@@ -409,10 +409,6 @@ public class NotificationEventManager {
             }
         }
     }
-
-
-
-
     // handle the rc key
     private static boolean isValidJson(String jsonStr) throws JSONException {
         Object json = new JSONTokener(jsonStr).nextValue();
@@ -676,8 +672,6 @@ public class NotificationEventManager {
                 lockScreenVisibility = setLockScreenVisibility(payload.getLockScreenVisibility());
 
                 intent = notificationClick(payload, payload.getLink(),payload.getAct1link(),payload.getAct2link(),AppConstant.NO,clickIndex,lastView_Click,100,0);
-                //  Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
                 PendingIntent pendingIntent=null;
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                     pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
@@ -900,8 +894,6 @@ public class NotificationEventManager {
             }
 
         };
-
-
         new AppExecutors().networkIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -924,7 +916,6 @@ public class NotificationEventManager {
         });
 
     }
-
     private static void receivedNotification(final Payload payload){
         final Handler handler = new Handler(Looper.getMainLooper());
         final Runnable notificationRunnable = new Runnable() {
@@ -1328,8 +1319,6 @@ public class NotificationEventManager {
         });
     }
 
-
-
     private static String getFinalUrl(Payload payload) {
         byte[] data = new byte[0];
         try {
@@ -1458,12 +1447,12 @@ public class NotificationEventManager {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
             intent = new Intent(iZooto.appContext, TargetActivity.class);
         }
-//        else  if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
-//            intent = new Intent(iZooto.appContext, TargetActivity.class);
-//        }
         else {
             intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
         }
+        //        else  if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+//            intent = new Intent(iZooto.appContext, TargetActivity.class);
+//        }
         intent.putExtra(AppConstant.KEY_WEB_URL, link);
         intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificationId);
         intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
@@ -1832,7 +1821,7 @@ public class NotificationEventManager {
 
         if(payload.getDefaultNotificationPreview()==2 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW) == PushTemplate.TEXT_OVERLAY)
         {
-            NotificationPreview.receiveCustomNotification(payload);
+            NotificationPreview.receiveCustomNotification(payload); // notification template
         }
         else if(payload.getDefaultNotificationPreview()==3 || preferenceUtil.getIntData(AppConstant.NOTIFICATION_PREVIEW) == PushTemplate.DEVICE_NOTIFICATION_OVERLAY)
         {

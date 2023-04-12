@@ -25,25 +25,23 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_agconnect_agconnect_core_1_6_5_300_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_agconnect_agconnect_core_1_6_5_300_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_android_hms_security_base_1_1_5_310_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_android_hms_security_base_1_1_5_310_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_network_common_6_0_2_300_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_network_common_6_0_2_300_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/maven-push.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/maven-push.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ActivityLifecycleListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ActivityLifecycleListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TargetActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TargetActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/amit_sdk_develoer/.android/avd/Pixel_6_Pro_API_30.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -176,7 +174,7 @@
       <recent name="com.izooto" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle./Users/amit/code/izooto-app/izooto [assemble]">
+  <component name="RunManager" selected="Android App.app">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />

@@ -2,19 +2,23 @@ package com.izooto;
 
 import static com.izooto.Util.openURLInBrowserIntent;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
@@ -159,6 +163,21 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     if (Util.isAppInForeground(context)) {
                         iZooto.notificationActionHandler(jsonObject.toString());
                     }
+                    else if(isAppBackground(context))
+                    {
+
+                        if(preferenceUtil.getBoolean("Android8"))
+                        {
+                            iZooto.notificationActionHandler(jsonObject.toString());
+                            notificationClick = jsonObject.toString();
+                            launchApp(context);
+                        }
+                        else
+                        {
+                            iZooto.notificationActionHandler(jsonObject.toString());
+                            launchApp(context);
+                        }
+                    }
                     else {
                         notificationClick = jsonObject.toString();
                         launchApp(context);
@@ -177,7 +196,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         if (Util.isAppInForeground(context)){
                             iZooto.notificationInAppAction(mUrl);
                         }
+                        else if(isAppBackground(context))
+                        {
+                            WebViewClick = mUrl;
+                            iZooto.notificationInAppAction(WebViewClick);
+                            launchApp(context);
+
+                        }
                         else {
+
                             WebViewClick = mUrl;
                             iZooto.notificationInAppAction(WebViewClick);
                             launchApp(context);
@@ -222,6 +249,32 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
 
     }
+    public static boolean isAppBackground(Context context){
+        boolean isBackground=true;
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH){
+            List<ActivityManager.RunningAppProcessInfo> runningProcesses =activityManager.getRunningAppProcesses();
+            for(ActivityManager.RunningAppProcessInfo processInfo:runningProcesses){
+                if(processInfo.importance==ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND){
+                    for(String activeProcess:processInfo.pkgList){
+                        if(activeProcess.equals(context.getPackageName())){
+                            isBackground = false;
+                        }
+                    }
+                }
+            }
+        }else{
+            List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
+            if(taskInfo.size()>0) {
+                ComponentName componentName = taskInfo.get(0).topActivity;
+                if(componentName.getPackageName().equals(context.getPackageName())){
+                    isBackground = false;
+                }
+            }
+        }
+        return isBackground;
+    }
+
     static void openURLInBrowser(Context context,@NonNull String url) {
         openURLInBrowser(context ,Uri.parse(url.trim()));
     }
@@ -325,7 +378,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             {
                                 DebugFileManager.createExternalStoragePublic(context,"MediationCLick"+ex.toString(),"[Log.V]->");
 
-
                             }
                         }
                         else {
@@ -349,8 +401,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
         }
     }
-
-
 
     private void getBundleData(Context context, Intent intent) {
         Bundle tempBundle = intent.getExtras();
@@ -469,13 +519,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         try {
 
             if (pm != null && !Util.isAppInForeground(context)) {
-                Log.e("AppLaunch","app1");
                 ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                 name = (String) pm.getApplicationLabel(app);
                 launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                 Intent intentAppLaunch = launchIntent; // new Intent();
-                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intentAppLaunch);
 
             }
@@ -483,8 +531,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             {
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                 if (pm != null && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                    Log.e("AppLaunch","app2");
-
                     ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
@@ -494,13 +540,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     context.startActivity(intentAppLaunch);
                 }
                 else {
-                    Log.e("AppLaunch","app3");
-
                     ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                     Intent intentAppLaunch = launchIntent; // new Intent();
-                    intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(intentAppLaunch);
                 }
             }

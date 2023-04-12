@@ -41,6 +41,7 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
         isStoreDataKilledState(activity,true);
         isCheckForeground = true;
 
+
     }
 
     @Override
@@ -50,12 +51,17 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,true);
         isStoreDataKilledState(activity,true);
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
+        preferenceUtil.setBooleanData("Android8",false);
+
+
     }
 
     @Override
     public void onActivityPaused(@NonNull Activity activity) {
         DebugFileManager.createExternalStoragePublic(activity,"onActivityStarted"+Util.getAndroidId(activity)+"->FCMTOKEN "+PreferenceUtil.getInstance(activity).getStringData(AppConstant.FCM_DEVICE_TOKEN),"[Log.e]->");
         storeForegroundData(activity,false);
+
 
     }
 
@@ -66,6 +72,9 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
         preferenceUtil.setBooleanData(AppConstant.DEVICE_BACKGROUND_STATE,true);
         isStoreDataKilledState(activity,false);
         preferenceUtil.setBooleanData(AppConstant.DEVICE_ONPAUSE_STATE,true);
+        preferenceUtil.setBooleanData("Android8",true);
+
+
 
     }
 
