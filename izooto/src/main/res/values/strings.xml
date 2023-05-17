@@ -1,5 +1,5 @@
 <resources>
-    <string name="something_wrong_fcm_sender_id">\"Some thing is wrong with FCM sender id.\"</string>
+    <string name="something_wrong_fcm_sender_id">"Some thing is wrong with FCM sender id"</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="iz_share">Share</string>
     <string name="iz_action_settings">Settings</string>

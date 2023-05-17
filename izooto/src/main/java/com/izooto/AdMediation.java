@@ -1026,6 +1026,8 @@ public class AdMediation {
                     finalData.put("type", payload1.getAd_type());
                     finalData.put("ta", (end - payload1.getStartTime()));
                     finalData.put("av", AppConstant.SDKVERSION);
+                    finalData.put("ln",payload1.getLink());
+                    finalData.put("ti",payload1.getTitle());
                     JSONObject servedObject = new JSONObject();
                     servedObject.put("a", payload1.getAdID());
                     servedObject.put("b", Double.parseDouble(payload1.getCpc()));
@@ -1117,6 +1119,8 @@ public class AdMediation {
                 finalData.put("type", payload.getAd_type());
                 finalData.put("ta", (end - payload.getStartTime()));
                 finalData.put("av",AppConstant.SDKVERSION);
+                finalData.put("ln",payload.getLink());
+                finalData.put("ti",payload.getTitle());
                 JSONObject servedObject = new JSONObject();
                 servedObject.put("a", 0);
                 servedObject.put("b", 0);
@@ -1200,6 +1204,8 @@ public class AdMediation {
                 finalData.put("type",payload1.getAd_type());
                 finalData.put("ta",(end-payload1.getStartTime()));
                 finalData.put("av",AppConstant.SDKVERSION);
+                finalData.put("ln",payload1.getLink());
+                finalData.put("ti",payload1.getTitle());
                 JSONObject servedObject=new JSONObject();
                 servedObject.put("a",payload1.getAdID());
                 servedObject.put("b",Double.parseDouble(payload1.getCpc()));
@@ -1253,6 +1259,8 @@ public class AdMediation {
                 finalData.put("type", payload.getAd_type());
                 finalData.put("ta", (end - payload.getStartTime()));
                 finalData.put("av", AppConstant.SDKVERSION);
+                finalData.put("ln",payload.getLink());
+                finalData.put("ti",payload.getTitle());
                 JSONObject servedObject = new JSONObject();
                 servedObject.put("a", 0);
                 servedObject.put("b", 0);

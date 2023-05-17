@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.huawei.android.hms:security-encrypt:1.1.5.310@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/455a3d1bd1aa11aeb39a0ee789e0d788/jetified-security-encrypt-1.1.5.310/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/455a3d1bd1aa11aeb39a0ee789e0d788/jetified-security-encrypt-1.1.5.310/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3f21d04f8f885662e040396a568aba2e/transformed/jetified-security-encrypt-1.1.5.310/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3f21d04f8f885662e040396a568aba2e/transformed/jetified-security-encrypt-1.1.5.310/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.android.hms/security-encrypt/1.1.5.310/da39a3ee5e6b4b0d3255bfef95601890afd80709/security-encrypt-1.1.5.310-javadoc.jar!/" />
