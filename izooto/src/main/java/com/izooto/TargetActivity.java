@@ -224,6 +224,7 @@ public class TargetActivity extends Activity {
                                         else {
                                             launchApp(this.context);
                                             mWebViewClick = this.mUrl;
+                                            iZooto.notificationInAppAction(this.mUrl);
                                             this.finish();
                                         }
                                     }
