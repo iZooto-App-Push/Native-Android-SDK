@@ -1,6 +1,8 @@
 <resources>
     <string name="something_wrong_fcm_sender_id">"Some thing is wrong with FCM sender id"</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="channel_id_without_sound" translatable="false">channel_without_sound</string>
+    <string name="default_channel_id" translatable="false">system default channel</string>
     <string name="iz_share">Share</string>
     <string name="iz_action_settings">Settings</string>
     <string name="iz_news_hub_powered_by">News Hub Powered by </string>

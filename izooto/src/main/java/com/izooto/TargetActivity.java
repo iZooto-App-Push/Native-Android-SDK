@@ -1,6 +1,5 @@
 package com.izooto;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
@@ -214,14 +213,13 @@ public class TargetActivity extends Activity {
                                         if(isAppBackground(context) && Util.isAppInForeground(context)) {
                                             launchApp(this.context);
                                             mWebViewClick = this.mUrl;
+                                            iZooto.notificationInAppAction(mWebViewClick);
                                             this.finish();
                                         }
                                         else if(Util.isAppInForeground(context))
                                         {
                                             iZooto.notificationInAppAction(this.mUrl);
                                             this.finish();
-
-
                                         }
                                         else {
                                             launchApp(this.context);
@@ -518,7 +516,6 @@ public class TargetActivity extends Activity {
                 PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(iZooto.appContext);
 
                 RestClient.postRequest(RestClient.MEDIATION_CLICKS, null,jsonObject, new RestClient.ResponseHandler() {
-                    @SuppressLint("NewApi")
                     @Override
                     void onSuccess(String response) {
                         super.onSuccess(response);

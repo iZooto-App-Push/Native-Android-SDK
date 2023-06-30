@@ -198,10 +198,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         }
                         else if(isAppBackground(context))
                         {
+                            launchApp(context);
                             WebViewClick = mUrl;
                             iZooto.notificationInAppAction(WebViewClick);
-                            launchApp(context);
-
                         }
                         else {
 

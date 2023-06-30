@@ -70,7 +70,10 @@ public class PreferenceUtil {
         return mSpref.getString(key, "");
 
     }
+    public String getSoundName(String key) {
+        return mSpref.getString(key, null);
 
+    }
     public String getStringDataFilterCount(String key) {
         return mSpref.getString(key, "0");
 

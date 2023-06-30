@@ -145,9 +145,7 @@ public interface AppConstant {
     String ACT2URL="act2URL";
     String ACT1TITLE="act1title";
     String ACT2TITLE="act2title";
-    String CHANNEL_NAME="Push Notification";
-    String DIALOG_DISMISS="Dismiss";
-    String DIALOG_OK="Take me there";
+
     String URL_FWD="&frwd";
     String URL_FWD_="&frwd=";
     String URL_BKEY="&bkey=";
@@ -184,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="1.6.4";
+    String SDKVERSION="1.6.5";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -300,6 +298,10 @@ public interface AppConstant {
     String IZ_MEDIATION_CLICK_DATA="MEDIATIONCLICKDATA";
     String IZ_GPL_URL="GPLURL";
     String iZ_STORE_CHANNEL_NAME ="ChannelName";
+    String CHANNEL_NAME="Push Notification";
+    String NOTIFICATION_SILENT_CHANNEL="Silent Push Notification";
+    String NOTIFICATION_DEFAULT_CHANNEL="Default Channel";
+    String NOTIFICATION_SOUND_NAME="IZ_SOUND_NAME";
 }
 
 

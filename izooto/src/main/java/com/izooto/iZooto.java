@@ -43,7 +43,6 @@ public class iZooto {
     public static String mIzooToAppId;
     public static Builder mBuilder;
     public static int icon;
-    public static String soundID;
     private static Payload payload;
     public static boolean mUnsubscribeWhenNotificationsAreDisabled;
     protected static Listener mListener;
@@ -248,7 +247,9 @@ public class iZooto {
     }
     public static void  setNotificationSound(String soundName)
     {
-        soundID = soundName;
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+        preferenceUtil.setStringData(AppConstant.NOTIFICATION_SOUND_NAME, soundName);
+
     }
 
     protected void start(final Context context, final Listener listener) {
@@ -589,13 +590,33 @@ public class iZooto {
 
     }
 
-    public static void notificationInAppAction(String url){
-        if (!url.isEmpty()){
-            if(mBuilder!=null && mBuilder.mWebViewListener!=null) {
+//    public static void notificationInAppAction(String url){
+//        if (!url.isEmpty()){
+//            if(mBuilder!=null && mBuilder.mWebViewListener!=null) {
+//                mBuilder.mWebViewListener.onWebView(url);
+//            }
+//        }
+//
+//
+//    }
+
+
+    public static void notificationInAppAction(String url) {
+        if (!url.isEmpty()) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+            if (preferenceUtil.getBoolean("hybrid")) {
+                Util.sleepTime(2500);
+                if (mBuilder != null && mBuilder.mWebViewListener != null) {
+                    mBuilder.mWebViewListener.onWebView(url);
+                } else {
+                    iZootoWebViewActivity.startActivity(appContext, url);
+                }
+            } else if (mBuilder != null && mBuilder.mWebViewListener != null) {
                 mBuilder.mWebViewListener.onWebView(url);
+            } else {
+                iZootoWebViewActivity.startActivity(appContext, url);
             }
         }
-
 
     }
     /*
