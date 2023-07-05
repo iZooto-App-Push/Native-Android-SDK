@@ -184,13 +184,13 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     return;
                 }
                 if (iZooto.appContext == null)
-                    iZooto.appContext = context;
+                    iZooto.appContext = context.getApplicationContext();
                 Handler mainHandler = new Handler(Looper.getMainLooper());
                 Runnable myRunnable = new Runnable() {
                     @Override
                     public void run() {
                         NotificationEventManager.handleImpressionAPI(payload,AppConstant.PUSH_XIAOMI);
-                        iZooto.processNotificationReceived(context,payload);
+                        iZooto.processNotificationReceived(iZooto.appContext,payload);
                     }
                 };
                 mainHandler.post(myRunnable);

@@ -190,22 +190,22 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL!="" && !landingURL.isEmpty()) {
 
                     if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                        iZooto.notificationInAppAction(mUrl);
+                        iZooto.notificationInAppAction(mUrl,context);
                     }
                     else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                         if (Util.isAppInForeground(context)){
-                            iZooto.notificationInAppAction(mUrl);
+                            iZooto.notificationInAppAction(mUrl,context);
                         }
                         else if(isAppBackground(context))
                         {
                             launchApp(context);
                             WebViewClick = mUrl;
-                            iZooto.notificationInAppAction(WebViewClick);
+                            iZooto.notificationInAppAction(WebViewClick,context);
                         }
                         else {
 
                             WebViewClick = mUrl;
-                            iZooto.notificationInAppAction(WebViewClick);
+                            iZooto.notificationInAppAction(WebViewClick,context);
                             launchApp(context);
                         }
                     }

@@ -601,20 +601,21 @@ public class iZooto {
 //    }
 
 
-    public static void notificationInAppAction(String url) {
-        if (!url.isEmpty()) {
-            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+    public static void notificationInAppAction(String url,Context context) {
+
+        if (context!=null && !url.isEmpty()) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (preferenceUtil.getBoolean("hybrid")) {
-                Util.sleepTime(2500);
+                Util.sleepTime(2000);
                 if (mBuilder != null && mBuilder.mWebViewListener != null) {
                     mBuilder.mWebViewListener.onWebView(url);
                 } else {
-                    iZootoWebViewActivity.startActivity(appContext, url);
+                    iZootoWebViewActivity.startActivity(context, url);
                 }
             } else if (mBuilder != null && mBuilder.mWebViewListener != null) {
                 mBuilder.mWebViewListener.onWebView(url);
             } else {
-                iZootoWebViewActivity.startActivity(appContext, url);
+                iZootoWebViewActivity.startActivity(context, url);
             }
         }
 
