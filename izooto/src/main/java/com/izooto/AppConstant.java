@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="1.6.6";
+    String SDKVERSION="1.6.7";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -302,6 +302,16 @@ public interface AppConstant {
     String NOTIFICATION_SILENT_CHANNEL="Silent Push Notification";
     String NOTIFICATION_DEFAULT_CHANNEL="Default Channel";
     String NOTIFICATION_SOUND_NAME="IZ_SOUND_NAME";
+    String IZ_NOTIFICATION_DATA = "notificationData";
+
+    String IZ_TITLE_INFO = "title";
+    String IZ_MESSAGE_INFO = "message";
+    String IZ_BANNER_INFO = "banner_image";
+    String IZ_LANDING_URL_INFO = "landing_url";
+    String IZ_TIME_STAMP_INFO = "time_stamp";
+    String IZ_NO_MORE_DATA ="No more data";
+    String IZ_ERROR_MESSAGE = "iZooto is not initialised properly, Please verify again.";
+    String IZ_NOTIFICATION_FETCH_EXCEPTION="fetchNotificationData";
 }
 
 

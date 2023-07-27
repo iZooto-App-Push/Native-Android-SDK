@@ -34,6 +34,7 @@ import java.util.Objects;
 import static com.izooto.AppConstant.APPPID;
 import static com.izooto.AppConstant.FCM_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.HUAWEI_TOKEN_FROM_JSON;
+import static com.izooto.AppConstant.PID;
 import static com.izooto.AppConstant.TAG;
 import static com.izooto.AppConstant.XIAOMI_TOKEN_FROM_JSON;
 @SuppressWarnings("unchecked")
@@ -61,6 +62,9 @@ public class iZooto {
     private static OSTaskManager osTaskManager = new OSTaskManager();
     private static LOG_LEVEL visualLogLevel = LOG_LEVEL.NONE;
     private static LOG_LEVEL logCatLevel = LOG_LEVEL.WARN;
+
+    private static int pageNumber;   // index handling for notification center data
+    private static String notificationData;
 
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
@@ -329,7 +333,7 @@ public class iZooto {
                             preferenceUtil.setBooleanData(AppConstant.IS_UPDATED_XIAOMI_TOKEN, true);
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(AppConstant.ADDURL, "" + AppConstant.STYPE);
-                        mapData.put(AppConstant.PID, mIzooToAppId);
+                        mapData.put(PID, mIzooToAppId);
                         mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                         mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
                         mapData.put(AppConstant.TIMEZONE, "" + System.currentTimeMillis());
@@ -460,7 +464,7 @@ public class iZooto {
 
                                 Map<String, String> mapData = new HashMap<>();
                                 mapData.put(AppConstant.ADDURL, "" + AppConstant.STYPE);
-                                mapData.put(AppConstant.PID, mIzooToAppId);
+                                mapData.put(PID, mIzooToAppId);
                                 mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                                 mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
                                 mapData.put(AppConstant.TIMEZONE, "" + System.currentTimeMillis());
@@ -896,7 +900,7 @@ private static void runNotificationOpenedCallback() {
                 if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() &&   preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
                     if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                         Map<String, String> mapData = new HashMap<>();
-                        mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                        mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(context));
                         mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                         mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
@@ -952,7 +956,7 @@ private static void runNotificationOpenedCallback() {
                     if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty()  && preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
                         if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                             Map<String, String> mapData = new HashMap<>();
-                            mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                            mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                             mapData.put(AppConstant.ACT, eventName);
                             mapData.put(AppConstant.ET_, "evt");
                             mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
@@ -1044,7 +1048,7 @@ private static void runNotificationOpenedCallback() {
                         if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty()  && preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
                             if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                                 Map<String, String> mapData = new HashMap<>();
-                                mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                                mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                                 mapData.put(AppConstant.ACT, "add");
                                 mapData.put(AppConstant.ET_, "" + AppConstant.USERP_);
                                 mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
@@ -1168,7 +1172,7 @@ private static void runNotificationOpenedCallback() {
                 if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty()  && preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
                     if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                         Map<String, String> mapData = new HashMap<>();
-                        mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                        mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
                         mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                         mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
@@ -1491,7 +1495,7 @@ private static void runNotificationOpenedCallback() {
                         data.put(AppConstant.TOPIC, topic);
                         JSONObject jsonObject = new JSONObject(data);
                         Map<String, String> mapData = new HashMap<>();
-                        mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                        mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.ACT, action);
                         mapData.put(AppConstant.ET_, "" + AppConstant.USERP_);
                         mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
@@ -1604,7 +1608,7 @@ private static void runNotificationOpenedCallback() {
                     data.put(AppConstant.LANG_, Util.getDeviceLanguageTag());
                     JSONObject jsonObject = new JSONObject(data);
                     Map<String, String> mapData = new HashMap<>();
-                    mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                    mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                     mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
                     mapData.put(AppConstant.VAL, "" + jsonObject.toString());
                     mapData.put(AppConstant.ACT, "add");
@@ -1840,4 +1844,125 @@ private static void runNotificationOpenedCallback() {
             Log.e("Exception ex",ex.toString());
         }
     }
+
+    /*  get the notification data */
+    public static String getNotificationFeed(boolean isPagination){
+        Context context = iZooto.appContext;
+        String token;
+        if(context != null){
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            String pid = preferenceUtil.getStringData(PID);
+
+            if(preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN)!= null && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()){
+                token = preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN);
+            }
+            else if (preferenceUtil.getStringData(AppConstant.HMS_TOKEN)!= null && !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
+                token = preferenceUtil.getStringData(AppConstant.HMS_TOKEN);
+            }
+            else if (preferenceUtil.getStringData(AppConstant.XiaomiToken)!= null && !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
+                token = preferenceUtil.getStringData(AppConstant.XiaomiToken);
+            }
+            else{
+                token = null;
+            }
+
+            if(pid!= null && !pid.isEmpty() && token!= null && !token.isEmpty()){
+
+                if(!isPagination){
+                    pageNumber = 0;
+                    fetchNotificationData(context, pageNumber);
+                    Util.sleepTime(2000);
+                    notificationData = preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_DATA);
+                } else {
+                    try{
+                        JSONArray array = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_DATA));
+                        if (array.length() >= 15) {
+                            pageNumber++;
+                            if(pageNumber < 5){
+                                fetchNotificationData(context, pageNumber);
+                                Util.sleepTime(2000);
+                                notificationData = preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_DATA);
+                            } else{
+                                return AppConstant.IZ_NO_MORE_DATA;
+                            }
+
+                        } else{
+                            return AppConstant.IZ_NO_MORE_DATA;
+                        }
+
+                    }catch (Exception e){
+                        Log.d(AppConstant.APP_NAME_TAG, e.toString());
+                    }
+                }
+
+            }else{
+                return AppConstant.IZ_ERROR_MESSAGE;
+            }
+
+            if(notificationData != null && !notificationData.isEmpty()){
+                return notificationData;
+            }else{
+                return AppConstant.IZ_NO_MORE_DATA;
+            }
+        }
+        return AppConstant.IZ_NO_MORE_DATA;
+    }
+
+    private static void fetchNotificationData(Context context, int index) {
+        if(context != null){
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            ArrayList<JSONObject> dataList = new ArrayList<>();
+
+            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
+            try{
+                String encrypted_pid = Util.toSHA1(preferenceUtil.getStringData(PID));
+                RestClient.get("https://nh.iz.do/nh/" + encrypted_pid + "/" + index + ".json", new RestClient.ResponseHandler() {
+                    @Override
+                    void onSuccess(String response) {
+                        super.onSuccess(response);
+                        if(response != null && !response.isEmpty()){
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jsonObject = null;
+                                JSONObject jsonObject1 = null;
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    jsonObject = jsonArray.optJSONObject(i).optJSONObject(ShortpayloadConstant.NOTIFICATION_PAYLOAD);
+                                    jsonObject1 = new JSONObject();
+                                    jsonObject1.put(AppConstant.IZ_TITLE_INFO, jsonObject.optString(ShortpayloadConstant.TITLE));
+                                    jsonObject1.put(AppConstant.IZ_MESSAGE_INFO, jsonObject.optString(ShortpayloadConstant.NMESSAGE));
+                                    jsonObject1.put(AppConstant.IZ_BANNER_INFO, jsonObject.optString(ShortpayloadConstant.BANNER));
+                                    jsonObject1.put(AppConstant.IZ_LANDING_URL_INFO, jsonObject.optString(ShortpayloadConstant.LINK));
+                                    jsonObject1.put(AppConstant.IZ_TIME_STAMP_INFO, jsonObject.optString(ShortpayloadConstant.CREATEDON));
+                                    dataList.add(jsonObject1);
+                                }
+                                preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, dataList.toString());
+
+                            } catch (Exception e) {
+                                preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
+                                if(!preferenceUtil.getBoolean(AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION)) {
+                                    preferenceUtil.setBooleanData(AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION,true);
+                                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION);
+                                }
+                            }
+                        }else {
+                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
+
+                        }
+                    }
+
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                        preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
+                    }
+                });
+            }catch (Exception e){
+                if(!preferenceUtil.getBoolean(AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION)) {
+                    preferenceUtil.setBooleanData(AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION,true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION);
+                }
+            }
+        }
+    }
 }
+

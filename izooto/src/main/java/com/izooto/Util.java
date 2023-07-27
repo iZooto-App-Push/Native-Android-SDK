@@ -40,10 +40,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -763,6 +767,12 @@ public class Util {
             return channelName;
         }
         return AppConstant.CHANNEL_NAME;
+    }
+    static String toSHA1(String url) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+        crypt.reset();
+        crypt.update(url.getBytes(StandardCharsets.UTF_8));
+        return new BigInteger(1, crypt.digest()).toString(16);
     }
 
 }
