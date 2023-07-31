@@ -24,7 +24,18 @@
 -keep class com.izooto.iZootoHmsMessagingService{*;}
 -keep class com.izooto.HMSTokenGenerator{*;}
 -dontwarn com.huawei.**
-
+-keepattributes LineNumberTable,SourceFile
+-renamesourcefileattribute SourceFile
+-keep public class com.izooto.iZooto{*;}
+-keep public class com.izooto.iZooto$Builder{*;}
+-keep public class com.izooto.PushTemplate{*;}
+-keep public class com.izooto.PreferenceUtil{*;}
+-keep public class com.izooto.AppConstant{*;}
+-keep public class com.izooto.NotificationWebViewListener{*;}
+-keep public class com.izooto.NotificationHelperListener{*;}
+-keep public class com.izooto.NotificationReceiveHybridListener{*;}
+-keep public class com.izooto.TokenReceivedListener{*;}
+-keep public class com.izooto.Payload{*;}
 
 
 
