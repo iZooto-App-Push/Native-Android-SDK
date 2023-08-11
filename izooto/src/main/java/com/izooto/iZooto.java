@@ -594,25 +594,17 @@ public class iZooto {
 
     }
 
-//    public static void notificationInAppAction(String url){
-//        if (!url.isEmpty()){
-//            if(mBuilder!=null && mBuilder.mWebViewListener!=null) {
-//                mBuilder.mWebViewListener.onWebView(url);
-//            }
-//        }
-//
-//
-//    }
-
-
-    public static void notificationInAppAction(String url,Context context) {
-
+    public static void notificationInAppAction(Context context, String url) {
         if (context!=null && !url.isEmpty()) {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            if (preferenceUtil.getBoolean("hybrid")) {
+            if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                 Util.sleepTime(2000);
-                if (mBuilder != null && mBuilder.mWebViewListener != null) {
-                    mBuilder.mWebViewListener.onWebView(url);
+                if (!preferenceUtil.getBoolean(AppConstant.DEFAULT_WEB_VIEW)){
+                    if (mBuilder != null && mBuilder.mWebViewListener != null){
+                        mBuilder.mWebViewListener.onWebView(url);
+                    }else {
+                        Log.i("notification...","builder null");
+                    }
                 } else {
                     iZootoWebViewActivity.startActivity(context, url);
                 }
@@ -624,6 +616,7 @@ public class iZooto {
         }
 
     }
+
     /*
       Handle the Hybrid Web_View Listener
      */

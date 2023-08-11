@@ -312,6 +312,7 @@ public interface AppConstant {
     String IZ_NO_MORE_DATA ="No more data";
     String IZ_ERROR_MESSAGE = "iZooto is not initialised properly, Please verify again.";
     String IZ_NOTIFICATION_FETCH_EXCEPTION="fetchNotificationData";
+    String DEFAULT_WEB_VIEW = "defaultWebView";
 }
 
 

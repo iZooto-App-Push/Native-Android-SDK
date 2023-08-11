@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 public class RestClient {
      //production url
-     static final String BASE_URL = "https://aevents.izooto.com/app.php";
+     static final String BASE_URL = "https://aevents.izooto.com/app";
      static String P_GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
      static final int GET_TIMEOUT = 60000;
      static final String EVENT_URL="https://et.izooto.com/evt";

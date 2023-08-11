@@ -198,13 +198,13 @@ public class TargetActivity extends Activity {
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL!="" && !landingURL.isEmpty())
                     {
                         if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                            iZooto.notificationInAppAction(mUrl,context);
+                            iZooto.notificationInAppAction(context,mUrl);
                             this.finish();
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                                 Handler handler = new Handler(Looper.getMainLooper());
                                 handler.postDelayed(() -> {
                                     if (preferenceUtil.getBoolean(AppConstant.DEEPLINK_STATE)) {
-                                        iZooto.notificationInAppAction(this.mUrl,context);
+                                        iZooto.notificationInAppAction(context,this.mUrl);
                                         isDeepLinkCheck = true;
                                         this.finish();
                                     }
@@ -212,18 +212,18 @@ public class TargetActivity extends Activity {
                                         if(isAppBackground(context) && Util.isAppInForeground(context)) {
                                             launchApp(this.context);
                                             mWebViewClick = this.mUrl;
-                                            iZooto.notificationInAppAction(mWebViewClick,context);
+                                            iZooto.notificationInAppAction(context,mWebViewClick);
                                             this.finish();
                                         }
                                         else if(Util.isAppInForeground(context))
                                         {
-                                            iZooto.notificationInAppAction(this.mUrl,context);
+                                            iZooto.notificationInAppAction(context,this.mUrl);
                                             this.finish();
                                         }
                                         else {
                                             launchApp(this.context);
                                             mWebViewClick = this.mUrl;
-                                            iZooto.notificationInAppAction(this.mUrl,context);
+                                            iZooto.notificationInAppAction(context,this.mUrl);
                                             this.finish();
                                         }
                                     }
