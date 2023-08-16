@@ -598,7 +598,6 @@ public class iZooto {
         if (context!=null && !url.isEmpty()) {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                Util.sleepTime(2000);
                 if (!preferenceUtil.getBoolean(AppConstant.DEFAULT_WEB_VIEW)){
                     if (mBuilder != null && mBuilder.mWebViewListener != null){
                         mBuilder.mWebViewListener.onWebView(url);
