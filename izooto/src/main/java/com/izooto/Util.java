@@ -1,6 +1,7 @@
 package com.izooto;
 
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.core.view.ViewCompat;
 
 
 import org.json.JSONArray;
@@ -48,6 +51,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,6 +60,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -774,5 +779,58 @@ public class Util {
         crypt.update(url.getBytes(StandardCharsets.UTF_8));
         return new BigInteger(1, crypt.digest()).toString(16);
     }
+    protected static boolean notificationMode(){
+        Locale locale = Locale.getDefault();
+        return TextUtils.getLayoutDirectionFromLocale(locale) != ViewCompat.LAYOUT_DIRECTION_LTR;
+    }
+
+
+    /* check the expiry time to current time difference in seconds form */
+    static String findDifferenceTimerValue(String tpValue)
+    {
+        long difference_In_Seconds =0;
+        Long mill= System.currentTimeMillis();
+        Date date = new Date(mill);
+        @SuppressLint("SimpleDateFormat") DateFormat sdf1 = new SimpleDateFormat(AppConstant.IZ_DATE_TIME_FORMAT);
+        try {
+            Long expTime = Long.valueOf(tpValue);
+            Date date1 = new Date(expTime);
+            String deliveryTime = sdf1.format(date);
+            String expiryTime = sdf1.format(date1);
+            Date d0 = sdf1.parse(deliveryTime);
+            Date d1 = sdf1.parse(expiryTime);
+            long Time_difference = Objects.requireNonNull(d0).getTime() - Objects.requireNonNull(d1).getTime();
+            difference_In_Seconds = (Time_difference / 1000);
+            if(difference_In_Seconds>600 && difference_In_Seconds<3600)
+            {
+                return String.valueOf(difference_In_Seconds);
+            }
+            else {
+                return  "";
+            }
+        } catch (Exception e) {
+            Log.e("Timer Error4","Timer values excced on maximum seconds or minimum seconds");
+            return "";
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

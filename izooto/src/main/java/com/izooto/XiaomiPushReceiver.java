@@ -179,6 +179,11 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     payload.setFallBackPath(payloadObj.optString(ShortpayloadConstant.FAll_BACK_PATH));
                     payload.setDefaultNotificationPreview(payloadObj.optInt(ShortpayloadConstant.TEXTOVERLAY));
                     payload.setNotification_bg_color(payloadObj.optString(ShortpayloadConstant.BGCOLOR));
+                    payload.setRc(payloadObj.optString(ShortpayloadConstant.RC));
+                    payload.setRv(payloadObj.optString(ShortpayloadConstant.RV));
+                    payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
+                    payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
+
                 }
                 else {
                     return;

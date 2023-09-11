@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="1.6.9";
+    String SDKVERSION="2.0.1";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -313,6 +313,9 @@ public interface AppConstant {
     String IZ_ERROR_MESSAGE = "iZooto is not initialised properly, Please verify again.";
     String IZ_NOTIFICATION_FETCH_EXCEPTION="fetchNotificationData";
     String DEFAULT_WEB_VIEW = "defaultWebView";
+
+    String FORMAT = "[0-9]";
+    String IZ_DATE_TIME_FORMAT = "dd:MM:yyyy hh:mm:ss";
 }
 
 

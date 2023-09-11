@@ -64,7 +64,8 @@ public interface ShortpayloadConstant {
     String BGCOLOR="nbc";
     String TIME_TO_LIVE="tl";
     String NOTIFICATION_PAYLOAD = "p";
-
+    String EXPIRY_TIMER_VALUE ="et";
+    String MAKE_STICKY_NOTIFICATION ="ri";
 
 
 }

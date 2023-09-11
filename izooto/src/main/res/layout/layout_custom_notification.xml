@@ -3,56 +3,216 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linear_layout_collapse"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/iz_notificationBg">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
+
+    <RelativeLayout
+        android:id="@+id/rlp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical"
         tools:ignore="UselessParent">
 
+
+        <ImageView
+            android:id="@+id/iv_large_icon"
+            android:layout_width="@dimen/height_width24"
+            android:layout_height="@dimen/height_width24"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitXY" />
+
+
         <LinearLayout
-            android:id="@+id/l1"
-            android:layout_width="match_parent"
+            android:id="@+id/llp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_10dp"
-            android:layout_marginTop="@dimen/margin_5dp"
-            android:layout_marginEnd="@dimen/margin_10dp"
-            android:orientation="horizontal">
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/iv_large_icon"
+            android:includeFontPadding="false"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_large_icon"
-                android:layout_width="@dimen/width_35dp"
-                android:layout_height="@dimen/height_35dp"
-                android:layout_gravity="center"
-                android:scaleType="fitXY" />
 
-            <TextView
-                android:id="@+id/tv_message"
-                style="@style/TextAppearance.Compat.Notification.Title"
+            <RelativeLayout
+                android:id="@+id/rlc1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:includeFontPadding="false">
+
+
+                <TextView
+                    android:id="@+id/tv_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:includeFontPadding="false" />
+
+
+                <RelativeLayout
+                    android:id="@+id/tv_message_temp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@id/ll_timer_notification_"
+                    android:layout_toEndOf="@id/tv_temp">
+
+
+                    <TextView
+                        android:id="@+id/tv_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|start"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="-1sp"
+                        android:maxLines="2"
+                        android:textColor="@color/iz_notificationMBg"
+                        android:textSize="@dimen/text_15sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ll_timer_notification_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone">
+
+
+                    <ImageView
+                        android:id="@+id/tv_close_icon"
+                        android:layout_width="@dimen/height_18dp"
+                        android:layout_height="@dimen/height_18dp"
+                        android:layout_centerInParent="true"
+                        android:contentDescription="@string/todo"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/close_btn"
+                        android:visibility="gone" />
+
+
+                    <LinearLayout
+                        android:id="@+id/tv_ll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:layoutDirection="ltr"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+
+                        <ImageView
+                            android:layout_width="@dimen/height_width17"
+                            android:layout_height="@dimen/height_width17"
+                            android:layout_marginEnd="@dimen/margin_2dp"
+                            android:contentDescription="@string/todo"
+                            android:scaleType="center"
+                            android:src="@drawable/iz_vector" />
+
+
+                        <Chronometer
+                            android:id="@+id/tv_notification_timer_"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/iz_chronometer"
+                            android:textStyle="normal" />
+
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlc2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_8dp"
-                android:layout_marginLeft="@dimen/margin_8dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="" />
+                android:layout_gravity="top"
+                android:visibility="gone">
+
+
+                <LinearLayout
+                    android:id="@+id/ll_timer_notification_for_below"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center"
+                    android:layoutDirection="ltr"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/height_width14"
+                        android:layout_height="@dimen/height_width14"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/iz_vector_below" />
+
+
+                    <Chronometer
+                        android:id="@+id/tv_notification_timer_for_below"
+                        style="@style/TextAppearance.Compat.Notification.Info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_3dp"
+                        android:includeFontPadding="false"
+                        android:singleLine="true"
+                        android:textColor="@color/iz_notificationMBg" />
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_dismissed_"
+                    style="@style/TextAppearance.Compat.Notification.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:text="@string/iz_cta_dismissed"
+                    android:textColor="@color/iz_notificationMBg"
+                    android:textSize="@dimen/text_14sp"
+                    android:visibility="gone" />
+
+
+                <TextView
+                    android:id="@+id/tv_display_time"
+                    style="@style/TextAppearance.Compat.Notification.Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:singleLine="true"
+                    android:textColor="@color/iz_chronometer"
+                    tools:ignore="RelativeOverlap" />
+
+
+            </RelativeLayout>
+
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_display_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/margin_10dp"
-            android:layout_marginRight="@dimen/margin_10dp"
-            android:singleLine="true"
-            android:text=""
-            android:textColor="@color/iz_notificationMBg" />
 
-    </LinearLayout>
+    </RelativeLayout>
+
+
 </RelativeLayout>

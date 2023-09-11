@@ -1335,6 +1335,11 @@ private static void runNotificationOpenedCallback() {
                     payload.setPush_type(AppConstant.PUSH_FCM);
                     payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_SOUND));
                     payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
+                    payload.setRc(payloadObj.optString(ShortpayloadConstant.RC));
+                    payload.setRv(payloadObj.optString(ShortpayloadConstant.RV));
+                    payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
+                    payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
+
 
                 } else {
                     String updateDaily=NotificationEventManager.getDailyTime(context);

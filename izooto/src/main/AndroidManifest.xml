@@ -143,6 +143,10 @@
             android:name=".NotificationPermission"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="false" />
+        <receiver
+            android:name="com.izooto.NotificationDismissedReceiver"
+            android:exported="false"
+            android:enabled="true"/>
     </application>
 
 </manifest>

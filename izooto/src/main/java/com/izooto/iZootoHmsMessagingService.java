@@ -159,9 +159,13 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                     payload.setTime_to_live(payloadObj.optString(ShortpayloadConstant.TIME_TO_LIVE));
                     payload.setPush_type(AppConstant.PUSH_HMS);
                     payload.setDefaultNotificationPreview(payloadObj.optInt(ShortpayloadConstant.TEXTOVERLAY));
-
                     payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_SOUND));
                     payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
+                    payload.setRc(payloadObj.optString(ShortpayloadConstant.RC));
+                    payload.setRv(payloadObj.optString(ShortpayloadConstant.RV));
+                    payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
+                    payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
+
 
                 } else {
                     return;

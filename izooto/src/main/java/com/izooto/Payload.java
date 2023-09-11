@@ -3,24 +3,6 @@ package com.izooto;
 /* Developed By Amit Gupta */
 public class Payload {
 
-    /**
-     * fetchURL : https://api.taboola.com/1.2/json/databilityindia-network-matichon/recommendations.get?app.type=desktop&app.apikey=61291475364d2ddf3edd7e50fe2313195771a79c&placement.rec-count=1&placement.organic-type=mix&placement.visible=true&source.type=section&source.id=%2Fsection&source.url=https://www.matichon.co.th&placement.name=Web-Notification&user.session=init&user.agent=Mozilla%2F5.0+%28Linux%3B+Android+6.0.1%3B+ASUS_Z00UD+Build%2FMMB29P%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F66.0.3359.126+Mobile+Safari%2F537.36&user.realip=125.25.223.108&user.id=aeef899648288185904ec76bf1fa689d&app.s2s=true
-     * key : 123
-     * id : 1
-     * rid : 123422
-     * link : list[0].url
-     * title : list[0].branding
-     * message : list[0].name
-     * icon : ~https://www.mediagiantdesign.com/assets/uploads/2016/12/secure-credit-card-icon.png
-     * reqInt : 1
-     * tag : tag
-     * banner : ~https://www.mediagiantdesign.com/assets/uploads/2016/12/secure-credit-card-icon.png
-     * act_num : 0
-     * act1name : ~Sponsered
-     * act1link : ~https://google.com
-     * act2name : list[0].branding
-     * act2link : list[0].url
-     */
 
     private String fetchURL;
     private String key;
@@ -107,6 +89,9 @@ public class Payload {
     //////////////////////////////////////////////
 
     private int cfg;
+
+    private String expiryTimerValue;
+    private String makeStickyNotification;
     public int getCfg() {
         return cfg;
     }
@@ -646,5 +631,20 @@ public class Payload {
 
     public void setNotification_bg_color(String notification_bg_color) {
         this.notification_bg_color = notification_bg_color;
+    }
+    public String getExpiryTimerValue() {
+        return expiryTimerValue;
+    }
+
+    public void setExpiryTimerValue(String expiryTimerValue) {
+        this.expiryTimerValue = expiryTimerValue;
+    }
+
+    public String getMakeStickyNotification() {
+        return makeStickyNotification;
+    }
+
+    public void setMakeStickyNotification(String makeStickyNotification) {
+        this.makeStickyNotification = makeStickyNotification;
     }
 }

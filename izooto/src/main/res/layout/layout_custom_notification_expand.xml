@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/height_256dp"
         tools:ignore="UselessParent">
+
 
         <ImageView
             android:id="@+id/iv_banner_ig"
@@ -17,132 +20,251 @@
             android:src="@drawable/black_bg_image"
             tools:ignore="ContentDescription" />
 
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gradient_bg"/>
+            android:background="@drawable/gradient_bg" />
 
-        <ImageView
-            android:id="@+id/iv_large_icon"
-            android:layout_width="@dimen/width_35dp"
-            android:layout_height="@dimen/height_35dp"
-            android:layout_marginStart="@dimen/margin_20dp"
-            android:layout_marginTop="@dimen/margin_20dp"
-            android:scaleType="fitXY"
-            tools:ignore="ContentDescription"
-            android:layout_marginLeft="@dimen/margin_20dp" />
-
-        <LinearLayout
-            android:id="@+id/ll_share_notification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/margin_20dp"
-            android:layout_marginEnd="@dimen/margin_20dp"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables"
-            android:layout_marginRight="@dimen/margin_20dp">
-
-            <ImageView
-                android:id="@+id/iv_share_icon"
-                android:layout_width="@dimen/width_17dp"
-                android:layout_height="@dimen/height_17dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_share_24"
-                tools:ignore="VectorDrawableCompat"
-                 />
-
-            <TextView
-                android:id="@+id/tv_share_icon"
-                style="@style/TextAppearance.Compat.Notification.Info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/margin_5dp"
-                android:text="@string/iz_share"
-                android:textColor="@color/iz_white"
-                android:layout_marginLeft="@dimen/margin_5dp" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="@dimen/margin_15dp"
-            android:layout_marginRight="@dimen/margin_15dp"
-            android:layout_marginBottom="@dimen/margin_10dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_notification_title"
-                style="@style/TextAppearance.Compat.Notification.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:text=""
-                android:textColor="@color/iz_white" />
 
-            <RelativeLayout
-                android:id="@+id/iz_tv_layout"
+            <LinearLayout
+                android:id="@+id/st_pll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_5dp">
+                android:layout_marginStart="@dimen/margin_20dp"
+                android:layout_marginTop="@dimen/margin_15dp"
+                android:layout_marginEnd="@dimen/margin_20dp"
+                android:includeFontPadding="false"
+                android:orientation="vertical">
+
 
                 <RelativeLayout
+                    android:id="@+id/ll_large_share_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@id/tv_display_time"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@id/tv_display_time">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tv_btn1"
-                        style="@style/TextAppearance.Compat.Notification.Info"
+
+                    <ImageView
+                        android:id="@+id/iv_large_icon"
+                        android:layout_width="@dimen/width_35dp"
+                        android:layout_height="@dimen/height_35dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:scaleType="fitXY"
+                        tools:ignore="ContentDescription" />
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_share_notification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLength="17"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/iz_white"
-                        android:visibility="gone" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_toEndOf="@id/iv_large_icon"
+                        android:gravity="end"
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
 
-                    <TextView
-                        android:id="@+id/tv_btn2"
-                        style="@style/TextAppearance.Compat.Notification.Info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_10dp"
-                        android:layout_marginEnd="@dimen/margin_1dp"
-                        android:layout_toEndOf="@id/tv_btn1"
-                        android:ellipsize="end"
-                        android:maxLength="17"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/iz_white"
-                        android:visibility="gone"
-                        android:layout_marginLeft="@dimen/margin_10dp"
-                        android:layout_marginRight="@dimen/margin_1dp"
-                        android:layout_toRightOf="@id/tv_btn1" />
+
+                        <ImageView
+                            android:id="@+id/iv_share_icon"
+                            android:layout_width="@dimen/width_17dp"
+                            android:layout_height="@dimen/height_17dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/margin_5dp"
+                            android:contentDescription="@string/todo"
+                            android:src="@drawable/ic_baseline_share_24" />
+
+
+                        <TextView
+                            android:id="@+id/tv_share_icon"
+                            style="@style/TextAppearance.Compat.Notification.Info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/iz_share"
+                            android:textColor="@color/iz_white" />
+
+
+                    </LinearLayout>
+
+
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_display_time"
-                    style="@style/TextAppearance.Compat.Notification.Info"
+
+                <LinearLayout
+                    android:id="@+id/ll_timer_notification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="end"
-                    android:maxLength="11"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textColor="@color/iz_white"
-                    android:layout_alignParentRight="true" />
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:layoutDirection="ltr"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:ignore="UseCompoundDrawables">
 
-            </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="@dimen/width_17dp"
+                        android:layout_height="@dimen/width_17dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/iz_vector_white" />
+
+
+                    <Chronometer
+                        android:id="@+id/tv_notification_timer"
+                        style="@style/TextAppearance.Compat.Notification.Info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_5dp"
+                        android:textColor="@color/iz_white"
+                        android:textStyle="normal" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/margin_20dp"
+                android:layout_marginEnd="@dimen/margin_20dp"
+                android:layout_marginBottom="@dimen/margin_5dp"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:includeFontPadding="false"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_notification_title"
+                    style="@style/TextAppearance.Compat.Notification.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="-2sp"
+                    android:maxLines="3"
+                    android:textColor="@color/iz_white"
+                    android:textSize="@dimen/text_14sp"
+                    android:textStyle="bold"
+                    tools:ignore="UnusedAttribute" />
+
+
+                <RelativeLayout
+                    android:id="@+id/iz_tv_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <RelativeLayout
+                        android:id="@+id/ll_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/ll_display_time">
+
+
+                        <TextView
+                            android:id="@+id/tv_btn1"
+                            style="@style/TextAppearance.Compat.Notification.Info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/margin_8dp"
+                            android:ellipsize="end"
+                            android:maxLength="17"
+                            android:singleLine="true"
+                            android:textColor="@color/iz_button"
+                            android:textSize="@dimen/text_13sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+
+                        <TextView
+                            android:id="@+id/tv_btn2"
+                            style="@style/TextAppearance.Compat.Notification.Info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toEndOf="@id/tv_btn1"
+                            android:ellipsize="end"
+                            android:maxLength="17"
+                            android:singleLine="true"
+                            android:textColor="@color/iz_button"
+                            android:textSize="@dimen/text_13sp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_display_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_8dp">
+
+
+                        <TextView
+                            android:id="@+id/tv_display_time"
+                            style="@style/TextAppearance.Compat.Notification.Info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:maxLength="11"
+                            android:singleLine="true"
+                            android:textColor="@color/iz_button" />
+
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_dismissed"
+                    style="@style/TextAppearance.Compat.Notification.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_45dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_4dp"
+                    android:layout_marginBottom="@dimen/margin_4dp"
+                    android:background="@drawable/timer_btn_corner"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/iz_cta_dismissed"
+                    android:textAllCaps="false"
+                    android:textColor="@color/iz_white"
+                    android:textSize="@dimen/text_14sp"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+
         </LinearLayout>
+
+
     </FrameLayout>
+
+
 </RelativeLayout>
