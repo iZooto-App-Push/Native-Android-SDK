@@ -316,6 +316,8 @@ public interface AppConstant {
 
     String FORMAT = "[0-9]";
     String IZ_DATE_TIME_FORMAT = "dd:MM:yyyy hh:mm:ss";
+
+    String IZ_PAYLOAD_ERROR = "PayloadError";
 }
 
 

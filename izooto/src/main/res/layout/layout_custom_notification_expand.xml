@@ -248,7 +248,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_4dp"
                     android:layout_marginBottom="@dimen/margin_4dp"
-                    android:background="@drawable/timer_btn_corner"
+                    android:background="@drawable/iz_timer_btn_corner"
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="@string/iz_cta_dismissed"

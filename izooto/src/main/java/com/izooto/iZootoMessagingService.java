@@ -43,7 +43,10 @@ import java.util.Objects;
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class iZootoMessagingService extends FirebaseMessagingService {
     private  Payload payload = null;
-    private final String Name="iZootoMessagingService";
+    private final String IZ_TAG_NAME="iZootoMessagingService";
+    private final String IZ_METHOD_NAME = "handleNow";
+    private final String IZ_METHOD_PUSH_NAME ="contentPush";
+    private  final String IZ_ERROR_NAME ="Payload Error";
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         try {
@@ -64,8 +67,8 @@ public class iZootoMessagingService extends FirebaseMessagingService {
         }
         catch (Exception ex)
         {
-            Log.e(AppConstant.FIREBASEEXCEPTION,"iZootoMessagingService"+ex);
-            Util.setException(this, remoteMessage+ex.toString(), Name, "handleNow");
+            Log.e(AppConstant.FIREBASEEXCEPTION,IZ_TAG_NAME+ex);
+            Util.setException(this, remoteMessage+ex.toString(), IZ_TAG_NAME, IZ_METHOD_NAME);
 
         }
 
@@ -141,14 +144,14 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                         }
                         else
                         {
-                            NotificationEventManager.handleNotificationError("Payload Error",data.toString(),"iZootoMessagingServices","handleNow");
+                            NotificationEventManager.handleNotificationError(IZ_ERROR_NAME,data.toString(),IZ_TAG_NAME,IZ_METHOD_NAME);
                         }
                     }
                     catch (Exception ex)
                     {
 
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
-                        Util.setException(this,ex.toString()+"PayloadError"+data.toString(),"iZootoMessagingServices","handleNow");
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
+                        Util.setException(this,ex.toString()+IZ_ERROR_NAME+data,IZ_TAG_NAME,IZ_METHOD_NAME);
                     }
 
                 }
@@ -168,15 +171,14 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                             }
 
                         }
-                       // NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_FCM);
                         JSONObject jsonObject1=new JSONObject(data.toString());
                         AdMediation.getMediationData(this, jsonObject1,"fcm","");
                         preferenceUtil.setBooleanData(AppConstant.MEDIATION, true);
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(this,ex+"PayloadError"+data.toString(),"iZootoMessagingServices","handleNow");
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
+                        Util.setException(this,ex+IZ_ERROR_NAME+data,IZ_TAG_NAME,IZ_METHOD_NAME);
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
 
                     }
                 }
@@ -247,7 +249,12 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     String updateDaily=NotificationEventManager.getDailyTime(this);
                     if (!updateDaily.equalsIgnoreCase(Util.getTime())) {
                         preferenceUtil.setStringData(AppConstant.CURRENT_DATE_VIEW_DAILY, Util.getTime());
-                        NotificationEventManager.handleNotificationError("Payload Error" + payloadObj.optString("t"), payloadObj.toString(), "DATBMESSAGINSERVEICES", "handleNow()");
+                        if(!preferenceUtil.getBoolean(AppConstant.IZ_PAYLOAD_ERROR)) {
+                            NotificationEventManager.handleNotificationError(IZ_ERROR_NAME + payloadObj.optString("t"), payloadObj.toString(), IZ_TAG_NAME, IZ_METHOD_NAME);
+                        }
+                        else {
+                            preferenceUtil.setBooleanData(AppConstant.IZ_PAYLOAD_ERROR,true);
+                        }
                     }
                     return;
                 }
@@ -266,11 +273,11 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
                 mainHandler.post(myRunnable);
             }
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"contentPush",data.toString());
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
 
         } catch (Exception e) {
 
-            Util.setException(this, data+e.toString(), Name, "handleNow");
+            Util.setException(this, data+e.toString(), IZ_TAG_NAME, IZ_METHOD_NAME);
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,e.toString(),"[Log.e]-Exception");
 
         }

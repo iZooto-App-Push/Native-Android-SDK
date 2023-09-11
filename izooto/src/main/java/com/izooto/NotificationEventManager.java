@@ -1725,35 +1725,40 @@ public class NotificationEventManager {
         if(iZooto.appContext!=null) {
 
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-            try {
-                HashMap<String, String> data = new HashMap<>();
-                data.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                data.put(AppConstant.ANDROID_ID, Util.getAndroidId(iZooto.appContext));
-                data.put("op", "view");
-                data.put("fcm_token",preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
-                data.put("xiaomi_token",preferenceUtil.getStringData(AppConstant.XiaomiToken));
-                data.put("hms_token",preferenceUtil.getStringData(AppConstant.HMS_TOKEN));
-                data.put("error",""+errorName);
-                data.put("payloadData",payload);
-                data.put("className",className);
-                data.put("sdk_version",AppConstant.SDKVERSION);
-                data.put("methodName",methodName);
 
-                RestClient.postRequest(RestClient.APP_EXCEPTION_URL, data,null, new RestClient.ResponseHandler() {
-                    @Override
-                    void onFailure(int statusCode, String response, Throwable throwable) {
-                        super.onFailure(statusCode, response, throwable);
-                    }
+                try {
+                    HashMap<String, String> data = new HashMap<>();
+                    data.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                    data.put(AppConstant.ANDROID_ID, Util.getAndroidId(iZooto.appContext));
+                    data.put("op", "view");
+                    data.put("fcm_token", preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+                    data.put("xiaomi_token", preferenceUtil.getStringData(AppConstant.XiaomiToken));
+                    data.put("hms_token", preferenceUtil.getStringData(AppConstant.HMS_TOKEN));
+                    data.put("error", "" + errorName);
+                    data.put("payloadData", payload);
+                    data.put("className", className);
+                    data.put("sdk_version", AppConstant.SDKVERSION);
+                    data.put("methodName", methodName);
 
-                    @Override
-                    void onSuccess(String response) {
-                        super.onSuccess(response);
-                    }
-                });
 
-            } catch (Exception ex) {
-                Util.setException(iZooto.appContext, ex.toString(), AppConstant.APPName_2, "handleNotificationError");
-            }
+                    RestClient.postRequest(RestClient.APP_EXCEPTION_URL, data, null, new RestClient.ResponseHandler() {
+                        @Override
+                        void onFailure(int statusCode, String response, Throwable throwable) {
+                            super.onFailure(statusCode, response, throwable);
+                        }
+
+                        @Override
+                        void onSuccess(String response) {
+                            super.onSuccess(response);
+                        }
+                    });
+
+
+                } catch (Exception ex) {
+                    Util.setException(iZooto.appContext, ex.toString(), AppConstant.APPName_2, "handleNotificationError");
+                }
+
+
         }
     }
     // notification default icon
