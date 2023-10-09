@@ -145,11 +145,7 @@ public class NotificationPreview {
                          /*---------------------------expanded view----------------------- */
                          RemoteViews expandedView = new RemoteViews(iZooto.appContext.getPackageName(), R.layout.layout_custom_notification_expand);
                          expandedView.setTextViewText(R.id.tv_notification_title, "" + payload.getTitle());
-//                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                             if ((payload.getAct1name() == null || payload.getAct1name().isEmpty()) && (payload.getAct2name() == null || payload.getAct2name().isEmpty())) {
-//                                 expandedView.setViewVisibility(R.id.iz_tv_layout, View.GONE);
-//                             }
-//                         }
+
                          if (payload.getAct1name().isEmpty() && payload.getAct2name().isEmpty()) {
                              expandedView.setViewVisibility(R.id.ll_button, View.GONE);
                          }
@@ -201,51 +197,44 @@ public class NotificationPreview {
                                  .setCustomBigContentView(expandedView)
                                  .setAutoCancel(true);
                          /* show the timer notification functionality */
-                         if (payload.getExpiryTimerValue() != null && !payload.getExpiryTimerValue().isEmpty() && payload.getExpiryTimerValue().length() >FCDTSM) {
+                         if (payload.getExpiryTimerValue() != null && !payload.getExpiryTimerValue().isEmpty()) {
                              try {
                                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                                     if(!Util.findDifferenceTimerValue(payload.getExpiryTimerValue()).equals("")) {
-                                         if (getPattern(payload.getExpiryTimerValue())) {
-                                             OBTAINED_VALUES = Integer.parseInt(Util.findDifferenceTimerValue(payload.getExpiryTimerValue()));
-                                             if (OBTAINED_VALUES > FCDTSM) {
-                                                 TOTAL_MILLIS = OBTAINED_VALUES * MILLIS;
-                                                 EQUALS_TIMES = SystemClock.elapsedRealtime() + TOTAL_MILLIS;
-                                                 notificationBuilder.setTimeoutAfter(TOTAL_MILLIS);
-                                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                                     collapsedView.setViewVisibility(R.id.ll_timer_notification_for_below, View.GONE);
-                                                     collapsedView.setViewVisibility(R.id.ll_timer_notification_, View.VISIBLE);
-                                                     collapsedView.setViewVisibility(R.id.tv_ll, View.VISIBLE);
-                                                     expandedView.setViewPadding(R.id.ll_timer_notification, 0,15,0,0);
-                                                     if (Util.notificationMode()) {
-                                                         collapsedView.setViewPadding(R.id.tv_message_temp, 10, 0, 0, 0);
-                                                         collapsedView.setInt(R.id.tv_message_temp, "setGravity", Gravity.START);
-                                                         expandedView.setInt(R.id.tv_notification_title, "setGravity", Gravity.START);
-                                                     } else {
-                                                         collapsedView.setViewPadding(R.id.tv_message_temp, 0, 0, 0, 0);
-                                                         collapsedView.setInt(R.id.tv_message_temp, "setGravity", Gravity.START);
-                                                     }
-
-
-                                                     collapsedView.setChronometerCountDown(R.id.tv_notification_timer_, true);
-                                                     collapsedView.setChronometer(R.id.tv_notification_timer_, EQUALS_TIMES, ("%tH:%tM:%tS"), true);
-
-
+                                     if(!Util.getTimerValue(payload.getCreated_Time(), payload.getExpiryTimerValue()).equals("")) {
+                                         if (isPatternMatched(payload.getExpiryTimerValue())) {
+                                             OBTAINED_VALUES = Integer.parseInt(Util.getTimerValue(payload.getCreated_Time(), payload.getExpiryTimerValue()));
+                                             TOTAL_MILLIS = OBTAINED_VALUES * MILLIS;
+                                             EQUALS_TIMES = SystemClock.elapsedRealtime() + TOTAL_MILLIS;
+                                             notificationBuilder.setTimeoutAfter(TOTAL_MILLIS);
+                                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                                 collapsedView.setViewVisibility(R.id.ll_timer_notification_for_below, View.GONE);
+                                                 collapsedView.setViewVisibility(R.id.ll_timer_notification_, View.VISIBLE);
+                                                 collapsedView.setViewVisibility(R.id.tv_ll, View.VISIBLE);
+                                                 expandedView.setViewPadding(R.id.ll_timer_notification, 0,15,0,0);
+                                                 if (Util.notificationMode()) {
+                                                     collapsedView.setViewPadding(R.id.tv_message_temp, 10, 0, 0, 0);
+                                                     collapsedView.setInt(R.id.tv_message_temp, "setGravity", Gravity.START);
+                                                     expandedView.setInt(R.id.tv_notification_title, "setGravity", Gravity.START);
                                                  } else {
-                                                     collapsedView.setViewVisibility(R.id.ll_timer_notification_, View.GONE);
-                                                     collapsedView.setViewVisibility(R.id.ll_timer_notification_for_below, View.VISIBLE);
-                                                     collapsedView.setChronometerCountDown(R.id.tv_notification_timer_for_below, true);
-                                                     collapsedView.setChronometer(R.id.tv_notification_timer_for_below, EQUALS_TIMES, ("%tH:%tM:%tS"), true);
+                                                     collapsedView.setViewPadding(R.id.tv_message_temp, 0, 0, 0, 0);
+                                                     collapsedView.setInt(R.id.tv_message_temp, "setGravity", Gravity.START);
                                                  }
+                                                 collapsedView.setChronometerCountDown(R.id.tv_notification_timer_, true);
+                                                 collapsedView.setChronometer(R.id.tv_notification_timer_, EQUALS_TIMES, ("%tH:%tM:%tS"), true);
 
-
-                                                 expandedView.setViewVisibility(R.id.ll_timer_notification, View.VISIBLE);
-                                                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-                                                     expandedView.setViewPadding(R.id.ll_timer_notification, 0,20,0,0);
-                                                 }
-
-                                                 expandedView.setChronometerCountDown(R.id.tv_notification_timer, true);
-                                                 expandedView.setChronometer(R.id.tv_notification_timer, EQUALS_TIMES, ("%tH:%tM:%tS"), true);
+                                             } else {
+                                                 collapsedView.setViewVisibility(R.id.ll_timer_notification_, View.GONE);
+                                                 collapsedView.setViewVisibility(R.id.ll_timer_notification_for_below, View.VISIBLE);
+                                                 collapsedView.setChronometerCountDown(R.id.tv_notification_timer_for_below, true);
+                                                 collapsedView.setChronometer(R.id.tv_notification_timer_for_below, EQUALS_TIMES, ("%tH:%tM:%tS"), true);
                                              }
+                                             expandedView.setViewVisibility(R.id.ll_timer_notification, View.VISIBLE);
+                                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                                                 expandedView.setViewPadding(R.id.ll_timer_notification, 0,20,0,0);
+                                             }
+
+                                             expandedView.setChronometerCountDown(R.id.tv_notification_timer, true);
+                                             expandedView.setChronometer(R.id.tv_notification_timer, EQUALS_TIMES, ("%tH:%tM:%tS"), true);
                                          }
                                      }
                                      else {
@@ -258,13 +247,9 @@ public class NotificationPreview {
                                      collapsedView.setViewVisibility(R.id.ll_timer_notification_, View.GONE);
                                      collapsedView.setViewVisibility(R.id.ll_timer_notification_for_below, View.GONE);
                                  }
-
-
                              } catch (Exception e) {
                                  Log.e("Tpn", Objects.requireNonNull(e.getMessage()));
                              }
-
-
                          } else {
                              notificationBuilder.setTimeoutAfter(0);
                              collapsedView.setViewVisibility(R.id.ll_timer_notification_, View.GONE);
@@ -671,12 +656,9 @@ public class NotificationPreview {
 
         return intent;
     }
-    static boolean getPattern(String patterns) {
-        if (patterns.length() > FCDTSM) {
-            Pattern length = Pattern.compile(AppConstant.FORMAT);
-            Matcher totalNumber = length.matcher(patterns);
-            return totalNumber.find();
-        } else
-            return false;
+    private static boolean isPatternMatched(String patterns) {
+        Pattern length = Pattern.compile(AppConstant.FORMAT);
+        Matcher totalNumber = length.matcher(patterns);
+        return totalNumber.find();
     }
 }

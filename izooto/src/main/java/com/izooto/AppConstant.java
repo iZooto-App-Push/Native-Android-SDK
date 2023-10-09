@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.0.1";
+    String SDKVERSION="2.0.2";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -318,7 +318,24 @@ public interface AppConstant {
     String IZ_DATE_TIME_FORMAT = "dd:MM:yyyy hh:mm:ss";
 
     String IZ_PAYLOAD_ERROR = "PayloadError";
+
+
+    String TP_TYPE="type";
+    String TYPE_TP="tp";
+    String TYPE_P="p";
+    String TYPE_O="o";
+    String P_OP="op";
+    String DISMISSED="dismiss";
+
+    String IZ_LISTENER_ERROR = "Notification dismiss listener is not working";
+    String IZ_LISTENER_KEY = "nDismiss";
+    String IZ_TIMER_MESSAGE = "getTimerValue";
+    String IZ_TIMER_VALUE_MESSAGE = "Timer values exceed on maximum seconds or minimum seconds";
+
 }
+
+
+
 
 
 

@@ -786,51 +786,35 @@ public class Util {
 
 
     /* check the expiry time to current time difference in seconds form */
-    static String findDifferenceTimerValue(String tpValue)
-    {
-        long difference_In_Seconds =0;
-        Long mill= System.currentTimeMillis();
-        Date date = new Date(mill);
-        @SuppressLint("SimpleDateFormat") DateFormat sdf1 = new SimpleDateFormat(AppConstant.IZ_DATE_TIME_FORMAT);
+    /* check the expiry time to current time difference in seconds form */
+    static String getTimerValue(String createdTime, String expTime){
         try {
-            Long expTime = Long.valueOf(tpValue);
-            Date date1 = new Date(expTime);
-            String deliveryTime = sdf1.format(date);
-            String expiryTime = sdf1.format(date1);
-            Date d0 = sdf1.parse(deliveryTime);
-            Date d1 = sdf1.parse(expiryTime);
-            long Time_difference = Objects.requireNonNull(d0).getTime() - Objects.requireNonNull(d1).getTime();
-            difference_In_Seconds = (Time_difference / 1000);
-            if(difference_In_Seconds>600 && difference_In_Seconds<3600)
-            {
-                return String.valueOf(difference_In_Seconds);
+            long timerValue = 0;
+            long timerValue_In_Seconds = 0;
+            long deliveryTime = System.currentTimeMillis();
+            long et_In_Millis = MinutesToMillisecondsConverter(Integer.parseInt(expTime));
+            long expiryTime = Long.parseLong(createdTime) + et_In_Millis;
+
+            if (deliveryTime >= Long.parseLong(createdTime) && deliveryTime <= expiryTime) {
+                timerValue = expiryTime - deliveryTime;
+                timerValue_In_Seconds = (timerValue / 1000);
             }
-            else {
-                return  "";
+
+            if (timerValue_In_Seconds >= 1 && timerValue_In_Seconds < 3600) {
+                return String.valueOf(timerValue_In_Seconds);
+            } else {
+                DebugFileManager.createExternalStoragePublic(iZooto.appContext,AppConstant.IZ_TIMER_VALUE_MESSAGE,AppConstant.IZ_TIMER_MESSAGE);
+                return "";
             }
-        } catch (Exception e) {
-            Log.e("Timer Error4","Timer values excced on maximum seconds or minimum seconds");
+        }
+        catch (Exception e) {
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,AppConstant.IZ_TIMER_VALUE_MESSAGE,AppConstant.IZ_TIMER_MESSAGE);
             return "";
         }
-
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // convert minutes into millis
+    private static long MinutesToMillisecondsConverter(int minutes) {
+        return (minutes * 60 * 1000L);
+    }
 }

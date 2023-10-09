@@ -34,7 +34,7 @@ public class RestClient {
      static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
      static final String NOTIFICATION_PERMISSION_ALLOW_URL="https://enp.izooto.com/enp";
      static final String NOTIFICATION_PERMISSION_DISALLOW_URL="https://sbp.izooto.com/nblk";
-
+     static final String PERSISTENT_NOTIFICATION_DISMISS_URL = "https://dsp.izooto.com/dsp";
 
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
