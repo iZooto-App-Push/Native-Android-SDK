@@ -617,7 +617,6 @@ public class NotificationPreview {
     // handle the notification dismiss for persistent
 
     static Intent dismissedNotification(Payload payload ,int notificationId, int button){
-        Log.e("ABC",""+notificationId);
         Intent intent = null;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if(button == 3){
