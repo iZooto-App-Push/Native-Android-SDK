@@ -165,17 +165,14 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     }
                     else if(isAppBackground(context))
                     {
-
-                        if(preferenceUtil.getBoolean("Android8"))
-                        {
-                            iZooto.notificationActionHandler(jsonObject.toString());
+                        if(preferenceUtil.getBoolean("Android8")) {
+                            launchApp(context);
                             notificationClick = jsonObject.toString();
-                            launchApp(context);
-                        }
-                        else
-                        {
                             iZooto.notificationActionHandler(jsonObject.toString());
+                        } else {
                             launchApp(context);
+                            notificationClick = jsonObject.toString();
+                            iZooto.notificationActionHandler(jsonObject.toString());
                         }
                     }
                     else {
