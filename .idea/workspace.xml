@@ -15,39 +15,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e526a21-7e02-402a-a6d1-94a81cce592b" name="Default Changelist" comment="&#10;Uploaded the bintray module">
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubAlert.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NewsHubDBHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RoundedCornersTransform.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_baseline_arrow_back_24.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_baseline_share_25.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_icon_not_found.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_iz_bell.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_iz_bell_ring.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_iz_defualt_newshub.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_iz_lighting.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_iz_megaphone.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_iz_shout_out.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_party_popper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/iz_ic_vector.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/round_corner_left.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/round_corner_right.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/rounded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/rounded_fg.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/activity_newshub.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/alert_news_hub_design.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/layout_footer.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/layout_not_found.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/news_hub_floating_button.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/news_hub_hybrid_floating_button.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/news_hub_items.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/nh_sticky_bar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/sha256-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/sha256-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/sha512-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/sha512-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
@@ -56,25 +23,11 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/maven-push.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/maven-push.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Payload.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Payload.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/PreferenceUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/PreferenceUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ShortpayloadConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ShortpayloadConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/XiaomiPushReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/XiaomiPushReceiver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_news_hub.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/ic_news_hub.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/values-night/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/values-night/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoHmsMessagingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoHmsMessagingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoMessagingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoMessagingService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,6 +69,20 @@
                 <item name="android-X" type="f1a62948:ProjectNode" />
                 <item name="izooto" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="android-X" type="f1a62948:ProjectNode" />
+                <item name="izooto" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="android" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="android-X" type="f1a62948:ProjectNode" />
+                <item name="izooto" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -203,7 +170,7 @@
       <recent name="com.izooto" />
     </key>
   </component>
-  <component name="RunManager" selected="Android App.app">
+  <component name="RunManager" selected="Gradle./Users/amit/code/izooto-app/izooto [assemble]">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -427,8 +394,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.android-X:izooto [publishAllPublicationsToMavenRepository]" />
         <item itemvalue="Gradle./Users/amit/code/izooto-app/izooto [assemble]" />
+        <item itemvalue="Gradle.android-X:izooto [publishAllPublicationsToMavenRepository]" />
         <item itemvalue="Gradle.android-X:izooto [publishReleasePublicationToMavenRepository]" />
         <item itemvalue="Gradle./Users/amit/code/izooto-app/izooto [uploadArchives]" />
         <item itemvalue="Gradle.androidHotfix [assemble]" />
