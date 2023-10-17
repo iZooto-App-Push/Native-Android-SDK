@@ -19,4 +19,18 @@
     <color name="iz_chronometer">#99FFFFFF</color>
     <color name="iz_button">#B3FFFFFF</color>
     <color name="iz_timer_persistent">#1F000000</color>
+
+
+
+    <color name="iZ_brandingColor">#1155CC</color>
+    <color name="inAppTransparent">#CCFFFFFF</color>
+    <color name="iamCrossIconColor">#FFFFFF</color>
+
+    <color name="iz_news_hub_bg">#121212</color>
+    <color name="iz_news_hub_no_new_updates">#ffffff</color>
+    <color name="iz_news_nub_no_data_found_text">#60ffffff</color>
+    <color name="iz_news_hub_branding_text_color">#60ffffff</color>
+    <color name="iz_news_hub_view_color">#1F1F1F</color>
+    <color name="iz_news_hub_text_color">#ffffff</color>
+    <color name="iz_news_hub_time_color">#60ffffff</color>
 </resources>

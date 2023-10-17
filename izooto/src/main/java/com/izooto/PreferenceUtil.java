@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+
 
 public class PreferenceUtil {
 
@@ -143,5 +145,14 @@ public class PreferenceUtil {
     public boolean getEnableState(String key) {
         return mSpref.getBoolean(key, true);
     }
+    public void setPlacement(String key, JSONArray value) {
+        SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
+        appInstallInfoEditor.putString(key, value.toString());
+        appInstallInfoEditor.apply();
+    }
 
+    public String getPlacement(String key) {
+        return mSpref.getString(key, "");
+
+    }
 }

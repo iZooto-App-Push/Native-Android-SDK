@@ -147,6 +147,12 @@
             android:name="com.izooto.NotificationDismissedReceiver"
             android:exported="false"
             android:enabled="true"/>
+        <activity
+            android:name="com.izooto.NewsHubActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

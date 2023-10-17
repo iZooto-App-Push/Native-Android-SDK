@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.izooto.ActivityLifecycleListener;
 import com.izooto.AppConstant;
@@ -36,33 +37,35 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Button shareToken=findViewById(R.id.shareToken);
-        shareToken.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(MainActivity.this);
-                if(preferenceUtil!=null)
-                {
-                   String tokenData=preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN);
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_SENDTO);
-                        intent.setType("text/plain");
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "Device Token");
-                        intent.putExtra(Intent.EXTRA_TEXT, tokenData);
-                        intent.setData(Uri.parse("mailto:"));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                       // finish();
-                    } catch(Exception e)  {
-                        System.out.println("is exception raises during sending mail"+e);
-                    }
-                }
-                else
-                {
-                    Log.e("TokenClick","Exception occurred");
-                }
-            }
-        });
+        RelativeLayout container = findViewById(R.id.containers);
+        iZooto.setNewsHub(this, container);
+       // Button shareToken=findViewById(R.id.shareToken);
+//        shareToken.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(MainActivity.this);
+//                if(preferenceUtil!=null)
+//                {
+//                   String tokenData=preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN);
+//                    try {
+//                        Intent intent = new Intent(Intent.ACTION_SENDTO);
+//                        intent.setType("text/plain");
+//                        intent.putExtra(Intent.EXTRA_SUBJECT, "Device Token");
+//                        intent.putExtra(Intent.EXTRA_TEXT, tokenData);
+//                        intent.setData(Uri.parse("mailto:"));
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(intent);
+//                       // finish();
+//                    } catch(Exception e)  {
+//                        System.out.println("is exception raises during sending mail"+e);
+//                    }
+//                }
+//                else
+//                {
+//                    Log.e("TokenClick","Exception occurred");
+//                }
+//            }
+//        });
 
        // LinearLayout mainLayout=findViewById(R.id.mainLayout);
       //  iZooto.setNewsHub(MainActivity.this,null);

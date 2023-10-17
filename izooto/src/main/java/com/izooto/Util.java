@@ -773,12 +773,7 @@ public class Util {
         }
         return AppConstant.CHANNEL_NAME;
     }
-    static String toSHA1(String url) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-        crypt.reset();
-        crypt.update(url.getBytes(StandardCharsets.UTF_8));
-        return new BigInteger(1, crypt.digest()).toString(16);
-    }
+
     protected static boolean notificationMode(){
         Locale locale = Locale.getDefault();
         return TextUtils.getLayoutDirectionFromLocale(locale) != ViewCompat.LAYOUT_DIRECTION_LTR;
@@ -816,5 +811,56 @@ public class Util {
     // convert minutes into millis
     private static long MinutesToMillisecondsConverter(int minutes) {
         return (minutes * 60 * 1000L);
+    }
+
+    // news hub
+    protected static String getColorCode(String color){
+        if (color.startsWith("#")){
+            return color;
+        }else {
+            return "#"+color;
+        }
+    }
+
+    // NewsHub
+    protected static String toSHA1(String url) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+        crypt.reset();
+        crypt.update(url.getBytes("UTF-8"));
+
+        return new BigInteger(1, crypt.digest()).toString(16);
+    }
+
+    protected static void newsHubClickApi(Context context, Payload userModal) {
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            HashMap<String, String> hashMap = new HashMap<>();
+            if (preferenceUtil != null) {
+                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                hashMap.put(AppConstant.VER_, "" + AppConstant.SDKVERSION);
+                hashMap.put("op", "click");
+                hashMap.put("cs", "1");
+                hashMap.put("isid", "1");
+                if (userModal != null) {
+                    hashMap.put(AppConstant.CID_, userModal.getId());
+                    hashMap.put(AppConstant.RID, userModal.getRid());
+                }
+            }
+            RestClient.postRequest(RestClient.NOTIFICATIONCLICK, hashMap, null, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+
+                }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

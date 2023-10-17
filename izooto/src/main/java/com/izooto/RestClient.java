@@ -36,6 +36,11 @@ public class RestClient {
      static final String NOTIFICATION_PERMISSION_DISALLOW_URL="https://sbp.izooto.com/nblk";
      static final String PERSISTENT_NOTIFICATION_DISMISS_URL = "https://dsp.izooto.com/dsp";
 
+   // NEWS_HUB_URL
+    static final String NEWS_HUB_URL="https://nh.iz.do/nh/";
+
+    static final String NEWS_HUB_IMPRESSION_URL="https://nhwimp.izooto.com/nhwimp";
+    static final String NEWS_HUB_OPEN_URL="https://nhwopn.izooto.com/nhwopn";
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }

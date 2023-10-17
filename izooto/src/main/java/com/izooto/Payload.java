@@ -78,6 +78,9 @@ public class Payload {
     private int defaultNotificationPreview;
     private String notification_bg_color;
 
+    private String offlineCampaign;
+
+
     public int getMaxNotification() {
         return maxNotification;
     }
@@ -646,5 +649,13 @@ public class Payload {
 
     public void setMakeStickyNotification(String makeStickyNotification) {
         this.makeStickyNotification = makeStickyNotification;
+    }
+
+    public String getOfflineCampaign() {
+        return offlineCampaign;
+    }
+
+    public void setOfflineCampaign(String offlineCampaign) {
+        this.offlineCampaign = offlineCampaign;
     }
 }

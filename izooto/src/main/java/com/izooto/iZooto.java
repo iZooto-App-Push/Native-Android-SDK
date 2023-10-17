@@ -7,15 +7,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -31,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.izooto.AppConstant.ANDROID_ID;
 import static com.izooto.AppConstant.APPPID;
 import static com.izooto.AppConstant.FCM_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.HUAWEI_TOKEN_FROM_JSON;
@@ -62,6 +73,9 @@ public class iZooto {
     private static OSTaskManager osTaskManager = new OSTaskManager();
     private static LOG_LEVEL visualLogLevel = LOG_LEVEL.NONE;
     private static LOG_LEVEL logCatLevel = LOG_LEVEL.WARN;
+
+    static Activity  newsHubContext;
+
 
     private static int pageNumber;   // index handling for notification center data
     private static String notificationData;
@@ -119,7 +133,20 @@ public class iZooto {
                                     String mId =jsonObject.optString(AppConstant.MIAPPID);
                                     String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
                                     mIzooToAppId = jsonObject.optString(APPPID);
+                                    String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
+
                                     preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
+                                    try {
+                                        int brand_key = jsonObject.optInt(AppConstant.NEWS_HUB_B_KEY);
+                                        preferenceUtil.setIntData(AppConstant.NEWS_HUB_B_KEY, brand_key);
+                                    } catch (Exception e) {
+                                        Log.e("branding", "branding is null or empty!");
+                                    }
+                                    if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB)) {
+                                        fetchNewsHubData(context, newsHub);
+                                    }
+
+
                                     trackAdvertisingId();
 
                                     if(!mKey.isEmpty() && !mId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_XIAOMI_TOKEN)){
@@ -340,7 +367,7 @@ public class iZooto {
                         mapData.put(AppConstant.APPVERSION,"" + Util.getAppVersion(iZooto.appContext));
                         mapData.put(AppConstant.OS, "" + AppConstant.SDKOS);
                         mapData.put(AppConstant.ALLOWED_, "" + AppConstant.ALLOWED);
-                        mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
+                        mapData.put(ANDROID_ID, "" + Util.getAndroidId(appContext));
                         mapData.put(AppConstant.CHECKSDKVERSION, "" + Util.getSDKVersion(appContext));
                         mapData.put(AppConstant.LANGUAGE, "" + Util.getDeviceLanguage());
                         mapData.put(AppConstant.QSDK_VERSION, "" + AppConstant.SDKVERSION);
@@ -471,7 +498,7 @@ public class iZooto {
                                 mapData.put(AppConstant.APPVERSION, "" + Util.getSDKVersion(iZooto.appContext));
                                 mapData.put(AppConstant.OS, "" + AppConstant.SDKOS);
                                 mapData.put(AppConstant.ALLOWED_, "" + AppConstant.ALLOWED);
-                                mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
+                                mapData.put(ANDROID_ID, "" + Util.getAndroidId(appContext));
                                 mapData.put(AppConstant.CHECKSDKVERSION, "" + Util.getSDKVersion(appContext));
                                 mapData.put(AppConstant.LANGUAGE, "" + Util.getDeviceLanguage());
                                 mapData.put(AppConstant.QSDK_VERSION, "" + AppConstant.SDKVERSION);
@@ -893,7 +920,7 @@ private static void runNotificationOpenedCallback() {
                     if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                        mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(context));
+                        mapData.put(ANDROID_ID, "" + Util.getAndroidId(context));
                         mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                         mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
                         mapData.put(AppConstant.APPVERSION, "" + AppConstant.SDKVERSION);
@@ -951,7 +978,7 @@ private static void runNotificationOpenedCallback() {
                             mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                             mapData.put(AppConstant.ACT, eventName);
                             mapData.put(AppConstant.ET_, "evt");
-                            mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
+                            mapData.put(ANDROID_ID, "" + Util.getAndroidId(appContext));
                             mapData.put(AppConstant.VAL, "" + jsonObject.toString());
 
                             RestClient.postRequest(RestClient.EVENT_URL, mapData,null, new RestClient.ResponseHandler() {
@@ -1043,7 +1070,7 @@ private static void runNotificationOpenedCallback() {
                                 mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                                 mapData.put(AppConstant.ACT, "add");
                                 mapData.put(AppConstant.ET_, "" + AppConstant.USERP_);
-                                mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
+                                mapData.put(ANDROID_ID, "" + Util.getAndroidId(appContext));
                                 mapData.put(AppConstant.VAL, "" + jsonObject.toString());
                                 RestClient.postRequest(RestClient.PROPERTIES_URL, mapData, null, new RestClient.ResponseHandler() {
                                     @Override
@@ -1165,7 +1192,7 @@ private static void runNotificationOpenedCallback() {
                     if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                        mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
+                        mapData.put(ANDROID_ID, "" + Util.getAndroidId(appContext));
                         mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                         mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
                         mapData.put(AppConstant.APPVERSION, "" + AppConstant.SDKVERSION);
@@ -1495,7 +1522,7 @@ private static void runNotificationOpenedCallback() {
                         mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.ACT, action);
                         mapData.put(AppConstant.ET_, "" + AppConstant.USERP_);
-                        mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
+                        mapData.put(ANDROID_ID, "" + Util.getAndroidId(appContext));
                         mapData.put(AppConstant.VAL, "" + jsonObject.toString());
                         mapData.put(AppConstant.TOKEN, "" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                         mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
@@ -1606,7 +1633,7 @@ private static void runNotificationOpenedCallback() {
                     JSONObject jsonObject = new JSONObject(data);
                     Map<String, String> mapData = new HashMap<>();
                     mapData.put(PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                    mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(appContext));
+                    mapData.put(ANDROID_ID, "" + Util.getAndroidId(appContext));
                     mapData.put(AppConstant.VAL, "" + jsonObject.toString());
                     mapData.put(AppConstant.ACT, "add");
                     mapData.put(AppConstant.ISID_, "1");
@@ -1961,5 +1988,713 @@ private static void runNotificationOpenedCallback() {
             }
         }
     }
+    // new hub
+
+    public static void setNewsHub(RelativeLayout view, String jsonString) {
+        final Activity context = iZooto.newsHubContext;
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+                if (jsonString != null && !jsonString.isEmpty()) {
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    fetchNewsHubData(context, jsonObject.optString(AppConstant.JSON_NEWS_HUB));
+                    preferenceUtil.setBooleanData(AppConstant.SET_JSON_NEWS_HUB, true);
+                    setFloatingButton(context, view);
+                } else {
+                    Log.e("setNewsHub", "Your json string is null");
+                }
+
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean(AppConstant.IZ_NEWS_HUB)) {
+                    preferenceUtil.setBooleanData(AppConstant.IZ_NEWS_HUB, true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setNewsHub");
+                }
+            }
+        }
+    }
+
+    private static void fetchNewsHubData(Context context, String newsHubJsonData) {
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+                if (!newsHubJsonData.isEmpty()) {
+                    JSONObject jsonObject = new JSONObject(newsHubJsonData);
+                    preferenceUtil.setIntData(AppConstant.JSON_NEWS_HUB_DESIGN_TYPE, jsonObject.optInt("designType"));
+                    preferenceUtil.setIntData(AppConstant.JSON_NEWS_HUB_STATUS, jsonObject.optInt("status"));
+                    preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_IS_FULL_SCREEN, jsonObject.optBoolean("isFullScreen"));
+                    preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_COLOR, jsonObject.optString("mainColor"));
+                    preferenceUtil.setIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE, jsonObject.optInt("iconType"));
+                    preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_IS_DESCRIPTION, jsonObject.optBoolean("isDescription"));
+                    preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_TITLE, jsonObject.optString("title"));
+                    preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_TITLE_COLOR, jsonObject.optString("titleColor"));
+                    preferenceUtil.setBooleanData(AppConstant.JSON_NEWS_HUB_BRANDING, jsonObject.optBoolean("branding"));
+                    preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_WIDGET, jsonObject.optString("widget"));
+                    preferenceUtil.setStringData(AppConstant.JSON_NEWS_HUB_FALLBACK_IMAGE_URL, jsonObject.optString("fallbackImageURL"));
+                    preferenceUtil.setPlacement(AppConstant.JSON_NEWS_HUB_PLACEMENT,jsonObject.getJSONArray("placement"));
+
+                }
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean("fetchNewsHubData")) {
+                    preferenceUtil.setBooleanData("fetchNewsHubData", true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "fetchNewsHubData");
+                }
+            }
+        }
+    }
+
+    private static void setFloatingButton(Context context, RelativeLayout view) {
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+                if (view != null) {
+                    if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                        setHybridFloatingButton(context, view);
+                    } else {
+                        @SuppressLint("InflateParams")
+                        View itemView = LayoutInflater.from(context).inflate(R.layout.news_hub_floating_button, null, false);
+                        FloatingActionButton floatingActionButton = null;
+                        try {
+                            JSONArray jsonArray = null;
+                            String placement =preferenceUtil.getPlacement(AppConstant.JSON_NEWS_HUB_PLACEMENT);
+                            if (placement != null && !placement.isEmpty()) {
+                                jsonArray = new JSONArray(placement);
+
+                                if (((int) jsonArray.get(0)) == 1 && ((int) jsonArray.get(1)) == 0) {
+                                    floatingActionButton = itemView.findViewById(R.id.nh_floating_bleft);
+                                    floatingActionButton.setScaleType(ImageView.ScaleType.CENTER);
+                                    floatingActionButton.setVisibility(View.VISIBLE);
+                                } else if (((int) jsonArray.get(0)) == 1 && ((int) jsonArray.get(1)) == 1) {
+                                    floatingActionButton = itemView.findViewById(R.id.nh_floating_bright);
+                                    floatingActionButton.setScaleType(ImageView.ScaleType.CENTER);
+                                    floatingActionButton.setVisibility(View.VISIBLE);
+                                } else if (((int) jsonArray.get(0)) == 0 && ((int) jsonArray.get(1)) == 0) {
+                                    floatingActionButton = itemView.findViewById(R.id.nh_floating_tleft);
+                                    floatingActionButton.setScaleType(ImageView.ScaleType.CENTER);
+                                    floatingActionButton.setVisibility(View.VISIBLE);
+                                } else if (((int) jsonArray.get(0)) == 0 && ((int) jsonArray.get(1)) == 1) {
+                                    floatingActionButton = itemView.findViewById(R.id.nh_floating_tright);
+                                    floatingActionButton.setScaleType(ImageView.ScaleType.CENTER);
+                                    floatingActionButton.setVisibility(View.VISIBLE);
+                                } else {
+                                    floatingActionButton = itemView.findViewById(R.id.nh_floating_bright);
+                                    floatingActionButton.setScaleType(ImageView.ScaleType.CENTER);
+                                    floatingActionButton.setVisibility(View.VISIBLE);
+                                }
+
+                            } else {
+                                floatingActionButton = itemView.findViewById(R.id.nh_floating_bright);
+                                floatingActionButton.setScaleType(ImageView.ScaleType.CENTER);
+                            }
+
+
+                            changeFloatingActionDynamically(context, floatingActionButton);
+                        } catch (Exception e) {
+                            if (!preferenceUtil.getBoolean("setFloatingButton")) {
+                                preferenceUtil.setBooleanData("setFloatingButton", true);
+                                Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setFloatingButton");
+                            }
+                        }
+                        if (floatingActionButton != null) {
+                            floatingActionButton.setOnClickListener(view1 -> {
+                                boolean isFullScreen = preferenceUtil.getBoolean(AppConstant.JSON_NEWS_HUB_IS_FULL_SCREEN);
+                                if (isFullScreen) {
+                                    Intent intent = new Intent(context, NewsHubActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(intent);
+                                } else {
+                                    NewsHubAlert newsHubAlert = new NewsHubAlert();
+                                    newsHubAlert.showAlertData((Activity) context);
+                                }
+                                setNewsHubOpenApi(context, 1);
+                            });
+                        }
+
+                        view.addView(itemView);// floating button
+
+                    }
+                } else {
+                    Intent intent = new Intent(context, NewsHubActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    setNewsHubOpenApi(context, 0);
+                }
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean("setFloatingButton")) {
+                    preferenceUtil.setBooleanData("setFloatingButton", true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setFloatingButton");
+                }
+            }
+        }
+    }
+
+    private static void setHybridFloatingButton(Context context, RelativeLayout view) {
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+                if (view != null) {
+                    @SuppressLint("InflateParams")
+                    View itemView = LayoutInflater.from(context).inflate(R.layout.news_hub_hybrid_floating_button, null, false);
+                    FrameLayout floatingActionButton = null;
+                    try {
+                        JSONArray jsonArray = null;
+                        String placement = preferenceUtil.getPlacement(AppConstant.JSON_NEWS_HUB_PLACEMENT);
+                        if (placement != null && !placement.isEmpty()) {
+                            jsonArray = new JSONArray(placement);
+
+                            if (((int) jsonArray.get(0)) == 1 && ((int) jsonArray.get(1)) == 0) {
+                                floatingActionButton = itemView.findViewById(R.id.nh_hy_floating_bleft);
+                                floatingActionButton.setVisibility(View.VISIBLE);
+                            } else if (((int) jsonArray.get(0)) == 1 && ((int) jsonArray.get(1)) == 1) {
+                                floatingActionButton = itemView.findViewById(R.id.nh_hy_floating_bright);
+                                floatingActionButton.setVisibility(View.VISIBLE);
+                            } else if (((int) jsonArray.get(0)) == 0 && ((int) jsonArray.get(1)) == 0) {
+                                floatingActionButton = itemView.findViewById(R.id.nh_hy_floating_tleft);
+                                floatingActionButton.setVisibility(View.VISIBLE);
+                            } else if (((int) jsonArray.get(0)) == 0 && ((int) jsonArray.get(1)) == 1) {
+                                floatingActionButton = itemView.findViewById(R.id.nh_hy_floating_tright);
+                                floatingActionButton.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            floatingActionButton = itemView.findViewById(R.id.nh_hy_floating_bright);
+                            floatingActionButton.setVisibility(View.VISIBLE);
+                        }
+                        changeHybridFloatingActionDynamically(context, itemView);
+                    } catch (Exception e) {
+                        if (!preferenceUtil.getBoolean("setHybridFloatingButton")) {
+                            preferenceUtil.setBooleanData("setHybridFloatingButton", true);
+                            Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setHybridFloatingButton");
+                        }
+                    }
+                    if (floatingActionButton != null) {
+                        floatingActionButton.setOnClickListener(view1 -> {
+                            boolean isFullScreen = preferenceUtil.getBoolean(AppConstant.JSON_NEWS_HUB_IS_FULL_SCREEN);
+                            if (isFullScreen) {
+                                Intent intent = new Intent(context, NewsHubActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                            } else {
+                                NewsHubAlert newsHubAlert = new NewsHubAlert();
+                                newsHubAlert.showAlertData((Activity) context);
+                            }
+
+                            setNewsHubOpenApi(context, 1);
+                        });
+                    }
+
+                    view.addView(itemView);// floating button
+                } else {
+                    Intent intent = new Intent(context, NewsHubActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    setNewsHubOpenApi(context, 0);
+                }
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean("setHybridFloatingButton")) {
+                    preferenceUtil.setBooleanData("setHybridFloatingButton", true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setHybridFloatingButton");
+                }
+            }
+        }
+    }
+
+    @SuppressLint({"NewApi"})
+    private static void changeHybridFloatingActionDynamically(Context context, View itemView) {
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+                FrameLayout frameLayoutBleft = itemView.findViewById(R.id.nh_hy_floating_bleft);
+                FrameLayout frameLayoutBright = itemView.findViewById(R.id.nh_hy_floating_bright);
+                FrameLayout frameLayoutTleft = itemView.findViewById(R.id.nh_hy_floating_tleft);
+                FrameLayout frameLayoutTright = itemView.findViewById(R.id.nh_hy_floating_tright);
+                if (!preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR).isEmpty()) {
+                    int color = Color.parseColor(preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR));
+                    frameLayoutBleft.setBackgroundTintList(ColorStateList.valueOf(color));
+                    frameLayoutBright.setBackgroundTintList(ColorStateList.valueOf(color));
+                    frameLayoutTleft.setBackgroundTintList(ColorStateList.valueOf(color));
+                    frameLayoutTright.setBackgroundTintList(ColorStateList.valueOf(color));
+                }
+                ImageView iconBleft = itemView.findViewById(R.id.nh_floating_icon_bleft);
+                switch (preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE)) {
+                    case 2:
+                        iconBleft.setImageResource(R.drawable.ic_iz_bell_ring);
+                        iconBleft.setColorFilter(Color.WHITE);
+                        break;
+                    case 3:
+                        iconBleft.setImageResource(R.drawable.ic_iz_lighting);
+                        iconBleft.setColorFilter(Color.WHITE);
+                        break;
+                    case 4:
+                        iconBleft.setImageResource(R.drawable.ic_iz_shout_out);
+                        iconBleft.setColorFilter(Color.WHITE);
+                        break;
+                    case 5:
+                        iconBleft.setImageResource(R.drawable.ic_iz_megaphone);
+                        iconBleft.setColorFilter(Color.WHITE);
+                        break;
+                    default:
+                        iconBleft.setImageResource(R.drawable.ic_iz_defualt_newshub);
+                        iconBleft.setColorFilter(Color.WHITE);
+                        break;
+                }
+
+                ImageView iconBright = itemView.findViewById(R.id.nh_floating_icon_bright);
+                switch (preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE)) {
+                    case 2:
+                        iconBright.setImageResource(R.drawable.ic_iz_bell_ring);
+                        iconBright.setColorFilter(Color.WHITE);
+                        break;
+                    case 3:
+                        iconBright.setImageResource(R.drawable.ic_iz_lighting);
+                        iconBright.setColorFilter(Color.WHITE);
+                        break;
+                    case 4:
+                        iconBright.setImageResource(R.drawable.ic_iz_shout_out);
+                        iconBright.setColorFilter(Color.WHITE);
+                        break;
+                    case 5:
+                        iconBright.setImageResource(R.drawable.ic_iz_megaphone);
+                        iconBright.setColorFilter(Color.WHITE);
+                        break;
+                    default:
+                        iconBright.setImageResource(R.drawable.ic_iz_defualt_newshub);
+                        iconBright.setColorFilter(Color.WHITE);
+                        break;
+                }
+
+                ImageView iconTleft = itemView.findViewById(R.id.nh_floating_icon_tleft);
+                switch (preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE)) {
+                    case 2:
+                        iconTleft.setImageResource(R.drawable.ic_iz_bell_ring);
+                        iconTleft.setColorFilter(Color.WHITE);
+                        break;
+                    case 3:
+                        iconTleft.setImageResource(R.drawable.ic_iz_lighting);
+                        iconTleft.setColorFilter(Color.WHITE);
+                        break;
+                    case 4:
+                        iconTleft.setImageResource(R.drawable.ic_iz_shout_out);
+                        iconTleft.setColorFilter(Color.WHITE);
+                        break;
+                    case 5:
+                        iconTleft.setImageResource(R.drawable.ic_iz_megaphone);
+                        iconTleft.setColorFilter(Color.WHITE);
+                        break;
+                    default:
+                        iconTleft.setImageResource(R.drawable.ic_iz_defualt_newshub);
+                        iconTleft.setColorFilter(Color.WHITE);
+                        break;
+                }
+
+                ImageView iconTright = itemView.findViewById(R.id.nh_floating_icon_tright);
+                switch (preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE)) {
+                    case 2:
+                        iconTright.setImageResource(R.drawable.ic_iz_bell_ring);
+                        iconTright.setColorFilter(Color.WHITE);
+                        break;
+                    case 3:
+                        iconTright.setImageResource(R.drawable.ic_iz_lighting);
+                        iconTright.setColorFilter(Color.WHITE);
+                        break;
+                    case 4:
+                        iconTright.setImageResource(R.drawable.ic_iz_shout_out);
+                        iconTright.setColorFilter(Color.WHITE);
+                        break;
+                    case 5:
+                        iconTright.setImageResource(R.drawable.ic_iz_megaphone);
+                        iconTright.setColorFilter(Color.WHITE);
+                        break;
+                    default:
+                        iconTright.setImageResource(R.drawable.ic_iz_defualt_newshub);
+                        iconTright.setColorFilter(Color.WHITE);
+                        break;
+                }
+
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean("changeHybridFloatingActionDynamically")) {
+                    preferenceUtil.setBooleanData("changeHybridFloatingActionDynamically", true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "changeHybridFloatingActionDynamically");
+                }
+            }
+        }
+    }
+
+    private static void changeFloatingActionDynamically(Context context, FloatingActionButton floatingActionButton) {
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+
+            try {
+
+                if (!preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR).isEmpty()) {
+                    int color = Color.parseColor(preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR));
+                    floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(color));
+                }
+                switch (preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE)) {
+                    case 2:
+                        floatingActionButton.setImageResource(R.drawable.ic_iz_bell_ring);
+                        floatingActionButton.setColorFilter(Color.WHITE);
+                        break;
+                    case 3:
+                        floatingActionButton.setImageResource(R.drawable.ic_iz_lighting);
+                        floatingActionButton.setColorFilter(Color.WHITE);
+                        break;
+                    case 4:
+                        floatingActionButton.setImageResource(R.drawable.ic_iz_shout_out);
+                        floatingActionButton.setColorFilter(Color.WHITE);
+                        break;
+                    case 5:
+                        floatingActionButton.setImageResource(R.drawable.ic_iz_megaphone);
+                        floatingActionButton.setColorFilter(Color.WHITE);
+                        break;
+                    default:
+                        floatingActionButton.setImageResource(R.drawable.ic_iz_defualt_newshub);
+                        floatingActionButton.setColorFilter(Color.WHITE);
+                        break;
+                }
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean("changeFloatingActionDynamically")) {
+                    preferenceUtil.setBooleanData("changeFloatingActionDynamically", true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "changeFloatingActionDynamically");
+                }
+            }
+        }
+    }
+
+    private static void setStickyButton(Context context, RelativeLayout view) {
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            if (view != null) {
+                @SuppressLint("InflateParams")
+                View itemView = LayoutInflater.from(context).inflate(R.layout.nh_sticky_bar, null, false);
+                changeDynamicStickyBar(context, itemView);
+                FrameLayout stickyBarRight = itemView.findViewById(R.id.sticky_barRight);
+                FrameLayout stickyBarLeft = itemView.findViewById(R.id.sticky_barLeft);
+
+                try {
+                    JSONArray jsonArray = null;
+                    String placement = preferenceUtil.getPlacement(AppConstant.JSON_NEWS_HUB_PLACEMENT);
+                    if (placement != null && !placement.isEmpty()) {
+                        jsonArray = new JSONArray(placement);
+
+                        if (((int) jsonArray.get(0)) == 1 && ((int) jsonArray.get(1)) == 0) {
+                            stickyBarLeft.setVisibility(View.VISIBLE);
+                            stickyBarRight.setVisibility(View.GONE);
+
+                            stickyBarLeft.setOnClickListener(v -> {
+                                boolean isFullScreen = preferenceUtil.getBoolean(AppConstant.JSON_NEWS_HUB_IS_FULL_SCREEN);
+                                if (isFullScreen) {
+                                    Intent intent = new Intent(context, NewsHubActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(intent);
+                                } else {
+                                    NewsHubAlert newsHubAlert = new NewsHubAlert();
+                                    newsHubAlert.showAlertData((Activity) context);
+                                }
+                                setNewsHubOpenApi(context, 2);
+                            });
+                        } else if (((int) jsonArray.get(0)) == 1 && ((int) jsonArray.get(1)) == 1) {
+
+                            stickyBarLeft.setVisibility(View.GONE);
+                            stickyBarRight.setVisibility(View.VISIBLE);
+
+                            stickyBarRight.setOnClickListener(v -> {
+                                boolean isFullScreen = preferenceUtil.getBoolean(AppConstant.JSON_NEWS_HUB_IS_FULL_SCREEN);
+                                if (isFullScreen) {
+                                    Intent intent = new Intent(context, NewsHubActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    context.startActivity(intent);
+                                } else {
+                                    NewsHubAlert newsHubAlert = new NewsHubAlert();
+                                    newsHubAlert.showAlertData((Activity) context);
+                                }
+                                setNewsHubOpenApi(context, 2);
+                            });
+                        }
+
+                    } else {
+                        stickyBarLeft.setVisibility(View.GONE);
+                        stickyBarRight.setVisibility(View.VISIBLE);
+                    }
+
+                    view.addView(itemView);
+                } catch (Exception e) {
+                    if (!preferenceUtil.getBoolean("setStickyButton")) {
+                        preferenceUtil.setBooleanData("setStickyButton", true);
+                        Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setStickyButton");
+                    }
+                }
+
+            } else {
+                Intent intent = new Intent(context, NewsHubActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                setNewsHubOpenApi(context, 0);
+            }
+        }
+
+    }
+
+    @SuppressLint({"NewApi", "SetTextI18n"})
+    private static void changeDynamicStickyBar(Context context, View itemView) {
+
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+
+                FrameLayout frameLayout = itemView.findViewById(R.id.sticky_barLeft);
+                if (!preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR).isEmpty()) {
+                    int color = Color.parseColor(preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR));
+                    frameLayout.setBackgroundTintList(ColorStateList.valueOf(color));
+                }
+
+                ImageView icon_newHub = itemView.findViewById(R.id.newsHub_icon);
+                TextView title = itemView.findViewById(R.id.news_hub_title);
+
+                String textTitle = preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_TITLE);
+                String textColor = preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_TITLE_COLOR);
+                if (textColor != null && !textColor.isEmpty()) {
+                    title.setTextColor(Color.parseColor(Util.getColorCode(textColor)));
+                } else {
+                    title.setTextColor(Color.WHITE);
+                }
+                if (textTitle != null && !textTitle.isEmpty()) {
+                    int headerLength = textTitle.length();
+                    if (headerLength > 20) {
+                        title.setText(textTitle.substring(0, 20));
+                    } else {
+                        title.setText(textTitle);
+                    }
+                } else {
+                    title.setText("News Hub");
+                }
+
+                ViewTreeObserver vto1 = frameLayout.getViewTreeObserver();
+                vto1.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        frameLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        RelativeLayout mainScreen = itemView.findViewById(R.id.mainLayout);
+                        int layoutHeight = frameLayout.getMeasuredHeight();
+                        int mainHeight = mainScreen.getMeasuredHeight();
+                        if (textTitle != null && textTitle.length() < 20) {
+                            frameLayout.setY((mainHeight / 2f) - (layoutHeight * 1.9f));
+                        } else {
+                            frameLayout.setY((mainHeight / 2f) - (layoutHeight * 1.4f));
+                        }
+                    }
+                });
+
+                switch (preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE)) {
+
+                    case 2:
+                        icon_newHub.setImageResource(R.drawable.ic_iz_bell_ring);
+                        icon_newHub.setColorFilter(Color.WHITE);
+                        break;
+                    case 3:
+                        icon_newHub.setImageResource(R.drawable.ic_iz_lighting);
+                        icon_newHub.setColorFilter(Color.WHITE);
+                        break;
+                    case 4:
+                        icon_newHub.setImageResource(R.drawable.ic_iz_shout_out);
+                        icon_newHub.setColorFilter(Color.WHITE);
+                        break;
+                    case 5:
+                        icon_newHub.setImageResource(R.drawable.ic_iz_megaphone);
+                        icon_newHub.setColorFilter(Color.WHITE);
+                        break;
+                    default:
+                        icon_newHub.setImageResource(R.drawable.ic_iz_defualt_newshub);
+                        icon_newHub.setColorFilter(Color.WHITE);
+                        break;
+                }
+                FrameLayout frameLayout1 = itemView.findViewById(R.id.sticky_barRight);
+
+                ViewTreeObserver vto = frameLayout1.getViewTreeObserver();
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        frameLayout1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        RelativeLayout mainScreen = itemView.findViewById(R.id.mainLayout);
+                        int layoutHeight = frameLayout1.getMeasuredHeight();
+                        int mainWidth = mainScreen.getMeasuredWidth();
+                        int mainHeight = mainScreen.getMeasuredHeight();
+                        frameLayout1.setX(mainWidth - layoutHeight);
+                        if (textTitle != null && textTitle.length() < 20) {
+                            frameLayout1.setY((mainHeight / 2f) - (layoutHeight * 1.9f));
+                        } else {
+                            frameLayout1.setY((mainHeight / 2f) - (layoutHeight * 1.4f));
+                        }
+
+                    }
+                });
+                if (!preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR).isEmpty()) {
+                    int color = Color.parseColor(preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_COLOR));
+                    frameLayout1.setBackgroundTintList(ColorStateList.valueOf(color));
+                }
+                ImageView icon_newHub1 = itemView.findViewById(R.id.newsHub_icon1);
+                TextView title1 = itemView.findViewById(R.id.news_hub_title1);
+
+                if (textColor != null && !textColor.isEmpty()) {
+                    title1.setTextColor(Color.parseColor(Util.getColorCode(textColor)));
+                } else {
+                    title1.setTextColor(Color.WHITE);
+                }
+                if (textTitle != null && !textTitle.isEmpty()) {
+                    int headerLength = textTitle.length();
+                    if (headerLength > 20) {
+                        title1.setText(textTitle.substring(0, 20));
+                    } else {
+                        title1.setText(textTitle);
+                    }
+                } else {
+                    title1.setText("News Hub");
+                }
+
+                switch (preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_ICON_TYPE)) {
+
+                    case 2:
+                        icon_newHub1.setImageResource(R.drawable.ic_iz_bell_ring);
+                        icon_newHub1.setColorFilter(Color.WHITE);
+                        break;
+                    case 3:
+                        icon_newHub1.setImageResource(R.drawable.ic_iz_lighting);
+                        icon_newHub1.setColorFilter(Color.WHITE);
+                        break;
+                    case 4:
+                        icon_newHub1.setImageResource(R.drawable.ic_iz_shout_out);
+                        icon_newHub1.setColorFilter(Color.WHITE);
+                        break;
+                    case 5:
+                        icon_newHub1.setImageResource(R.drawable.ic_iz_megaphone);
+                        icon_newHub1.setColorFilter(Color.WHITE);
+                        break;
+                    default:
+                        icon_newHub1.setImageResource(R.drawable.ic_iz_defualt_newshub);
+                        icon_newHub1.setColorFilter(Color.WHITE);
+                        break;
+                }
+            } catch (Exception ex) {
+                if (!preferenceUtil.getBoolean("changeDynamicStickyBar")) {
+                    preferenceUtil.setBooleanData("changeDynamicStickyBar", true);
+                    Util.setException(context, ex.toString(), AppConstant.APP_NAME_TAG, "changeDynamicStickyBar");
+                }
+            }
+        }
+
+    }
+    public static void setNewsHub(Context context, RelativeLayout view) {
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+                Thread.sleep(2000);
+                String appId = preferenceUtil.getiZootoID(AppConstant.APPPID);
+                if (appId != null && !appId.isEmpty()) {
+                    int newsHubStatus = preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_STATUS);
+                    int designType = preferenceUtil.getIntData(AppConstant.JSON_NEWS_HUB_DESIGN_TYPE);
+                    if (newsHubStatus == 1) {
+                        if (designType == 1) {
+                            setFloatingButton(context, view);
+                            if (view != null) {
+                                setNewsHubImpressionApi(context, designType);
+                            }
+                        } else if (designType == 2) {
+                            setStickyButton(context, view);
+                            if (view != null) {
+                                setNewsHubImpressionApi(context, designType);
+                            }
+                        } else
+                            Log.e(AppConstant.APP_NAME_TAG, "No widget type is defined!");
+                    } else {
+                        Log.e(AppConstant.APP_NAME_TAG, "NewsHub disabled!");
+                    }
+
+                } else {
+                    Log.e(AppConstant.APP_NAME_TAG, "iZooto initialization failed!");
+                }
+
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean(AppConstant.IZ_NEWS_HUB)) {
+                    preferenceUtil.setBooleanData(AppConstant.IZ_NEWS_HUB, true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setNewsHub");
+                }
+            }
+        }
+    }
+    private static void setNewsHubImpressionApi(Context context, int wt) {
+
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+
+                String iZootoAppId = preferenceUtil.getiZootoID(AppConstant.APPPID);
+                HashMap<String, String> newsHubData = new HashMap<>();
+                newsHubData.put(APPPID, iZootoAppId);
+                newsHubData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
+                newsHubData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
+                newsHubData.put(ANDROID_ID, Util.getAndroidId(context));
+                newsHubData.put(AppConstant.OP, AppConstant.NEWS_HUB_VIEW);
+                newsHubData.put(AppConstant.SDK_VER, AppConstant.SDKVERSION);
+                newsHubData.put(AppConstant.WIDGET_TYPE, String.valueOf(wt));
+                newsHubData.put(AppConstant.MST, "1");
+
+                RestClient.postRequest(RestClient.NEWS_HUB_IMPRESSION_URL, newsHubData, null, new RestClient.ResponseHandler() {
+                    @Override
+                    void onSuccess(String response) {
+                        super.onSuccess(response);
+                    }
+
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                    }
+                });
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean("setNewsHubImpressionApi")) {
+                    preferenceUtil.setBooleanData("setNewsHubImpressionApi", true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setNewsHubImpressionApi");
+                }
+            }
+        }
+
+    }
+    private static void setNewsHubOpenApi(Context context, int wt) {
+        if (context != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            try {
+                String iZootoAppId = preferenceUtil.getiZootoID(AppConstant.APPPID);
+                HashMap<String, String> newsHubData = new HashMap<>();
+                newsHubData.put(APPPID, iZootoAppId);
+                newsHubData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
+                newsHubData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
+                newsHubData.put(ANDROID_ID, Util.getAndroidId(context));
+                newsHubData.put(AppConstant.OP, AppConstant.OPEN);
+                newsHubData.put(AppConstant.SDK_VER, AppConstant.SDKVERSION);
+                newsHubData.put(AppConstant.WIDGET_TYPE, String.valueOf(wt));
+                newsHubData.put(AppConstant.MST, "1");
+
+                RestClient.postRequest(RestClient.NEWS_HUB_OPEN_URL, newsHubData, null, new RestClient.ResponseHandler() {
+                    @Override
+                    void onSuccess(String response) {
+                        super.onSuccess(response);
+                    }
+
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                    }
+                });
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean("setNewsHubOpenApi")) {
+                    preferenceUtil.setBooleanData("setNewsHubOpenApi", true);
+                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setNewsHubOpenApi");
+                }
+            }
+        }
+
+    }
+
+    private static void setNewsHubActivity(Activity activity) {
+        newsHubContext = activity;
+    }
+
 }
 

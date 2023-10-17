@@ -29,6 +29,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.1.2'
     compileOnly 'com.huawei.hms:push:6.7.0.300'
     testImplementation 'org.testng:testng:7.4.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
     implementation files('libs/MiPush_SDK_Client_5_1_1-G.jar')
 
 

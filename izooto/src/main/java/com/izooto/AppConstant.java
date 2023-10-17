@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.0.3";
+    String SDKVERSION="2.0.4";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -331,7 +331,34 @@ public interface AppConstant {
     String IZ_LISTENER_KEY = "nDismiss";
     String IZ_TIMER_MESSAGE = "getTimerValue";
     String IZ_TIMER_VALUE_MESSAGE = "Timer values exceed on maximum seconds or minimum seconds";
+// new hub
 
+    // NewsHub
+    String OP="op";
+    String NEWS_HUB_VIEW="wview";
+    String OPEN="wopen";
+    String SDK_VER="sv";
+    String WIDGET_TYPE = "wt";
+    String MST = "mst";
+    String NEWS_HUB_CAMPAIGN ="0";
+    String JSON_NEWS_HUB = "newsHub";
+    String IZ_NEWS_HUB = "iZ_NewsHub";
+    String SET_PAGE_NO = "izPageNo";
+    String NEWS_HUB_B_KEY = "branding";
+    String JSON_NEWS_HUB_STATUS = "newsHubStatus";
+    String JSON_NEWS_HUB_TITLE = "title";
+    String JSON_NEWS_HUB_TITLE_COLOR = "titleColor";
+    String JSON_NEWS_HUB_ICON_TYPE = "newsHubIconType";
+    String JSON_NEWS_HUB_COLOR = "newsHubColor";
+    String JSON_NEWS_HUB_IS_FULL_SCREEN = "newsHubIsFullScreen";
+    String JSON_NEWS_HUB_IS_DESCRIPTION = "newsHubIsDescription";
+    String JSON_NEWS_HUB_BRANDING = "newsHubBranding";
+    String JSON_NEWS_HUB_WIDGET = "newsHubWidget";
+    String JSON_NEWS_HUB_FALLBACK_IMAGE_URL = "newsHubFallbakImageUrl";
+    String SET_JSON_NEWS_HUB = "izSetJsonNewsHub";
+    String NEWS_HUB_IZOOTO_BRANDING = "https://www.izooto.com/campaign/getting-started-with-izooto?utm_source=referral&utm_medium=news_hub&utm_campaign=";
+    String JSON_NEWS_HUB_DESIGN_TYPE = "newsHubDesignType";
+    String JSON_NEWS_HUB_PLACEMENT = "newsHubPlacement";
 }
 
 

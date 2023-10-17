@@ -67,5 +67,6 @@ public interface ShortpayloadConstant {
     String EXPIRY_TIMER_VALUE ="et";
     String MAKE_STICKY_NOTIFICATION ="ri";
 
+    String OFFLINE_CAMPAIGN ="o";
 
 }
