@@ -132,12 +132,14 @@ class NewsHubDBHelper extends SQLiteOpenHelper {
                   // on below line we are creating a variable for
                   // our sqlite database and calling writable method
                   // as we are writing data in our database.
+                if(payload.getLink()== null && payload.getLink().isEmpty())
+                    return;
+
                   SQLiteDatabase db = this.getWritableDatabase();
                   Cursor cursor = db.rawQuery("SELECT * FROM sqlite_master WHERE name ='" + TABLE_NAME + "' and type='table'", null);
 
                   if (cursor.getCount() > 0) {
                       if (checkIdExist(payload.getRid())) {
-//                    Log.e(TAG, "addNewsHubPayload: record exist ----- " + payload.getRid());
                           db.close();
                           cursor.close();
                           return;

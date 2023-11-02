@@ -257,23 +257,20 @@ import java.util.ArrayList;
                                   mPayload.setFallBackPath(jsonObject1.optString(ShortpayloadConstant.FAll_BACK_PATH));
                                   mPayload.setDefaultNotificationPreview(jsonObject1.optInt(ShortpayloadConstant.TEXTOVERLAY));
                                   mPayload.setNotification_bg_color(jsonObject1.optString(ShortpayloadConstant.BGCOLOR));
-
-
-                                  if (mPayload.getOfflineCampaign() != null && !mPayload.getOfflineCampaign().isEmpty()) {
-                                      preferenceUtil.setStringData(ShortpayloadConstant.OFFLINE_CAMPAIGN, mPayload.getOfflineCampaign());
-                                  } else {
-                                      newsHubDBHelper.addNewsHubPayload(mPayload);
-                                  }
-
-                                  if (mPayload.getLink() != null && !mPayload.getLink().isEmpty()) {
-                                      String campaigns = preferenceUtil.getStringData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
-                                      if (campaigns != null && campaigns.equals(AppConstant.NEWS_HUB_CAMPAIGN)) {
-                                          newsHubDBHelper.addNewsHubPayload(mPayload);
-                                      } else {
-                                          Log.e("campaigns", "...");
+                                  mPayload.setOfflineCampaign(jsonObject1.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
+                                  if (Util.getValidIdForCampaigns(mPayload)) {
+                                      if (mPayload.getLink() != null && !mPayload.getLink().isEmpty()) {
+                                          try {
+                                              newsHubDBHelper.addNewsHubPayload(mPayload);
+                                          }
+                                          catch (Exception ex)
+                                          {
+                                              Log.e("Database issues occured","");
+                                          }
                                       }
-
                                   }
+
+
                                   // on below line we are extracting data from our json object.
 
                                   // passing array list to our adapter class.

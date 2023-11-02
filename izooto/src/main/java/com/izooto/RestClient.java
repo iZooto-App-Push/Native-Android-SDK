@@ -1,10 +1,4 @@
 package com.izooto;
-
-
-
-
-import android.util.Log;
-
 import org.json.JSONObject;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -16,6 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 public class RestClient {
      //production url
      static final String BASE_URL = "https://aevents.izooto.com/app";
@@ -45,11 +40,7 @@ public class RestClient {
         return timeout + 5000;
     }
      static void get(final String url, final ResponseHandler responseHandler) {
-        new Thread(new Runnable() {
-            public void run() {
-                makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT);
-            }
-        }).start();
+        new Thread(() -> makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT)).start();
     }
     static void getRequest(final String url, final int timeOut,final ResponseHandler responseHandler) {
         new Thread(new Runnable() {
@@ -160,7 +151,7 @@ public class RestClient {
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + data, "[Log.V]->URL");
                     }
                     if(jsonBody!=null) {
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + jsonBody.toString(), "[Log.V]->URL");
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + jsonBody, "[Log.V]->URL");
                     }
                     if (url.equals(AppConstant.CDN + iZooto.mIzooToAppId + AppConstant.DAT))
                         Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);

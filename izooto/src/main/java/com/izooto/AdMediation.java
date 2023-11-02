@@ -123,6 +123,7 @@ public class AdMediation {
                             payload.setAdTimeOut(payloadObj.optInt(ShortpayloadConstant.AD_TIME_OUT));
                             payload.setCreated_Time(jsonObject.optString(ShortpayloadConstant.CREATEDON));
                             payload.setPush_type(pushType);
+                            payload.setMakeStickyNotification(jsonObject.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
                             payload.setDefaultNotificationPreview(jsonObject.optInt(ShortpayloadConstant.TEXTOVERLAY));
                             if (payload.getPassive_flag().equalsIgnoreCase("1") && jsonObject.optString(AppConstant.AD_TYPE).equalsIgnoreCase("6")) {
                                 passiveList.add(payload);
@@ -1119,7 +1120,6 @@ public class AdMediation {
                 finalData.put("type", payload.getAd_type());
                 finalData.put("ta", (end - payload.getStartTime()));
                 finalData.put("av",AppConstant.SDKVERSION);
-
                 JSONObject servedObject = new JSONObject();
                 servedObject.put("a", 0);
                 servedObject.put("b", 0);

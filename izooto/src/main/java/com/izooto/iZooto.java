@@ -48,6 +48,8 @@ import static com.izooto.AppConstant.HUAWEI_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.PID;
 import static com.izooto.AppConstant.TAG;
 import static com.izooto.AppConstant.XIAOMI_TOKEN_FROM_JSON;
+import static com.izooto.NewsHubAlert.newsHubDBHelper;
+
 @SuppressWarnings("unchecked")
 public class iZooto {
     static Context appContext;
@@ -1366,7 +1368,18 @@ private static void runNotificationOpenedCallback() {
                     payload.setRv(payloadObj.optString(ShortpayloadConstant.RV));
                     payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
                     payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
-
+                    payload.setOfflineCampaign(payloadObj.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
+                    if (Util.getValidIdForCampaigns(payload)) {
+                        if (payload.getLink() != null && !payload.getLink().isEmpty()) {
+                            try {
+                                newsHubDBHelper.addNewsHubPayload(payload);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.e("Database issues occured","");
+                            }
+                        }
+                    }
 
                 } else {
                     String updateDaily=NotificationEventManager.getDailyTime(context);

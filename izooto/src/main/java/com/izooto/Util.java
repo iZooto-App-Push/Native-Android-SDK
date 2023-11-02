@@ -1,7 +1,6 @@
 package com.izooto;
 
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -35,23 +34,14 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
-
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,14 +50,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
 import static com.izooto.ShortpayloadConstant.TAG;
 
 
@@ -863,4 +850,22 @@ public class Util {
             e.printStackTrace();
         }
     }
+    protected static boolean getValidIdForCampaigns(Payload payload){
+        boolean checkValid;
+        if(payload.getRid().startsWith("7") || payload.getRid().startsWith("6"))
+        {
+            checkValid = false;
+        }
+        else
+        {
+            checkValid = true;
+        }
+        return checkValid;
+
+    }
+    static boolean enableStickyNotification(Payload payload){
+        return payload.getMakeStickyNotification() != null &&
+                !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1");
+    }
+
 }

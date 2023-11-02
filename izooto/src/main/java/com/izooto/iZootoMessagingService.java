@@ -246,24 +246,17 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
                     payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
                     payload.setOfflineCampaign(payloadObj.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
-
-                    if (payload.getOfflineCampaign() != null && !payload.getOfflineCampaign().isEmpty()) {
-                        preferenceUtil.setStringData(ShortpayloadConstant.OFFLINE_CAMPAIGN, payload.getOfflineCampaign());
-                    } else {
-                        newsHubDBHelper.addNewsHubPayload(payload);
-                    }
-
-                    if (payload.getLink() != null && !payload.getLink().isEmpty()) {
-                        String campaigns = preferenceUtil.getStringData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
-                        if (campaigns != null && campaigns.equals(AppConstant.NEWS_HUB_CAMPAIGN)) {
-                            newsHubDBHelper.addNewsHubPayload(payload);
-                        } else {
-                            Log.e("offlineCampaign", "...");
+                    if (Util.getValidIdForCampaigns(payload)) {
+                        if (payload.getLink() != null && !payload.getLink().isEmpty()) {
+                            try {
+                                newsHubDBHelper.addNewsHubPayload(payload);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.e("Database issues occured","");
+                            }
                         }
-
                     }
-
-
                 } else {
                     String updateDaily=NotificationEventManager.getDailyTime(this);
                     if (!updateDaily.equalsIgnoreCase(Util.getTime())) {

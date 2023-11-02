@@ -702,7 +702,9 @@ public class NotificationEventManager {
                         .setContentIntent(pendingIntent)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(payload.getMessage()))
                         .setVisibility(lockScreenVisibility)
+                        .setOngoing(Util.enableStickyNotification(payload))
                         .setAutoCancel(true);
+
                 try {
                     BigInteger accentColor = Util.getAccentColor();
                     if (accentColor != null)
@@ -723,13 +725,13 @@ public class NotificationEventManager {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
                     if (payload.getGroup() == 1) {
                         notificationBuilder.setGroup(payload.getGroupKey());
-
                         summaryNotification =
                                 new NotificationCompat.Builder(iZooto.appContext, channelId)
                                         .setContentTitle(payload.getTitle())
                                         .setContentText(payload.getMessage())
                                         .setSmallIcon(getDefaultSmallIconId())
                                         .setColor(badgeColor)
+                                        .setOngoing(Util.enableStickyNotification(payload))
                                         .setStyle(new NotificationCompat.InboxStyle()
                                                 .addLine(payload.getMessage())
                                                 .setBigContentTitle(payload.getGroupMessage()))
@@ -822,6 +824,30 @@ public class NotificationEventManager {
                                     pendingIntent).build();
                     notificationBuilder.addAction(action2);
                 }
+                // add third button for close
+                try {
+                    if (payload.getMakeStickyNotification() != null && !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1")) {
+                        preferenceUtil.setStringData(AppConstant.TP_TYPE, AppConstant.TYPE_P);
+                        Intent btn3 = NotificationPreview.dismissedNotification(payload, notificationId, 3);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            btn3.setPackage(Util.getPackageName(iZooto.appContext));
+                            pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, notificationId, btn3, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                        } else {
+                            pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, notificationId, btn3, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                        }
+
+                        NotificationCompat.Action action3 =
+                                new NotificationCompat.Action.Builder(
+                                        0, iZooto.appContext.getResources().getString(R.string.iz_cta_dismissed),
+                                        pendingIntent).build();
+                        notificationBuilder.addAction(action3);
+                    }
+                }catch (Exception e){
+                    // Handle the exceptions here
+                }
+
                 assert notificationManager != null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel channel;
@@ -1071,6 +1097,7 @@ public class NotificationEventManager {
                         .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                         .setCustomContentView(collapsedView)
                         .setCustomBigContentView(expandedView)
+                        .setOngoing(Util.enableStickyNotification(payload))
                         .setAutoCancel(true);
 
                 try {
@@ -1114,6 +1141,7 @@ public class NotificationEventManager {
                                                     .setBigContentTitle(payload.getGroupMessage()))
                                             .setGroup(payload.getGroupKey())
                                             .setGroupSummary(true)
+                                            .setOngoing(Util.enableStickyNotification(payload))
                                             .build();
                         }else {
                             notificationBuilder.setGroup(payload.getGroupKey());
@@ -1124,6 +1152,7 @@ public class NotificationEventManager {
                                             .setContentText(payload.getMessage())
                                             .setSmallIcon(getDefaultSmallIconId())
                                             .setColor(badgeColor)
+                                            .setOngoing(Util.enableStickyNotification(payload))
                                             .setStyle(new NotificationCompat.InboxStyle()
                                                     .addLine(payload.getMessage())
                                                     .setBigContentTitle(payload.getGroupMessage()))
@@ -1180,21 +1209,39 @@ public class NotificationEventManager {
                     Intent btn2 = notificationClick(payload,payload.getAct2link(),payload.getLink(),payload.getAct1link(),phone,clickIndex,lastView_Click,notificationID,2);
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn2.setPackage(Util.getPackageName(iZooto.appContext));
-
                         pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
                     }
                     else
                     {
                         pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
                     }
                     NotificationCompat.Action action2 =
-                            new NotificationCompat.Action.Builder(
-                                    R.drawable.transparent_image,payload.getAct2name().replace("~",""),
-                                    pendingIntent).build();
+                            new NotificationCompat.Action.Builder(R.drawable.transparent_image,payload.getAct2name().replace("~",""), pendingIntent).build();
                     notificationBuilder.addAction(action2);
                 }
+                //add third button
+                try {
+                    if (payload.getMakeStickyNotification() != null && !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1")) {
+                        preferenceUtil.setStringData(AppConstant.TP_TYPE, AppConstant.TYPE_P);
+                        Intent cancelIntent = NotificationPreview.dismissedNotification(payload, notificationID, 3);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            cancelIntent.setPackage(Util.getPackageName(iZooto.appContext));
+                            pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, notificationID, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        } else {
+                            pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, notificationID, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        }
+                        NotificationCompat.Action button3 =
+                                new NotificationCompat.Action.Builder(
+                                        R.drawable.transparent_image, iZooto.appContext.getResources().getString(R.string.iz_cta_dismissed),
+                                        pendingIntent).build();
+                        notificationBuilder.addAction(button3);
+
+                    }
+                }catch (Exception e){
+                    // Handle the exceptions here
+                }
+
+
                 assert notificationManager != null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel channel;
