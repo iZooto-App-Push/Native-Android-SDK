@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.0.5";
+    String SDKVERSION="2.0.6";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -326,13 +326,11 @@ public interface AppConstant {
     String TYPE_O="o";
     String P_OP="op";
     String DISMISSED="dismiss";
-
     String IZ_LISTENER_ERROR = "Notification dismiss listener is not working";
     String IZ_LISTENER_KEY = "nDismiss";
     String IZ_TIMER_MESSAGE = "getTimerValue";
     String IZ_TIMER_VALUE_MESSAGE = "Timer values exceed on maximum seconds or minimum seconds";
 // new hub
-
     // NewsHub
     String OP="op";
     String NEWS_HUB_VIEW="wview";
@@ -359,6 +357,8 @@ public interface AppConstant {
     String NEWS_HUB_IZOOTO_BRANDING = "https://www.izooto.com/campaign/getting-started-with-izooto?utm_source=referral&utm_medium=news_hub&utm_campaign=";
     String JSON_NEWS_HUB_DESIGN_TYPE = "newsHubDesignType";
     String JSON_NEWS_HUB_PLACEMENT = "newsHubPlacement";
+    String IZ_LANDING_URL = "ln";
+    String IZ_DEEPLINK_URL = "ap";
 }
 
 

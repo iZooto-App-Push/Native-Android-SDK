@@ -28,11 +28,11 @@ public class TargetActivity extends Activity {
     private  String cid;
     private int btnCount;
     private String api_url;
-    private String additionalData;
+    private static String additionalData;
     private String phoneNumber;
     private String act1ID;
     private String act2ID;
-    private String landingURL;
+    private static String landingURL;
     private String act2URL;
     private String act1URL;
     private String btn1Title;
@@ -391,6 +391,8 @@ public class TargetActivity extends Activity {
             mapData.put(AppConstant.RID_,"" + rid);
             mapData.put(AppConstant.PUSH, pushType);
             mapData.put("op","click");
+            mapData.put(AppConstant.IZ_LANDING_URL, landingURL);
+            mapData.put(AppConstant.IZ_DEEPLINK_URL, additionalData);
             if (btnCount != 0)
                 mapData.put("btn","" + btnCount);
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,mapData.toString(),"clickData");
