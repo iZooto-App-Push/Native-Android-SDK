@@ -171,7 +171,6 @@ public class Util {
                 }
             } else {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext, url, "[Log-> e]->getBitmapFromURL");
-                Util.setException(iZooto.appContext, "Error" + url, "Utils", "getBitmapURL");
                 return null;
             }
         }
