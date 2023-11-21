@@ -36,6 +36,8 @@
 -keep public class com.izooto.NotificationReceiveHybridListener{*;}
 -keep public class com.izooto.TokenReceivedListener{*;}
 -keep public class com.izooto.Payload{*;}
+-repackageclasses 'com.izooto'
+-useuniqueclassmembernames
 
 
 
