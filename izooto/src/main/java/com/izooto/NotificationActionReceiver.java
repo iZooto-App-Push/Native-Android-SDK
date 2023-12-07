@@ -45,6 +45,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     public  static  String medClick="";
     private String pushType;
     private int cfg;
+    private  static  String notificationTitle;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -438,6 +439,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 pushType=tempBundle.getString(AppConstant.PUSH);
             if(tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
                 cfg=tempBundle.getInt(AppConstant.CFGFORDOMAIN);
+            if(tempBundle.containsKey(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME))
+                notificationTitle=tempBundle.getString(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME);
 
 
 
@@ -464,6 +467,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             mapData.put("op","click");
             mapData.put(AppConstant.IZ_LANDING_URL, landingURL);
             mapData.put(AppConstant.IZ_DEEPLINK_URL, additionalData);
+            mapData.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME,notificationTitle);
             if (btnCount != 0)
                 mapData.put("btn","" + btnCount);
             DebugFileManager.createExternalStoragePublic(context,mapData.toString(),"clickData");

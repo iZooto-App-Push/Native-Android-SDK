@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.0.7";
+    String SDKVERSION="2.0.8";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -359,6 +359,8 @@ public interface AppConstant {
     String JSON_NEWS_HUB_PLACEMENT = "newsHubPlacement";
     String IZ_LANDING_URL = "ln";
     String IZ_DEEPLINK_URL = "ap";
+
+    String IZ_NOTIFICATION_TITLE_KEY_NAME="ti";
 }
 
 

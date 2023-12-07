@@ -582,6 +582,7 @@ public class NotificationPreview {
         intent.putExtra(AppConstant.LASTCLICKINDEX, lastClick);
         intent.putExtra(AppConstant.PUSH,payload.getPush_type());
         intent.putExtra(AppConstant.CFGFORDOMAIN, payload.getCfg());
+        intent.putExtra(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME,payload.getTitle());
         return intent;
     }
     private static String getFinalUrl(Payload payload) {

@@ -136,7 +136,6 @@ public class iZooto {
                                     String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
                                     mIzooToAppId = jsonObject.optString(APPPID);
                                     String newsHub =jsonObject.optString(AppConstant.JSON_NEWS_HUB);//"{\"designType\":1,\"mainColor\":\"#1D85FC\",\"iconType\":1,\"isFullScreen\":true,\"placement\":[0,1],\"title\":\"News Hub\",\"status\":1}";//jsonObject.optString(AppConstant.JSON_NEWS_HUB);
-
                                     preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
                                     try {
                                         int brand_key = jsonObject.optInt(AppConstant.NEWS_HUB_B_KEY);

@@ -46,6 +46,8 @@ public class TargetActivity extends Activity {
     public static String mWebViewClick;
     public static boolean isRunningApp = false;
     static  boolean isDeepLinkCheck = false;
+
+    private  static  String notificationTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -367,6 +369,8 @@ public class TargetActivity extends Activity {
                 pushType=tempBundle.getString(AppConstant.PUSH);
             if(tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
                 cfg=tempBundle.getInt(AppConstant.CFGFORDOMAIN);
+            if(tempBundle.containsKey(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME))
+                notificationTitle=tempBundle.getString(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME);
 
 
 
@@ -393,6 +397,7 @@ public class TargetActivity extends Activity {
             mapData.put("op","click");
             mapData.put(AppConstant.IZ_LANDING_URL, landingURL);
             mapData.put(AppConstant.IZ_DEEPLINK_URL, additionalData);
+            mapData.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME,notificationTitle);
             if (btnCount != 0)
                 mapData.put("btn","" + btnCount);
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,mapData.toString(),"clickData");
