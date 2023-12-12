@@ -493,7 +493,6 @@ public class NotificationPreview {
 
                          handler.post(notificationRunnable);
                      } catch (Exception e) {
-                         Lg.e("Error", e.getMessage());
                          e.printStackTrace();
                          handler.post(notificationRunnable);
                      }
@@ -563,6 +562,8 @@ public class NotificationPreview {
         else {
             intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
         }
+        if(link == null)
+            link="";
         intent.putExtra(AppConstant.KEY_WEB_URL, link);
         intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificationId);
         intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
@@ -634,7 +635,7 @@ public class NotificationPreview {
                 intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
             }
         }
-        intent.putExtra(AppConstant.KEY_WEB_URL, "link");
+        intent.putExtra(AppConstant.KEY_WEB_URL, payload.getLink());
         intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificationId);
         intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
         intent.putExtra(AppConstant.KEY_IN_CID, payload.getId());
@@ -644,11 +645,11 @@ public class NotificationPreview {
         intent.putExtra(AppConstant.KEY_IN_PHONE, "phone");
         intent.putExtra(AppConstant.KEY_IN_ACT1ID, payload.getAct1ID());
         intent.putExtra(AppConstant.KEY_IN_ACT2ID, payload.getAct2ID());
-        intent.putExtra(AppConstant.LANDINGURL, "link");
+        intent.putExtra(AppConstant.LANDINGURL, payload.getLink());
         intent.putExtra(AppConstant.ACT1TITLE, payload.getAct1name());
         intent.putExtra(AppConstant.ACT2TITLE, payload.getAct2name());
-        intent.putExtra(AppConstant.ACT1URL, "link1");
-        intent.putExtra(AppConstant.ACT2URL, "link2");
+        intent.putExtra(AppConstant.ACT1URL, payload.getAct1link());
+        intent.putExtra(AppConstant.ACT2URL, payload.getAct2link());
         intent.putExtra(AppConstant.CLICKINDEX, "finalClickIndex");
         intent.putExtra(AppConstant.LASTCLICKINDEX, "lastClick");
         intent.putExtra(AppConstant.PUSH,payload.getPush_type());

@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
 
-    private String mUrl;
+    private String mUrl="";
     private int inApp;
     private String rid;
     private  String cid;
@@ -52,12 +52,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         if(context!=null) {
             String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
-//            if(Build.VERSION.SDK_INT<Build.VERSION_CODES.S) {
-//                context.sendBroadcast(it);
-//            }
+
             context.sendBroadcast(it);
             getBundleData(context, intent);
-            mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
+            if(mUrl!=null) {
+                mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
+            }
             getBundleData(context, intent);
             try {
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
@@ -485,7 +485,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
                         }
                     } catch (Exception e) {
-                        Util.setException(context,e.toString(),AppConstant.APPName_3,"notificationClickAPI");
+                        DebugFileManager.createExternalStoragePublic(context,mapData.toString(),"clickData");
                     }
 
                 }
@@ -502,16 +502,22 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
                         }
                     } catch (Exception e) {
-                        Util.setException(context,e.toString(),AppConstant.APPName_3,"notificationClickAPI->onFailure");
-                    }
+                        DebugFileManager.createExternalStoragePublic(context,mapData.toString(),"clickData");
+                        if(!PreferenceUtil.getInstance(context).getBoolean("notificationClickAPI")) {
+                            PreferenceUtil.getInstance(context).setBooleanData("notificationClickAPI",true);
+                            Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
+                        }                    }
                 }
             });
 
 
         } catch (Exception e) {
+            DebugFileManager.createExternalStoragePublic(context,e.toString(),"clickData");
 
-            Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
-        }
+            if(!PreferenceUtil.getInstance(context).getBoolean("notificationClickAPI")) {
+                PreferenceUtil.getInstance(context).setBooleanData("notificationClickAPI",true);
+                Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
+            }        }
     }
 
     private static void launchApp(Context context){
@@ -552,8 +558,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 }
             }
         } catch (PackageManager.NameNotFoundException e) {
-            Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
-
+            if(!PreferenceUtil.getInstance(context).getBoolean("launch")) {
+                PreferenceUtil.getInstance(context).setBooleanData("launch",true);
+                Util.setException(context, e.toString(), AppConstant.APPName_3, "launch App");
+            }
         }
     }
 

@@ -31,6 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -454,7 +455,7 @@ public class NotificationEventManager {
                             if (linkArray[2].contains("[")) {
                                 String[] linkArray1 = linkArray[2].split("\\[");
                                 jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
-                                return jsonObject1.getString(linkArray[3]);
+                                return jsonObject1.optString(linkArray[3]);
 
                             }
                         }
@@ -466,6 +467,7 @@ public class NotificationEventManager {
 
         } catch (Exception e) {
             e.printStackTrace();
+            return  null;
         }
 
         return null;
@@ -530,7 +532,6 @@ public class NotificationEventManager {
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
-                    Log.e("RandomViewURL",rv);
 
 
                 }
@@ -570,7 +571,7 @@ public class NotificationEventManager {
                                 }
 
                             } else {
-                                return jsonObject1.optString(linkArray[i]);
+                                return Objects.requireNonNull(jsonObject1).optString(linkArray[i]);
                             }
 
                         }
@@ -614,7 +615,7 @@ public class NotificationEventManager {
                 }
             }
         } catch (Exception e) {
-            // e.printStackTrace();
+            return "";
         }
         return "";
     }
@@ -931,7 +932,6 @@ public class NotificationEventManager {
                     }
                     handler.post(notificationRunnable);
                 } catch (Exception e) {
-                    Lg.e("Error", e.getMessage());
                     e.printStackTrace();
                     handler.post(notificationRunnable);
                 }
@@ -1457,6 +1457,8 @@ public class NotificationEventManager {
         else {
             intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
         }
+        if(link==null)
+            link = "";
         intent.putExtra(AppConstant.KEY_WEB_URL, link);
         intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificationId);
         intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
@@ -1706,19 +1708,28 @@ public class NotificationEventManager {
         }
     }
     static void handleImpressionAPI(Payload payload,String pushName) {
-        if(payload!=null) {
-            String impressionIndex = "0";
-
-            String data = Util.getIntegerToBinary(payload.getCfg());
-            if (data != null && !data.isEmpty()) {
-                impressionIndex = String.valueOf(data.charAt(data.length() - 1));
-
-                if (impressionIndex.equalsIgnoreCase("1")) {
-                    viewNotificationApi(payload,pushName);
+        if(payload!=null && iZooto.appContext!=null) {
+            try {
+                String impressionIndex = "0";
+                String data = Util.getIntegerToBinary(payload.getCfg());
+                if (data != null && !data.isEmpty()) {
+                    impressionIndex = String.valueOf(data.charAt(data.length() - 1));
+                    if (impressionIndex.equalsIgnoreCase("1")) {
+                        viewNotificationApi(payload, pushName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugFileManager.createExternalStoragePublic(iZooto.appContext,"handleImpressionAPI"+ ex.toString(),"[Log.V]->NotificationEventManager->");
+                if(!PreferenceUtil.getInstance(iZooto.appContext).getBoolean("handleImpressionAPI")) {
+                    PreferenceUtil.getInstance(iZooto.appContext).setBooleanData("handleImpressionAPI",true);
+                    Util.setException(iZooto.appContext, ex + "RID" + payload.getRid() + "CID" + payload.getId(), AppConstant.APPName_2, "handleImpressionAPI");
                 }
             }
 
         }
+
 
     }
     static void viewNotificationApi(final Payload payload,String pushName) {
@@ -1763,9 +1774,11 @@ public class NotificationEventManager {
                 }
             });
         } catch (Exception e) {
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"impressionNotificationApi"+e.toString(),"[Log.V]->NotificationEventManager->");
-            Util.setException(iZooto.appContext,e+"RID"+rid+"CID"+cid,AppConstant.APPName_2,"impressionNotification");
-        }
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"impressionNotificationApi"+ e,"[Log.V]->NotificationEventManager->");
+            if(!PreferenceUtil.getInstance(iZooto.appContext).getBoolean("impressionNotification")) {
+                PreferenceUtil.getInstance(iZooto.appContext).setBooleanData("impressionNotification",true);
+                Util.setException(iZooto.appContext, e + "RID" + rid + "CID" + cid, AppConstant.APPName_2, "impressionNotification");
+            }        }
 
     }
     static void handleNotificationError(String errorName, String payload, String className, String methodName)
@@ -1803,7 +1816,11 @@ public class NotificationEventManager {
 
 
                 } catch (Exception ex) {
-                    Util.setException(iZooto.appContext, ex.toString(), AppConstant.APPName_2, "handleNotificationError");
+                    DebugFileManager.createExternalStoragePublic(iZooto.appContext,"handleNotificationError"+ ex,"[Log.V]->NotificationEventManager->");
+                    if (!PreferenceUtil.getInstance(iZooto.appContext).getBoolean("handleNotificationError")) {
+                        PreferenceUtil.getInstance(iZooto.appContext).setBooleanData("handleNotificationError",true);
+                        Util.setException(iZooto.appContext, ex.toString(), AppConstant.APPName_2, "handleNotificationError");
+                    }
                 }
 
 

@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TargetActivity extends Activity {
-    private String mUrl;
+    private String mUrl="";
     private int inApp;
     private String rid;
     private  String cid;
@@ -60,7 +60,9 @@ public class TargetActivity extends Activity {
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
             context.sendBroadcast(it);
             getBundleData(context, intent);
-            mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
+            if(mUrl!=null) {
+                mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
+            }
             getBundleData(context, intent);
             try {
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
@@ -577,7 +579,6 @@ public class TargetActivity extends Activity {
                 Intent intentAppLaunch = launchIntent; // new Intent();
                 intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intentAppLaunch);
-                Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
 
             }
             else
@@ -590,7 +591,6 @@ public class TargetActivity extends Activity {
                     Intent intentAppLaunch = launchIntent; // new Intent();
                     intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(intentAppLaunch);
-                    Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
                 }
                 else {
                     ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
@@ -599,10 +599,11 @@ public class TargetActivity extends Activity {
                     Intent intentAppLaunch = launchIntent; // new Intent();
                     intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(intentAppLaunch);
-                    Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
                 }
             }
         } catch (PackageManager.NameNotFoundException e) {
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"launch"+e.toString(),"[Log.V]->");
+
             Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
 
         }
@@ -622,6 +623,7 @@ public class TargetActivity extends Activity {
                 Log.d(AppConstant.APP_NAME_TAG + "Found it:",name);
             }
         } catch (PackageManager.NameNotFoundException e) {
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"launch"+e,"[Log.V]->");
             Util.setException(context,e.toString(),AppConstant.APPName_3,"launch App");
         }
     }
