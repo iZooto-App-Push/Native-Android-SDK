@@ -6,20 +6,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.squareup.picasso.Picasso;
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -64,7 +61,10 @@ import java.util.HashMap;
                     long longTime = Long.parseLong(userModal.getCreated_Time());
                     myViewHolder.newsHubTime.setText(IZTimeAgo.getTimeAgo(longTime));
                     if (userModal.getBanner() != null && !userModal.getBanner().isEmpty()) {
-                        Picasso.get().load(userModal.getBanner()).placeholder(context.getApplicationInfo().icon).transform(new RoundedCornersTransform(50, 0)).into(myViewHolder.newsHubBanner);
+                        Glide.with(context)
+                                .load(userModal.getBanner())
+                                .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
+                                .into(myViewHolder.newsHubBanner);
                     } else {
                         myViewHolder.newsHubBanner.setImageResource(context.getApplicationInfo().icon);
                     }
@@ -81,7 +81,7 @@ import java.util.HashMap;
                     try {
                         if (holder instanceof FooterViewHolder) {
                             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-                            footerViewHolder.footerText.setText("You're all caught up!");
+                            footerViewHolder.footerText.setText(R.string.iz_nz_bottom_msg);
                         }
 
                     } catch (Exception e) {

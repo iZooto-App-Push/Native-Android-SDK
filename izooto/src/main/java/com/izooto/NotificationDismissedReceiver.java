@@ -49,7 +49,7 @@ public class NotificationDismissedReceiver extends BroadcastReceiver {
                         mapData.put(AppConstant.RID_, extras.getString(AppConstant.KEY_IN_RID));
                         mapData.put(AppConstant.PUSH, extras.getString(AppConstant.PUSH));
                         mapData.put(AppConstant.TP_TYPE, preferenceUtil.getStringData(AppConstant.TP_TYPE));
-                        mapData.put(AppConstant.P_OP,AppConstant.DISMISSED);
+                        mapData.put(AppConstant.OP,AppConstant.DISMISSED);
                         RestClient.postRequest(RestClient.PERSISTENT_NOTIFICATION_DISMISS_URL, mapData, null, new RestClient.ResponseHandler() {
                             @Override
                             void onSuccess(final String response) {

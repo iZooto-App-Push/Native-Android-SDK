@@ -28,6 +28,7 @@
     <string name="todo" translatable="false">TODO</string>
     <string name="footer_text" translatable="false">You\'re all caught up!</string>
     <string name="_1_hr_ago" translatable="false">1 hrs ago</string>
+    <string name="iz_nz_bottom_msg">You\'re all caught up!</string>
 
 
 </resources>

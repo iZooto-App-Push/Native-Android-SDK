@@ -825,9 +825,9 @@ public class Util {
                 hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                 hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
                 hashMap.put(AppConstant.VER_, "" + AppConstant.SDKVERSION);
-                hashMap.put("op", "click");
+                hashMap.put(AppConstant.OP, "click");
                 hashMap.put("cs", "1");
-                hashMap.put("isid", "1");
+                hashMap.put(AppConstant.ISID_, "1");
                 if (userModal != null) {
                     hashMap.put(AppConstant.CID_, userModal.getId());
                     hashMap.put(AppConstant.RID, userModal.getRid());

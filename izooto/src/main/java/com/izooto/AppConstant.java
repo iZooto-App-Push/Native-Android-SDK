@@ -324,7 +324,6 @@ public interface AppConstant {
     String TYPE_TP="tp";
     String TYPE_P="p";
     String TYPE_O="o";
-    String P_OP="op";
     String DISMISSED="dismiss";
     String IZ_LISTENER_ERROR = "Notification dismiss listener is not working";
     String IZ_LISTENER_KEY = "nDismiss";
