@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.0.9";
+    String SDKVERSION="2.1.0";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -360,6 +360,22 @@ public interface AppConstant {
     String IZ_DEEPLINK_URL = "ap";
 
     String IZ_NOTIFICATION_TITLE_KEY_NAME="ti";
+
+
+    /*...........NotificationChannel............*/
+    String NOTIFICATION_CHANNEL_ID = "i";
+    String NOTIFICATION_CHANNEL_NAME = "n";
+    String NOTIFICATION_CHANNEL_GROUP_ID = "gi";
+    String NOTIFICATION_CHANNEL_GROUP_NAME = "gn";
+    String NOTIFICATION_CHANNEL_DESCRIPTION = "d";
+    String NOTIFICATION_CHANNEL_BYPASSDND = "chnl_bdnd";
+    String NOTIFICATION_CHANNEL_DELETE_ID = "delchnl_id";
+    String NOTIFICATION_CHANNEL_DELETE_GROUP_ID = "delgrp_id";
+    String CUSTOM_CHANNEL_CURRENT_DATE= "customChannelCurrentDate";
+    String IZ_NOTIFICATION_CHANNEL = "Notification Channel";
+    String IZ_LIMIT_EXCEED_MSG = "Limit exceed; cannot create more channels";
+
+
 }
 
 

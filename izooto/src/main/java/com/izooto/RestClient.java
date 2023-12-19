@@ -22,7 +22,7 @@ public class RestClient {
      static  final String NOTIFICATIONCLICK="https://clk.izooto.com/clk";
      static final String SUBSCRIPTION_API="https://usub.izooto.com/sunsub";
      static final String LASTNOTIFICATIONCLICKURL="https://lci.izooto.com/lci";
-     static final String LASTNOTIFICATIONVIEWURL="https://lim.izooto.com/lim";
+     static final String LAST_NOTIFICATION_VIEW_URL="https://lim.izooto.com/lim";
      static final String LASTVISITURL="https://lvi.izooto.com/lvi";
      static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
      static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";

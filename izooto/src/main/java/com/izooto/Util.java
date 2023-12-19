@@ -62,8 +62,6 @@ public class Util {
 
     private static String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
     private static int CIPHER_KEY_LEN = 16;
-    private static final String SERVICE_ACTION = "android.support.customtabs.action.CustomTabsService";
-    private static final String CHROME_PACKAGE = "com.android.chrome";
     public enum SchemaType {
         DATA("data"),
         HTTPS("https"),
@@ -121,13 +119,7 @@ public class Util {
         return null;
     }
 
-    public static boolean getNetworkState(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-    }
+
 
     private static Bitmap getBitMap(String src) {
         int retry=0;
@@ -253,35 +245,7 @@ public class Util {
         return null;
     }
 
-    public static Drawable getApplicationIcon(Context context){
-        ApplicationInfo ai;
-        Drawable icon = null;
-        try {
-            ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-        } catch ( PackageManager.NameNotFoundException e ) {
-            ai = null;
-            //e.printStackTrace();
-        }
 
-        if ( ai != null ) {
-            icon =  context.getPackageManager().getApplicationIcon(ai);
-        }
-
-
-        return icon;
-    }
-
-
-    public static boolean CheckValidationString(String optString) {
-        if(optString.length()>32)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
     public static String getDeviceLanguage()
     {
         //return Locale.getDefault().getDisplayLanguage();
@@ -425,32 +389,8 @@ public class Util {
             return false;
         }
     }
-    private static boolean hasBrowserLibrary(Context context) {
-        try {
-           if(isChromeCustomTabsSupported(context))
-           {
-               return true;
-           }
-           else
-           {
-               return false;
 
-           }
-        } catch (NoClassDefFoundError e) {
-            return false;
-        }
-    }
 
-     static boolean isChromeCustomTabsSupported(@NonNull final Context context) {
-        try
-        {
-            return true;
-        }
-        catch (Exception ex)
-        {
-        return false;
-        }
-    }
     public static void sleepTime(int time) {
         try {
             Thread.sleep(time);
@@ -622,6 +562,8 @@ public class Util {
 
             preferenceUtil.setStringData(constantValue, jsonArray.toString());
         } catch (Exception e) {
+            Util.handleExceptionOnce(context, e.toString(), "trackMediation_Impression_Click", "Util");
+
             Util.setException(context, e.toString(), "trackClickOffline()", "Util");
         }
 
@@ -644,7 +586,8 @@ public class Util {
             jsonArray.put(payloadJSON);
             preferenceUtil.setStringData(AppConstant.STORE_MEDIATION_RECORDS, jsonArray.toString());
         } catch (Exception e) {
-            Util.setException(context, e.toString(), "trackMediation_Impression_Click", "Util");
+            Util.handleExceptionOnce(context, e.toString(), "trackMediation_Impression_Click", "Util");
+
         }
     }
 
@@ -865,6 +808,38 @@ public class Util {
     static boolean enableStickyNotification(Payload payload){
         return payload.getMakeStickyNotification() != null &&
                 !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1");
+    }
+
+    // parse vibration pattern
+    static long[] parseVibrationPattern(Object patternObj) {
+        try {
+            JSONArray jsonVibArray;
+            if (patternObj instanceof String) {
+                jsonVibArray = new JSONArray((String) patternObj);
+            }
+            else {
+                jsonVibArray = (JSONArray) patternObj;
+            }
+            long[] longArray = new long[jsonVibArray.length()];
+            for (int i = 0; i < jsonVibArray.length(); i++) {
+                longArray[i] = jsonVibArray.optLong(i);
+            }
+            return longArray;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    // To Handle Exception once
+    static void handleExceptionOnce(Context context, String exception, String className, String methodName){
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+        if(!preferenceUtil.getBoolean(methodName)){
+            setException(context, exception, className, methodName);
+            preferenceUtil.setBooleanData(methodName, true);
+        }
+        DebugFileManager.createExternalStoragePublic(context, exception + " " +methodName, "[Log.e]-> "+className);
     }
 
 }

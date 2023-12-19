@@ -93,7 +93,8 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(context,ex+"PayloadError"+data,"XiaomiPushReceiver","handleNow");
+                        Util.handleExceptionOnce(context,ex+"PayloadError"+data,"XiaomiPushReceiver","handleNow");
+
                     }
 
                 }
@@ -120,7 +121,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(context,ex+"PayloadError"+data,"XiaomiPushReceiver","handleNow");
+                        Util.handleExceptionOnce(context,ex+"PayloadError"+data,"XiaomiPushReceiver","handleNow");
 
                     }
                 }
@@ -161,20 +162,12 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     payload.setInapp(payloadObj.optInt(ShortpayloadConstant.INAPP));
                     payload.setTrayicon(payloadObj.optString(ShortpayloadConstant.TARYICON));
                     payload.setSmallIconAccentColor(payloadObj.optString(ShortpayloadConstant.ICONCOLOR));
-                    payload.setSound(payloadObj.optString(ShortpayloadConstant.SOUND));
-                    payload.setLedColor(payloadObj.optString(ShortpayloadConstant.LEDCOLOR));
-                    payload.setLockScreenVisibility(payloadObj.optInt(ShortpayloadConstant.VISIBILITY));
-                    payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
-                    payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
                     payload.setFromProjectNumber(payloadObj.optString(ShortpayloadConstant.PROJECTNUMBER));
                     payload.setCollapseId(payloadObj.optString(ShortpayloadConstant.COLLAPSEID));
-                    payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
                     payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
                     payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
                     payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
-                    payload.setTime_to_live(payloadObj.optString(ShortpayloadConstant.TIME_TO_LIVE));
                     payload.setPush_type(AppConstant.PUSH_XIAOMI);
-                    payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_SOUND));
                     payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
                     payload.setFallBackDomain(payloadObj.optString(ShortpayloadConstant.FALL_BACK_DOMAIN));
                     payload.setFallBackSubDomain(payloadObj.optString(ShortpayloadConstant.FALLBACK_SUB_DOMAIN));
@@ -186,6 +179,19 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
                     payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
                     payload.setOfflineCampaign(payloadObj.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
+
+                    // notification channel paylaod
+                    payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
+                    payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
+                    payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
+                    payload.setSound(payloadObj.optString(ShortpayloadConstant.SOUND));
+                    payload.setLedColor(payloadObj.optString(ShortpayloadConstant.LEDCOLOR));
+                    payload.setLockScreenVisibility(payloadObj.optInt(ShortpayloadConstant.VISIBILITY));
+                    payload.setChannel(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_CHANNEL));
+                    payload.setVibration(payloadObj.optString(ShortpayloadConstant.VIBRATION));
+                    payload.setBadge(payloadObj.optInt(ShortpayloadConstant.BADGE));
+                    payload.setOtherChannel(payloadObj.optString(ShortpayloadConstant.OTHER_CHANNEL));
+
                     if (Util.getValidIdForCampaigns(payload)) {
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
                             try {
@@ -328,7 +334,8 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     }
                 });
             }catch (Exception e){
-                Util.setException(context, e.toString(), "MIRegisterToken", AppConstant.APP_NAME_TAG);
+                Util.handleExceptionOnce(context, e.toString(), "MIRegisterToken", AppConstant.APP_NAME_TAG);
+
             }
 
         } else {
@@ -373,8 +380,7 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
             }
 
         } catch (Exception e) {
-            Log.e("TAG", "onNotificationMessageArrived: -- " + e );
-            Util.setException(context, e.toString(), "XiaomiPushReceiver", "onNotificationMessageArrived");
+            Util.handleExceptionOnce(context, e.toString(), "XiaomiPushReceiver", "onNotificationMessageArrived");
             DebugFileManager.createExternalStoragePublic(context, "onNotificationMessageArrived -> " + e.toString(),"[Log.e]->");
         }
     }
@@ -430,7 +436,8 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                 intent.putExtra(AppConstant.CFGFORDOMAIN, cfg);
                 context.sendBroadcast(intent);
         } catch (Exception e) {
-            Util.setException(context, e.toString(), XIAOMI_TAG, "notificationBarClick");
+            Util.handleExceptionOnce(context, e.toString(), XIAOMI_TAG, "notificationBarClick");
+
             DebugFileManager.createExternalStoragePublic(context, "notificationBarClick -> " + e.toString(),"[Log.e]->");
         }
 

@@ -80,7 +80,12 @@ public class Payload {
 
     private String offlineCampaign;
 
+    private String otherChannel;
 
+    // Notification Channel
+    private String  channel;
+    private String vibration;
+    private int badge;
     public int getMaxNotification() {
         return maxNotification;
     }
@@ -657,5 +662,37 @@ public class Payload {
 
     public void setOfflineCampaign(String offlineCampaign) {
         this.offlineCampaign = offlineCampaign;
+    }
+
+    public String getOtherChannel() {
+        return otherChannel;
+    }
+
+    public void setOtherChannel(String otherChannel) {
+        this.otherChannel = otherChannel;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public String getVibration() {
+        return vibration;
+    }
+
+    public void setVibration(String vibration) {
+        this.vibration = vibration;
+    }
+
+    public int getBadge() {
+        return badge;
+    }
+
+    public void setBadge(int badge) {
+        this.badge = badge;
     }
 }

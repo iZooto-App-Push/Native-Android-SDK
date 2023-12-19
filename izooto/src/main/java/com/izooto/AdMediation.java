@@ -1403,7 +1403,7 @@ public class AdMediation {
                             else
                                 jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
 
-                            return jsonObject1.getString(linkArray[3]);
+                            return jsonObject1.optString(linkArray[3]);
 
                         }
 
@@ -1423,12 +1423,12 @@ public class AdMediation {
                     }
                     else
                     {
-                        jsonObject.getString(sourceString);
+                        jsonObject.optString(sourceString);
                     }
 
 
                 } else {
-                    return jsonObject.getString(sourceString);
+                    return jsonObject.optString(sourceString);
                 }
             }
         } catch (Exception e) {

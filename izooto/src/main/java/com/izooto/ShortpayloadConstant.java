@@ -27,14 +27,10 @@ public interface ShortpayloadConstant {
     String INAPP= "ia";
     String TARYICON="ti"; //tray icon
     String ICONCOLOR="ic";// icon color
-    String SOUND= "su";//sound
-    String LEDCOLOR="lc"; // led color
-    String VISIBILITY = "vi"; //visibilty
     String GKEY = "gk";
     String GMESSAGE="gm";
     String PROJECTNUMBER="pn";// project nUmber
     String COLLAPSEID = "ci";// collapseID
-    String PRIORITY="pi";
     String RAWDATA="rawData";
     String ADDITIONALPARAM ="ap";
     String PAYLOAD ="Payload";
@@ -66,7 +62,20 @@ public interface ShortpayloadConstant {
     String NOTIFICATION_PAYLOAD = "p";
     String EXPIRY_TIMER_VALUE ="et";
     String MAKE_STICKY_NOTIFICATION ="ri";
-
     String OFFLINE_CAMPAIGN ="o";
+
+    String NOTIFICATION_CHANNEL="c";
+    String OTHER_CHANNEL = "oth_chnl";
+    String VIBRATION = "vb";
+    String BADGE = "bdg";
+    String PRIORITY="p";
+    String SOUND= "s";//sound
+    String LEDCOLOR="lc"; // led color
+    String VISIBILITY = "v"; // visibility
+
+
+
+
+
 
 }

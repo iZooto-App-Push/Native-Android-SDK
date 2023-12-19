@@ -153,7 +153,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     {
 
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
-                        Util.setException(this,ex.toString()+IZ_ERROR_NAME+data,IZ_TAG_NAME,IZ_METHOD_NAME);
+                        Util.handleExceptionOnce(this,ex.toString()+IZ_ERROR_NAME+data,IZ_TAG_NAME,IZ_METHOD_NAME);
                     }
 
                 }
@@ -179,7 +179,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(this,ex+IZ_ERROR_NAME+data,IZ_TAG_NAME,IZ_METHOD_NAME);
+                        Util.handleExceptionOnce(this,ex+IZ_ERROR_NAME+data,IZ_TAG_NAME,IZ_METHOD_NAME);
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
 
                     }
@@ -222,19 +222,12 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setInapp(payloadObj.optInt(ShortpayloadConstant.INAPP));
                     payload.setTrayicon(payloadObj.optString(ShortpayloadConstant.TARYICON));
                     payload.setSmallIconAccentColor(payloadObj.optString(ShortpayloadConstant.ICONCOLOR));
-                    payload.setSound(payloadObj.optString(ShortpayloadConstant.SOUND));
-                    payload.setLedColor(payloadObj.optString(ShortpayloadConstant.LEDCOLOR));
-                    payload.setLockScreenVisibility(payloadObj.optInt(ShortpayloadConstant.VISIBILITY));
-                    payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
-                    payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
                     payload.setFromProjectNumber(payloadObj.optString(ShortpayloadConstant.PROJECTNUMBER));
                     payload.setCollapseId(payloadObj.optString(ShortpayloadConstant.COLLAPSEID));
-                    payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
                     payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
                     payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
                     payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
                     payload.setPush_type(AppConstant.PUSH_FCM);
-                    payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_SOUND));
                     payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
                     payload.setFallBackDomain(payloadObj.optString(ShortpayloadConstant.FALL_BACK_DOMAIN));
                     payload.setFallBackSubDomain(payloadObj.optString(ShortpayloadConstant.FALLBACK_SUB_DOMAIN));
@@ -246,6 +239,19 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
                     payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
                     payload.setOfflineCampaign(payloadObj.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
+
+                    // notification channel paylaod
+                    payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
+                    payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
+                    payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
+                    payload.setSound(payloadObj.optString(ShortpayloadConstant.SOUND));
+                    payload.setLedColor(payloadObj.optString(ShortpayloadConstant.LEDCOLOR));
+                    payload.setLockScreenVisibility(payloadObj.optInt(ShortpayloadConstant.VISIBILITY));
+                    payload.setChannel(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_CHANNEL));
+                    payload.setVibration(payloadObj.optString(ShortpayloadConstant.VIBRATION));
+                    payload.setBadge(payloadObj.optInt(ShortpayloadConstant.BADGE));
+                    payload.setOtherChannel(payloadObj.optString(ShortpayloadConstant.OTHER_CHANNEL));
+
                     if (Util.getValidIdForCampaigns(payload)) {
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
                             try {
@@ -289,7 +295,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
 
         } catch (Exception e) {
 
-            Util.setException(this, data+e.toString(), IZ_TAG_NAME, IZ_METHOD_NAME);
+            Util.handleExceptionOnce(this, data+e.toString(), IZ_TAG_NAME, IZ_METHOD_NAME);
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,e.toString(),"[Log.e]-Exception");
 
         }
