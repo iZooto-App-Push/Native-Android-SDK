@@ -1289,7 +1289,6 @@ private static void runNotificationOpenedCallback() {
                     {
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Payload"+ex.toString()+data.toString(),"[Log.e]->Exception->");
 
-                        Util.setException(context,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
                     }
 
                 }
@@ -1305,7 +1304,6 @@ private static void runNotificationOpenedCallback() {
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(context,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Payload Error"+ex.toString()+data.toString(),"[Log.e]->Exception->");
 
                     }

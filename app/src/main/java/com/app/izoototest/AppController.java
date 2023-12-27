@@ -29,21 +29,15 @@ public class AppController extends Application implements TokenReceivedListener,
                 .setTokenReceivedListener(this)
                 .build();
         iZooto.promptForPushNotifications();
-
-
-
     }
-
     @Override
     public void onTokenReceived(String token) {
         Log.e("TokenData",token);
 
     }
-
     @Override
     public void onNotificationReceived(Payload payload) {
-        Log.e("Payload",payload.getTitle());
-
+        Log.e("Payload",payload.getIcon());
     }
 
     @Override
