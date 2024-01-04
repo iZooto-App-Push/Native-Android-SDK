@@ -78,7 +78,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                     catch (Exception ex)
                     {
 
-                        Util.setException(context,ex.toString()+"PayloadError"+data.toString(),"HMSMessagingService","handleNow");
+                        Util.handleExceptionOnce(context,ex.toString()+"PayloadError"+data.toString(),"HMSMessagingService","handleNow");
                     }
 
                 }
@@ -106,7 +106,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                     }
                     catch (Exception ex)
                     {
-                        Util.setException(context,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
+                        Util.handleExceptionOnce(context,ex.toString()+"PayloadError"+data.toString(),"DATBMessagingService","handleNow");
 
                     }
                 }
@@ -177,16 +177,23 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                     payload.setBadge(payloadObj.optInt(ShortpayloadConstant.BADGE));
                     payload.setOtherChannel(payloadObj.optString(ShortpayloadConstant.OTHER_CHANNEL));
 
-                    if (Util.getValidIdForCampaigns(payload)) {
+                    try {
+                        if (payload.getRid() != null && !payload.getRid().isEmpty()) {
+                            preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
+                        } else {
+                            Log.v("campaign", "rid null or empty!");
+                        }
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
-                            try {
+                            int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
+                            if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
+                                Log.v("campaign", "...");
+                            } else {
                                 newsHubDBHelper.addNewsHubPayload(payload);
                             }
-                            catch (Exception ex)
-                            {
-                                Log.e("Database issues occured","");
-                            }
+
                         }
+                    }catch (Exception e){
+                        Log.v("campaign", "..");
                     }
 
 
@@ -210,7 +217,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
         } catch (Exception e) {
 
             DebugFileManager.createExternalStoragePublic(context,e.toString()+data,"[Log.e]-> HMS ->");
-            Util.setException(context, e.toString(), "HMSMessagingServices", "handleNow");
+            Util.handleExceptionOnce(context, e.toString(), "HMSMessagingServices", "handleNow");
 
         }
 

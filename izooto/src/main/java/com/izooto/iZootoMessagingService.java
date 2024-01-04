@@ -24,8 +24,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -251,17 +249,23 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setVibration(payloadObj.optString(ShortpayloadConstant.VIBRATION));
                     payload.setBadge(payloadObj.optInt(ShortpayloadConstant.BADGE));
                     payload.setOtherChannel(payloadObj.optString(ShortpayloadConstant.OTHER_CHANNEL));
-
-                    if (Util.getValidIdForCampaigns(payload)) {
+                    try {
+                        if (payload.getRid() != null && !payload.getRid().isEmpty()) {
+                            preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
+                        } else {
+                            DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
+                        }
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
-                            try {
+                            int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
+                            if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
+                                DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
+                            } else {
                                 newsHubDBHelper.addNewsHubPayload(payload);
                             }
-                            catch (Exception ex)
-                            {
-                                Log.e("Database issues occured","");
-                            }
+
                         }
+                    }catch (Exception e){
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,e.toString());
                     }
                 } else {
                     String updateDaily=NotificationEventManager.getDailyTime(this);

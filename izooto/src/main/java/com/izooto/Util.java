@@ -792,19 +792,6 @@ public class Util {
             e.printStackTrace();
         }
     }
-    protected static boolean getValidIdForCampaigns(Payload payload){
-        boolean checkValid;
-        if(payload.getRid().startsWith("7") || payload.getRid().startsWith("6"))
-        {
-            checkValid = false;
-        }
-        else
-        {
-            checkValid = true;
-        }
-        return checkValid;
-
-    }
     static boolean enableStickyNotification(Payload payload){
         return payload.getMakeStickyNotification() != null &&
                 !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1");
@@ -841,5 +828,18 @@ public class Util {
         }
         DebugFileManager.createExternalStoragePublic(context, exception + " " +methodName, "[Log.e]-> "+className);
     }
+    /* News Hub offline campaigns */
+    protected static int getValidIdForCampaigns(Payload payload){
+        int digit = 0;
+        try{
+            String digits = payload.getRid().trim();
+            digit = digits.charAt(0) - '0';
+        }catch (Exception e){
+            Util.handleExceptionOnce(iZooto.appContext,e.toString(),"Util","getValidIdForCampaigns");
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext, e.toString(), "[Log.e]->RID");
+        }
+        return digit;
+    }
+
 
 }

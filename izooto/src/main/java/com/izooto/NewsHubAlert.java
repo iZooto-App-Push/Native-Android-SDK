@@ -258,16 +258,23 @@ import java.util.ArrayList;
                                   mPayload.setDefaultNotificationPreview(jsonObject1.optInt(ShortpayloadConstant.TEXTOVERLAY));
                                   mPayload.setNotification_bg_color(jsonObject1.optString(ShortpayloadConstant.BGCOLOR));
                                   mPayload.setOfflineCampaign(jsonObject1.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
-                                  if (Util.getValidIdForCampaigns(mPayload)) {
+                                  try {
+                                      if (mPayload.getRid() != null && !mPayload.getRid().isEmpty()) {
+                                          preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(mPayload));
+                                      } else {
+                                          Log.v("campaign", "rid null or empty!");
+                                      }
                                       if (mPayload.getLink() != null && !mPayload.getLink().isEmpty()) {
-                                          try {
+                                          int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
+                                          if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
+                                              Log.v("campaign", "...");
+                                          } else {
                                               newsHubDBHelper.addNewsHubPayload(mPayload);
                                           }
-                                          catch (Exception ex)
-                                          {
-                                              Log.e("Database issues occured","");
-                                          }
+
                                       }
+                                  }catch (Exception e){
+                                      Log.v("campaign", "..");
                                   }
 
 

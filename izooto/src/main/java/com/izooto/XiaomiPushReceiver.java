@@ -192,16 +192,23 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
                     payload.setBadge(payloadObj.optInt(ShortpayloadConstant.BADGE));
                     payload.setOtherChannel(payloadObj.optString(ShortpayloadConstant.OTHER_CHANNEL));
 
-                    if (Util.getValidIdForCampaigns(payload)) {
+                    try {
+                        if (payload.getRid() != null && !payload.getRid().isEmpty()) {
+                            preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
+                        } else {
+                            Log.v("campaign", "rid null or empty!");
+                        }
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
-                            try {
+                            int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
+                            if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
+                                Log.v("campaign", "...");
+                            } else {
                                 newsHubDBHelper.addNewsHubPayload(payload);
                             }
-                            catch (Exception ex)
-                            {
-                                Log.e("Database issues occured","");
-                            }
+
                         }
+                    }catch (Exception e){
+                        Log.v("campaign", "..");
                     }
 
 

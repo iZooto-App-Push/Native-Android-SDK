@@ -570,18 +570,29 @@ public class iZooto {
         }
 
     }
-
-    public static void notificationView(Payload payload)
-    {
+    public static void notificationView(Payload payload) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-        if(payload!=null)
-        {
-            if(mBuilder!=null && mBuilder.mNotificationHelper!=null)
-            {
-                mBuilder.mNotificationHelper.onNotificationReceived(payload);
+        if (payload != null) {
+            if (mBuilder != null && mBuilder.mNotificationHelper != null) {
+                try {
+                    if (payload.getRid() != null && !payload.getRid().isEmpty()) {
+                        preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
+                    } else {
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"notificationViewHybrid","RID is null or empty");
+                    }
+                    int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
+                    if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
+                        Log.w("notificationV...", "...");
+                    } else {
+                        mBuilder.mNotificationHelper.onNotificationReceived(payload);
+                    }
+
+                }catch (Exception e){
+                    Util.handleExceptionOnce(iZooto.appContext,e.toString(),"iZooto","notificationView");
+                    DebugFileManager.createExternalStoragePublic(iZooto.appContext, e.toString(), "[Log.e]->RID");
+                }
             }
-            if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK))
-            {
+            if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
                 firebaseAnalyticsTrack.receivedEventTrack(payload);
             }
 
@@ -594,6 +605,30 @@ public class iZooto {
 
         }
     }
+
+//    public static void notificationView(Payload payload)
+//    {
+//        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+//        if(payload!=null)
+//        {
+//            if(mBuilder!=null && mBuilder.mNotificationHelper!=null)
+//            {
+//                mBuilder.mNotificationHelper.onNotificationReceived(payload);
+//            }
+//            if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK))
+//            {
+//                firebaseAnalyticsTrack.receivedEventTrack(payload);
+//            }
+//
+//            if (payload.getId() != null && !payload.getId().isEmpty()) {
+//                if (!payload.getId().equals(preferenceUtil.getStringData(AppConstant.TRACK_NOTIFICATION_ID))) {
+//                    preferenceUtil.setBooleanData(AppConstant.IS_NOTIFICATION_ID_UPDATED, false);
+//                }
+//                preferenceUtil.setStringData(AppConstant.TRACK_NOTIFICATION_ID, payload.getId());
+//            }
+//
+//        }
+//    }
     public static void notificationActionHandler(String data)
     {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
@@ -764,18 +799,34 @@ private static void runNotificationOpenedCallback() {
         }
 
     }
-    public static void notificationViewHybrid(String payloadList, Payload payload)
-    {
+    public static void notificationViewHybrid(String payloadList, Payload payload) {
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-        if(payload!=null)
-        {
-            if(mBuilder!=null && mBuilder.mNotificationReceivedHybridlistener !=null)
-            {
-                mBuilder.mNotificationReceivedHybridlistener.onNotificationReceivedHybrid(payloadList);
+        if (payload != null) {
+            if (mBuilder != null && mBuilder.mNotificationReceivedHybridlistener != null) {
+
+                try {
+                    if (payload.getRid() != null && !payload.getRid().isEmpty()) {
+                        preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
+                    } else {
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"notificationViewHybrid","RID is null or empty");
+                    }
+                    int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
+                    if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
+                        Log.w("notificationV...", "...");
+                    } else {
+                        mBuilder.mNotificationReceivedHybridlistener.onNotificationReceivedHybrid(payloadList);
+                    }
+
+                }catch (Exception e){
+                    Util.handleExceptionOnce(iZooto.appContext,e.toString(),"iZooto","notificationViewHybrid");
+                    DebugFileManager.createExternalStoragePublic(iZooto.appContext, e.toString(), "[Log.e]->RID");
+                }
+
+
             }
             if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
                 firebaseAnalyticsTrack.receivedEventTrack(payload);
-            }else {
+            } else {
                 if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack() && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
                     firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
                     firebaseAnalyticsTrack.receivedEventTrack(payload);
@@ -789,6 +840,31 @@ private static void runNotificationOpenedCallback() {
             }
         }
     }
+//    public static void notificationViewHybrid(String payloadList, Payload payload)
+//    {
+//        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+//        if(payload!=null)
+//        {
+//            if(mBuilder!=null && mBuilder.mNotificationReceivedHybridlistener !=null)
+//            {
+//                mBuilder.mNotificationReceivedHybridlistener.onNotificationReceivedHybrid(payloadList);
+//            }
+//            if (firebaseAnalyticsTrack != null && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
+//                firebaseAnalyticsTrack.receivedEventTrack(payload);
+//            }else {
+//                if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack() && preferenceUtil.getBoolean(AppConstant.FIREBASE_ANALYTICS_TRACK)) {
+//                    firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
+//                    firebaseAnalyticsTrack.receivedEventTrack(payload);
+//                }
+//            }
+//            if (payload.getId() != null && !payload.getId().isEmpty()) {
+//                if (!payload.getId().equals(preferenceUtil.getStringData(AppConstant.TRACK_NOTIFICATION_ID))) {
+//                    preferenceUtil.setBooleanData(AppConstant.IS_NOTIFICATION_ID_UPDATED, false);
+//                }
+//                preferenceUtil.setStringData(AppConstant.TRACK_NOTIFICATION_ID, payload.getId());
+//            }
+//        }
+//    }
     public static void notificationReceivedCallback(NotificationReceiveHybridListener notificationReceivedHybridListener){
         mBuilder.mNotificationReceivedHybridlistener = notificationReceivedHybridListener;
         if(mBuilder.mNotificationReceivedHybridlistener != null) {
@@ -1376,16 +1452,23 @@ private static void runNotificationOpenedCallback() {
                     payload.setBadge(payloadObj.optInt(ShortpayloadConstant.BADGE));
                     payload.setOtherChannel(payloadObj.optString(ShortpayloadConstant.OTHER_CHANNEL));
 
-                    if (Util.getValidIdForCampaigns(payload)) {
+                    try {
+                        if (payload.getRid() != null && !payload.getRid().isEmpty()) {
+                            preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
+                        } else {
+                            Log.v("campaign", "rid null or empty!");
+                        }
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
-                            try {
+                            int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
+                            if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
+                                Log.v("campaign", "...");
+                            } else {
                                 newsHubDBHelper.addNewsHubPayload(payload);
                             }
-                            catch (Exception ex)
-                            {
-                                Log.e("Database issues occured","");
-                            }
+
                         }
+                    }catch (Exception e){
+                        Log.v("campaign", "..");
                     }
 
                 } else {

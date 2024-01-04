@@ -37,7 +37,7 @@ public class AppController extends Application implements TokenReceivedListener,
     }
     @Override
     public void onNotificationReceived(Payload payload) {
-        Log.e("Payload",payload.getIcon());
+        Log.e("Payload",payload.getTitle());
     }
 
     @Override
