@@ -1,6 +1,7 @@
 package com.izooto;
 
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -154,7 +155,7 @@ public class Util {
             trimmedName = trimmedName.replace("//", "/");
             trimmedName = trimmedName.replace("http:/", "https://");
             trimmedName = trimmedName.replace("https:/", "https://");
-            if (trimmedName.contains(".jpeg") || trimmedName.contains(".jpg") || trimmedName.contains(".png") || trimmedName.contains(".webp") || trimmedName.contains(".WEBP") || trimmedName.contains(".PNG") || trimmedName.contains(".JPEG") || trimmedName.contains(".JPG")) {
+            if(checkImageExtension(trimmedName)){
                 if (trimmedName.startsWith("http://") || trimmedName.startsWith("https://")) {
                     Bitmap bmp = getBitMap(trimmedName);
                     if (bmp != null) {
@@ -173,8 +174,11 @@ public class Util {
         return null;
 
     }
+    static  boolean checkImageExtension(String trimmedName) {
+        return trimmedName.contains(".jpeg") || trimmedName.contains(".jpg") || trimmedName.contains(".png") || trimmedName.contains(".webp") || trimmedName.contains(".WEBP") || trimmedName.contains(".PNG") || trimmedName.contains(".JPEG") || trimmedName.contains(".JPG") || trimmedName.contains(".GIF") || trimmedName.contains(".gif");
+    }
     public static String getAndroidId(Context mContext){
-        String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
         Log.v(TAG, "android id ---- "+android_id);
         return android_id;
     }
@@ -655,20 +659,22 @@ public class Util {
             if(iZooto.appContext == null)
                 return null;
             String defaultColor = getResourceString(iZooto.appContext, AppConstant.NOTIFICATION_ACCENT_COLOR, null);
-            if(defaultColor.charAt(0)=='#'){
-                String default_Color="";
-                default_Color= defaultColor.replace("#","");
-                if (default_Color != null) {
-                    return new BigInteger(default_Color, 16);
+            if(defaultColor!=null) {
+                if (defaultColor.charAt(0) == '#') {
+                    String default_Color = "";
+                    default_Color = defaultColor.replace("#", "");
+                    if (default_Color != null) {
+                        return new BigInteger(default_Color, 16);
+                    }
+                } else {
+                    if (defaultColor != null) {
+                        return new BigInteger(defaultColor, 16);
+                    }
                 }
             }
-            else
-            {
-                if (defaultColor != null) {
-                    return new BigInteger(defaultColor, 16);
-                }
-            }
-        } catch (Throwable t) {}
+        } catch (Throwable t) {
+
+        }
         return null;
     }
     static String getResourceString(@NonNull Context context, String key, String defaultStr) {

@@ -47,11 +47,9 @@ public class NotificationEventManager {
         if (payload.getFetchURL() == null || payload.getFetchURL().isEmpty()) {
             addCheck = false;
             try {
-                Thread.sleep(2000);
                 allCloudPush(payload);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {
+                Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "manageNotification");            }
         }
         else{
             addCheck = true;
@@ -627,10 +625,10 @@ public class NotificationEventManager {
 
                 PendingIntent pendingIntent=null;
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-                    pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
+                    pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent,
                             PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                 } else {
-                    pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
+                    pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent,
                             PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                 }
 
@@ -718,10 +716,10 @@ public class NotificationEventManager {
                     Intent btn1 = notificationClick(payload,payload.getAct1link(),payload.getLink(),payload.getAct2link(),phone,clickIndex,lastView_Click,notificationId,1);
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn1.setPackage(Util.getPackageName(iZooto.appContext));
-                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis(), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                     } else {
-                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis(), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     }
 
                     NotificationCompat.Action action1 =
@@ -736,9 +734,9 @@ public class NotificationEventManager {
                     Intent btn2 = notificationClick(payload,payload.getAct2link(),payload.getLink(),payload.getAct1link(),phone,clickIndex,lastView_Click,notificationId,2);
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn2.setPackage(Util.getPackageName(iZooto.appContext));
-                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis(), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     } else {
-                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis(), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     }
 
                     NotificationCompat.Action action2 =
@@ -803,7 +801,7 @@ public class NotificationEventManager {
 
         };
 
-        new AppExecutors().networkIO().execute(new Runnable() {
+        new AppExecutors().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 String smallIcon = payload.getIcon();
@@ -866,10 +864,10 @@ public class NotificationEventManager {
                 PendingIntent pendingIntent=null;
                 // support Android 12+
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
-                    pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
+                    pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent,
                             PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                 } else {
-                    pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
+                    pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent,
                             PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                 }
 
@@ -1044,9 +1042,9 @@ public class NotificationEventManager {
 
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn1.setPackage(Util.getPackageName(iZooto.appContext));
-                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis(), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     } else {
-                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis(), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                     }
                     NotificationCompat.Action action1 =
@@ -1062,9 +1060,9 @@ public class NotificationEventManager {
                     Intent btn2 = notificationClick(payload,payload.getAct2link(),payload.getLink(),payload.getAct1link(),phone,clickIndex,lastView_Click,notificationID,2);
                     if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.S) {
                         btn2.setPackage(Util.getPackageName(iZooto.appContext));
-                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis(), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     } else {
-                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis(), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     }
                     NotificationCompat.Action action2 =
                             new NotificationCompat.Action.Builder(
@@ -1128,7 +1126,7 @@ public class NotificationEventManager {
         };
 
 
-        new AppExecutors().networkIO().execute(new Runnable() {
+        new AppExecutors().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 String smallIcon = payload.getIcon();

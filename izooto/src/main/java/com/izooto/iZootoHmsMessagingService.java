@@ -16,10 +16,15 @@ import com.huawei.hms.push.RemoteMessage;
 import org.json.JSONObject;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class iZootoHmsMessagingService extends HmsMessageService {
     private Payload payload;
-
+    static final String IZ_TAG_NAME = "iZootoHmsMessagingService";
+    static final String IZ_METHOD_NAME = "handleNow";
+    private final String IZ_ERROR_NAME = "Payload Error";
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     public void onNewToken(String s) {
@@ -30,10 +35,33 @@ public class iZootoHmsMessagingService extends HmsMessageService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.i("Push Type", AppConstant.HMS);
-        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(this);
-        if (preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
-            handleNow(this, remoteMessage.getData());
+        try {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        executeBackgroundTask(remoteMessage);
+                        Thread.sleep(2000);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            executorService.execute(runnable);
+        } catch (Exception ex){
+            Util.handleExceptionOnce(this, remoteMessage + ex.toString(), IZ_TAG_NAME, "onMessageReceived");
+        }
+    }
+
+    private void executeBackgroundTask(RemoteMessage remoteMessage) {
+        try {
+            Log.i("Push Type", AppConstant.HMS);
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(this);
+            if (preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
+                handleNow(this, remoteMessage.getData());
+            }
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(this, ex.toString(), IZ_TAG_NAME, "executeBackgroundTask");
         }
     }
 

@@ -38,6 +38,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONObject;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
@@ -47,11 +49,34 @@ public class iZootoMessagingService extends FirebaseMessagingService {
     private final String IZ_METHOD_NAME = "handleNow";
     private final String IZ_METHOD_PUSH_NAME ="contentPush";
     private  final String IZ_ERROR_NAME ="Payload Error";
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         try {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        executeBackgroundTask(remoteMessage);
+                        Thread.sleep(2000);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            executorService.execute(runnable);
+        } catch (Exception ex){
+            Log.e(AppConstant.FIREBASEEXCEPTION, IZ_TAG_NAME + ex);
+            Util.handleExceptionOnce(this, remoteMessage + ex.toString(), IZ_TAG_NAME, "onMessageReceived");
+        }
+    }
+
+    private void executeBackgroundTask(RemoteMessage remoteMessage) {
+        try {
             if (remoteMessage.getData().size() > 0) {
-                Log.v("Push Type","fcm");
+                Log.v("Push Type", "fcm");
+
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(this);
                 if (preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
                     Map<String, String> data = remoteMessage.getData();
@@ -62,19 +87,12 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     sendNotification(remoteMessage);
                 }
-
             }
+        } catch (Exception ex) {
+            Log.e(AppConstant.FIREBASEEXCEPTION, IZ_TAG_NAME + ex);
+            Util.handleExceptionOnce(this, remoteMessage + ex.toString(), IZ_TAG_NAME, "executeBackgroundTask");
         }
-        catch (Exception ex)
-        {
-            Log.e(AppConstant.FIREBASEEXCEPTION,IZ_TAG_NAME+ex);
-            Util.setException(this, remoteMessage+ex.toString(), IZ_TAG_NAME, IZ_METHOD_NAME);
-
-        }
-
-
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void sendNotification(RemoteMessage remoteMessage) {

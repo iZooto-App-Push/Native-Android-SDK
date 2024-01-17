@@ -86,11 +86,11 @@ public class NotificationPreview {
 
                         PendingIntent pendingIntent = null;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
+                            pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent,
                                     PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                         }
                         else {
-                            pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100) /* Request code */, intent,
+                            pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent,
                                     PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                         }
 
@@ -329,10 +329,10 @@ public class NotificationPreview {
                             Intent btn1 = cnotificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastclickIndex, notificationId, 1);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                                 btn1.setPackage(Util.getPackageName(iZooto.appContext));
-                                pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                                pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis(), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                             } else {
-                                pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                                pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis(), btn1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                             }
                             expandedView.setOnClickPendingIntent(R.id.tv_btn1, pendingIntent);
                         }
@@ -351,10 +351,10 @@ public class NotificationPreview {
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                                 btn2.setPackage(Util.getPackageName(iZooto.appContext));
-                                pendingIntent = PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                                pendingIntent = PendingIntent.getActivity(iZooto.appContext,(int) System.currentTimeMillis(), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                             } else {
-                                pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, new Random().nextInt(100), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                                pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis(), btn2, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                             }
                             expandedView.setOnClickPendingIntent(R.id.tv_btn2, pendingIntent);
                         }
@@ -393,7 +393,7 @@ public class NotificationPreview {
                 }
             };
 
-            new AppExecutors().networkIO().execute(new Runnable() {
+            new AppExecutors().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     String smallIcon = payload.getIcon();
@@ -423,7 +423,7 @@ public class NotificationPreview {
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, url);
             sendIntent.setType("text/plain");
-            return PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), sendIntent, PendingIntent.FLAG_IMMUTABLE |PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis(), sendIntent, PendingIntent.FLAG_IMMUTABLE |PendingIntent.FLAG_UPDATE_CURRENT);
         }
         else {
             Intent sendIntent = new Intent();
@@ -431,7 +431,7 @@ public class NotificationPreview {
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "no url found here");
             sendIntent.setType("text/plain");
-            return PendingIntent.getActivity(iZooto.appContext, new Random().nextInt(100), sendIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis(), sendIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 

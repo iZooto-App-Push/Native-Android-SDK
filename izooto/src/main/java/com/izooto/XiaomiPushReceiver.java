@@ -20,22 +20,33 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class XiaomiPushReceiver extends PushMessageReceiver {
     static final  String XIAOMI_TAG="XiaomiPushReceiver";
     private Payload payload;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     // data payload notification received
     @Override
     public void onReceivePassThroughMessage(Context context, MiPushMessage miPushMessage) {
         super.onReceivePassThroughMessage(context, miPushMessage);
-        String payload = miPushMessage.getContent();
-        Log.v("Push Type","Xiaomi");
-
-        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-        if (preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
-            if (payload != null && !payload.isEmpty())
-                handleNow(context, payload);
+        try {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        executeBackgroundTask(context, miPushMessage);
+                        Thread.sleep(2000);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            executorService.execute(runnable);
+        } catch (Exception ex){
+            Util.handleExceptionOnce(context, ex.toString(), XIAOMI_TAG, "onReceivePassThroughMessage");
         }
     }
 
@@ -44,8 +55,8 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
     public void onNotificationMessageArrived(Context context, MiPushMessage miPushMessage) {
         super.onNotificationMessageArrived(context, miPushMessage);
         notificationBarView(context, miPushMessage.getContent());
-
     }
+
     // notification click
     @Override
     public void onNotificationMessageClicked(Context context, MiPushMessage miPushMessage) {
@@ -53,6 +64,19 @@ public class XiaomiPushReceiver extends PushMessageReceiver {
         notificationBarClick(context, miPushMessage.getContent());
     }
 
+    private void executeBackgroundTask(Context context, MiPushMessage miPushMessage) {
+        try {
+            String payload = miPushMessage.getContent();
+            Log.v("Push Type", AppConstant.PUSH_XIAOMI);
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            if (preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
+                if (payload != null && !payload.isEmpty())
+                    handleNow(context, payload);
+            }
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(context, ex.toString() , XIAOMI_TAG, "executeBackgroundTask");
+        }
+    }
     // notification received
     private void handleNow(Context context, String data) {
         Log.d(XIAOMI_TAG, AppConstant.NOTIFICATIONRECEIVED);
