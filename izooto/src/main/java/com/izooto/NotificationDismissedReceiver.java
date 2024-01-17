@@ -54,7 +54,6 @@ public class NotificationDismissedReceiver extends BroadcastReceiver {
                             @Override
                             void onSuccess(final String response) {
                                 super.onSuccess(response);
-                                Log.v("Dismiss Data",mapData.toString());
                             }
                             @Override
                             void onFailure(int statusCode, String response, Throwable throwable) {
