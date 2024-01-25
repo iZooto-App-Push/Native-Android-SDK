@@ -125,7 +125,6 @@ public class iZooto {
                             super.onSuccess(response);
                             if (!response.isEmpty() && response.length() > 20 && response != null) {
                                 try {
-
                                     final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
                                     senderId = jsonObject.getString(AppConstant.SENDERID);
@@ -169,7 +168,7 @@ public class iZooto {
                                     }
                                     if (iZooto.isHybrid)
                                         preferenceUtil.setBooleanData(AppConstant.IS_HYBRID_SDK, iZooto.isHybrid);
-                                } catch (JSONException e) {
+                                } catch (Exception e) {
                                     if (context != null) {
                                         DebugFileManager.createExternalStoragePublic(context,e.toString(),"[Log.e]-->init");
                                         Util.setException(context, e.toString(), "init", AppConstant.APP_NAME_TAG);

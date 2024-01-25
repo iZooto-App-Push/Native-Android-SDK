@@ -37,8 +37,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        View referencId = findViewById(R.id.containers);
         RelativeLayout container = findViewById(R.id.containers);
         iZooto.setNewsHub(this, container);
+        iZooto.enablePulse(MainActivity.this,true,referencId,R.id.containers,true,false,false);
        // Button shareToken=findViewById(R.id.shareToken);
 //        shareToken.setOnClickListener(new View.OnClickListener() {
 //            @Override
