@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.firebase:firebase-messaging:23.1.2@aar">
+  <library name="Gradle: com.google.firebase:firebase-messaging:23.1.2@aar" external-system-id="GRADLE">
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4c503a7cb7fc4e8e98ce9e6af3812349/transformed/jetified-firebase-messaging-23.1.2/annotations.zip!/" />
     </ANNOTATIONS>

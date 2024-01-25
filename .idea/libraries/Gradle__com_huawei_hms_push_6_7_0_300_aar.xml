@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.huawei.hms:push:6.7.0.300@aar">
+  <library name="Gradle: com.huawei.hms:push:6.7.0.300@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d4a1d4dfba3953460c190aa7551e8e0c/transformed/jetified-push-6.7.0.300/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d4a1d4dfba3953460c190aa7551e8e0c/transformed/jetified-push-6.7.0.300/res" />

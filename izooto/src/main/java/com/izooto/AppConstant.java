@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.1.2";
+    String SDKVERSION="2.1.3.beta1";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -377,6 +377,9 @@ public interface AppConstant {
 
     int CAMPAIGN_SI = 6;
     int CAMPAIGN_SE = 7;
+
+    String PULSE_URL = "pURL";
+
 }
 
 

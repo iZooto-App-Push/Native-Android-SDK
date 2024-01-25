@@ -134,6 +134,8 @@ public class iZooto {
                                     String mKey =jsonObject.optString(AppConstant.MIAPIKEY);
                                     String mId =jsonObject.optString(AppConstant.MIAPPID);
                                     String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
+                                    String pURL = jsonObject.optString(AppConstant.PULSE_URL);
+                                    preferenceUtil.setStringData(AppConstant.PULSE_URL, pURL);
                                     mIzooToAppId = jsonObject.optString(APPPID);
                                     String newsHub =jsonObject.optString(AppConstant.JSON_NEWS_HUB);//"{\"designType\":1,\"mainColor\":\"#1D85FC\",\"iconType\":1,\"isFullScreen\":true,\"placement\":[0,1],\"title\":\"News Hub\",\"status\":1}";//jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                     preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
@@ -2797,6 +2799,39 @@ private static void runNotificationOpenedCallback() {
 
     private static void setNewsHubActivity(Activity activity) {
         newsHubContext = activity;
+    }
+    public static void enablePulse(Activity activity, boolean isTrue, View referenceId, int layoutId, boolean isLeft, boolean isRight, boolean isBack) {
+        if (isTrue && activity != null && layoutId !=0 && referenceId !=null) {
+            try {
+                iZootoPulse pulseObject = new iZootoPulse();
+                referenceId.setOnTouchListener(new iZootoNewsHubOnSwipeListener(activity) {
+                    @Override
+                    public void onSwipeRight() {
+                        super.onSwipeRight();
+                        if (isLeft) {
+                            pulseObject.onCreateDrawer(activity, pulseObject, layoutId);
+                        }
+                    }
+
+                    @Override
+                    public void onSwipeLeft() {
+                        super.onSwipeLeft();
+                        if (isRight) {
+                            pulseObject.onCreateDrawer(activity, pulseObject, layoutId);
+                        }
+                    }
+                });
+
+            } catch (Exception ex)
+            {
+                Util.handleExceptionOnce(activity,ex.toString(),"iZooto","enablePulse");
+            }
+        }
+        else
+        {
+
+        }
+
     }
 
 }
