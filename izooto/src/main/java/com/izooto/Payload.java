@@ -1,5 +1,7 @@
 package com.izooto;
 
+import android.graphics.Bitmap;
+
 /* Developed By Amit Gupta */
 public class Payload {
 
@@ -86,13 +88,11 @@ public class Payload {
     private String  channel;
     private String vibration;
     private int badge;
-    public int getMaxNotification() {
-        return maxNotification;
-    }
 
-    public void setMaxNotification(int maxNotification) {
-        this.maxNotification = maxNotification;
-    }
+
+    // Added Bitmap setter() and getter()
+    private Bitmap iconBitmap = null;
+    private Bitmap bannerBitmap = null;
 
     //////////////////////////////////////////////
 
@@ -691,8 +691,32 @@ public class Payload {
     public int getBadge() {
         return badge;
     }
+    public int getMaxNotification() {
+        return maxNotification;
+    }
+
+    public void setMaxNotification(int maxNotification) {
+        this.maxNotification = maxNotification;
+    }
 
     public void setBadge(int badge) {
         this.badge = badge;
     }
+    public Bitmap getIconBitmap() {
+        return iconBitmap;
+    }
+
+    public void setIconBitmap(Bitmap iconBitmap) {
+        this.iconBitmap = iconBitmap;
+    }
+
+    public Bitmap getBannerBitmap() {
+        return bannerBitmap;
+    }
+
+    public void setBannerBitmap(Bitmap bannerBitmap) {
+        this.bannerBitmap = bannerBitmap;
+    }
+
+
 }

@@ -123,29 +123,13 @@ public class Util {
 
 
     private static Bitmap getBitMap(String src) {
-        int retry=0;
-        boolean isCheck=false;
-        do {
-            if(isCheck)
-            {
-                sleepTime(2000);
-
-            }
-            try {
-                return BitmapFactory.decodeStream(new URL(src).openConnection().getInputStream());
-            } catch (Throwable t) {
-                retry++;
-                isCheck=true;
-                if(retry>=4) {
-                    return null;
-                }
-
-            }
-        }while(retry<4);
-
-        return null;
+        try{
+            return BitmapFactory.decodeStream(new URL(src).openConnection().getInputStream());
+        } catch (Exception e){
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext, src + " "+e.toString(), "[Log-> e]-> getBitMap");
+            return null;
+        }
     }
-
     public static Bitmap getBitmapFromURL(String url) {
         if (url == null)
             return null;

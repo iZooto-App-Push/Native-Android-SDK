@@ -33,14 +33,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class NotificationEventManager {
-    private static Bitmap notificationIcon, notificationBanner;//,act1Icon,act2Icon;
     private static  int badgeColor;
     private static int priority;
     private static boolean addCheck;
     private static String lastView_Click ="0";
     private static boolean isCheck;
     public static String iZootoReceivedPayload;
-    private static int notificationID;
 
     // Manage notification - Ads and cloud push
     public static void manageNotification(Payload payload) {
@@ -621,6 +619,10 @@ public class NotificationEventManager {
 
                 badgeColor = getBadgeColor(payload.getBadgecolor());
 
+                // Add icon and banner image
+                Bitmap iconBitmap = payload.getIconBitmap();
+                Bitmap bannerBitmap = payload.getBannerBitmap();
+
                 intent = notificationClick(payload, payload.getLink(),payload.getAct1link(),payload.getAct2link(),AppConstant.NO,clickIndex,lastView_Click,100,0);
 
                 PendingIntent pendingIntent=null;
@@ -685,24 +687,24 @@ public class NotificationEventManager {
                     notificationBuilder.setColor(badgeColor);
                 }
 
-                if (notificationIcon != null)
-                    notificationBuilder.setLargeIcon(notificationIcon);
-                else if (notificationBanner != null)
-                    notificationBuilder.setLargeIcon(notificationBanner);
+                if (iconBitmap != null)
+                    notificationBuilder.setLargeIcon(iconBitmap);
+                else if (bannerBitmap != null)
+                    notificationBuilder.setLargeIcon(bannerBitmap);
 
-                if (notificationBanner != null && !payload.getSubTitle().contains(AppConstant.NULL) && payload.getSubTitle()!=null&&!payload.getSubTitle().isEmpty()) {
+                if (bannerBitmap != null && !payload.getSubTitle().contains(AppConstant.NULL) && payload.getSubTitle()!=null&&!payload.getSubTitle().isEmpty()) {
                     notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
-                            .bigPicture(notificationBanner)
-                            .bigLargeIcon(notificationIcon).setSummaryText(payload.getMessage()));
-                }else if (notificationBanner != null && payload.getMessage()!=null && !payload.getMessage().isEmpty()) {
+                            .bigPicture(bannerBitmap)
+                            .bigLargeIcon(iconBitmap).setSummaryText(payload.getMessage()));
+                }else if (bannerBitmap != null && payload.getMessage()!=null && !payload.getMessage().isEmpty()) {
                     notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
-                            .bigPicture(notificationBanner)
-                            .bigLargeIcon(notificationIcon).setSummaryText(payload.getMessage()));
+                            .bigPicture(bannerBitmap)
+                            .bigLargeIcon(iconBitmap).setSummaryText(payload.getMessage()));
 
-                }else if (notificationBanner != null && payload.getMessage().isEmpty()){
+                }else if (bannerBitmap != null && payload.getMessage().isEmpty()){
                     notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
-                            .bigPicture(notificationBanner)
-                            .bigLargeIcon(notificationIcon).setSummaryText(Util.makeBlackString(payload.getTitle())));
+                            .bigPicture(bannerBitmap)
+                            .bigLargeIcon(iconBitmap).setSummaryText(Util.makeBlackString(payload.getTitle())));
                 }
 
                 int notificationId;
@@ -795,31 +797,16 @@ public class NotificationEventManager {
                     e.printStackTrace();
                 }
 
-                notificationBanner = null;
-                notificationIcon = null;
             }
 
         };
+        if(payload.getFetchURL() != null && !payload.getFetchURL().isEmpty()){
+            NotificationExecutorService notificationExecutorService = new NotificationExecutorService(iZooto.appContext);
+            notificationExecutorService.executeNotification(handler, notificationRunnable, payload);
+        } else {
+            handler.post(notificationRunnable);
+        }
 
-        new AppExecutors().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                String smallIcon = payload.getIcon();
-                String banner = payload.getBanner();
-                try {
-                    if (smallIcon != null && !smallIcon.isEmpty())
-                        notificationIcon = Util.getBitmapFromURL(smallIcon);
-                    if (banner != null && !banner.isEmpty()) {
-                        notificationBanner = Util.getBitmapFromURL(banner);
-                    }
-                    handler.post(notificationRunnable);
-                } catch (Exception e) {
-                    Lg.e("Error", e.getMessage());
-                    e.printStackTrace();
-                    handler.post(notificationRunnable);
-                }
-            }
-        });
 
     }
     private static void receivedNotification(final Payload payload){
@@ -859,6 +846,10 @@ public class NotificationEventManager {
 
                 badgeColor = getBadgeColor(payload.getBadgecolor());
 
+                // Add icon and banner image
+                Bitmap iconBitmap = payload.getIconBitmap();
+                Bitmap bannerBitmap = payload.getBannerBitmap();
+
                 intent = notificationClick(payload, payload.getLink(),payload.getAct1link(),payload.getAct2link(),AppConstant.NO,clickIndex,lastView_Click,100,0);
 
                 PendingIntent pendingIntent=null;
@@ -876,7 +867,7 @@ public class NotificationEventManager {
                 RemoteViews expandedView = new RemoteViews(iZooto.appContext.getPackageName(), R.layout.remote_view_expands);
 
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-                    if (notificationBanner == null && notificationIcon == null) {
+                    if (bannerBitmap == null && iconBitmap == null) {
                         if (!payload.getMessage().isEmpty() && payload.getTitle().length() < 46) {
                             collapsedView.setTextViewText(R.id.tv_title, "" + payload.getTitle());
                             collapsedView.setViewVisibility(R.id.tv_message, View.VISIBLE);
@@ -887,10 +878,10 @@ public class NotificationEventManager {
 
                     } else {
                         collapsedView.setViewVisibility(R.id.linear_layout_large_icon, View.VISIBLE);
-                        if (notificationIcon != null)
-                            collapsedView.setImageViewBitmap(R.id.iv_large_icon, Util.makeCornerRounded(notificationIcon));
+                        if (iconBitmap != null)
+                            collapsedView.setImageViewBitmap(R.id.iv_large_icon, Util.makeCornerRounded(iconBitmap));
                         else
-                            collapsedView.setImageViewBitmap(R.id.iv_large_icon, Util.makeCornerRounded(notificationBanner));
+                            collapsedView.setImageViewBitmap(R.id.iv_large_icon, Util.makeCornerRounded(bannerBitmap));
                         if (!payload.getMessage().isEmpty() && payload.getTitle().length() < 40) {
                             collapsedView.setTextViewText(R.id.tv_title, "" + payload.getTitle());
                             collapsedView.setViewVisibility(R.id.tv_message, View.VISIBLE);
@@ -909,18 +900,18 @@ public class NotificationEventManager {
                 }
 
                 //--------------------- expanded notification ------------------
-                if (notificationBanner==null){
+                if (bannerBitmap==null){
                     expandedView.setTextViewText(R.id.tv_title,""+payload.getTitle());
                     if (!payload.getMessage().isEmpty()){
                         expandedView.setViewVisibility(R.id.tv_message, View.VISIBLE);
                         expandedView.setTextViewText(R.id.tv_message, "" + payload.getMessage());
                     }
                 }else {
-                    if (notificationBanner != null) {
+                    if (bannerBitmap != null) {
                         if (payload.getAct1name().isEmpty() && payload.getAct2name().isEmpty()) {
                             expandedView.setViewVisibility(R.id.tv_title_with_banner_with_button, View.INVISIBLE);
                             expandedView.setViewVisibility(R.id.iv_banner, View.VISIBLE);//0 for visible
-                            expandedView.setImageViewBitmap(R.id.iv_banner, notificationBanner);
+                            expandedView.setImageViewBitmap(R.id.iv_banner, bannerBitmap);
 
                             if (!payload.getMessage().isEmpty() && payload.getTitle().length()<46) {
                                 expandedView.setViewVisibility(R.id.tv_message_with_banner, View.VISIBLE);
@@ -941,7 +932,7 @@ public class NotificationEventManager {
                             expandedView.setViewVisibility(R.id.tv_title, View.INVISIBLE);//2 for gone
                             expandedView.setViewVisibility(R.id.iv_banner, View.VISIBLE);
                             expandedView.setTextViewText(R.id.tv_title_with_banner_with_button, "" + payload.getTitle());
-                            expandedView.setImageViewBitmap(R.id.iv_banner, notificationBanner);
+                            expandedView.setImageViewBitmap(R.id.iv_banner, bannerBitmap);
                             if (!payload.getMessage().isEmpty() && payload.getTitle().length()<46) {
                                 expandedView.setViewVisibility(R.id.tv_message_with_banner_with_button, View.VISIBLE);
                                 expandedView.setTextViewText(R.id.tv_message_with_banner_with_button, "" + payload.getMessage());
@@ -970,11 +961,11 @@ public class NotificationEventManager {
 
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                     notificationBuilder.setCustomHeadsUpContentView(collapsedView);
-                    if (notificationIcon != null)
-                        notificationBuilder.setLargeIcon(notificationIcon);
+                    if (iconBitmap != null)
+                        notificationBuilder.setLargeIcon(iconBitmap);
                     else {
-                        if (notificationBanner != null)
-                            notificationBuilder.setLargeIcon(notificationBanner);
+                        if (bannerBitmap != null)
+                            notificationBuilder.setLargeIcon(bannerBitmap);
                     }
                 }
 
@@ -1031,7 +1022,7 @@ public class NotificationEventManager {
                     notificationBuilder.setColor(badgeColor);
                 }
 
-
+                int notificationID;
                 if (payload.getTag()!=null && !payload.getTag().isEmpty())
                     notificationID = Util.convertStringToDecimal(payload.getTag());
                 else
@@ -1120,30 +1111,16 @@ public class NotificationEventManager {
                     e.printStackTrace();
                 }
 
-                notificationBanner = null;
-                notificationIcon = null;
             }
         };
+        if(payload.getFetchURL() != null && !payload.getFetchURL().isEmpty()){
+            NotificationExecutorService notificationExecutorService = new NotificationExecutorService(iZooto.appContext);
+            notificationExecutorService.executeNotification(handler, notificationRunnable, payload);
+        } else {
+            handler.post(notificationRunnable);
+        }
 
 
-        new AppExecutors().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                String smallIcon = payload.getIcon();
-                String banner = payload.getBanner();
-                try {
-                    if (smallIcon != null && !smallIcon.isEmpty())
-                        notificationIcon = Util.getBitmapFromURL(smallIcon);
-                    if (banner != null && !banner.isEmpty()) {
-                        notificationBanner = Util.getBitmapFromURL(banner);
-                    }
-                    handler.post(notificationRunnable);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    handler.post(notificationRunnable);
-                }
-            }
-        });
     }
 
     private static String getFinalUrl(Payload payload) {

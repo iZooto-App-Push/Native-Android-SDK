@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
         View referencId = findViewById(R.id.containers);
         RelativeLayout container = findViewById(R.id.containers);
         iZooto.setNewsHub(this, container);
-        iZooto.enablePulse(MainActivity.this,true,referencId,R.id.containers,true,false,false);
+       // iZooto.enablePulse(MainActivity.this,true,referencId,R.id.containers,true,false,false);
        // Button shareToken=findViewById(R.id.shareToken);
 //        shareToken.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -147,8 +147,6 @@ public class iZooto {
                                     if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB)) {
                                         fetchNewsHubData(context, newsHub);
                                     }
-
-
                                     trackAdvertisingId();
 
                                     if(!mKey.isEmpty() && !mId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_XIAOMI_TOKEN)){
@@ -1337,56 +1335,45 @@ private static void runNotificationOpenedCallback() {
     public static void setDefaultNotificationBanner(int setBanner){
         bannerImage = setBanner;
     }
-    public static void iZootoHandleNotification(Context context, final Map<String,String> data)
-    {
+
+
+    public static void iZootoHandleNotification(final Context context, final Map<String, String> data) {
         Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
         try {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-
-            if(data.get(AppConstant.AD_NETWORK) !=null || data.get(AppConstant.GLOBAL)!=null || data.get(AppConstant.GLOBAL_PUBLIC_KEY)!=null)
-            {
-                if(data.get(AppConstant.GLOBAL_PUBLIC_KEY)!=null)
-                {
-                    try
-                    {
-                        JSONObject jsonObject=new JSONObject(Objects.requireNonNull(data.get(AppConstant.GLOBAL)));
-                        String urlData=data.get(AppConstant.GLOBAL_PUBLIC_KEY);
-                        if(jsonObject.toString()!=null && urlData!=null && !urlData.isEmpty()) {
+            if (data.get(AppConstant.AD_NETWORK) != null || data.get(AppConstant.GLOBAL) != null || data.get(AppConstant.GLOBAL_PUBLIC_KEY) != null) {
+                if (data.get(AppConstant.GLOBAL_PUBLIC_KEY) != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(Objects.requireNonNull(data.get(AppConstant.GLOBAL)));
+                        String urlData = data.get(AppConstant.GLOBAL_PUBLIC_KEY);
+                        if (jsonObject.toString() != null && urlData != null && !urlData.isEmpty()) {
                             String cid = jsonObject.optString(ShortpayloadConstant.ID);
                             String rid = jsonObject.optString(ShortpayloadConstant.RID);
-                            NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL,cid,rid,-1,"FCM");
+                            NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1, "FCM");
                             AdMediation.getMediationGPL(context, jsonObject, urlData);
+                        } else {
+                            NotificationEventManager.handleNotificationError("Payload Error", data.toString(), "MessagingSevices", "HandleNow");
                         }
-                        else
-                        {
-                            NotificationEventManager.handleNotificationError("Payload Error",data.toString(),"MessagingSevices","HandleNow");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Payload"+ex.toString()+data.toString(),"[Log.e]->Exception->");
-
+                    } catch (Exception ex) {
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "Payload" + ex + data, "[Log.e]->Exception->");
+                        Util.handleExceptionOnce(context, ex + "PayloadError" + data, "iZooto", "handleNow" + " gpl");
                     }
 
-                }
-                else {
+                } else {
                     try {
-                        JSONObject jsonObject = new JSONObject(data.get(AppConstant.GLOBAL));
+                        JSONObject jsonObject = new JSONObject(Objects.requireNonNull(data.get(AppConstant.GLOBAL)));
                         String cid = jsonObject.optString(ShortpayloadConstant.ID);
                         String rid = jsonObject.optString(ShortpayloadConstant.RID);
-                        NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,"FCM");
-                        JSONObject jsonObject1=new JSONObject(data.toString());
-                        AdMediation.getMediationData(context, jsonObject1,"fcm","");
+                        NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1, "FCM");
+                        JSONObject jsonObject1 = new JSONObject(data.toString());
+                        AdMediation.getMediationData(context, jsonObject1, "fcm", "");
                         preferenceUtil.setBooleanData(AppConstant.MEDIATION, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Payload Error"+ex.toString()+data.toString(),"[Log.e]->Exception->");
-
+                    } catch (Exception ex) {
+                        Util.handleExceptionOnce(context, ex + "PayloadError" + data, "iZooto", "handleNow" + " mediation ");
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "Payload Error" + ex + data, "[Log.e]->Exception->");
                     }
                 }
-            }
-            else {
+            } else {
                 preferenceUtil.setBooleanData(AppConstant.MEDIATION, false);
                 JSONObject payloadObj = new JSONObject(data);
                 if (payloadObj.optLong(ShortpayloadConstant.CREATEDON) > PreferenceUtil.getInstance(iZooto.appContext).getLongValue(AppConstant.DEVICE_REGISTRATION_TIMESTAMP)) {
@@ -1423,83 +1410,76 @@ private static void runNotificationOpenedCallback() {
                     payload.setInapp(payloadObj.optInt(ShortpayloadConstant.INAPP));
                     payload.setTrayicon(payloadObj.optString(ShortpayloadConstant.TARYICON));
                     payload.setSmallIconAccentColor(payloadObj.optString(ShortpayloadConstant.ICONCOLOR));
-                    payload.setFromProjectNumber(payloadObj.optString(ShortpayloadConstant.PROJECTNUMBER));
-                    payload.setCollapseId(payloadObj.optString(ShortpayloadConstant.COLLAPSEID));
-                    payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
-                    payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
-                    payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
-                    payload.setPush_type(AppConstant.PUSH_FCM);
-                    payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
-                    payload.setFallBackDomain(payloadObj.optString(ShortpayloadConstant.FALL_BACK_DOMAIN));
-                    payload.setFallBackSubDomain(payloadObj.optString(ShortpayloadConstant.FALLBACK_SUB_DOMAIN));
-                    payload.setFallBackPath(payloadObj.optString(ShortpayloadConstant.FAll_BACK_PATH));
-                    payload.setDefaultNotificationPreview(payloadObj.optInt(ShortpayloadConstant.TEXTOVERLAY));
-                    payload.setNotification_bg_color(payloadObj.optString(ShortpayloadConstant.BGCOLOR));
-                    payload.setRc(payloadObj.optString(ShortpayloadConstant.RC));
-                    payload.setRv(payloadObj.optString(ShortpayloadConstant.RV));
-                    payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
-                    payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
-                    payload.setOfflineCampaign(payloadObj.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
-
-                    // notification channel paylaod
-                    payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
-                    payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
-                    payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
                     payload.setSound(payloadObj.optString(ShortpayloadConstant.SOUND));
                     payload.setLedColor(payloadObj.optString(ShortpayloadConstant.LEDCOLOR));
                     payload.setLockScreenVisibility(payloadObj.optInt(ShortpayloadConstant.VISIBILITY));
-                    payload.setChannel(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_CHANNEL));
-                    payload.setVibration(payloadObj.optString(ShortpayloadConstant.VIBRATION));
-                    payload.setBadge(payloadObj.optInt(ShortpayloadConstant.BADGE));
-                    payload.setOtherChannel(payloadObj.optString(ShortpayloadConstant.OTHER_CHANNEL));
+                    payload.setGroupKey(payloadObj.optString(ShortpayloadConstant.GKEY));
+                    payload.setGroupMessage(payloadObj.optString(ShortpayloadConstant.GMESSAGE));
+                    payload.setFromProjectNumber(payloadObj.optString(ShortpayloadConstant.PROJECTNUMBER));
+                    payload.setCollapseId(payloadObj.optString(ShortpayloadConstant.COLLAPSEID));
+                    payload.setPriority(payloadObj.optInt(ShortpayloadConstant.PRIORITY));
+                    payload.setRawPayload(payloadObj.optString(ShortpayloadConstant.RAWDATA));
+                    payload.setAp(payloadObj.optString(ShortpayloadConstant.ADDITIONALPARAM));
+                    payload.setCfg(payloadObj.optInt(ShortpayloadConstant.CFG));
+                    payload.setTime_to_live(payloadObj.optString(ShortpayloadConstant.TIME_TO_LIVE));
+                    payload.setPush_type(AppConstant.PUSH_FCM);
+                    payload.setSound(payloadObj.optString(ShortpayloadConstant.NOTIFICATION_SOUND));
+                    payload.setMaxNotification(payloadObj.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
+                    payload.setExpiryTimerValue(payloadObj.optString(ShortpayloadConstant.EXPIRY_TIMER_VALUE));
+                    payload.setMakeStickyNotification(payloadObj.optString(ShortpayloadConstant.MAKE_STICKY_NOTIFICATION));
 
                     try {
                         if (payload.getRid() != null && !payload.getRid().isEmpty()) {
                             preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
                         } else {
-                            Log.v("campaign", "rid null or empty!");
+                            Log.e("campaign", "rid null or empty!");
                         }
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
                             int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
                             if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
-                                Log.v("campaign", "...");
+                                Log.e("campaign", "...");
                             } else {
                                 newsHubDBHelper.addNewsHubPayload(payload);
                             }
-
                         }
                     }catch (Exception e){
-                        Log.v("campaign", "..");
+                        Log.e("campaign", "..");
                     }
 
                 } else {
-                    String updateDaily=NotificationEventManager.getDailyTime(context);
+                    String updateDaily = NotificationEventManager.getDailyTime(context);
                     if (!updateDaily.equalsIgnoreCase(Util.getTime())) {
                         preferenceUtil.setStringData(AppConstant.CURRENT_DATE_VIEW_DAILY, Util.getTime());
                         NotificationEventManager.handleNotificationError("Payload Error" + payloadObj.optString("t"), payloadObj.toString(), "iz_db_clientside_handle_servcie", "handleNow()");
                     }
                     return;
                 }
+
                 if (iZooto.appContext == null)
                     iZooto.appContext = context;
-                Handler mainHandler = new Handler(Looper.getMainLooper());
-                Runnable myRunnable = new Runnable() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+                final Handler mainHandler = new Handler(Looper.getMainLooper());
+                final Runnable myRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        NotificationEventManager.handleImpressionAPI(payload,AppConstant.PUSH_FCM);
-                        iZooto.processNotificationReceived(context,payload);
+                        NotificationEventManager.handleImpressionAPI(payload, AppConstant.PUSH_FCM);
+                        iZooto.processNotificationReceived(context, payload);
                     } // This is your code
                 };
-                mainHandler.post(myRunnable);
 
+                try {
+                    NotificationExecutorService notificationExecutorService = new NotificationExecutorService(context);
+                    notificationExecutorService.executeNotification(mainHandler, myRunnable, payload);
+
+                } catch (Exception e){
+                    Util.handleExceptionOnce(iZooto.appContext, e.toString(), "iZooto","notificationExecutorService");
+                }
             }
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,data.toString(),"payloadData");
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext, data.toString(), "payloadData");
 
         } catch (Exception e) {
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Payload Error"+e.toString()+data.toString(),"[Log.e]->Exception->");
-
-            Util.setException(context,e.toString(),AppConstant.APP_NAME_TAG,"handleNotification");
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext, "Payload Error" + e + data.toString(), "[Log.e]->Exception->");
+            Util.handleExceptionOnce(context, e.toString(), AppConstant.APP_NAME_TAG, "handleNotification");
         }
     }
     public static void addTag(final List<String> topicName){
@@ -2799,7 +2779,7 @@ private static void runNotificationOpenedCallback() {
     private static void setNewsHubActivity(Activity activity) {
         newsHubContext = activity;
     }
-    public static void enablePulse(Activity activity, boolean isTrue, View referenceId, int layoutId, boolean isLeft, boolean isRight, boolean isBack) {
+    private static void enablePulse(Activity activity, boolean isTrue, View referenceId, int layoutId, boolean isLeft, boolean isRight, boolean isBack) {
         if (isTrue && activity != null && layoutId !=0 && referenceId !=null) {
             try {
                 iZootoPulse pulseObject = new iZootoPulse();

@@ -187,18 +187,18 @@ public class DebugFileManager {
                     emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
                     if(Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
                         if(PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken)!=null)
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "MI Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken) + "");
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "MI Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken) + "Android Id"+Util.getAndroidId(context));
                         else
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "");
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "Android Id"+Util.getAndroidId(context));
 
                     }
                     if(Build.MANUFACTURER.equalsIgnoreCase("Huawei"))
                     {
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "");
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "Android Id"+Util.getAndroidId(context));
                     }
                     else
                     {
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "");
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "Android Id"+Util.getAndroidId(context));
 
                     }
                     emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -222,18 +222,18 @@ public class DebugFileManager {
 
                     if(Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
                         if(PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken)!=null)
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "MI Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken) + "");
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "MI Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken) + "Android Id"+Util.getAndroidId(context));
                         else
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "");
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "Android Id"+Util.getAndroidId(context));
 
                     }
                     if(Build.MANUFACTURER.equalsIgnoreCase("Huawei"))
                     {
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "");
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "Android Id"+Util.getAndroidId(context));
                     }
                     else
                     {
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "");
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "Android Id"+Util.getAndroidId(context));
 
                     }
                     // Add line -> fixed the flutter issue

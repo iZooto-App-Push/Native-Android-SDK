@@ -271,54 +271,53 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                         if (payload.getRid() != null && !payload.getRid().isEmpty()) {
                             preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
                         } else {
-                            DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
+                            DebugFileManager.createExternalStoragePublic(iZooto.appContext, IZ_METHOD_PUSH_NAME, data.toString());
                         }
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
                             int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
                             if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
-                                DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
+                                DebugFileManager.createExternalStoragePublic(iZooto.appContext, IZ_METHOD_PUSH_NAME, data.toString());
                             } else {
                                 newsHubDBHelper.addNewsHubPayload(payload);
                             }
 
                         }
-                    }catch (Exception e){
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,e.toString());
+                    } catch (Exception e) {
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, IZ_METHOD_PUSH_NAME, e.toString());
                     }
+                    if (iZooto.appContext == null) {
+                        iZooto.appContext = this;
+                    }
+
+                    final Handler mainHandler = new Handler(Looper.getMainLooper());
+                    final Runnable myRunnable = () -> {
+                        NotificationEventManager.handleImpressionAPI(payload, AppConstant.PUSH_FCM);
+                        iZooto.processNotificationReceived(iZooto.appContext, payload);
+                    };
+
+                    try {
+                        NotificationExecutorService notificationExecutorService = new NotificationExecutorService(this);
+                        notificationExecutorService.executeNotification(mainHandler, myRunnable, payload);
+
+                    } catch (Exception e) {
+                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), IZ_TAG_NAME, IZ_METHOD_NAME + "notificationExecutorService");
+                    }
+                    DebugFileManager.createExternalStoragePublic(iZooto.appContext, data.toString(), " Log-> ");
                 } else {
-                    String updateDaily=NotificationEventManager.getDailyTime(this);
+                    String updateDaily = NotificationEventManager.getDailyTime(this);
                     if (!updateDaily.equalsIgnoreCase(Util.getTime())) {
                         preferenceUtil.setStringData(AppConstant.CURRENT_DATE_VIEW_DAILY, Util.getTime());
-                        if(!preferenceUtil.getBoolean(AppConstant.IZ_PAYLOAD_ERROR)) {
+                        if (!preferenceUtil.getBoolean(AppConstant.IZ_PAYLOAD_ERROR)) {
                             NotificationEventManager.handleNotificationError(IZ_ERROR_NAME + payloadObj.optString("t"), payloadObj.toString(), IZ_TAG_NAME, IZ_METHOD_NAME);
-                        }
-                        else {
-                            preferenceUtil.setBooleanData(AppConstant.IZ_PAYLOAD_ERROR,true);
+                        } else {
+                            preferenceUtil.setBooleanData(AppConstant.IZ_PAYLOAD_ERROR, true);
                         }
                     }
-                    return;
                 }
-                if (iZooto.appContext == null)
-                    iZooto.appContext = this;
-
-                Handler mainHandler = new Handler(Looper.getMainLooper());
-                Runnable myRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        NotificationEventManager.handleImpressionAPI(payload,AppConstant.PUSH_FCM);
-                        iZooto.processNotificationReceived(iZooto.appContext, payload);
-
-                    }
-                };
-
-                mainHandler.post(myRunnable);
             }
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,IZ_METHOD_PUSH_NAME,data.toString());
 
         } catch (Exception e) {
-
             Util.handleExceptionOnce(this, data+e.toString(), IZ_TAG_NAME, IZ_METHOD_NAME);
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,e.toString(),"[Log.e]-Exception");
 
         }
     }
