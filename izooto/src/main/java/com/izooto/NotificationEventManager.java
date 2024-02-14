@@ -789,12 +789,17 @@ public class NotificationEventManager {
 
                     if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
                         iZooto.notificationView(payload);
+                    else {
+                        NotificationEventManager.onReceiveNotificationHybrid(iZooto.appContext, payload);
+                        NotificationEventManager.iZootoReceivedPayload = preferenceUtil.getStringData(AppConstant.PAYLOAD_JSONARRAY);
+                        iZooto.notificationViewHybrid(NotificationEventManager.iZootoReceivedPayload, payload);
+                    }
 
                     if (payload.getMaxNotification() != 0){
                         getMaximumNotificationInTray(iZooto.appContext, payload.getMaxNotification());}
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Util.handleExceptionOnce(iZooto.appContext,e.toString(),"receivedAd","NotificationEventmanager");
                 }
 
             }
