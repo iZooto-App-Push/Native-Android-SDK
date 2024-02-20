@@ -49,6 +49,7 @@ import static com.izooto.AppConstant.PID;
 import static com.izooto.AppConstant.TAG;
 import static com.izooto.AppConstant.XIAOMI_TOKEN_FROM_JSON;
 import static com.izooto.NewsHubAlert.newsHubDBHelper;
+import static com.izooto.iZootoPulse.feedList;
 
 @SuppressWarnings("unchecked")
 public class iZooto {
@@ -76,8 +77,18 @@ public class iZooto {
     private static LOG_LEVEL visualLogLevel = LOG_LEVEL.NONE;
     private static LOG_LEVEL logCatLevel = LOG_LEVEL.WARN;
 
+     static String pUrl="";
+     static boolean swipeEdge;
+     static  boolean isLeft ;
+     static  boolean isRight;
+     static  String pulseRid ="";
+     static  String pulseCid = "";
+
+    static boolean isEDGestureUiMode = false;
+
     static Activity  newsHubContext;
 
+    static  String userEvent = "5";
 
     private static int pageNumber;   // index handling for notification center data
     private static String notificationData;
@@ -133,8 +144,9 @@ public class iZooto {
                                     String mKey =jsonObject.optString(AppConstant.MIAPIKEY);
                                     String mId =jsonObject.optString(AppConstant.MIAPPID);
                                     String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
-                                    String pURL = jsonObject.optString(AppConstant.PULSE_URL);
-                                    preferenceUtil.setStringData(AppConstant.PULSE_URL, pURL);
+                                    iZooto.pUrl =jsonObject.optString(AppConstant.PULSE_URL);
+                                    iZooto.pulseRid = jsonObject.optString(AppConstant.pulseRid);
+                                    iZooto.pulseCid = jsonObject.optString(AppConstant.pulseCid);
                                     mIzooToAppId = jsonObject.optString(APPPID);
                                     String newsHub =jsonObject.optString(AppConstant.JSON_NEWS_HUB);//"{\"designType\":1,\"mainColor\":\"#1D85FC\",\"iconType\":1,\"isFullScreen\":true,\"placement\":[0,1],\"title\":\"News Hub\",\"status\":1}";//jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                     preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
@@ -2779,28 +2791,47 @@ private static void runNotificationOpenedCallback() {
     private static void setNewsHubActivity(Activity activity) {
         newsHubContext = activity;
     }
-    private static void enablePulse(Activity activity, boolean isTrue, View referenceId, int layoutId, boolean isLeft, boolean isRight, boolean isBack) {
-        if (isTrue && activity != null && layoutId !=0 && referenceId !=null) {
+    public static void enablePulse(Activity activity, boolean isPulseEnabled,  boolean isLeft, boolean isRight, boolean isBack) {
+        if (isPulseEnabled && activity != null) {
             try {
+                try {
+                    Util.parseXml(contentListener -> {
+                        feedList.addAll(contentListener);
+                        contentListener.clear();
+                    });
+
+                }catch (Exception e){
+                    Util.handleExceptionOnce(activity, e.toString(), "iZootoNavigationDrawer","onCreate");
+                }
+                Thread.sleep(2000);
                 iZootoPulse pulseObject = new iZootoPulse();
-                referenceId.setOnTouchListener(new iZootoNewsHubOnSwipeListener(activity) {
+                View onTouchView = activity.getWindow().getDecorView().getRootView();
+                if(isBack)
+                {
+                    iZooto.isLeft = true;
+                    iZooto.userEvent = "6";
+                    pulseObject.onCreateDrawer(activity, pulseObject, android.R.id.content);
+                }
+                onTouchView.setOnTouchListener(new iZootoNewsHubOnSwipeListener(activity) {
                     @Override
                     public void onSwipeRight() {
                         super.onSwipeRight();
                         if (isLeft) {
-                            pulseObject.onCreateDrawer(activity, pulseObject, layoutId);
+                            iZooto.userEvent = "5";
+                            iZooto.isLeft = true;
+                            pulseObject.onCreateDrawer(activity, pulseObject, android.R.id.content);
                         }
                     }
-
                     @Override
                     public void onSwipeLeft() {
                         super.onSwipeLeft();
                         if (isRight) {
-                            pulseObject.onCreateDrawer(activity, pulseObject, layoutId);
+                            iZooto.isRight= isRight;
+                            iZooto.userEvent = "5";
+                            pulseObject.onCreateDrawer(activity, pulseObject, android.R.id.content);
                         }
                     }
                 });
-
             } catch (Exception ex)
             {
                 Util.handleExceptionOnce(activity,ex.toString(),"iZooto","enablePulse");
@@ -2808,7 +2839,7 @@ private static void runNotificationOpenedCallback() {
         }
         else
         {
-
+            Log.e("Pulse Feature is","not enabled");
         }
 
     }

@@ -88,14 +88,14 @@ public class Payload {
     private String  channel;
     private String vibration;
     private int badge;
-
+    private String category;
 
     // Added Bitmap setter() and getter()
     private Bitmap iconBitmap = null;
     private Bitmap bannerBitmap = null;
 
     //////////////////////////////////////////////
-
+    private String description;
     private int cfg;
 
     private String expiryTimerValue;
@@ -718,5 +718,18 @@ public class Payload {
         this.bannerBitmap = bannerBitmap;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

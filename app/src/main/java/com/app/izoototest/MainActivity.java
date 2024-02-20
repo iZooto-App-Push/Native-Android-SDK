@@ -30,6 +30,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
+    boolean backPressedOnce;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,40 +39,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        View referencId = findViewById(R.id.containers);
-        RelativeLayout container = findViewById(R.id.containers);
-        iZooto.setNewsHub(this, container);
-       // iZooto.enablePulse(MainActivity.this,true,referencId,R.id.containers,true,false,false);
-       // Button shareToken=findViewById(R.id.shareToken);
-//        shareToken.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                PreferenceUtil preferenceUtil=PreferenceUtil.getInstance(MainActivity.this);
-//                if(preferenceUtil!=null)
-//                {
-//                   String tokenData=preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN);
-//                    try {
-//                        Intent intent = new Intent(Intent.ACTION_SENDTO);
-//                        intent.setType("text/plain");
-//                        intent.putExtra(Intent.EXTRA_SUBJECT, "Device Token");
-//                        intent.putExtra(Intent.EXTRA_TEXT, tokenData);
-//                        intent.setData(Uri.parse("mailto:"));
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent);
-//                       // finish();
-//                    } catch(Exception e)  {
-//                        System.out.println("is exception raises during sending mail"+e);
-//                    }
-//                }
-//                else
-//                {
-//                    Log.e("TokenClick","Exception occurred");
-//                }
-//            }
-//        });
-
-       // LinearLayout mainLayout=findViewById(R.id.mainLayout);
-      //  iZooto.setNewsHub(MainActivity.this,null);
+       //iZooto.enablePulse(MainActivity.this,true,false,true,false);
 
 
     }
@@ -91,7 +60,16 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (backPressedOnce) {
+            super.onBackPressed();
+            backPressedOnce = false;
+        } else {
+            backPressedOnce = true;
+            iZooto.enablePulse(MainActivity.this, true,   false, false, true);
+        }
+    }
 
   
 

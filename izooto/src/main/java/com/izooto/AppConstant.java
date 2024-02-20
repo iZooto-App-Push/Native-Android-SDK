@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.1.5";
+    String SDKVERSION="2.1.6";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -374,11 +374,12 @@ public interface AppConstant {
     String CUSTOM_CHANNEL_CURRENT_DATE= "customChannelCurrentDate";
     String IZ_NOTIFICATION_CHANNEL = "Notification Channel";
     String IZ_LIMIT_EXCEED_MSG = "Limit exceed; cannot create more channels";
-
     int CAMPAIGN_SI = 6;
     int CAMPAIGN_SE = 7;
+    String PULSE_URL = "pUrl";
 
-    String PULSE_URL = "pURL";
+    String pulseRid = "pulseRid";
+    String pulseCid = "pulseCid";
 
 }
 

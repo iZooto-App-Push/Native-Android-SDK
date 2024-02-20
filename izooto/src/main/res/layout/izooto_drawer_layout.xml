@@ -6,23 +6,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
+
     <FrameLayout
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/iz_notificationBg"
         android:layout_gravity="start">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:ignore="UselessParent">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"
+                android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <LinearLayout
+                android:id="@+id/dataNotFound"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/iz_news_hub_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_icon_not_found"
+                    tools:ignore="UseAppTint"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/iz_ic_vector"
+                    tools:ignore="UseAppTint"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:gravity="center"
+                    android:text="@string/no_new_update"
+                    android:textColor="@color/iz_news_hub_no_new_updates"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:gravity="center"
+                    android:textSize="15dp"
+                    android:text="@string/watch_this_space_to_get_latest_updates"
+                    android:textColor="@color/iz_news_nub_no_data_found_text"/>
+            </LinearLayout>
+
         </LinearLayout>
+
     </FrameLayout>
+
 </androidx.drawerlayout.widget.DrawerLayout>
