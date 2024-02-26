@@ -65,6 +65,7 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             return new FooterViewHolder(view);
         }
     }
+
     @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -88,16 +89,29 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         }else {
                             viewHolder.publisherName.setText(AppConstant.APP_NAME_TAG+",");
                         }
+
                     }
                     try{
+                        if (iZooto.isXmlParse){
                             if (Util.notificationMode()) {
                                 viewHolder.newsHubTime.setText(Util.getTimeAgo(userModal.getCreated_Time())+",");
                             }else {
                                 viewHolder.newsHubTime.setText(Util.getTimeAgo(userModal.getCreated_Time()));
                             }
+                        }else {
+                            long longTime = Long.parseLong(userModal.getCreated_Time());
+                            if (Util.notificationMode()){
+                                viewHolder.newsHubTime.setText(IZTimeAgo.getTimeAgo(longTime)+",");
+                            }else {
+                                viewHolder.newsHubTime.setText(IZTimeAgo.getTimeAgo(longTime));
+                            }
+
+                        }
+
                     }catch (Exception e){
                         Log.e("isXmlParse", e.toString());
                     }
+
 
 
                     try{
@@ -122,7 +136,7 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     viewHolder.itemView.setOnClickListener(v -> {
                         iZooto.isEDGestureUiMode = true;
                         newsHubCheckIaKey(v, userModal);
-                        Util.newsHubClickApi(context, userModal);
+                        Util.pulseClickAPI(context, userModal);
                         if (navigationDrawer != null){
                             //iZootoNavigationDrawer.closeDrawer();
                         }
@@ -158,6 +172,7 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
     }
+
     private String newsHubUpdatedURL(String link, String linkType) {
         if (link != null && !link.isEmpty()) {
             if (linkType.equalsIgnoreCase("Share")) {
@@ -270,6 +285,7 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             return link;
         }
     }
+
     private void shareData(Payload userModal, String utm) {
         Intent action = new Intent(Intent.ACTION_SEND);
         action.setType("text/plain");
@@ -297,7 +313,6 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
         }
 
-
     }
 
     @Override
@@ -307,6 +322,7 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else
             return TYPE_ITEM;
     }
+
     @Override
     public int getItemCount() {
         return payloadModalArrayList.size() + 1;
@@ -326,10 +342,9 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             newsHubBanner = itemView.findViewById(R.id.nt_banner_image);
             newsHubShare = itemView.findViewById(R.id.news_hub_share_icon);
             newsHubTime = itemView.findViewById(R.id.news_hub_time);
-
             publisherName = itemView.findViewById(R.id.publisher_);
-            //likeIcon = itemView.findViewById(R.id.like_icon);
-          //  circleImage = itemView.findViewById(R.id.circle_icon);
+            likeIcon = itemView.findViewById(R.id.like_icon);
+            //circleImage = itemView.findViewById(R.id.circle_icon);
             // moreIcon = itemView.findViewById(R.id.more_icon);
         }
     }
@@ -353,6 +368,7 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             footerImage = view.findViewById(R.id.footer_image);
         }
     }
+
 
 
 

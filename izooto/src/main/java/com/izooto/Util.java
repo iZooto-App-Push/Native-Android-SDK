@@ -769,7 +769,7 @@ public class Util {
                 hashMap.put(AppConstant.VER_, "" + AppConstant.SDKVERSION);
                 hashMap.put("link",userModal.getLink());
                 hashMap.put("tt",iZooto.userEvent); // 5 means swipe left or right 6 means on backPressed
-                hashMap.put("ot","5");
+                hashMap.put("ot",iZooto.pulseTemplate);
                 hashMap.put("cid",iZooto.pulseCid);
                 hashMap.put("rid",iZooto.pulseRid);
             }
@@ -837,71 +837,6 @@ public class Util {
         }
         return digit;
     }
-    public static void parseXml(RssContentCallbackListener callbackListener) {
-        ArrayList<Payload> contentList = new ArrayList<>();
-        new Thread(() -> {
-            try {
-                if(iZooto.pUrl != "" && !iZooto.pUrl.isEmpty()) {
-                    URL url = new URL(iZooto.pUrl);
-                    XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.connect();
-                    if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
-                        int eventType = pullParser.getEventType();
-                        Payload payload = null;
-                        while (eventType != XmlPullParser.END_DOCUMENT) {
-                            if (eventType == XmlPullParser.START_TAG) {
-                                String tagName = pullParser.getName();
-                                if ("item".equals(tagName)) {
-                                    payload = new Payload();
-                                } else if ("title".equals(tagName) && payload != null) {
-                                    payload.setTitle(pullParser.nextText());
-                                } else if ("link".equals(tagName) && payload != null) {
-                                    payload.setLink(pullParser.nextText());
-                                } else if ("description".equals(tagName) && payload != null) {
-                                    payload.setDescription(pullParser.nextText());
-                                } else if ("pubDate".equals(tagName) && payload != null) {
-                                    payload.setCreated_Time(pullParser.nextText());
-                                } else if ("image".equals(tagName) && payload != null) {
-                                    payload.setBanner(pullParser.nextText());
-                                } else if ("media:content".equals(tagName) && payload != null) {
-                                    String imageUrl = pullParser.getAttributeValue(null, "url");
-                                    payload.setBanner(imageUrl);
-                                } else if ("category".equals(tagName) && payload != null) {
-                                    String domain = pullParser.getAttributeValue(null, "domain");
-                                    if ("foxnews.com/metadata/dc.source".equals(domain)) {
-                                        eventType = pullParser.next();
-                                        if (eventType == XmlPullParser.TEXT) {
-                                            String categoryValue = pullParser.getText();
-                                            payload.setCategory(categoryValue);
-                                        }
-
-                                    }
-                                }
-                            } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
-                                contentList.add(payload);
-                                callbackListener.onCallback(contentList);
-                                contentList.clear();
-                                payload = null;
-                            }
-                            eventType = pullParser.next();
-                        }
-                    } else {
-                        Log.e("http connection error", "bad request");
-                        Util.handleExceptionOnce(iZooto.appContext,"http connection error"+iZooto.pUrl,"ParseXml","Util");
-                    }
-                }
-                else
-                {
-                    Util.handleExceptionOnce(iZooto.appContext,"Pulse url is not exits"+iZooto.pUrl,"ParseXml","Util");
-                    Log.e("http connection error", "bad request");
-                }
-            } catch (XmlPullParserException | IOException e) {
-                Util.handleExceptionOnce(iZooto.appContext,e.toString(),"ParseXml","Util");
-            }
-        }).start();
-    }
     static String getTimeAgo(String timestamp) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -926,8 +861,126 @@ public class Util {
         return "";
     }
 
+    static void parseXml(RssContentCallbackListener callbackListener) {
+        ArrayList<Payload> contentList = new ArrayList<>();
+        new Thread(() -> {
+            try {
 
+                URL url = new URL(iZooto.pUrl);
+                XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.connect();
+                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
+                    int eventType = pullParser.getEventType();
+                    Payload payload = null;
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        if (eventType == XmlPullParser.START_TAG) {
+                            String tagName = pullParser.getName();
+                            if ("item".equals(tagName)) {
+                                payload = new Payload();
+                            } else if ("title".equals(tagName) && payload != null) {
+                                payload.setTitle(pullParser.nextText());
+                            } else if ("link".equals(tagName) && payload != null) {
+                                payload.setLink(pullParser.nextText());
+                            } else if ("description".equals(tagName) && payload != null) {
+                                payload.setDescription(pullParser.nextText());
+                            } else if ("pubDate".equals(tagName) && payload != null) {
+                                payload.setCreated_Time(pullParser.nextText());
+                            }
+                            else if ("image".equals(tagName) && payload != null) {
+                                payload.setBanner(pullParser.nextText());
+                            }
+                            else if ("media:content".equals(tagName) && payload != null) {
+                                String imageUrl = pullParser.getAttributeValue(null, "url");
+                                payload.setBanner(imageUrl);
+                            }else if ("category".equals(tagName) && payload != null) {
+                                String domain = pullParser.getAttributeValue(null, "domain");
+                                if ("foxnews.com/metadata/dc.source".equals(domain)) {
+                                    eventType = pullParser.next();
+                                    if (eventType == XmlPullParser.TEXT) {
+                                        String categoryValue = pullParser.getText();
+                                        payload.setCategory(categoryValue);
+                                    }
 
+                                }
+                            }
+                        } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
+                            contentList.add(payload);
+                            callbackListener.onCallback(contentList);
+                            contentList.clear();
+                            payload = null;
+                        }
+                        eventType = pullParser.next();
+                    }
+                }else {
+                    Log.e("http connection error","bad request");
+                }
+            } catch (XmlPullParserException | IOException e) {
+                Log.e("http connection error","bad request");
+            }
+        }).start();
+    }
+
+    protected static void pulseClickAPI(Context context, Payload userModal) {
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            HashMap<String, String> hashMap = new HashMap<>();
+            if (preferenceUtil != null) {
+                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                hashMap.put(AppConstant.VER_, "" + AppConstant.SDKVERSION);
+                hashMap.put("link",userModal.getLink());
+                hashMap.put("tt", String.valueOf(iZooto.OT_ID)); // 5 means swipe left or right 6 means on backPressed
+                hashMap.put("ot",String.valueOf(iZooto.OT_ID));
+                hashMap.put("cid",iZooto.pulseCid);
+                hashMap.put("rid",iZooto.pulseRid);
+            }
+            RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_CLICK, hashMap, null, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+                }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    // pulse impression
+    protected static void pulseImpression(Context context) {
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            HashMap<String, String> hashMap = new HashMap<>();
+            if (preferenceUtil != null) {
+                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                hashMap.put(AppConstant.VER_, "" + AppConstant.SDKVERSION);
+                hashMap.put("tt", String.valueOf(iZooto.OT_ID)); // 5 means swipe left or right 6 means on backPressed
+                hashMap.put("ot",String.valueOf(iZooto.OT_ID));
+                hashMap.put("cid",iZooto.pulseCid);
+                hashMap.put("rid",iZooto.pulseRid);
+            }
+            RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_IMPRESSION, hashMap, null, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+                    Log.e("HashMap",hashMap.toString());
+                }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

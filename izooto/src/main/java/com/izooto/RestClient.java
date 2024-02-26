@@ -38,6 +38,7 @@ public class RestClient {
     static final String NEWS_HUB_OPEN_URL="https://nhwopn.izooto.com/nhwopn";
 
     static final String iZ_PULSE_FEATURE_CLICK = "https://osclk.izooto.com/osclk";
+    static final String iZ_PULSE_FEATURE_IMPRESSION = "https://osimp.izooto.com/osimp";
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 33
+    compileSdk 34
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 33
@@ -32,7 +32,7 @@ dependencies {
     compileOnly 'com.github.bumptech.glide:glide:4.16.0'
     implementation files('libs/MiPush_SDK_Client_5_1_1-G.jar')
     //noinspection GradleCompatible
-    implementation 'com.android.support:customtabs:28.0.0'
+    implementation 'androidx.browser:browser:1.7.0'
 
 
 }

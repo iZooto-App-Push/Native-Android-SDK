@@ -43,13 +43,13 @@ import java.util.Objects;
 
 import static com.izooto.AppConstant.ANDROID_ID;
 import static com.izooto.AppConstant.APPPID;
+import static com.izooto.AppConstant.APP_NAME_TAG;
 import static com.izooto.AppConstant.FCM_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.HUAWEI_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.PID;
 import static com.izooto.AppConstant.TAG;
 import static com.izooto.AppConstant.XIAOMI_TOKEN_FROM_JSON;
 import static com.izooto.NewsHubAlert.newsHubDBHelper;
-import static com.izooto.iZootoPulse.feedList;
 
 @SuppressWarnings("unchecked")
 public class iZooto {
@@ -58,6 +58,7 @@ public class iZooto {
     public static String mIzooToAppId;
     public static Builder mBuilder;
     public static int icon;
+
     private static Payload payload;
     public static boolean mUnsubscribeWhenNotificationsAreDisabled;
     protected static Listener mListener;
@@ -70,6 +71,7 @@ public class iZooto {
     public static String SDKDEF ="native";
     public static int bannerImage;
     private static boolean initCompleted;
+
     static boolean isInitCompleted() {
         return initCompleted;
     }
@@ -84,11 +86,21 @@ public class iZooto {
      static  String pulseRid ="";
      static  String pulseCid = "";
 
+     static String pulseTemplate = "";
+
     static boolean isEDGestureUiMode = false;
 
     static Activity  newsHubContext;
 
     static  String userEvent = "5";
+    static boolean isXmlParse = false;
+    static int OT_ID =6;
+    static String swipeGesture = "left";
+    private static int pulseImp;
+
+    static boolean clickHome = false;
+    static ArrayList<Payload> payloadArrayList = new ArrayList<>();
+
 
     private static int pageNumber;   // index handling for notification center data
     private static String notificationData;
@@ -121,10 +133,10 @@ public class iZooto {
                     preferenceUtil.setStringData(AppConstant.ENCRYPTED_PID,mIzooToAppId);
                 }
                 if (mIzooToAppId =="") {
-                    Lg.e(AppConstant.APP_NAME_TAG, AppConstant.MISSINGID);
+                    Lg.e(APP_NAME_TAG, AppConstant.MISSINGID);
                 }
                 else {
-                    Lg.i(AppConstant.APP_NAME_TAG, mIzooToAppId + "");
+                    Lg.i(APP_NAME_TAG, mIzooToAppId + "");
                     RestClient.get(RestClient.P_GOOGLE_JSON_URL + mIzooToAppId +".dat", new RestClient.ResponseHandler() {
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
@@ -144,9 +156,12 @@ public class iZooto {
                                     String mKey =jsonObject.optString(AppConstant.MIAPIKEY);
                                     String mId =jsonObject.optString(AppConstant.MIAPPID);
                                     String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
-                                    iZooto.pUrl =jsonObject.optString(AppConstant.PULSE_URL);
+                                    iZooto.pUrl =jsonObject.optString(AppConstant.P_URL);
                                     iZooto.pulseRid = jsonObject.optString(AppConstant.pulseRid);
                                     iZooto.pulseCid = jsonObject.optString(AppConstant.pulseCid);
+                                    iZooto.swipeGesture = jsonObject.optString(AppConstant.IZ_SWIPE_GESTURE);
+                                    iZooto.OT_ID = jsonObject.optInt(AppConstant.IZ_OT);
+                                    iZooto.pulseImp = jsonObject.optInt(AppConstant.PULSE_IMP);
                                     mIzooToAppId = jsonObject.optString(APPPID);
                                     String newsHub =jsonObject.optString(AppConstant.JSON_NEWS_HUB);//"{\"designType\":1,\"mainColor\":\"#1D85FC\",\"iconType\":1,\"isFullScreen\":true,\"placement\":[0,1],\"title\":\"News Hub\",\"status\":1}";//jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                     preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
@@ -171,17 +186,29 @@ public class iZooto {
                                     if (senderId != null && !senderId.isEmpty()) {
                                         init(context, apiKey, appId);
                                     } else {
-                                        Lg.e(AppConstant.APP_NAME_TAG, appContext.getString(R.string.something_wrong_fcm_sender_id));
+                                        Lg.e(APP_NAME_TAG, appContext.getString(R.string.something_wrong_fcm_sender_id));
                                     }
                                     if ( mIzooToAppId!= null && preferenceUtil.getBoolean(AppConstant.IS_CONSENT_STORED)) {
                                         preferenceUtil.setIntData(AppConstant.CAN_STORED_QUEUE, 1);
+                                    }
+                                    if(iZooto.pUrl!=null && iZooto.pUrl!="")
+                                    {
+                                        try {
+                                            Util.parseXml(contentListener -> {
+                                                payloadArrayList.addAll(contentListener);
+                                                contentListener.clear();
+                                            });
+
+                                        }catch (Exception e){
+                                            Util.handleExceptionOnce(context, e.toString(), "iZootoNavigationDrawer","onCreate");
+                                        }
                                     }
                                     if (iZooto.isHybrid)
                                         preferenceUtil.setBooleanData(AppConstant.IS_HYBRID_SDK, iZooto.isHybrid);
                                 } catch (Exception e) {
                                     if (context != null) {
                                         DebugFileManager.createExternalStoragePublic(context,e.toString(),"[Log.e]-->init");
-                                        Util.setException(context, e.toString(), "init", AppConstant.APP_NAME_TAG);
+                                        Util.setException(context, e.toString(), "init", APP_NAME_TAG);
                                     }
                                 }
                             }
@@ -201,7 +228,7 @@ public class iZooto {
 
         } catch (Throwable t) {
             DebugFileManager.createExternalStoragePublic(context,t.toString(),"[Log.e]-->initBuilder");
-            Util.setException(appContext, t.toString(), AppConstant.APP_NAME_TAG, "initBuilder");
+            Util.setException(appContext, t.toString(), APP_NAME_TAG, "initBuilder");
         }
 
     }
@@ -215,7 +242,7 @@ public class iZooto {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void complete(String id) {
-                Log.i(AppConstant.APP_NAME_TAG, "HMS Token - " + id);
+                Log.i(APP_NAME_TAG, "HMS Token - " + id);
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                 if (id != null && !id.isEmpty()) {
                     if (!preferenceUtil.getBoolean(AppConstant.IS_UPDATED_HMS_TOKEN)) {
@@ -229,7 +256,7 @@ public class iZooto {
             @Override
             public void failure(String errorMessage) {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext,errorMessage,"[Log.v]->");
-                Lg.v(AppConstant.APP_NAME_TAG, errorMessage);
+                Lg.v(APP_NAME_TAG, errorMessage);
             }
         });
     }
@@ -246,7 +273,7 @@ public class iZooto {
                 Util util = new Util();
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                 if (util.isInitializationValid()) {
-                    Lg.i(AppConstant.APP_NAME_TAG, AppConstant.DEVICETOKEN  + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+                    Lg.i(APP_NAME_TAG, AppConstant.DEVICETOKEN  + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                     registerToken();
                     ActivityLifecycleListener.registerActivity((Application)appContext);
                     setCurActivity(context);
@@ -260,7 +287,7 @@ public class iZooto {
 
             @Override
             public void failure(String errorMsg) {
-                Lg.e(AppConstant.APP_NAME_TAG, errorMsg);
+                Lg.e(APP_NAME_TAG, errorMsg);
             }
         });
 
@@ -297,7 +324,7 @@ public class iZooto {
 
     protected void start(final Context context, final Listener listener) {
         if (listener == null) {
-            Log.v(AppConstant.APP_NAME_TAG, "getAdvertisingId - Error: null listener, dropping call");
+            Log.v(APP_NAME_TAG, "getAdvertisingId - Error: null listener, dropping call");
         } else {
             mHandler = new Handler(Looper.getMainLooper());
             mListener = listener;
@@ -410,7 +437,7 @@ public class iZooto {
                                                 jsonObject.put(HUAWEI_TOKEN_FROM_JSON, preferenceUtil.getStringData(AppConstant.HMS_TOKEN));
                                                 mBuilder.mTokenReceivedListener.onTokenReceived(jsonObject.toString());
                                             } catch (Exception ex) {
-                                                Util.setException(appContext,ex.toString(),AppConstant.APP_NAME_TAG,"RegisterToken");
+                                                Util.setException(appContext,ex.toString(), APP_NAME_TAG,"RegisterToken");
                                                 DebugFileManager.createExternalStoragePublic(appContext,ex.toString(),"[Log.e]->RegisterToken->");
                                             }
 
@@ -447,7 +474,7 @@ public class iZooto {
                                     }
 
                                 } catch (Exception e) {
-                                    Util.setException(appContext, e.toString(), "registerToken1", AppConstant.APP_NAME_TAG);
+                                    Util.setException(appContext, e.toString(), "registerToken1", APP_NAME_TAG);
                                 }
                             }
 
@@ -458,7 +485,7 @@ public class iZooto {
                         });
 
                     } catch (Exception exception) {
-                        Util.setException(appContext, exception.toString(), AppConstant.APP_NAME_TAG, "registerToken");
+                        Util.setException(appContext, exception.toString(), APP_NAME_TAG, "registerToken");
                     }
                 } else {
                     try {
@@ -476,7 +503,7 @@ public class iZooto {
 
                             } catch (Exception ex) {
                                 DebugFileManager.createExternalStoragePublic(appContext,ex.toString(),"[Log.e]->RegisterTokenFailure->");
-                                Util.setException(appContext, ex.toString(), AppConstant.APP_NAME_TAG, "registerToken");
+                                Util.setException(appContext, ex.toString(), APP_NAME_TAG, "registerToken");
 
                             }
                         }
@@ -538,7 +565,7 @@ public class iZooto {
                     }
                 }
             } else {
-                Util.setException(iZooto.appContext, "Missing pid", AppConstant.APP_NAME_TAG, "Register Token");
+                Util.setException(iZooto.appContext, "Missing pid", APP_NAME_TAG, "Register Token");
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext, "Missing PID -> " , "[Log.e]->");
 
             }
@@ -982,7 +1009,7 @@ private static void runNotificationOpenedCallback() {
             osTaskManager.addTaskToQueue(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(AppConstant.APP_NAME_TAG, "setCustomTemplate(): operation from pending task queue.");
+                    Log.d(APP_NAME_TAG, "setCustomTemplate(): operation from pending task queue.");
                     setDefaultTemplate(templateID);
                 }
             });
@@ -994,7 +1021,7 @@ private static void runNotificationOpenedCallback() {
         }
         else
         {
-            Util.setException(appContext,"Template id is not matched"+templateID,AppConstant.APP_NAME_TAG,"setDefaultTemplate");
+            Util.setException(appContext,"Template id is not matched"+templateID, APP_NAME_TAG,"setDefaultTemplate");
         }
 
     }
@@ -1032,7 +1059,7 @@ private static void runNotificationOpenedCallback() {
                     }
                 }
             } catch (Exception ex) {
-                Util.setException(iZooto.appContext, ex.toString(), AppConstant.APP_NAME_TAG, "getNotificationAPI");
+                Util.setException(iZooto.appContext, ex.toString(), APP_NAME_TAG, "getNotificationAPI");
             }
         }
 
@@ -1101,7 +1128,7 @@ private static void runNotificationOpenedCallback() {
                     Util.setException(appContext,ex.toString(),"iZooto","add Event");
                 }
             }  else {
-                Util.setException(appContext,"Event length more than 32",AppConstant.APP_NAME_TAG,"AdEvent");
+                Util.setException(appContext,"Event length more than 32", APP_NAME_TAG,"AdEvent");
             }
         }
     }
@@ -1186,7 +1213,7 @@ private static void runNotificationOpenedCallback() {
                     }
                     else
                     {
-                        Util.setException(appContext, "Blank user properties",AppConstant.APP_NAME_TAG, "addUserProperty");
+                        Util.setException(appContext, "Blank user properties", APP_NAME_TAG, "addUserProperty");
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Blank user properties","[Log.d]->addUserProperty->");
 
                     }
@@ -1195,21 +1222,21 @@ private static void runNotificationOpenedCallback() {
                 else {
                     DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Blank user properties","[Log.d]->addUserProperty->");
 
-                    Util.setException(appContext, "Blank user properties",AppConstant.APP_NAME_TAG, "addUserProperty");
+                    Util.setException(appContext, "Blank user properties", APP_NAME_TAG, "addUserProperty");
 
                 }
 
             } catch (Exception e) {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Blank user properties","[Log.d]->addUserProperty->");
 
-                Util.setException(appContext, "Blank user properties",AppConstant.APP_NAME_TAG, "addUserProperty");
+                Util.setException(appContext, "Blank user properties", APP_NAME_TAG, "addUserProperty");
             }
         }
         else
         {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,"Blank user properties","[Log.d]->addUserProperty->");
 
-            Util.setException(appContext, "Blank user properties",AppConstant.APP_NAME_TAG, "addUserProperty");
+            Util.setException(appContext, "Blank user properties", APP_NAME_TAG, "addUserProperty");
 
         }
 
@@ -1317,13 +1344,13 @@ private static void runNotificationOpenedCallback() {
             }
             else
             {
-                Util.setException(appContext, "Value should not be null",AppConstant.APP_NAME_TAG, "setSubscription");
+                Util.setException(appContext, "Value should not be null", APP_NAME_TAG, "setSubscription");
 
             }
         }catch (Exception e) {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,"setSubscription"+e.toString(),"[Log.e]->Exception->");
 
-            Util.setException(appContext, e.toString(),  AppConstant.APP_NAME_TAG,"setSubscription");
+            Util.setException(appContext, e.toString(),  APP_NAME_TAG,"setSubscription");
         }
 
     }
@@ -1333,7 +1360,7 @@ private static void runNotificationOpenedCallback() {
             osTaskManager.addTaskToQueue(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(AppConstant.APP_NAME_TAG, "setFirebaseAnalytics(): operation from pending task queue.");
+                    Log.d(APP_NAME_TAG, "setFirebaseAnalytics(): operation from pending task queue.");
                     setFirebaseAnalytics(isSet);
                 }
             });
@@ -1350,7 +1377,7 @@ private static void runNotificationOpenedCallback() {
 
 
     public static void iZootoHandleNotification(final Context context, final Map<String, String> data) {
-        Log.d(AppConstant.APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
+        Log.d(APP_NAME_TAG, AppConstant.NOTIFICATIONRECEIVED);
         try {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (data.get(AppConstant.AD_NETWORK) != null || data.get(AppConstant.GLOBAL) != null || data.get(AppConstant.GLOBAL_PUBLIC_KEY) != null) {
@@ -1444,18 +1471,18 @@ private static void runNotificationOpenedCallback() {
                         if (payload.getRid() != null && !payload.getRid().isEmpty()) {
                             preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
                         } else {
-                            Log.e("campaign", "rid null or empty!");
+                            Log.v("campaign", "rid null or empty!");
                         }
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
                             int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
                             if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
-                                Log.e("campaign", "...");
+                                Log.v("campaign", "...");
                             } else {
                                 newsHubDBHelper.addNewsHubPayload(payload);
                             }
                         }
                     }catch (Exception e){
-                        Log.e("campaign", "..");
+                        Log.v("campaign", "..");
                     }
 
                 } else {
@@ -1491,7 +1518,7 @@ private static void runNotificationOpenedCallback() {
 
         } catch (Exception e) {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext, "Payload Error" + e + data.toString(), "[Log.e]->Exception->");
-            Util.handleExceptionOnce(context, e.toString(), AppConstant.APP_NAME_TAG, "handleNotification");
+            Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "handleNotification");
         }
     }
     public static void addTag(final List<String> topicName){
@@ -1499,7 +1526,7 @@ private static void runNotificationOpenedCallback() {
             osTaskManager.addTaskToQueue(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(AppConstant.APP_NAME_TAG, "addTag(): operation from pending task queue.");
+                    Log.d(APP_NAME_TAG, "addTag(): operation from pending task queue.");
                     addTag(topicName);
                 }
             });
@@ -1543,7 +1570,7 @@ private static void runNotificationOpenedCallback() {
         }
         else
         {
-            Util.setException(iZooto.appContext,"Topic list should not be  blank",AppConstant.APP_NAME_TAG,"AddTag");
+            Util.setException(iZooto.appContext,"Topic list should not be  blank", APP_NAME_TAG,"AddTag");
         }
     }
 
@@ -1553,7 +1580,7 @@ private static void runNotificationOpenedCallback() {
             osTaskManager.addTaskToQueue(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d(AppConstant.APP_NAME_TAG, "removeTag(): operation from pending task queue.");
+                    Log.d(APP_NAME_TAG, "removeTag(): operation from pending task queue.");
                     removeTag(topicName);
                 }
             });
@@ -1597,7 +1624,7 @@ private static void runNotificationOpenedCallback() {
         }
         else
         {
-            Util.setException(iZooto.appContext,"Topic list should not be  blank",AppConstant.APP_NAME_TAG,"RemoveTag");
+            Util.setException(iZooto.appContext,"Topic list should not be  blank", APP_NAME_TAG,"RemoveTag");
 
         }
     }
@@ -1665,7 +1692,7 @@ private static void runNotificationOpenedCallback() {
                 }
             }
         }catch (Exception e) {
-            Util.setException(appContext, e.toString(), "topicApi", AppConstant.APP_NAME_TAG);
+            Util.setException(appContext, e.toString(), "topicApi", APP_NAME_TAG);
         }
     }
 
@@ -1746,7 +1773,7 @@ private static void runNotificationOpenedCallback() {
                         }
                     });
                 } catch (Exception ex) {
-                    Util.setException(context, ex.toString(), AppConstant.APP_NAME_TAG, "lastVisitAPI");
+                    Util.setException(context, ex.toString(), APP_NAME_TAG, "lastVisitAPI");
 
 
                 }
@@ -1777,7 +1804,7 @@ private static void runNotificationOpenedCallback() {
                                 preferenceUtil.setStringData(AppConstant.FCM_DEVICE_TOKEN, fcmToken);
                             }
                         } else {
-                            Util.setException(context, "Please input the fcm token...", "initialize", AppConstant.APP_NAME_TAG);
+                            Util.setException(context, "Please input the fcm token...", "initialize", APP_NAME_TAG);
                         }
                     }
 
@@ -1787,14 +1814,14 @@ private static void runNotificationOpenedCallback() {
                 }
                 else
                 {
-                    Log.e(AppConstant.APP_NAME_TAG,"Given String is Not Valid JSON String");
+                    Log.e(APP_NAME_TAG,"Given String is Not Valid JSON String");
 
                 }
 
             }
 
         } catch (Exception e) {
-            Util.setException(context, e.toString(), "initialize", AppConstant.APP_NAME_TAG);
+            Util.setException(context, e.toString(), "initialize", APP_NAME_TAG);
             e.printStackTrace();
         }
         return null;
@@ -1873,7 +1900,7 @@ private static void runNotificationOpenedCallback() {
 
         } catch (Exception e) {
             DebugFileManager.createExternalStoragePublic(iZooto.appContext,"SendOfflineDataToServerException","[Log.V]->SendOfflineDataToServerException->");
-            Util.setException(iZooto.appContext,e.toString(),AppConstant.APP_NAME_TAG,"sendOfflineDataToServer");
+            Util.setException(iZooto.appContext,e.toString(), APP_NAME_TAG,"sendOfflineDataToServer");
 
         }
 
@@ -1936,7 +1963,7 @@ private static void runNotificationOpenedCallback() {
                         preferenceUtil.setStringData(AppConstant.iZ_STORE_CHANNEL_NAME, Util.getApplicationName(iZooto.appContext) + " Notification");
                     }
                 }else{
-                    Log.e(AppConstant.APP_NAME_TAG,"Channel Name not allowed with whitespace at first index");
+                    Log.e(APP_NAME_TAG,"Channel Name not allowed with whitespace at first index");
                     preferenceUtil.setStringData(AppConstant.iZ_STORE_CHANNEL_NAME, Util.getApplicationName(iZooto.appContext) + " Notification");
                 }
             }else {
@@ -1957,7 +1984,7 @@ private static void runNotificationOpenedCallback() {
                 activity.startActivity(settingsIntent);
             }
             else {
-                Log.e(AppConstant.APP_NAME_TAG,"Method require API level 26 or Above");
+                Log.e(APP_NAME_TAG,"Method require API level 26 or Above");
             }
         }catch (Exception ex)
         {
@@ -2011,7 +2038,7 @@ private static void runNotificationOpenedCallback() {
                         }
 
                     }catch (Exception e){
-                        Log.d(AppConstant.APP_NAME_TAG, e.toString());
+                        Log.d(APP_NAME_TAG, e.toString());
                     }
                 }
 
@@ -2061,7 +2088,7 @@ private static void runNotificationOpenedCallback() {
                                 preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
                                 if(!preferenceUtil.getBoolean(AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION)) {
                                     preferenceUtil.setBooleanData(AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION,true);
-                                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION);
+                                    Util.setException(context, e.toString(), APP_NAME_TAG, AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION);
                                 }
                             }
                         }else {
@@ -2079,7 +2106,7 @@ private static void runNotificationOpenedCallback() {
             }catch (Exception e){
                 if(!preferenceUtil.getBoolean(AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION)) {
                     preferenceUtil.setBooleanData(AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION,true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION);
+                    Util.setException(context, e.toString(), APP_NAME_TAG, AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION);
                 }
             }
         }
@@ -2103,7 +2130,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean(AppConstant.IZ_NEWS_HUB)) {
                     preferenceUtil.setBooleanData(AppConstant.IZ_NEWS_HUB, true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setNewsHub");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "setNewsHub");
                 }
             }
         }
@@ -2132,7 +2159,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean("fetchNewsHubData")) {
                     preferenceUtil.setBooleanData("fetchNewsHubData", true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "fetchNewsHubData");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "fetchNewsHubData");
                 }
             }
         }
@@ -2187,7 +2214,7 @@ private static void runNotificationOpenedCallback() {
                         } catch (Exception e) {
                             if (!preferenceUtil.getBoolean("setFloatingButton")) {
                                 preferenceUtil.setBooleanData("setFloatingButton", true);
-                                Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setFloatingButton");
+                                Util.setException(context, e.toString(), APP_NAME_TAG, "setFloatingButton");
                             }
                         }
                         if (floatingActionButton != null) {
@@ -2217,7 +2244,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean("setFloatingButton")) {
                     preferenceUtil.setBooleanData("setFloatingButton", true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setFloatingButton");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "setFloatingButton");
                 }
             }
         }
@@ -2258,7 +2285,7 @@ private static void runNotificationOpenedCallback() {
                     } catch (Exception e) {
                         if (!preferenceUtil.getBoolean("setHybridFloatingButton")) {
                             preferenceUtil.setBooleanData("setHybridFloatingButton", true);
-                            Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setHybridFloatingButton");
+                            Util.setException(context, e.toString(), APP_NAME_TAG, "setHybridFloatingButton");
                         }
                     }
                     if (floatingActionButton != null) {
@@ -2287,7 +2314,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean("setHybridFloatingButton")) {
                     preferenceUtil.setBooleanData("setHybridFloatingButton", true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setHybridFloatingButton");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "setHybridFloatingButton");
                 }
             }
         }
@@ -2408,7 +2435,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean("changeHybridFloatingActionDynamically")) {
                     preferenceUtil.setBooleanData("changeHybridFloatingActionDynamically", true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "changeHybridFloatingActionDynamically");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "changeHybridFloatingActionDynamically");
                 }
             }
         }
@@ -2449,7 +2476,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean("changeFloatingActionDynamically")) {
                     preferenceUtil.setBooleanData("changeFloatingActionDynamically", true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "changeFloatingActionDynamically");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "changeFloatingActionDynamically");
                 }
             }
         }
@@ -2515,7 +2542,7 @@ private static void runNotificationOpenedCallback() {
                 } catch (Exception e) {
                     if (!preferenceUtil.getBoolean("setStickyButton")) {
                         preferenceUtil.setBooleanData("setStickyButton", true);
-                        Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setStickyButton");
+                        Util.setException(context, e.toString(), APP_NAME_TAG, "setStickyButton");
                     }
                 }
 
@@ -2671,7 +2698,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception ex) {
                 if (!preferenceUtil.getBoolean("changeDynamicStickyBar")) {
                     preferenceUtil.setBooleanData("changeDynamicStickyBar", true);
-                    Util.setException(context, ex.toString(), AppConstant.APP_NAME_TAG, "changeDynamicStickyBar");
+                    Util.setException(context, ex.toString(), APP_NAME_TAG, "changeDynamicStickyBar");
                 }
             }
         }
@@ -2698,19 +2725,19 @@ private static void runNotificationOpenedCallback() {
                                 setNewsHubImpressionApi(context, designType);
                             }
                         } else
-                            Log.e(AppConstant.APP_NAME_TAG, "No widget type is defined!");
+                            Log.e(APP_NAME_TAG, "No widget type is defined!");
                     } else {
-                        Log.e(AppConstant.APP_NAME_TAG, "NewsHub disabled!");
+                        Log.e(APP_NAME_TAG, "NewsHub disabled!");
                     }
 
                 } else {
-                    Log.e(AppConstant.APP_NAME_TAG, "iZooto initialization failed!");
+                    Log.e(APP_NAME_TAG, "iZooto initialization failed!");
                 }
 
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean(AppConstant.IZ_NEWS_HUB)) {
                     preferenceUtil.setBooleanData(AppConstant.IZ_NEWS_HUB, true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setNewsHub");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "setNewsHub");
                 }
             }
         }
@@ -2746,7 +2773,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean("setNewsHubImpressionApi")) {
                     preferenceUtil.setBooleanData("setNewsHubImpressionApi", true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setNewsHubImpressionApi");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "setNewsHubImpressionApi");
                 }
             }
         }
@@ -2781,7 +2808,7 @@ private static void runNotificationOpenedCallback() {
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean("setNewsHubOpenApi")) {
                     preferenceUtil.setBooleanData("setNewsHubOpenApi", true);
-                    Util.setException(context, e.toString(), AppConstant.APP_NAME_TAG, "setNewsHubOpenApi");
+                    Util.setException(context, e.toString(), APP_NAME_TAG, "setNewsHubOpenApi");
                 }
             }
         }
@@ -2791,58 +2818,67 @@ private static void runNotificationOpenedCallback() {
     private static void setNewsHubActivity(Activity activity) {
         newsHubContext = activity;
     }
-    public static void enablePulse(Activity activity, boolean isPulseEnabled,  boolean isLeft, boolean isRight, boolean isBack) {
-        if (isPulseEnabled && activity != null) {
-            try {
-                try {
-                    Util.parseXml(contentListener -> {
-                        feedList.addAll(contentListener);
-                        contentListener.clear();
-                    });
 
-                }catch (Exception e){
-                    Util.handleExceptionOnce(activity, e.toString(), "iZootoNavigationDrawer","onCreate");
-                }
-                Thread.sleep(2000);
-                iZootoPulse pulseObject = new iZootoPulse();
-                View onTouchView = activity.getWindow().getDecorView().getRootView();
-                if(isBack)
-                {
-                    iZooto.isLeft = true;
-                    iZooto.userEvent = "6";
-                    pulseObject.onCreateDrawer(activity, pulseObject, android.R.id.content);
-                }
-                onTouchView.setOnTouchListener(new iZootoNewsHubOnSwipeListener(activity) {
-                    @Override
-                    public void onSwipeRight() {
-                        super.onSwipeRight();
-                        if (isLeft) {
-                            iZooto.userEvent = "5";
-                            iZooto.isLeft = true;
-                            pulseObject.onCreateDrawer(activity, pulseObject, android.R.id.content);
+   /*
+   * Enable Pulse feature.
+   * Activity -> pass the current object.
+   * isBackIntent -> pass the true and add the method in onBackPressed method.
+   * isBackIntent-> pass the false then no working.
+   * Pulse open the by default left to right.
+   * other swipe gesture handle via .dat file response
+   * swipeGesture - left/right
+
+    */
+
+    public static void enablePulse(Activity context,boolean isBackIntent) {
+        try {
+            if (context != null && iZooto.OT_ID==6) {
+                new Handler().postDelayed(() -> {
+                    PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                    String appId = preferenceUtil.getiZootoID(APPPID);
+                    if (appId != null && !appId.isEmpty()) {
+                        iZootoPulse pulse = new iZootoPulse(payloadArrayList);
+                        View onTouchView = context.getWindow().getDecorView().getRootView();
+                        if(isBackIntent){
+                            iZooto.swipeEdge = true;
+                            pulse.onCreateDrawer(context, pulse, android.R.id.content);
+                            if(iZooto.pulseImp == 1) {
+                                Util.pulseImpression(context);
+                            }
                         }
+                        onTouchView.setOnTouchListener(new iZootoNewsHubOnSwipeListener(context) {
+                            @Override
+                            public void onSwipeRight() {
+                                if (iZooto.swipeGesture.equalsIgnoreCase("left") && !isBackIntent) {
+                                    iZooto.swipeEdge = true;
+                                    pulse.onCreateDrawer(context, pulse, android.R.id.content);
+                                    if(iZooto.pulseImp == 1) {
+                                        Util.pulseImpression(context);
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onSwipeLeft() {
+                                if (iZooto.swipeGesture.equalsIgnoreCase("right") && !isBackIntent) {
+                                    iZooto.swipeEdge = false;
+                                    pulse.onCreateDrawer(context, pulse, android.R.id.content);
+                                    if(iZooto.pulseImp == 1) {
+                                        Util.pulseImpression(context);
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        Util.handleExceptionOnce(context, "The iZooto not initialized properly!", APP_NAME_TAG, "enablePulse");
                     }
-                    @Override
-                    public void onSwipeLeft() {
-                        super.onSwipeLeft();
-                        if (isRight) {
-                            iZooto.isRight= isRight;
-                            iZooto.userEvent = "5";
-                            pulseObject.onCreateDrawer(activity, pulseObject, android.R.id.content);
-                        }
-                    }
-                });
-            } catch (Exception ex)
-            {
-                Util.handleExceptionOnce(activity,ex.toString(),"iZooto","enablePulse");
+                }, 100);
+            } else {
+                Util.handleExceptionOnce(context, "Object is null or onsite template is not defined", APP_NAME_TAG, "enablePulse");
+
             }
+        } catch (Exception e) {
+            Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "initializeSwipeGesture");
         }
-        else
-        {
-            Log.e("Pulse Feature is","not enabled");
-        }
-
     }
-
 }
 

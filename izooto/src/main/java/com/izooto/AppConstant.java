@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.1.6";
+    String SDKVERSION="2.2.0";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -376,10 +376,15 @@ public interface AppConstant {
     String IZ_LIMIT_EXCEED_MSG = "Limit exceed; cannot create more channels";
     int CAMPAIGN_SI = 6;
     int CAMPAIGN_SE = 7;
-    String PULSE_URL = "pUrl";
-
     String pulseRid = "pulseRid";
     String pulseCid = "pulseCid";
+
+    String PulseTemplate = "ot";
+    String IZ_SWIPE_GESTURE = "pulseSwipeDirection";
+    String IZ_OT = "exitIntentTemplateID";
+    String P_URL = "pUrl";
+    String PULSE_IMP = "pulseImp";
+
 
 }
 

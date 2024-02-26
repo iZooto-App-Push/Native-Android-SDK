@@ -106,6 +106,7 @@
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/todo"
                 android:padding="11dp"
+                android:visibility="gone"
                 android:scaleType="fitCenter" />
 
             <ImageView

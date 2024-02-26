@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       //iZooto.enablePulse(MainActivity.this,true,false,true,false);
+       iZooto.enablePulse(MainActivity.this,false);
 
 
     }
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
             backPressedOnce = false;
         } else {
             backPressedOnce = true;
-            iZooto.enablePulse(MainActivity.this, true,   false, false, true);
+            iZooto.enablePulse(MainActivity.this, true);
         }
     }
 
