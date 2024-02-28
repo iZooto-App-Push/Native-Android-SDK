@@ -27,17 +27,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8e526a21-7e02-402a-a6d1-94a81cce592b" name="Default Changelist" comment="&#10;Uploaded the bintray module">
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/HomeWatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/OnHomePressedListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/izooto/src/main/res/drawable/circle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ActivityLifecycleListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/ActivityLifecycleListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/PulseAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/PulseAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoPulse.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZootoPulse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/layout/izooto_drawer_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/izooto_drawer_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/layout/news_hub_items.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/layout/news_hub_items.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +37,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[18261JEC201175]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/amit_sdk_develoer/.android/avd/Pixel_6_Pro_API_30.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
