@@ -71,16 +71,18 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         try {
             Payload userModal = payloadModalArrayList.get(position);
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             int viewType = getItemViewType(position);
             switch (viewType) {
                 case TYPE_ITEM: {
                     MyViewHolder viewHolder = (MyViewHolder) holder;
                     viewHolder.newsHubTitle.setText(userModal.getTitle());
-                    if (userModal.getCategory() != null && !userModal.getCategory().isEmpty()) {
+                    String pubName = preferenceUtil.getStringData("pubName");
+                    if (pubName != null && !pubName.isEmpty()) {
                         if (Util.notificationMode()){
-                            viewHolder.publisherName.setText(userModal.getCategory());
+                            viewHolder.publisherName.setText(pubName);
                         }else {
-                            viewHolder.publisherName.setText(userModal.getCategory()+",");
+                            viewHolder.publisherName.setText(pubName+",");
                         }
 
                     }else {
@@ -136,7 +138,7 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     viewHolder.itemView.setOnClickListener(v -> {
                         iZooto.isEDGestureUiMode = true;
                         newsHubCheckIaKey(v, userModal);
-                        Util.pulseClickAPI(context, userModal);
+                        Util.newsHubClickApi(context, userModal);
                         if (navigationDrawer != null){
                             //iZootoNavigationDrawer.closeDrawer();
                         }
@@ -343,20 +345,13 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             newsHubShare = itemView.findViewById(R.id.news_hub_share_icon);
             newsHubTime = itemView.findViewById(R.id.news_hub_time);
             publisherName = itemView.findViewById(R.id.publisher_);
-            likeIcon = itemView.findViewById(R.id.like_icon);
-            //circleImage = itemView.findViewById(R.id.circle_icon);
+          //  likeIcon = itemView.findViewById(R.id.like_icon);
+           // circleImage = itemView.findViewById(R.id.circle_icon);
             // moreIcon = itemView.findViewById(R.id.more_icon);
         }
     }
 
-    private void newsHubShareHolder(ImageView imageButton) {
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageButton, "scaleX", 1f, 1.5f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageButton, "scaleY", 1f, 1.5f, 1f);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(scaleX, scaleY);
-        animatorSet.setDuration(500);
-        animatorSet.start();
-    }
+
 
     private static class FooterViewHolder extends RecyclerView.ViewHolder {
         TextView footerText;
@@ -368,9 +363,6 @@ public class PulseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             footerImage = view.findViewById(R.id.footer_image);
         }
     }
-
-
-
 
 }
 

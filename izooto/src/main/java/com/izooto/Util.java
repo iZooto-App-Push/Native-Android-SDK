@@ -861,67 +861,135 @@ public class Util {
         return "";
     }
 
-    static void parseXml(RssContentCallbackListener callbackListener) {
-        ArrayList<Payload> contentList = new ArrayList<>();
-        new Thread(() -> {
-            try {
+//    static void parseXml(RssContentCallbackListener callbackListener) {
+//        ArrayList<Payload> contentList = new ArrayList<>();
+//        new Thread(() -> {
+//            try {
+//
+//                URL url = new URL(iZooto.pUrl);
+//                XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
+//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+//                urlConnection.connect();
+//                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+//                    pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
+//                    int eventType = pullParser.getEventType();
+//                    Payload payload = null;
+//                    while (eventType != XmlPullParser.END_DOCUMENT) {
+//                        if (eventType == XmlPullParser.START_TAG) {
+//                            String tagName = pullParser.getName();
+//                            if ("item".equals(tagName)) {
+//                                payload = new Payload();
+//                            } else if ("title".equals(tagName) && payload != null) {
+//                                payload.setTitle(pullParser.nextText());
+//                            } else if ("link".equals(tagName) && payload != null) {
+//                                payload.setLink(pullParser.nextText());
+//                            } else if ("description".equals(tagName) && payload != null) {
+//                                payload.setDescription(pullParser.nextText());
+//                            } else if ("pubDate".equals(tagName) && payload != null) {
+//                                payload.setCreated_Time(pullParser.nextText());
+//                            }
+//                            else if ("image".equals(tagName) && payload != null) {
+//                                payload.setBanner(pullParser.nextText());
+//                            }
+//                            else if ("media:content".equals(tagName) && payload != null) {
+//                                String imageUrl = pullParser.getAttributeValue(null, "url");
+//                                payload.setBanner(imageUrl);
+//                            }else if ("category".equals(tagName) && payload != null) {
+//                                String domain = pullParser.getAttributeValue(null, "domain");
+//                                if ("foxnews.com/metadata/dc.source".equals(domain)) {
+//                                    eventType = pullParser.next();
+//                                    if (eventType == XmlPullParser.TEXT) {
+//                                        String categoryValue = pullParser.getText();
+//                                        payload.setCategory(categoryValue);
+//                                    }
+//
+//                                }
+//                            }
+//                        } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
+//                            contentList.add(payload);
+//                            callbackListener.onCallback(contentList);
+//                            contentList.clear();
+//                            payload = null;
+//                        }
+//                        eventType = pullParser.next();
+//                    }
+//                }else {
+//                    Log.e("http connection error","bad request");
+//                }
+//            } catch (XmlPullParserException | IOException e) {
+//                Log.e("http connection error","bad request");
+//            }
+//        }).start();
+//    }
+static void parseXml(RssContentCallbackListener callbackListener) {
+    ArrayList<Payload> contentList = new ArrayList<>();
+    PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.newsHubContext);
 
-                URL url = new URL(iZooto.pUrl);
-                XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.connect();
-                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
-                    int eventType = pullParser.getEventType();
-                    Payload payload = null;
-                    while (eventType != XmlPullParser.END_DOCUMENT) {
-                        if (eventType == XmlPullParser.START_TAG) {
-                            String tagName = pullParser.getName();
-                            if ("item".equals(tagName)) {
-                                payload = new Payload();
-                            } else if ("title".equals(tagName) && payload != null) {
-                                payload.setTitle(pullParser.nextText());
-                            } else if ("link".equals(tagName) && payload != null) {
-                                payload.setLink(pullParser.nextText());
-                            } else if ("description".equals(tagName) && payload != null) {
-                                payload.setDescription(pullParser.nextText());
-                            } else if ("pubDate".equals(tagName) && payload != null) {
-                                payload.setCreated_Time(pullParser.nextText());
-                            }
-                            else if ("image".equals(tagName) && payload != null) {
-                                payload.setBanner(pullParser.nextText());
-                            }
-                            else if ("media:content".equals(tagName) && payload != null) {
-                                String imageUrl = pullParser.getAttributeValue(null, "url");
-                                payload.setBanner(imageUrl);
-                            }else if ("category".equals(tagName) && payload != null) {
-                                String domain = pullParser.getAttributeValue(null, "domain");
-                                if ("foxnews.com/metadata/dc.source".equals(domain)) {
-                                    eventType = pullParser.next();
-                                    if (eventType == XmlPullParser.TEXT) {
-                                        String categoryValue = pullParser.getText();
-                                        payload.setCategory(categoryValue);
-                                    }
+    new Thread(() -> {
+        try {
+            URL url = new URL(iZooto.pUrl);
+            XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
+                int eventType = pullParser.getEventType();
+                Payload payload = null;
 
-                                }
-                            }
-                        } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
-                            contentList.add(payload);
-                            callbackListener.onCallback(contentList);
-                            contentList.clear();
-                            payload = null;
+                boolean isNull = true;
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
+                        String tagName = pullParser.getName();
+                        if (tagName.equals("title") && isNull) {
+                            isNull = false;
+                            String name = pullParser.nextText();
+                            preferenceUtil.setStringData("pubName",name);
+                            pullParser.require(XmlPullParser.END_TAG, null, "title");
                         }
-                        eventType = pullParser.next();
-                    }
-                }else {
-                    Log.e("http connection error","bad request");
-                }
-            } catch (XmlPullParserException | IOException e) {
-                Log.e("http connection error","bad request");
-            }
-        }).start();
-    }
+                        if ("item".equals(tagName)) {
+                            payload = new Payload();
+                        } else if ("title".equals(tagName) && payload != null) {
+                            payload.setTitle(pullParser.nextText());
+                        } else if ("link".equals(tagName) && payload != null) {
+                            payload.setLink(pullParser.nextText());
+                        } else if ("description".equals(tagName) && payload != null) {
+                            payload.setDescription(pullParser.nextText());
+                        } else if ("pubDate".equals(tagName) && payload != null) {
+                            payload.setCreated_Time(pullParser.nextText());
+                        }
+                        else if ("image".equals(tagName) && payload != null) {
+                            payload.setBanner(pullParser.nextText());
+                        }
+                        else if ("media:content".equals(tagName) && payload != null) {
+                            String imageUrl = pullParser.getAttributeValue(null, "url");
+                            payload.setBanner(imageUrl);
+                        }else if ("category".equals(tagName) && payload != null) {
+                            String domain = pullParser.getAttributeValue(null, "domain");
+                            if ("foxnews.com/metadata/dc.source".equals(domain)) {
+                                eventType = pullParser.next();
+                                if (eventType == XmlPullParser.TEXT) {
+                                    String categoryValue = pullParser.getText();
+                                    payload.setCategory(categoryValue);
+                                }
 
+                            }
+                        }
+                    } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
+                        contentList.add(payload);
+                        callbackListener.onCallback(contentList);
+                        contentList.clear();
+                        payload = null;
+                    }
+                    eventType = pullParser.next();
+                }
+            }else {
+                Log.e("http connection error","bad request...");
+            }
+        } catch (XmlPullParserException | IOException e) {
+            Log.e("http connection error","bad request"+e);
+        }
+    }).start();
+}
     protected static void pulseClickAPI(Context context, Payload userModal) {
         try {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);

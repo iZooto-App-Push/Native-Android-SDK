@@ -31,6 +31,20 @@ public class ActivityLifecycleListener implements Application.ActivityLifecycleC
         storeForegroundData(activity,true);
         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(activity);
         preferenceUtil.setBooleanData(AppConstant.DEVICE_ONCREATE_STATE, true);
+        HomeWatcher mHomeWatcher = new HomeWatcher(activity);
+        mHomeWatcher.setOnHomePressedListener(new OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                iZooto.clickHome = true;
+            }
+            @Override
+            public void onHomeLongPressed() {
+                iZooto.clickHome = true;
+            }
+        });
+        mHomeWatcher.startWatch();
+
+
     }
 
     @Override

@@ -2837,7 +2837,8 @@ private static void runNotificationOpenedCallback() {
                     PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                     String appId = preferenceUtil.getiZootoID(APPPID);
                     if (appId != null && !appId.isEmpty()) {
-                        iZootoPulse pulse = new iZootoPulse(payloadArrayList);
+                        iZootoPulse pulse = new iZootoPulse();
+                        pulse.setContents(payloadArrayList);
                         View onTouchView = context.getWindow().getDecorView().getRootView();
                         if(isBackIntent){
                             iZooto.swipeEdge = true;

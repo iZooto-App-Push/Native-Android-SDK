@@ -63,6 +63,14 @@
             app:cardCornerRadius="25dp"
             app:cardPreventCornerOverlap="false">
 
+            <ImageView
+                android:id="@+id/circle_icon"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:contentDescription="@string/todo"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                />
 
         </androidx.cardview.widget.CardView>
 
@@ -102,7 +110,6 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
-                android:background="@drawable/iz_circle"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/todo"
                 android:padding="11dp"
@@ -117,7 +124,7 @@
                 android:layout_alignParentEnd="true"
                 android:contentDescription="@string/todo"
                 android:scaleType="fitCenter"
-                android:background="@drawable/iz_circle"
+                android:background="@drawable/circle"
                 android:padding="11dp"
                 android:src="@drawable/ic_baseline_share_25" />
 
@@ -144,23 +151,3 @@
         android:background="@color/dawn"/>
 
 </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,5 @@
 package com.app.izoototest;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -9,13 +7,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+
 
 import com.izooto.ActivityLifecycleListener;
 import com.izooto.AppConstant;
@@ -67,7 +61,7 @@ public class MainActivity extends AppCompatActivity
             backPressedOnce = false;
         } else {
             backPressedOnce = true;
-            iZooto.enablePulse(MainActivity.this, true);
+           // iZooto.enablePulse(MainActivity.this, true);
         }
     }
 

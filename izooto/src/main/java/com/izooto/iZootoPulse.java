@@ -3,6 +3,7 @@ package com.izooto;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -27,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 
-public class iZootoPulse  extends Fragment {
+public class iZootoPulse extends Fragment {
 
     public static DrawerLayout mainDrawer;
     private RecyclerView recyclerView;
@@ -39,15 +40,19 @@ public class iZootoPulse  extends Fragment {
 
 
 
-    public iZootoPulse(ArrayList<Payload> feedList) {
+    public iZootoPulse() {
+
+    }
+
+    void setContents(ArrayList<Payload> feedList){
         this.feedList = feedList;
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -131,11 +136,6 @@ public class iZootoPulse  extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (!iZooto.isEDGestureUiMode && !iZooto.clickHome) {
-            onDetachDrawer();
-        }
-        iZooto.isEDGestureUiMode = false;
-        iZooto.clickHome = false;
     }
 
     void openDrawer() {
@@ -176,15 +176,16 @@ public class iZootoPulse  extends Fragment {
         try {
             mainDrawer.addDrawerListener(new DrawerLayout.DrawerListener() {
                 @Override
-                public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-                }
+                public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {}
 
                 @Override
                 public void onDrawerOpened(@NonNull View drawerView) {
                 }
 
                 @Override
-                public void onDrawerClosed(@NonNull View drawerView) {onDetachDrawer();}
+                public void onDrawerClosed(@NonNull View drawerView) {
+                    onDetachDrawer();
+                }
 
                 @Override
                 public void onDrawerStateChanged(int newState) {
@@ -212,21 +213,12 @@ public class iZootoPulse  extends Fragment {
         }
 
     }
+
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        onDetachDrawer();
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
