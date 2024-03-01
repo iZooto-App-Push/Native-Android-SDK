@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,9 +18,12 @@ import com.izooto.PreferenceUtil;
 import com.izooto.Util;
 import com.izooto.iZooto;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity
@@ -33,9 +37,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       iZooto.enablePulse(MainActivity.this,false);
-
-
+        iZooto.enablePulse(MainActivity.this,false);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

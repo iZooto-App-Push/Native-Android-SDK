@@ -26,7 +26,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
+/*
+* This class used for pulse feature
+* Handle the all methods and drawer
+* Handle the all list data in setContents method
+* setContents(ArrayList<Payload> feedList)
+* */
 
 public class iZootoPulse extends Fragment {
 
@@ -37,9 +42,6 @@ public class iZootoPulse extends Fragment {
     private Context context;
     private int ids = 0;
     private ArrayList<Payload> feedList = new ArrayList<>();
-
-
-
     public iZootoPulse() {
 
     }
@@ -126,11 +128,7 @@ public class iZootoPulse extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (!iZooto.isEDGestureUiMode && !iZooto.clickHome) {
-            onDetachDrawer();
-        }
-        iZooto.isEDGestureUiMode = false;
-        iZooto.clickHome = false;
+
     }
 
     @Override
@@ -180,11 +178,14 @@ public class iZootoPulse extends Fragment {
 
                 @Override
                 public void onDrawerOpened(@NonNull View drawerView) {
+                    iZooto.isBackPressedEvent = true;
                 }
 
                 @Override
                 public void onDrawerClosed(@NonNull View drawerView) {
+                    iZooto.isBackPressedEvent = false;
                     onDetachDrawer();
+
                 }
 
                 @Override

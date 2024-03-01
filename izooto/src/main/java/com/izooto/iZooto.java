@@ -58,7 +58,7 @@ public class iZooto {
     public static String mIzooToAppId;
     public static Builder mBuilder;
     public static int icon;
-
+    public static boolean isBackPressedEvent = false;
     private static Payload payload;
     public static boolean mUnsubscribeWhenNotificationsAreDisabled;
     protected static Listener mListener;
@@ -121,6 +121,7 @@ public class iZooto {
     private static void init(Builder builder) {
         final Context context = builder.mContext;
         appContext = context.getApplicationContext();
+        ActivityLifecycleListener.registerActivity((Application) context);
         mBuilder = builder;
         builder.mContext = null;
         final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
@@ -2880,6 +2881,14 @@ private static void runNotificationOpenedCallback() {
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "initializeSwipeGesture");
         }
+    }
+
+    /*
+    remove the drawer
+    *  */
+    public static void closeDrawer() {
+        iZootoPulse drawer = new iZootoPulse();
+        drawer.closeDrawer();
     }
 }
 
