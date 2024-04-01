@@ -182,7 +182,7 @@ public interface AppConstant {
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
 
-    String SDKVERSION="2.2.1";
+    String SDKVERSION="2.3.0";
     String QSDK_VERSION="av";
     String SDK="SDKVERSION";
     String AD_NETWORK="an";
@@ -384,6 +384,16 @@ public interface AppConstant {
     String IZ_OT = "exitIntentTemplateID";
     String P_URL = "pUrl";
     String PULSE_IMP = "pulseImp";
+
+    // OneTap subscription API tracking key's
+    String IZ_EMAIL = "email";
+    String IZ_FIRST_NAME = "fn";
+    String IZ_LAST_NAME = "ln";
+    String IZ_DEFAULT_NEWSLETTER_KEY = "nlo";
+    String IZ_STORED_EMAIL = "storedEmail";
+    String EMAIL_VALIDATION_REGx = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    //    String EMAIL_VALIDATION_REGx = "^\\S+@\\S+\\.\\S+$";
+    String SERVER_CLIENT_ID = "serverClientId";
 
 
 }

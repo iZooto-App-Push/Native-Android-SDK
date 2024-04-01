@@ -4,7 +4,7 @@ class Global {
     static def POM_NAME = 'android-sdk'
     static def POM_ARTIFACT_ID = 'android-sdk'
     static def POM_PACKAGING = 'aar'
-    static def VERSION_NAME = "2.2.1"
+    static def VERSION_NAME = "2.3.0"
     static def GROUP_ID = 'com.izooto'
     static def POM_DESCRIPTION = 'Push Notification Services'
     static def POM_URL = 'https://github.com/izooto-mobile-sdk/android-X'
@@ -38,14 +38,12 @@ afterEvaluate {
                 }
             }
         }
-
         publications {
             release(MavenPublication) {
                 from components.release
                 groupId = Global.GROUP_ID
                 artifactId = Global.POM_ARTIFACT_ID
                 version = Global.VERSION_NAME
-
                 pom {
                     name = Global.POM_NAME
                     packaging = Global.POM_PACKAGING

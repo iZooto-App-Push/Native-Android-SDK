@@ -14,7 +14,8 @@ import java.util.concurrent.Executors;
 public class RestClient {
      //production url
      static final String BASE_URL = "https://aevents.izooto.com/app";
-     static String P_GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
+
+    static String P_GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
      static final int GET_TIMEOUT = 60000;
      static final String EVENT_URL="https://et.izooto.com/evt";
      static final String PROPERTIES_URL="https://prp.izooto.com/prp";
@@ -39,6 +40,9 @@ public class RestClient {
 
     static final String iZ_PULSE_FEATURE_CLICK = "https://osclk.izooto.com/osclk";
     static final String iZ_PULSE_FEATURE_IMPRESSION = "https://osimp.izooto.com/osimp";
+
+    static final String ONE_TAP_SUBSCRIPTION="https://eenp.izooto.com/eenp";
+
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }

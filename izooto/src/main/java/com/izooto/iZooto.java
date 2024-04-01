@@ -105,6 +105,9 @@ public class iZooto {
     private static int pageNumber;   // index handling for notification center data
     private static String notificationData;
 
+    private static String serverClientId;
+
+
     public static void setSenderId(String senderId) {
         iZooto.senderId = senderId;
     }
@@ -151,7 +154,7 @@ public class iZooto {
                                 try {
                                     final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
                                     JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(AppConstant.SECRETKEY, response)));
-                                    senderId = jsonObject.getString(AppConstant.SENDERID);
+                                    senderId = jsonObject.optString(AppConstant.SENDERID);
                                     String appId = jsonObject.optString(AppConstant.APPID);
                                     String apiKey = jsonObject.optString(AppConstant.APIKEY);
                                     String mKey =jsonObject.optString(AppConstant.MIAPIKEY);
@@ -166,6 +169,7 @@ public class iZooto {
                                     mIzooToAppId = jsonObject.optString(APPPID);
                                     String newsHub =jsonObject.optString(AppConstant.JSON_NEWS_HUB);//"{\"designType\":1,\"mainColor\":\"#1D85FC\",\"iconType\":1,\"isFullScreen\":true,\"placement\":[0,1],\"title\":\"News Hub\",\"status\":1}";//jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                     preferenceUtil.setiZootoID(APPPID, mIzooToAppId);
+                                    serverClientId = jsonObject.optString(AppConstant.SERVER_CLIENT_ID);
                                     try {
                                         int brand_key = jsonObject.optInt(AppConstant.NEWS_HUB_B_KEY);
                                         preferenceUtil.setIntData(AppConstant.NEWS_HUB_B_KEY, brand_key);
@@ -2889,6 +2893,39 @@ private static void runNotificationOpenedCallback() {
     public static void closeDrawer() {
         iZootoPulse drawer = new iZootoPulse();
         drawer.closeDrawer();
+    }
+    // Sign-In with Google One Tap (Credential Manager API)
+    public static void requestOneTapActivity(Context context, OneTapCallback callback){
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(context != null && serverClientId != null && !serverClientId.trim().isEmpty()){
+                        OneTapSignInManager.manageSignInRequest(context, serverClientId, callback);
+                    } else{
+                        Log.d(AppConstant.APP_NAME_TAG, "server-client-id should not be null or empty!");
+                    }
+                }
+            },2000);
+
+        } catch (Exception e){
+            Util.handleExceptionOnce(context, e.toString(), AppConstant.APP_NAME_TAG, "requestOneTapActivity");
+
+        }
+    }
+
+    // Generalized method to get User details (OneTap Feature)
+    public static void syncUserDetailsEmail(Context context, String email, String firstName, String lastName){
+        try{
+            if(context != null && email != null && !email.trim().isEmpty()){
+                OneTapSignInManager.syncUserDetails(context, email, firstName, lastName);
+            } else{
+                Log.d(AppConstant.APP_NAME_TAG, "context and email should not be null or empty");
+            }
+        } catch (Exception e){
+            Util.handleExceptionOnce(context, e.toString(), AppConstant.APP_NAME_TAG, "syncUserDetails");
+
+        }
     }
 }
 

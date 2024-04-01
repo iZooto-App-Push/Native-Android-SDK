@@ -33,7 +33,10 @@ dependencies {
     implementation files('libs/MiPush_SDK_Client_5_1_1-G.jar')
     //noinspection GradleCompatible
     implementation 'androidx.browser:browser:1.7.0'
-
+// Credential Manager API
+    compileOnly("androidx.credentials:credentials:1.2.0")
+    compileOnly("androidx.credentials:credentials-play-services-auth:1.2.0")
+    compileOnly("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 
 }
 apply from: 'maven-push.gradle'
