@@ -151,9 +151,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                                 if(impIndex.equalsIgnoreCase("1"))
                                 {
                                     NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1,AppConstant.PUSH_FCM);
-
                                 }
-
                             }
 
                             AdMediation.getMediationGPL(this, jsonObject, urlData);

@@ -157,8 +157,6 @@ public class iZooto {
                                     senderId = jsonObject.optString(AppConstant.SENDERID);
                                     String appId = jsonObject.optString(AppConstant.APPID);
                                     String apiKey = jsonObject.optString(AppConstant.APIKEY);
-                                    String mKey =jsonObject.optString(AppConstant.MIAPIKEY);
-                                    String mId =jsonObject.optString(AppConstant.MIAPPID);
                                     String hms_appId =jsonObject.optString(AppConstant.HMS_APP_ID);
                                     iZooto.pUrl =jsonObject.optString(AppConstant.P_URL);
                                     iZooto.pulseRid = jsonObject.optString(AppConstant.pulseRid);
@@ -181,10 +179,7 @@ public class iZooto {
                                     }
                                     trackAdvertisingId();
 
-                                    if(!mKey.isEmpty() && !mId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_XIAOMI_TOKEN)){
-                                        XiaomiSDKHandler xiaomiSDKHandler = new XiaomiSDKHandler(iZooto.appContext, mId, mKey);
-                                        xiaomiSDKHandler.onMIToken();
-                                    }
+
                                     if (!hms_appId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Huawei")  && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_HUAWEI_TOKEN)) {
                                         initHmsService(appContext);
                                     }
