@@ -1,4 +1,5 @@
 package com.izooto;
+
 import org.json.JSONObject;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,43 +12,41 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class RestClient {
-     //production url
-     static final String BASE_URL = "https://aevents.izooto.com/app";
-
+    //    production url
+    static final String BASE_URL = "https://aevents.izooto.com/app";
     static String P_GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
-     static final int GET_TIMEOUT = 60000;
-     static final String EVENT_URL="https://et.izooto.com/evt";
-     static final String PROPERTIES_URL="https://prp.izooto.com/prp";
-     static final String IMPRESSION_URL="https://impr.izooto.com/imp";
-     static  final String NOTIFICATIONCLICK="https://clk.izooto.com/clk";
-     static final String SUBSCRIPTION_API="https://usub.izooto.com/sunsub";
-     static final String LASTNOTIFICATIONCLICKURL="https://lci.izooto.com/lci";
-     static final String LAST_NOTIFICATION_VIEW_URL="https://lim.izooto.com/lim";
-     static final String LASTVISITURL="https://lvi.izooto.com/lvi";
-     static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
-     static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
-     static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
-     static final String NOTIFICATION_PERMISSION_ALLOW_URL="https://enp.izooto.com/enp";
-     static final String NOTIFICATION_PERMISSION_DISALLOW_URL="https://sbp.izooto.com/nblk";
-     static final String PERSISTENT_NOTIFICATION_DISMISS_URL = "https://dsp.izooto.com/dsp";
-
-   // NEWS_HUB_URL
-    static final String NEWS_HUB_URL="https://nh.iz.do/nh/";
-
+    static final int GET_TIMEOUT = 60000;
+    static final String EVENT_URL="https://et.izooto.com/evt";
+    static final String PROPERTIES_URL="https://prp.izooto.com/prp";
+    static final String IMPRESSION_URL="https://impr.izooto.com/imp";
+    static final String NOTIFICATION_CLICK="https://clk.izooto.com/clk";
+    static final String SUBSCRIPTION_API="https://usub.izooto.com/sunsub";
+    static final String LAST_NOTIFICATION_CLICK_URL="https://lci.izooto.com/lci";
+    static final String LAST_NOTIFICATION_VIEW_URL="https://lim.izooto.com/lim";
+    static final String LAST_VISIT_URL="https://lvi.izooto.com/lvi";
+    static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
+    static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
+    static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
+    static final String PERSISTENT_NOTIFICATION_DISMISS_URL = "https://dsp.izooto.com/dsp";
     static final String NEWS_HUB_IMPRESSION_URL="https://nhwimp.izooto.com/nhwimp";
     static final String NEWS_HUB_OPEN_URL="https://nhwopn.izooto.com/nhwopn";
-
+    static final String NEWS_HUB_URL="https://nh.iz.do/nh/";
+    static final String ONE_TAP_SUBSCRIPTION="https://eenp.izooto.com/eenp";
     static final String iZ_PULSE_FEATURE_CLICK = "https://osclk.izooto.com/osclk";
     static final String iZ_PULSE_FEATURE_IMPRESSION = "https://osimp.izooto.com/osimp";
 
-    static final String ONE_TAP_SUBSCRIPTION="https://eenp.izooto.com/eenp";
 
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }
-     static void get(final String url, final ResponseHandler responseHandler) {
-        new Thread(() -> makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT)).start();
+    static void get(final String url, final ResponseHandler responseHandler) {
+        new Thread(new Runnable() {
+            public void run() {
+                makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT);
+            }
+        }).start();
     }
     static void getRequest(final String url, final int timeOut,final ResponseHandler responseHandler) {
         new Thread(new Runnable() {
@@ -73,11 +72,9 @@ public class RestClient {
         es.submit(new Runnable() {
             @Override
             public void run() {
-
                 startHTTPConnection(url, method, data, jsonObject ,responseHandler, timeout);
             }
         });
-
     }
 
     private static void startHTTPConnection(String url, String method, final Map<String,String> data,JSONObject jsonBody, ResponseHandler responseHandler, int timeout) {
@@ -135,7 +132,6 @@ public class RestClient {
                         con.setInstanceFollowRedirects(false);
                         con.setUseCaches(false);
                         con.connect();
-
                         try (OutputStream os = con.getOutputStream()) {
                             os.write(out);
                         }
@@ -148,7 +144,6 @@ public class RestClient {
                     OutputStream outputStream = con.getOutputStream();
                     outputStream.write(sendBytes);
                 }
-
                 httpResponse = con.getResponseCode();
                 InputStream inputStream;
                 Scanner scanner;
@@ -160,7 +155,7 @@ public class RestClient {
                     if(jsonBody!=null) {
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + jsonBody, "[Log.V]->URL");
                     }
-                    if (url.equals(AppConstant.CDN + iZooto.mIzooToAppId + AppConstant.DAT))
+                    if (url.equals(AppConstant.CDN + iZooto.iZootoAppId + AppConstant.DAT))
                         Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
                     else
                         Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
@@ -176,7 +171,7 @@ public class RestClient {
                     retry++;
                     delay = true;
                     if (retry >= 4) {
-                        if (url.equals(AppConstant.CDN + iZooto.mIzooToAppId + AppConstant.DAT))
+                        if (url.equals(AppConstant.CDN + iZooto.iZootoAppId + AppConstant.DAT))
                             Lg.d(AppConstant.APP_NAME_TAG, AppConstant.SUCCESS);
                         else
                             Lg.d(AppConstant.APP_NAME_TAG, AppConstant.FAILURE);
@@ -237,7 +232,6 @@ public class RestClient {
         void onSuccess(String response) {
             Lg.d(AppConstant.APP_NAME_TAG,  AppConstant.APISUCESS);
         }
-
         void onFailure(int statusCode, String response, Throwable throwable) {
             Lg.v(AppConstant.APP_NAME_TAG, AppConstant.APIFAILURE  + response);
         }

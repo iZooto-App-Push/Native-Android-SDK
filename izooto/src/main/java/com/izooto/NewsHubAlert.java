@@ -205,67 +205,67 @@ import java.util.ArrayList;
                             }
                                mPayload = new Payload();
                               if (jsonObject1 != null) {
-                                  mPayload.setCreated_Time(jsonObject1.optString(ShortpayloadConstant.CREATEDON));
-                                  mPayload.setFetchURL(jsonObject1.optString(ShortpayloadConstant.FETCHURL));
-                                  mPayload.setKey(jsonObject1.optString(ShortpayloadConstant.KEY));
-                                  mPayload.setId(jsonObject1.optString(ShortpayloadConstant.ID));
-                                  mPayload.setRid(jsonObject1.optString(ShortpayloadConstant.RID));
-                                  mPayload.setLink(jsonObject1.optString(ShortpayloadConstant.LINK));
-                                  mPayload.setTitle(jsonObject1.optString(ShortpayloadConstant.TITLE));
-                                  mPayload.setMessage(jsonObject1.optString(ShortpayloadConstant.NMESSAGE));
-                                  mPayload.setIcon(jsonObject1.optString(ShortpayloadConstant.ICON));
-                                  mPayload.setReqInt(jsonObject1.optInt(ShortpayloadConstant.REQINT));
-                                  mPayload.setTag(jsonObject1.optString(ShortpayloadConstant.TAG));
-                                  mPayload.setBanner(jsonObject1.optString(ShortpayloadConstant.BANNER));
-                                  mPayload.setAct_num(jsonObject1.optInt(ShortpayloadConstant.ACTNUM));
-                                  mPayload.setBadgeicon(jsonObject1.optString(ShortpayloadConstant.BADGE_ICON));
-                                  mPayload.setBadgecolor(jsonObject1.optString(ShortpayloadConstant.BADGE_COLOR));
-                                  mPayload.setSubTitle(jsonObject1.optString(ShortpayloadConstant.SUBTITLE));
-                                  mPayload.setGroup(jsonObject1.optInt(ShortpayloadConstant.GROUP));
-                                  mPayload.setBadgeCount(jsonObject1.optInt(ShortpayloadConstant.BADGE_COUNT));
+                                  mPayload.setCreated_Time(jsonObject1.optString(ShortPayloadConstant.CREATEDON));
+                                  mPayload.setFetchURL(jsonObject1.optString(ShortPayloadConstant.FETCHURL));
+                                  mPayload.setKey(jsonObject1.optString(ShortPayloadConstant.KEY));
+                                  mPayload.setId(jsonObject1.optString(ShortPayloadConstant.ID));
+                                  mPayload.setRid(jsonObject1.optString(ShortPayloadConstant.RID));
+                                  mPayload.setLink(jsonObject1.optString(ShortPayloadConstant.LINK));
+                                  mPayload.setTitle(jsonObject1.optString(ShortPayloadConstant.TITLE));
+                                  mPayload.setMessage(jsonObject1.optString(ShortPayloadConstant.NMESSAGE));
+                                  mPayload.setIcon(jsonObject1.optString(ShortPayloadConstant.ICON));
+                                  mPayload.setReqInt(jsonObject1.optInt(ShortPayloadConstant.REQINT));
+                                  mPayload.setTag(jsonObject1.optString(ShortPayloadConstant.TAG));
+                                  mPayload.setBanner(jsonObject1.optString(ShortPayloadConstant.BANNER));
+                                  mPayload.setAct_num(jsonObject1.optInt(ShortPayloadConstant.ACTNUM));
+                                  mPayload.setBadgeicon(jsonObject1.optString(ShortPayloadConstant.BADGE_ICON));
+                                  mPayload.setBadgecolor(jsonObject1.optString(ShortPayloadConstant.BADGE_COLOR));
+                                  mPayload.setSubTitle(jsonObject1.optString(ShortPayloadConstant.SUBTITLE));
+                                  mPayload.setGroup(jsonObject1.optInt(ShortPayloadConstant.GROUP));
+                                  mPayload.setBadgeCount(jsonObject1.optInt(ShortPayloadConstant.BADGE_COUNT));
                                   // Button 1
-                                  mPayload.setAct1name(jsonObject1.optString(ShortpayloadConstant.ACT1NAME));
-                                  mPayload.setAct1link(jsonObject1.optString(ShortpayloadConstant.ACT1LINK));
-                                  mPayload.setAct1icon(jsonObject1.optString(ShortpayloadConstant.ACT1ICON));
-                                  mPayload.setAct1ID(jsonObject1.optString(ShortpayloadConstant.ACT1ID));
+                                  mPayload.setAct1name(jsonObject1.optString(ShortPayloadConstant.ACT1NAME));
+                                  mPayload.setAct1link(jsonObject1.optString(ShortPayloadConstant.ACT1LINK));
+                                  mPayload.setAct1icon(jsonObject1.optString(ShortPayloadConstant.ACT1ICON));
+                                  mPayload.setAct1ID(jsonObject1.optString(ShortPayloadConstant.ACT1ID));
                                   // Button 2
-                                  mPayload.setAct2name(jsonObject1.optString(ShortpayloadConstant.ACT2NAME));
-                                  mPayload.setAct2link(jsonObject1.optString(ShortpayloadConstant.ACT2LINK));
-                                  mPayload.setAct2icon(jsonObject1.optString(ShortpayloadConstant.ACT2ICON));
-                                  mPayload.setAct2ID(jsonObject1.optString(ShortpayloadConstant.ACT2ID));
+                                  mPayload.setAct2name(jsonObject1.optString(ShortPayloadConstant.ACT2NAME));
+                                  mPayload.setAct2link(jsonObject1.optString(ShortPayloadConstant.ACT2LINK));
+                                  mPayload.setAct2icon(jsonObject1.optString(ShortPayloadConstant.ACT2ICON));
+                                  mPayload.setAct2ID(jsonObject1.optString(ShortPayloadConstant.ACT2ID));
 
-                                  mPayload.setInapp(jsonObject1.optInt(ShortpayloadConstant.INAPP));
-                                  mPayload.setTrayicon(jsonObject1.optString(ShortpayloadConstant.TARYICON));
-                                  mPayload.setSmallIconAccentColor(jsonObject1.optString(ShortpayloadConstant.ICONCOLOR));
-                                  mPayload.setSound(jsonObject1.optString(ShortpayloadConstant.SOUND));
-                                  mPayload.setLedColor(jsonObject1.optString(ShortpayloadConstant.LEDCOLOR));
-                                  mPayload.setLockScreenVisibility(jsonObject1.optInt(ShortpayloadConstant.VISIBILITY));
-                                  mPayload.setGroupKey(jsonObject1.optString(ShortpayloadConstant.GKEY));
-                                  mPayload.setGroupMessage(jsonObject1.optString(ShortpayloadConstant.GMESSAGE));
-                                  mPayload.setFromProjectNumber(jsonObject1.optString(ShortpayloadConstant.PROJECTNUMBER));
-                                  mPayload.setCollapseId(jsonObject1.optString(ShortpayloadConstant.COLLAPSEID));
-                                  mPayload.setPriority(jsonObject1.optInt(ShortpayloadConstant.PRIORITY));
-                                  mPayload.setRawPayload(jsonObject1.optString(ShortpayloadConstant.RAWDATA));
-                                  mPayload.setAp(jsonObject1.optString(ShortpayloadConstant.ADDITIONALPARAM));
-                                  mPayload.setCfg(jsonObject1.optInt(ShortpayloadConstant.CFG));
+                                  mPayload.setInapp(jsonObject1.optInt(ShortPayloadConstant.INAPP));
+                                  mPayload.setTrayicon(jsonObject1.optString(ShortPayloadConstant.TARYICON));
+                                  mPayload.setSmallIconAccentColor(jsonObject1.optString(ShortPayloadConstant.ICONCOLOR));
+                                  mPayload.setSound(jsonObject1.optString(ShortPayloadConstant.SOUND));
+                                  mPayload.setLedColor(jsonObject1.optString(ShortPayloadConstant.LEDCOLOR));
+                                  mPayload.setLockScreenVisibility(jsonObject1.optInt(ShortPayloadConstant.VISIBILITY));
+                                  mPayload.setGroupKey(jsonObject1.optString(ShortPayloadConstant.GKEY));
+                                  mPayload.setGroupMessage(jsonObject1.optString(ShortPayloadConstant.GMESSAGE));
+                                  mPayload.setFromProjectNumber(jsonObject1.optString(ShortPayloadConstant.PROJECTNUMBER));
+                                  mPayload.setCollapseId(jsonObject1.optString(ShortPayloadConstant.COLLAPSEID));
+                                  mPayload.setPriority(jsonObject1.optInt(ShortPayloadConstant.PRIORITY));
+                                  mPayload.setRawPayload(jsonObject1.optString(ShortPayloadConstant.RAWDATA));
+                                  mPayload.setAp(jsonObject1.optString(ShortPayloadConstant.ADDITIONALPARAM));
+                                  mPayload.setCfg(jsonObject1.optInt(ShortPayloadConstant.CFG));
                                   mPayload.setPush_type(AppConstant.PUSH_FCM);
-                                  mPayload.setOfflineCampaign(jsonObject1.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
-                                  mPayload.setSound(jsonObject1.optString(ShortpayloadConstant.NOTIFICATION_SOUND));
-                                  mPayload.setMaxNotification(jsonObject1.optInt(ShortpayloadConstant.MAX_NOTIFICATION));
-                                  mPayload.setFallBackDomain(jsonObject1.optString(ShortpayloadConstant.FALL_BACK_DOMAIN));
-                                  mPayload.setFallBackSubDomain(jsonObject1.optString(ShortpayloadConstant.FALLBACK_SUB_DOMAIN));
-                                  mPayload.setFallBackPath(jsonObject1.optString(ShortpayloadConstant.FAll_BACK_PATH));
-                                  mPayload.setDefaultNotificationPreview(jsonObject1.optInt(ShortpayloadConstant.TEXTOVERLAY));
-                                  mPayload.setNotification_bg_color(jsonObject1.optString(ShortpayloadConstant.BGCOLOR));
-                                  mPayload.setOfflineCampaign(jsonObject1.optString(ShortpayloadConstant.OFFLINE_CAMPAIGN));
+                                  mPayload.setOfflineCampaign(jsonObject1.optString(ShortPayloadConstant.OFFLINE_CAMPAIGN));
+                                  mPayload.setSound(jsonObject1.optString(ShortPayloadConstant.NOTIFICATION_SOUND));
+                                  mPayload.setMaxNotification(jsonObject1.optInt(ShortPayloadConstant.MAX_NOTIFICATION));
+                                  mPayload.setFallBackDomain(jsonObject1.optString(ShortPayloadConstant.FALL_BACK_DOMAIN));
+                                  mPayload.setFallBackSubDomain(jsonObject1.optString(ShortPayloadConstant.FALLBACK_SUB_DOMAIN));
+                                  mPayload.setFallBackPath(jsonObject1.optString(ShortPayloadConstant.FAll_BACK_PATH));
+                                  mPayload.setDefaultNotificationPreview(jsonObject1.optInt(ShortPayloadConstant.TEXTOVERLAY));
+                                  mPayload.setNotification_bg_color(jsonObject1.optString(ShortPayloadConstant.BGCOLOR));
+                                  mPayload.setOfflineCampaign(jsonObject1.optString(ShortPayloadConstant.OFFLINE_CAMPAIGN));
                                   try {
                                       if (mPayload.getRid() != null && !mPayload.getRid().isEmpty()) {
-                                          preferenceUtil.setIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(mPayload));
+                                          preferenceUtil.setIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(mPayload));
                                       } else {
                                           Log.v("campaign", "rid null or empty!");
                                       }
                                       if (mPayload.getLink() != null && !mPayload.getLink().isEmpty()) {
-                                          int campaigns = preferenceUtil.getIntData(ShortpayloadConstant.OFFLINE_CAMPAIGN);
+                                          int campaigns = preferenceUtil.getIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN);
                                           if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
                                               Log.v("campaign", "...");
                                           } else {
@@ -287,7 +287,7 @@ import java.util.ArrayList;
                                       progressBar1.setVisibility(View.GONE);
 //                                    Log.e("TAG", "run: page -- " + page );
                                       payloadModalArrayList = newsHubDBHelper.fetchNewsHubData();
-                                      newsHubAdapter = new NewsHubAdapter(payloadModalArrayList, activity, alertDialog);
+                                      newsHubAdapter = new NewsHubAdapter(activity,payloadModalArrayList, alertDialog);
 
                                       // setting layout manager to our recycler view.
                                       recyclerView.setLayoutManager(new LinearLayoutManager(activity));
@@ -320,7 +320,7 @@ import java.util.ArrayList;
                         payloadModalArrayList = newsHubDBHelper.fetchNewsHubData();
                         progressBar.setVisibility(View.GONE);
                         progressBar1.setVisibility(View.GONE);
-                        newsHubAdapter = new NewsHubAdapter(payloadModalArrayList, activity,alertDialog);
+                        newsHubAdapter = new NewsHubAdapter(activity,payloadModalArrayList,alertDialog);
                         // setting layout manager to our recycler view.
                         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                         // setting adapter to our recycler view.

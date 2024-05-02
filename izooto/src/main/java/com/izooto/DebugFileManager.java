@@ -165,7 +165,7 @@ public class DebugFileManager {
         return outputDirectory;
     }
 
-    public static void shareDebuginfo(Context context, String name, String email) {
+    public static void shareDebuginfo(Context context) {
 
 
         String externalStorageState = Environment.getExternalStorageState();

@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class NotificationActionReceiver extends BroadcastReceiver {
 
-    private String mUrl="";
+    private String mUrl ="";
     private int inApp;
     private String rid;
     private  String cid;
@@ -45,14 +46,14 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     public  static  String medClick="";
     private String pushType;
     private int cfg;
-    private  static  String notificationTitle;
+
+    private static String notificationTitle="";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if(context!=null) {
             String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
-
             context.sendBroadcast(it);
             getBundleData(context, intent);
             if(mUrl!=null) {
@@ -68,11 +69,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     if (dataCfg > 0) {
                         clkURL = "https://clk" + dataCfg + ".izooto.com/clk" + dataCfg;
                     } else {
-                        clkURL = RestClient.NOTIFICATIONCLICK;
+                        clkURL = RestClient.NOTIFICATION_CLICK;
                     }
-
                     notificationClickAPI(context, clkURL, cid, rid, btnCount, -1,pushType);
-
                     String lastEighthIndex = "0";
                     String lastTenthIndex = "0";
                     String dataInBinary = Util.getIntegerToBinary(cfg);
@@ -94,7 +93,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         if (dataCfg > 0){
                             lciURL = "https://lci" +dataCfg + ".izooto.com/lci" + dataCfg;
                         }else
-                            lciURL = RestClient.LASTNOTIFICATIONCLICKURL;
+                            lciURL = RestClient.LAST_NOTIFICATION_CLICK_URL;
                         if (lastEighthIndex.equalsIgnoreCase("1")) {
 
                             if (lastTenthIndex.equalsIgnoreCase("1")) {
@@ -117,7 +116,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
             }
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
@@ -130,9 +129,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
                 }
             }
-//            if (medClick != "") {
-//                callMediationClicks(context,medClick,0);
-//            }
+
             if(preferenceUtil.getStringData("MEDIATIONCLICKDATA")!="")
             {
                 String medClickData = preferenceUtil.getStringData("MEDIATIONCLICKDATA");
@@ -158,14 +155,17 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
                 hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
                 JSONObject jsonObject = new JSONObject(hashMap);
+
                 if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
                     iZooto.notificationActionHandler(jsonObject.toString());
+
                 else {
                     if (Util.isAppInForeground(context)) {
                         iZooto.notificationActionHandler(jsonObject.toString());
                     }
                     else if(isAppBackground(context))
                     {
+
                         if(preferenceUtil.getBoolean("Android8")) {
                             launchApp(context);
                             notificationClick = jsonObject.toString();
@@ -184,9 +184,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 }
 
             } else {
-
                 if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL!="" && !landingURL.isEmpty()) {
-
                     if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                         iZooto.notificationInAppAction(context,mUrl);
                     }
@@ -194,18 +192,15 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         if (Util.isAppInForeground(context)){
                             iZooto.notificationInAppAction(context,mUrl);
                         }
-                        else if(isAppBackground(context))
-                        {
+                        else if(isAppBackground(context)){
                             launchApp(context);
                             WebViewClick = mUrl;
-
                             iZooto.notificationInAppAction(context,WebViewClick);
                         }
                         else {
-
+                            launchApp(context);
                             WebViewClick = mUrl;
                             iZooto.notificationInAppAction(context,WebViewClick);
-                            launchApp(context);
                         }
                     }
                     else
@@ -213,7 +208,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         iZootoWebViewActivity.startActivity(context, mUrl);
 
                     }
-                // launchApp(context); // new  line added
+                    // launchApp(context); // new  line added
                 }
                 else {
                     try {
@@ -240,7 +235,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         }
 
                     } catch (Exception ex) {
-                        Util.setException(context, ex.toString(), "notification action", "landing url issues"+mUrl);
+                        Util.handleExceptionOnce(context, ex.toString(), "notification action", "landing url issues"+mUrl);
                     }
                 }
             }
@@ -285,7 +280,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     static void lastClickAPI(Context context, String lciURL, String rid, int i){
         if (context == null)
             return;
-
         try {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             preferenceUtil.setStringData(AppConstant.CURRENT_DATE_CLICK, Util.getTime());
@@ -295,11 +289,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             Map<String,String> mapData= new HashMap<>();
             mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
             mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
-            mapData.put(AppConstant.ANDROID_ID,"" + Util.getAndroidId(context));
-            mapData.put(AppConstant.VAL,"" + jsonObject.toString());
+            mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+            mapData.put(AppConstant.VAL,"" + jsonObject);
             mapData.put(AppConstant.ACT,"add");
             mapData.put(AppConstant.ISID_,"1");
-            mapData.put(AppConstant.ET_,"" + AppConstant.USERP_);
+            mapData.put(AppConstant.ET_, AppConstant.USERP_);
 
             RestClient.postRequest(lciURL, mapData,null, new RestClient.ResponseHandler() {
                 @Override
@@ -312,7 +306,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, null);
                         }
                     } catch (Exception e) {
-                        DebugFileManager.createExternalStoragePublic(context,"LastClick"+e.toString(),"[Log.V]->");
+                        DebugFileManager.createExternalStoragePublic(context,"LastClick"+ e,"[Log.V]->");
                     }
                 }
                 @Override
@@ -327,14 +321,17 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         } else
                             Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
                     } catch (Exception e) {
-                        DebugFileManager.createExternalStoragePublic(context,"LastClick"+e.toString(),"[Log.V]->");
+                        DebugFileManager.createExternalStoragePublic(context,"LastClick"+ e,"[Log.V]->");
+                        Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "lastClickAPI");
 
                     }
 
                 }
             });
         } catch (Exception e) {
-            Util.setException(context, e.toString(), "lastClickAPI", "NotificationActionReceiver");
+            DebugFileManager.createExternalStoragePublic(context,"LastClick"+ e,"[Log.V]->");
+            Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "lastClickAPI");
+
         }
 
     }
@@ -374,7 +371,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             }
                             catch (Exception ex)
                             {
-                                DebugFileManager.createExternalStoragePublic(context,"MediationCLick"+ex.toString(),"[Log.V]->");
+                                DebugFileManager.createExternalStoragePublic(context,"MediationCLick"+ ex,"[Log.V]->");
 
                             }
                         }
@@ -395,7 +392,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         }
         catch (Exception ex)
         {
-            DebugFileManager.createExternalStoragePublic(context,"MediationCLick"+ex.toString(),"[Log.V]->");
+            DebugFileManager.createExternalStoragePublic(context,"MediationCLick"+ ex,"[Log.V]->");
+            Util.handleExceptionOnce(context, ex.toString(), "NotificationActionReceiver", "callMediationClicks");
 
         }
     }
@@ -461,8 +459,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
             mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
             mapData.put(AppConstant.CID_, cid);
-            mapData.put(AppConstant.ANDROID_ID,"" + Util.getAndroidId(context));
-            mapData.put(AppConstant.RID_,"" + rid);
+            mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+            mapData.put(AppConstant.RID_, rid);
             mapData.put(AppConstant.PUSH, pushType);
             mapData.put("op","click");
             mapData.put(AppConstant.IZ_LANDING_URL, landingURL);
@@ -471,14 +469,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             if (btnCount != 0)
                 mapData.put("btn","" + btnCount);
             DebugFileManager.createExternalStoragePublic(context,mapData.toString(),"clickData");
-
             RestClient.postRequest(clkURL, mapData,null, new RestClient.ResponseHandler() {
                 @Override
                 void onSuccess(final String response) {
                     super.onSuccess(response);
                     try {
                         JSONArray jsonArrayOffline;
-
                         if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty() && i>=0) {
                             jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
                             jsonArrayOffline.remove(i);
@@ -486,8 +482,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         }
                     } catch (Exception e) {
                         DebugFileManager.createExternalStoragePublic(context,mapData.toString(),"clickData");
-                    }
 
+                    }
                 }
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
@@ -506,18 +502,16 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         if(!PreferenceUtil.getInstance(context).getBoolean("notificationClickAPI")) {
                             PreferenceUtil.getInstance(context).setBooleanData("notificationClickAPI",true);
                             Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
-                        }                    }
+                        }
+                    }
                 }
             });
 
 
         } catch (Exception e) {
-            DebugFileManager.createExternalStoragePublic(context,e.toString(),"clickData");
+            Util.handleExceptionOnce(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
 
-            if(!PreferenceUtil.getInstance(context).getBoolean("notificationClickAPI")) {
-                PreferenceUtil.getInstance(context).setBooleanData("notificationClickAPI",true);
-                Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
-            }        }
+        }
     }
 
     private static void launchApp(Context context){
@@ -557,13 +551,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     context.startActivity(intentAppLaunch);
                 }
             }
-        } catch (PackageManager.NameNotFoundException e) {
-            if(!PreferenceUtil.getInstance(context).getBoolean("launch")) {
-                PreferenceUtil.getInstance(context).setBooleanData("launch",true);
-                Util.setException(context, e.toString(), AppConstant.APPName_3, "launch App");
-            }
+        } catch (Exception e) {
+            Util.handleExceptionOnce(context, e.toString(), AppConstant.APPName_3, "launch App");
         }
+
     }
-
-
 }
+
+
+

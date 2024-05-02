@@ -2,6 +2,9 @@ package com.izooto;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -18,10 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,19 +32,19 @@ import java.util.ArrayList;
 * setContents(ArrayList<Payload> feedList)
 * */
 
-public class iZootoPulse extends Fragment {
 
+
+public class iZootoPulse extends Fragment {
     public static DrawerLayout mainDrawer;
     private RecyclerView recyclerView;
     private LinearLayout dataNotFound;
     private PulseAdapter adapter;
     private Context context;
+    private PreferenceUtil preferenceUtil;
     private int ids = 0;
     private ArrayList<Payload> feedList = new ArrayList<>();
-    public iZootoPulse() {
 
-    }
-
+    public iZootoPulse() { }
     void setContents(ArrayList<Payload> feedList){
         this.feedList = feedList;
     }
@@ -54,7 +53,6 @@ public class iZootoPulse extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -68,7 +66,8 @@ public class iZootoPulse extends Fragment {
         dataNotFound = view.findViewById(R.id.dataNotFound);
         FrameLayout navigationView = view.findViewById(R.id.navigation_view);
         new Handler().postDelayed(this::openDrawer, 0);
-        context = this.requireContext();
+        context = this.getActivity();
+        preferenceUtil = PreferenceUtil.getInstance(context);
 
         drawerCallbackListener();
         DrawerLayout.LayoutParams navigationViewLayoutParams = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
@@ -92,7 +91,6 @@ public class iZootoPulse extends Fragment {
 
         });
 
-
         try {
             new Handler().postDelayed(() -> {
                 if (context != null && feedList.size() > 0) {
@@ -103,15 +101,12 @@ public class iZootoPulse extends Fragment {
                     dataNotFound.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
-
             }, 0);
 
         } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), "iZootoNavigationDrawer","onCreateView");
+            Util.handleExceptionOnce(context, e.toString(), "iZootoPulse","onCreateView");
         }
-
         return view;
-
     }
 
     @Override
@@ -119,22 +114,6 @@ public class iZootoPulse extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 
     void openDrawer() {
         if (mainDrawer != null) {
@@ -152,56 +131,49 @@ public class iZootoPulse extends Fragment {
         }
     }
 
-    void onCreateDrawer(Activity context, iZootoPulse iZootoDrawer, int myIds) {
+    void onCreateDrawer(Context context, iZootoPulse iZootoDrawer, int myIds) {
         try {
             ids = myIds;
             if (context != null && iZootoDrawer != null && myIds > 0) {
-                ((FragmentActivity) context).getSupportFragmentManager()
+                ((Activity) context).getFragmentManager()
                         .beginTransaction()
                         .add(myIds, iZootoDrawer)
                         .commit();
             } else {
-                Log.e("onCreateDrawer", "The iZooto Drawer is not registered properly!");
+                Log.e(AppConstant.APP_NAME_TAG, "The iZooto Drawer is not registered properly!");
             }
         } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), "iZootoNavigationDrawer","onCreateDrawer");
-
+            Util.handleExceptionOnce(context, e.toString(), "iZootoPulse","onCreateDrawer");
         }
-
     }
 
     private void drawerCallbackListener() {
         try {
             mainDrawer.addDrawerListener(new DrawerLayout.DrawerListener() {
                 @Override
-                public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {}
-
+                public void onDrawerSlide(@NonNull View drawerView, float slideOffset) { }
                 @Override
                 public void onDrawerOpened(@NonNull View drawerView) {
                     iZooto.isBackPressedEvent = true;
                 }
-
                 @Override
                 public void onDrawerClosed(@NonNull View drawerView) {
                     iZooto.isBackPressedEvent = false;
                     onDetachDrawer();
-
                 }
-
                 @Override
                 public void onDrawerStateChanged(int newState) {
                 }
             });
         }catch (Exception e){
-            Util.handleExceptionOnce(context, e.toString(), "iZootoNavigationDrawer","drawerCallback");
+            Util.handleExceptionOnce(context, e.toString(), "iZootoPulse","drawerCallback");
         }
 
     }
 
-
     void onDetachDrawer() {
         try {
-            FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+            FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             Fragment fragment = fragmentManager.findFragmentById(ids);
             if (fragment != null) {
@@ -210,16 +182,23 @@ public class iZootoPulse extends Fragment {
             transaction.commit();
 
         } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), "iZootoNavigationDrawer","onDetachDrawer");
+            Util.handleExceptionOnce(context, e.toString(), "iZootoPulse","onDetachDrawer");
         }
-
     }
-
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        onDetachDrawer();
+        iZooto.isBackPressedEvent = false;
+        if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+            onDetachDrawer();
+        }else {
+            try{
+                onDetachDrawer();
+                iZooto.isBackPressedEvent = true;
+            }catch (Exception e){
+                Log.e(AppConstant.APP_NAME_TAG,e.toString());
+            }
+        }
     }
-
 }

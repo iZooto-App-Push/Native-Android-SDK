@@ -2,6 +2,7 @@ package com.izooto;
 
 import static android.graphics.Typeface.NORMAL;
 import static com.izooto.NewsHubAlert.preferenceUtil;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -11,15 +12,18 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
@@ -35,17 +39,21 @@ public class NewsHubActivity extends AppCompatActivity {
     private Context context;
     private LinearLayout footer,brandingVisibility;
     private TextView izFooterText;
+
+
     private final String className = this.getClass().getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newshub);
+
         context = NewsHubActivity.this;
         defineIds();
         brandingVisibility(context);
         preferenceUtil = PreferenceUtil.getInstance(context);
         NewsHubAlert.newsHubDBHelper = new NewsHubDBHelper(context);
+
 
         if (preferenceUtil.getIntData(AppConstant.SET_PAGE_NO) < 4) {
             NewsHubAlert.limit = 4;
@@ -76,14 +84,14 @@ public class NewsHubActivity extends AppCompatActivity {
                 if (preferenceUtil.getIntData(AppConstant.SET_PAGE_NO) < 4 && Util.isNetworkAvailable(context)) {
                     NewsHubAlert.page ++;
                     loadingPBAlert.setVisibility(View.VISIBLE);
-                   // footer.setVisibility(View.GONE);
+                    // footer.setVisibility(View.GONE);
                     try {
                         NewsHubAlert.getDataFromAPI(NewsHubActivity.this, NewsHubAlert.page, NewsHubAlert.limit, recyclerViewAlert, loadingPBAlert,loadingPBAlert1, noDataFound, nestedScrollViewAlert, footer);
                     } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
                         Util.setException(context,e.toString(),"onCreate",className);
                     }
                 } else {
-                   // footer.setVisibility(View.VISIBLE);
+                    // footer.setVisibility(View.VISIBLE);
                     loadingPBAlert.setVisibility(View.GONE);
                 }
 
@@ -110,13 +118,15 @@ public class NewsHubActivity extends AppCompatActivity {
                     brandingVisibility.setVisibility(View.INVISIBLE);
                     brandingVisibility.setBackgroundColor(Color.TRANSPARENT);
                 }
+
             }
-            } catch(Exception e){
+        } catch(Exception e){
             if (!preferenceUtil.getBoolean("brandingVisibility")) {
                 preferenceUtil.setBooleanData("brandingVisibility", true);
                 Util.setException(context, e.toString(), className, "brandingVisibility");
             }
-            }
+        }
+
     }
     private void defineIds() {
 
@@ -141,7 +151,7 @@ public class NewsHubActivity extends AppCompatActivity {
         if (context == null)
             return;
         try {
-                String textColor = preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_TITLE_COLOR);
+            String textColor = preferenceUtil.getStringData(AppConstant.JSON_NEWS_HUB_TITLE_COLOR);
             if (textColor!=null && !textColor.isEmpty()){
                 toolbarText.setTextColor(Color.parseColor(Util.getColorCode(textColor)));
             }else {
@@ -163,16 +173,13 @@ public class NewsHubActivity extends AppCompatActivity {
                 toolbarLayout.setBackgroundColor(Color.parseColor(Util.getColorCode(color)));
             }
         } catch (Exception e) {
-            if (!preferenceUtil.getBoolean("setJsonData")) {
-                preferenceUtil.setBooleanData("setJsonData", true);
-                Util.setException(context, e.toString(), className, "setJsonData");
-            }
+            Util.handleExceptionOnce(context, e.toString(), className, "setJsonData");
         }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-         this.finish();
+        this.finish();
     }
 }

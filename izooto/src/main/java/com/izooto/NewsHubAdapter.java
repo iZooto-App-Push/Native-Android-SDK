@@ -6,21 +6,27 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
- class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final ArrayList<Payload> payloadModalArrayList;
     @SuppressLint("StaticFieldLeak")
     private static Context context;
@@ -29,7 +35,7 @@ import java.util.HashMap;
     private final String className = this.getClass().getName();
     private AlertDialog alertView;
 
-    protected NewsHubAdapter(ArrayList<Payload> payloadModalArrayList, Context context, AlertDialog alertDialog) {
+    protected NewsHubAdapter(Context context,ArrayList<Payload> payloadModalArrayList, AlertDialog alertDialog) {
         this.payloadModalArrayList = payloadModalArrayList;
         NewsHubAdapter.context = context;
         this.alertView = alertDialog;
@@ -65,6 +71,7 @@ import java.util.HashMap;
                                 .load(userModal.getBanner())
                                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
                                 .into(myViewHolder.newsHubBanner);
+
                     } else {
                         myViewHolder.newsHubBanner.setImageResource(context.getApplicationInfo().icon);
                     }
@@ -81,7 +88,7 @@ import java.util.HashMap;
                     try {
                         if (holder instanceof FooterViewHolder) {
                             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-                            footerViewHolder.footerText.setText(R.string.iz_nz_bottom_msg);
+                            footerViewHolder.footerText.setText("You're all caught up!");
                         }
 
                     } catch (Exception e) {
@@ -222,62 +229,61 @@ import java.util.HashMap;
         context.startActivity(Intent.createChooser(myIntent, "Share"));
 
     }
-
     private void newsHubCheckIaKey(View v, Payload userModal) {
-         if (v.getContext() != null) {
-             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(v.getContext());
-             try {
-                 if (userModal != null) {
-                     if (!userModal.getAp().isEmpty()) {
-                         HashMap<String, String> hashMap = new HashMap<>();
-                         hashMap.put(AppConstant.BUTTON_ID_1, userModal.getAct1ID());
-                         hashMap.put(AppConstant.BUTTON_TITLE_1, userModal.getAct1name());
-                         hashMap.put(AppConstant.BUTTON_URL_1, userModal.getAct1link());
-                         hashMap.put(AppConstant.ADDITIONAL_DATA, userModal.getAp());
-                         hashMap.put(AppConstant.LANDING_URL, newsHubUpdatedURL(userModal.getLink(), "notShare"));
-                         hashMap.put(AppConstant.BUTTON_ID_2, userModal.getAct2ID());
-                         hashMap.put(AppConstant.BUTTON_TITLE_2, userModal.getAct2name());
-                         hashMap.put(AppConstant.BUTTON_URL_2, userModal.getAct2link());
-                         hashMap.put(AppConstant.ACTION_TYPE, "0");
-                         JSONObject jsonObject = new JSONObject(hashMap);
-                         iZooto.notificationActionHandler(jsonObject.toString());
-                         if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                             if (alertView != null) {
-                                 alertView.dismiss();
-                                 alertView = null;
-                             } else {
-                                 ((Activity) context).finish();
-                             }
-                         }
+        if (v.getContext() != null) {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(v.getContext());
+            try {
+                if (userModal != null) {
+                    if (!userModal.getAp().isEmpty()) {
+                        HashMap<String, String> hashMap = new HashMap<>();
+                        hashMap.put(AppConstant.BUTTON_ID_1, userModal.getAct1ID());
+                        hashMap.put(AppConstant.BUTTON_TITLE_1, userModal.getAct1name());
+                        hashMap.put(AppConstant.BUTTON_URL_1, userModal.getAct1link());
+                        hashMap.put(AppConstant.ADDITIONAL_DATA, userModal.getAp());
+                        hashMap.put(AppConstant.LANDING_URL, newsHubUpdatedURL(userModal.getLink(), "notShare"));
+                        hashMap.put(AppConstant.BUTTON_ID_2, userModal.getAct2ID());
+                        hashMap.put(AppConstant.BUTTON_TITLE_2, userModal.getAct2name());
+                        hashMap.put(AppConstant.BUTTON_URL_2, userModal.getAct2link());
+                        hashMap.put(AppConstant.ACTION_TYPE, "0");
+                        JSONObject jsonObject = new JSONObject(hashMap);
+                        iZooto.notificationActionHandler(jsonObject.toString());
+                        if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                            if (alertView != null) {
+                                alertView.dismiss();
+                                alertView = null;
+                            } else {
+                                ((Activity) context).finish();
+                            }
+                        }
 
-                     } else {
-                         if (userModal.getInapp() == 1) {
-                             if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null) {
-                                 iZooto.mBuilder.mWebViewListener.onWebView(userModal.getLink());
-                                 if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                                     if (alertView != null) {
-                                         alertView.dismiss();
-                                         alertView = null;
-                                     } else {
-                                         ((Activity) context).finish();
-                                     }
-                                 }
-                             } else {
-                                 iZootoWebViewActivity.startActivity(v.getContext(), newsHubUpdatedURL(userModal.getLink(), "notShare"));
-                             }
-                         } else {
-                             NotificationActionReceiver.openURLInBrowser(v.getContext(), newsHubUpdatedURL(userModal.getLink(), "notShare"));
-                         }
+                    } else {
+                        if (userModal.getInapp() == 1) {
+                            if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null) {
+                                iZooto.mBuilder.mWebViewListener.onWebView(userModal.getLink());
+                                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                                    if (alertView != null) {
+                                        alertView.dismiss();
+                                        alertView = null;
+                                    } else {
+                                        ((Activity) context).finish();
+                                    }
+                                }
+                            } else {
+                                iZootoWebViewActivity.startActivity(v.getContext(), newsHubUpdatedURL(userModal.getLink(), "notShare"));
+                            }
+                        } else {
+                            NotificationActionReceiver.openURLInBrowser(v.getContext(), newsHubUpdatedURL(userModal.getLink(), "notShare"));
+                        }
 
-                     }
-                 }
-             } catch (Exception e) {
-                 if (!preferenceUtil.getBoolean("newsHubCheckIaKey")) {
-                     preferenceUtil.setBooleanData("newsHubCheckIaKey", true);
-                     Util.setException(context, e.toString(), "NewsHubAlert", "newsHubCheckIaKey");
-                 }
-             }
-         }
+                    }
+                }
+            } catch (Exception e) {
+                if (!preferenceUtil.getBoolean("newsHubCheckIaKey")) {
+                    preferenceUtil.setBooleanData("newsHubCheckIaKey", true);
+                    Util.setException(context, e.toString(), "NewsHubAlert", "newsHubCheckIaKey");
+                }
+            }
+        }
     }
 
     @Override
@@ -319,3 +325,23 @@ import java.util.HashMap;
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

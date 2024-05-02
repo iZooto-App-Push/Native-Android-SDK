@@ -46,25 +46,32 @@ public class iZootoWebViewActivity extends AppCompatActivity {
 
 
     private void initUI() {
-        getBundleData();
-        mWebView = findViewById(R.id.webView);
-        mProgressBar = findViewById(R.id.circular_progress_bar);
-        mProgressBar.setVisibility(View.INVISIBLE);
-        WebSettings settings = mWebView.getSettings();
-        settings.setLoadWithOverviewMode(true);
-        settings.setJavaScriptEnabled(false);
-        settings.setDomStorageEnabled(false);
-      //  settings.setAppCacheEnabled(false);
-        settings.setAllowFileAccess(false);
-        settings.setAllowFileAccessFromFileURLs(false);
-        settings.setAllowUniversalAccessFromFileURLs(false);
+        try{
+            getBundleData();
+            mWebView = findViewById(R.id.webView);
+            mProgressBar = findViewById(R.id.circular_progress_bar);
+            mProgressBar.setVisibility(View.INVISIBLE);
+            WebSettings settings = mWebView.getSettings();
+            settings.setLoadWithOverviewMode(true);
+            settings.setJavaScriptEnabled(false);
+            settings.setDomStorageEnabled(false);
+            //  settings.setAppCacheEnabled(false);
+            settings.setAllowFileAccess(false);
+            settings.setAllowFileAccessFromFileURLs(false);
+            settings.setAllowUniversalAccessFromFileURLs(false);
 
-        settings.setLoadsImagesAutomatically(true);
-        mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.setVerticalScrollBarEnabled(false);
-        mWebView.setHorizontalScrollBarEnabled(false);
-        mWebView.setWebViewClient(new CustWebViewClient());
-        mWebView.loadUrl(mUrl);
+            settings.setLoadsImagesAutomatically(true);
+            mWebView.setWebChromeClient(new WebChromeClient());
+            mWebView.setVerticalScrollBarEnabled(false);
+            mWebView.setHorizontalScrollBarEnabled(false);
+            mWebView.setWebViewClient(new CustWebViewClient());
+            mWebView.loadUrl(mUrl);
+        }
+        catch (Exception ex)
+        {
+
+        }
+
     }
 
     private void getBundleData() {

@@ -1,15 +1,17 @@
 package com.izooto;
 
-
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,7 +20,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -36,14 +37,13 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -51,6 +51,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,22 +63,28 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import static com.izooto.ShortpayloadConstant.TAG;
 
+import static com.izooto.AppConstant.APP_NAME_TAG;
+
+import com.google.firebase.FirebaseOptions;
 
 public class Util {
+    private static final String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
+    private static final int CIPHER_KEY_LEN = 16;
+    private static final long TIME_OUT = 20 * 1000L;
+    private static final String SERVICE_ACTION = "android.support.customtabs.action.CustomTabsService";
+    private static final String CHROME_PACKAGE = "com.android.chrome";
+    private static String channelId;
 
-    private static String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
-    private static int CIPHER_KEY_LEN = 16;
     public enum SchemaType {
         DATA("data"),
         HTTPS("https"),
         HTTP("http"),
         ;
-
         private final String text;
 
         SchemaType(final String text) {
@@ -94,7 +101,7 @@ public class Util {
         }
     }
 
-    public static String decrypt(String key, String data) {
+    public static String decrypt(Context context,String key, String data) {
         try {
             if (key.length() < CIPHER_KEY_LEN) {
                 int numPad = CIPHER_KEY_LEN - key.length();
@@ -112,7 +119,7 @@ public class Util {
             String[] parts = data.split(":");
 
             IvParameterSpec iv = new IvParameterSpec(android.util.Base64.decode(parts[1], android.util.Base64.DEFAULT));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("ISO-8859-1"), "AES");
+            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.ISO_8859_1), "AES");
 
             Cipher cipher = Cipher.getInstance(CIPHER_NAME);
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
@@ -124,59 +131,51 @@ public class Util {
             return new String(original);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Util.handleExceptionOnce(context,ex.toString(),"Utils","decrypt");
         }
         return null;
+
     }
 
-
-
     private static Bitmap getBitMap(String src) {
-        try{
+        try {
             return BitmapFactory.decodeStream(new URL(src).openConnection().getInputStream());
+
         } catch (Exception e){
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext, src + " "+e.toString(), "[Log-> e]-> getBitMap");
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext, src + " "+ e, "[Log-> e]-> getBitMap");
             return null;
         }
     }
+
     public static Bitmap getBitmapFromURL(String url) {
         if (url == null)
             return null;
-        if(url!=null && !url.isEmpty()) {
+
+        if (!url.isEmpty()) {
             String trimmedName = url.trim();
             trimmedName = trimmedName.replace("///", "/");
             trimmedName = trimmedName.replace("//", "/");
             trimmedName = trimmedName.replace("http:/", "https://");
             trimmedName = trimmedName.replace("https:/", "https://");
-            if(checkImageExtension(trimmedName)){
-                if (trimmedName.startsWith("http://") || trimmedName.startsWith("https://")) {
-                    Bitmap bmp = getBitMap(trimmedName);
-                    if (bmp != null) {
-                        return bmp;
-                    }
-                }
+            if (trimmedName.startsWith("http://") || trimmedName.startsWith("https://")) {
+                return getBitMap(trimmedName);
             } else {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext, url, "[Log-> e]->getBitmapFromURL");
                 return null;
             }
         }
-        else
-        {
-            return  null;
-        }
         return null;
+    }
 
-    }
-    static  boolean checkImageExtension(String trimmedName) {
-        return trimmedName.contains(".jpeg") || trimmedName.contains(".jpg") || trimmedName.contains(".png") || trimmedName.contains(".webp") || trimmedName.contains(".WEBP") || trimmedName.contains(".PNG") || trimmedName.contains(".JPEG") || trimmedName.contains(".JPG") || trimmedName.contains(".GIF") || trimmedName.contains(".gif");
-    }
-    public static String getAndroidId(Context mContext){
+
+
+    static String getAndroidId(Context mContext) {
         @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.v(TAG, "android id ---- "+android_id);
+        Log.v(APP_NAME_TAG, "android id ---- " + android_id);
         return android_id;
     }
 
-    public static String getDeviceName() {
+    static String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
         if (model.toLowerCase().startsWith(manufacturer.toLowerCase())) {
@@ -186,7 +185,7 @@ public class Util {
         }
     }
 
-    public static boolean isNotificationEnabled(Context context){
+    static boolean isNotificationEnabled(Context context) {
         return NotificationManagerCompat.from(context).areNotificationsEnabled();
     }
 
@@ -202,14 +201,15 @@ public class Util {
         }
     }
 
-    public static String getSDKVersion(Context context) {
+    static String getSDKVersion(Context context) {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(context,ex.toString(),"Utils","getSDKVersion");
         }
         return "";
+
     }
 
     boolean hasFCMLibrary() {
@@ -220,7 +220,7 @@ public class Util {
         }
     }
 
-    public boolean isInitializationValid() {
+    boolean isInitializationValid() {
         checkForFcmDependency();
         return true;
     }
@@ -233,40 +233,29 @@ public class Util {
         return true;
 
     }
-    public static String trimString(String optString) {
-        if(optString.length()>32)
-        {
-            int length=optString.length()-32;
-            return optString.substring(0,length);
-        }
-        return null;
-    }
 
-
-    public static String getDeviceLanguage()
-    {
-        //return Locale.getDefault().getDisplayLanguage();
+    static String getDeviceLanguage() {
         Locale locale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
         } else {
             locale = iZooto.appContext.getResources().getConfiguration().locale;
         }
-        // Log.e("lanuguage",locale.getCountry());
         return locale.getDisplayLanguage();
 
     }
-    public static String getIntegerToBinary(int number)
-    {
+
+    static String getIntegerToBinary(int number) {
         return String.format("%16s", Integer.toBinaryString(number)).replace(' ', '0');
 
     }
-    public static boolean checkNotificationEnable()
-    {
+
+    static boolean checkNotificationEnable() {
         return NotificationManagerCompat.from(iZooto.appContext).areNotificationsEnabled();
 
     }
-    public static String getPackageName(Context context) {
+
+    static String getPackageName(Context context) {
         ApplicationInfo ai;
         try {
             ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
@@ -276,50 +265,54 @@ public class Util {
         }
         return context.getPackageName();
     }
-    public static boolean isMatchedString(String s) {
+
+    static boolean isMatchedString(String s) {
         try {
-            Pattern pattern= Pattern.compile("[a-zA-Z0-9-_.~%]{1,900}");
+            Pattern pattern = Pattern.compile("[a-zA-Z0-9-_.~%]{1,900}");
             Matcher matcher = pattern.matcher(s);
             return matcher.matches();
         } catch (RuntimeException e) {
             return false;
         }
     }
-    public static int convertStringToDecimal(String number){
+
+    static int convertStringToDecimal(String number) {
         char[] numChar = number.toCharArray();
         int intValue = 0;
         int decimal = 1;
-        for(int index = numChar.length ; index > 0 ; index --){
-            if(index == 1 ){
-                if(numChar[index - 1] == '-'){
+        for (int index = numChar.length; index > 0; index--) {
+            if (index == 1) {
+                if (numChar[index - 1] == '-') {
                     return intValue * -1;
-                } else if(numChar[index - 1] == '+'){
+                } else if (numChar[index - 1] == '+') {
                     return intValue;
                 }
             }
-            intValue = intValue + (((int)numChar[index-1] - 48) * (decimal));
+            intValue = intValue + (((int) numChar[index - 1] - 48) * (decimal));
             decimal = decimal * 10;
         }
         return intValue;
     }
-    public static CharSequence  makeBoldString(CharSequence title) {
+
+    static CharSequence makeBoldString(CharSequence title) {
         if (Build.VERSION.SDK_INT >= 24) {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\"><b>"+title+"</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\"><b>" + title + "</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
         } else {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\"><b>"+title+"</b></font>"); // or for older api
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\"><b>" + title + "</b></font>"); // or for older api
         }
         return title;
     }
 
-    public static CharSequence makeBlackString(CharSequence title) {
+    static CharSequence makeBlackString(CharSequence title) {
         if (Build.VERSION.SDK_INT >= 24) {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\">"+title+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\">" + title + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
         } else {
-            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\">"+title+"</font>"); // or for older api
+            title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\">" + title + "</font>"); // or for older api
         }
         return title;
     }
-    public static Bitmap makeCornerRounded(Bitmap image){
+
+    static Bitmap makeCornerRounded(Bitmap image) {
         try {
             Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
             Canvas canvas = new Canvas(imageRounded);
@@ -328,12 +321,12 @@ public class Util {
             mPaint.setShader(new BitmapShader(image, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
             canvas.drawRoundRect((new RectF(0.0f, 0.0f, image.getWidth(), image.getHeight())), 10, 10, mPaint);
             return imageRounded;
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(iZooto.appContext,ex.toString(),"Utils","makeCornerRounded");
             return null;
         }
     }
+
     public static boolean isAppInForeground(Context context) {
         List<ActivityManager.RunningTaskInfo> task =
                 ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
@@ -347,31 +340,29 @@ public class Util {
                 .getPackageName()
                 .equalsIgnoreCase(context.getPackageName());
     }
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static String getDeviceLanguageTag()
-    {
-        if(iZooto.appContext!=null) {
-            Locale locale;
+
+    static String getDeviceLanguageTag() {
+        if (iZooto.appContext != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
-                return locale.getDefault().getDisplayLanguage();
+                return Locale.getDefault().getDisplayLanguage();
             } else {
                 return "iz-ln";
             }
-        }
-        else {
+        } else {
             return "iz_ln";
         }
 
     }
-    public static String getTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
-        String currentDate = sdf.format(new Date());
-        return currentDate;
+
+    static String getTime() {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        return sdf.format(new Date());
     }
-    public static boolean hasHMSLibraries() {
+
+    static boolean hasHMSLibraries() {
         return hasHMSAGConnectLibrary() && hasHMSPushKitLibrary();
     }
+
     private static boolean hasHMSAGConnectLibrary() {
         try {
             return com.huawei.agconnect.config.AGConnectServicesConfig.class != null;
@@ -379,6 +370,7 @@ public class Util {
             return false;
         }
     }
+
     private static boolean hasHMSPushKitLibrary() {
         try {
             return com.huawei.hms.aaid.HmsInstanceId.class != null;
@@ -388,47 +380,51 @@ public class Util {
     }
 
 
-    public static void sleepTime(int time) {
+
+    static void sleepTime(int time) {
         try {
             Thread.sleep(time);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            Log.d(APP_NAME_TAG,e.toString());
         }
     }
-    public static String dayDifference(String currentDate, String previousDate){
+
+    public static String dayDifference(String currentDate, String previousDate) {
         if (previousDate.isEmpty())
             return "";
         String dayDifference = "";
         try {
             Date date1;
             Date date2;
-            SimpleDateFormat dates = new SimpleDateFormat("yyyy.MM.dd");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("yyyy.MM.dd");
             date1 = dates.parse(currentDate);
             date2 = dates.parse(previousDate);
             long difference = date1.getTime() - date2.getTime();
             long differenceDates = difference / (24 * 60 * 60 * 1000);
             dayDifference = Long.toString(differenceDates);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            Util.handleExceptionOnce(iZooto.appContext,exception.toString(),"Utils","dayDifference");
         }
         return dayDifference;
     }
-    public static int getBinaryToDecimal(int cfg){
+
+    public static int getBinaryToDecimal(int cfg) {
         String fourthDg, fifthDg, sixthDg;
 
         String data = Util.getIntegerToBinary(cfg);
-        if(data!=null && !data.isEmpty()) {
+        if (data != null && !data.isEmpty()) {
             fourthDg = String.valueOf(data.charAt(data.length() - 4));
             fifthDg = String.valueOf(data.charAt(data.length() - 5));
             sixthDg = String.valueOf(data.charAt(data.length() - 6));
-        }else {
+        } else {
             fourthDg = "0";
             fifthDg = "0";
             sixthDg = "0";
         }
         String dataCFG = sixthDg + fifthDg + fourthDg;
-        int decimalData = Integer.parseInt(dataCFG,2);
-        return decimalData;
+        return Integer.parseInt(dataCFG, 2);
     }
+
     static boolean isValidResourceName(String name) {
         return (name != null && !name.matches("^[0-9]"));
     }
@@ -447,27 +443,29 @@ public class Util {
             return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + packageName + "/" + soundId);
         return null;
     }
-    public static void setException(Context context, String exception, String className,String methodName) {
+
+    public static void setException(Context context, String exception, String className, String methodName) {
         if (context == null)
             return;
         try {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            if (!exception.isEmpty()){
+            if (!exception.isEmpty()) {
                 Map<String, String> mapData = new HashMap<>();
                 mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                mapData.put(AppConstant.TOKEN,"" + preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
-                mapData.put(AppConstant.ANDROID_ID, "" + Util.getAndroidId(context));
-                mapData.put(AppConstant.EXCEPTION_, "" + exception);
-                mapData.put(AppConstant.METHOD_NAME, "" + methodName);
-                mapData.put(AppConstant.ClASS_NAME, "" + className);
-                mapData.put(AppConstant.SDK,""+AppConstant.SDKVERSION);
-                mapData.put(AppConstant.ANDROIDVERSION,"" + Build.VERSION.RELEASE);
-                mapData.put(AppConstant.DEVICENAME,"" + Util.getDeviceName());
+                mapData.put(AppConstant.TOKEN, preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+                mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                mapData.put(AppConstant.EXCEPTION_, exception);
+                mapData.put(AppConstant.METHOD_NAME, methodName);
+                mapData.put(AppConstant.ClASS_NAME, className);
+                mapData.put(AppConstant.SDK, AppConstant.SDKVERSION);
+                mapData.put(AppConstant.ANDROIDVERSION, Build.VERSION.RELEASE);
+                mapData.put(AppConstant.DEVICENAME, Util.getDeviceName());
                 RestClient.postRequest(RestClient.APP_EXCEPTION_URL, mapData,null, new RestClient.ResponseHandler() {
                     @Override
                     void onSuccess(final String response) {
                         super.onSuccess(response);
                     }
+
                     @Override
                     void onFailure(int statusCode, String response, Throwable throwable) {
                         super.onFailure(statusCode, response, throwable);
@@ -478,6 +476,7 @@ public class Util {
             Log.e("Exception ex -- ", e.toString());
         }
     }
+
     public static boolean isNetworkAvailable(Context mContext) {
         ConnectivityManager connectivity = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity == null) {
@@ -486,7 +485,7 @@ public class Util {
             NetworkInfo[] info = connectivity.getAllNetworkInfo();
             if (info != null) {
                 for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED){
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
                         return true;
                     }
                 }
@@ -494,10 +493,11 @@ public class Util {
         }
         return false;
     }
-    public static HashMap<String, Object> toMap(JSONObject jsonobj)  throws JSONException {
+
+    public static HashMap<String, Object> toMap(JSONObject jsonobj) throws JSONException {
         HashMap<String, Object> map = new HashMap<String, Object>();
         Iterator<String> keys = jsonobj.keys();
-        while(keys.hasNext()) {
+        while (keys.hasNext()) {
             String key = keys.next();
             Object value = jsonobj.get(key);
             if (value instanceof JSONArray) {
@@ -506,27 +506,29 @@ public class Util {
                 value = toMap((JSONObject) value);
             }
             map.put(key, value);
-        }   return map;
+        }
+        return map;
     }
 
     public static List<Object> toList(JSONArray array) throws JSONException {
         List<Object> list = new ArrayList<Object>();
-        for(int i = 0; i < array.length(); i++) {
+        for (int i = 0; i < array.length(); i++) {
             Object value = array.get(i);
             if (value instanceof JSONArray) {
                 value = toList((JSONArray) value);
-            }
-            else if (value instanceof JSONObject) {
+            } else if (value instanceof JSONObject) {
                 value = toMap((JSONObject) value);
             }
             list.add(value);
-        }   return list;
+        }
+        return list;
     }
+
     static String getTimeWithoutDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
-        String currentDate = sdf.format(new Date());
-        return currentDate;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+        return sdf.format(new Date());
     }
+
     static void trackClickOffline(Context context, String apiUrl, String constantValue, String rid, String cid, int click) {
         if (context == null)
             return;
@@ -559,9 +561,7 @@ public class Util {
 
             preferenceUtil.setStringData(constantValue, jsonArray.toString());
         } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), "trackMediation_Impression_Click", "Util");
-
-            Util.setException(context, e.toString(), "trackClickOffline()", "Util");
+            Util.handleExceptionOnce(context, e.toString(), "trackClickOffline()", "Util");
         }
 
     }
@@ -584,13 +584,13 @@ public class Util {
             preferenceUtil.setStringData(AppConstant.STORE_MEDIATION_RECORDS, jsonArray.toString());
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "trackMediation_Impression_Click", "Util");
-
         }
     }
 
     static boolean ridExists(JSONArray jsonArray, String rid) {
         return jsonArray.toString().contains("\"rid\":\"" + rid + "\"");
     }
+
     static String getAppVersion(Context context) {
         if (context == null)
             return "App Version  is not Found";
@@ -600,17 +600,18 @@ public class Util {
         try {
             pkgInfo = pm.getPackageInfo(pkgName, 0);
             return pkgInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (Exception ex) {
             return "App Version  is not Found";
         }
     }
+
     @NonNull
     static Intent openURLInBrowserIntent(@NonNull Uri uri) {
         SchemaType type = uri.getScheme() != null ? SchemaType.fromString(uri.getScheme()) : null;
         if (type == null) {
             type = SchemaType.HTTP;
             if (!uri.toString().contains("://")) {
-                uri = Uri.parse("http://" + uri.toString());
+                uri = Uri.parse("http://" + uri);
             }
         }
         Intent intent;
@@ -633,26 +634,15 @@ public class Util {
         );
         return intent;
     }
-    @SuppressWarnings("ConstantConditions")
-    public static void setPackageNameFromResolveInfoList(Context context, Intent launchIntent) {
-        List<ResolveInfo> resolveInfoList = context.getPackageManager().queryIntentActivities(launchIntent, 0);
-        if (resolveInfoList != null) {
-            String appPackageName = context.getPackageName();
-            for (ResolveInfo resolveInfo : resolveInfoList) {
-                if (appPackageName.equals(resolveInfo.activityInfo.packageName)) {
-                    launchIntent.setPackage(appPackageName);
-                    break;
-                }
-            }
-        }
-    }
+
     @Nullable
     static BigInteger getAccentColor() {
         try {
-            if(iZooto.appContext == null)
+            if (iZooto.appContext == null)
                 return null;
             String defaultColor = getResourceString(iZooto.appContext, AppConstant.NOTIFICATION_ACCENT_COLOR, null);
-            if(defaultColor!=null) {
+
+            if (defaultColor != null) {
                 if (defaultColor.charAt(0) == '#') {
                     String default_Color = "";
                     default_Color = defaultColor.replace("#", "");
@@ -665,11 +655,12 @@ public class Util {
                     }
                 }
             }
-        } catch (Throwable t) {
-
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "getAccentColor", "Util");
         }
         return null;
     }
+
     static String getResourceString(@NonNull Context context, String key, String defaultStr) {
         Resources resources = context.getResources();
         int bodyResId = resources.getIdentifier(key, AppConstant.STRING_RESOURCE_NAME, context.getPackageName());
@@ -677,6 +668,88 @@ public class Util {
             return resources.getString(bodyResId);
         return defaultStr;
     }
+
+    // news hub
+    protected static String getColorCode(String color) {
+        if (color.startsWith("#")) {
+            return color;
+        } else {
+            return "#" + color;
+        }
+    }
+
+    // NewsHub
+    protected static String toSHA1(String url) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+        crypt.reset();
+        crypt.update(url.getBytes(StandardCharsets.UTF_8));
+
+        return new BigInteger(1, crypt.digest()).toString(16);
+    }
+
+    protected static void newsHubClickApi(Context context, Payload userModal) {
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            HashMap<String, String> hashMap = new HashMap<>();
+            if (preferenceUtil != null) {
+                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                hashMap.put(AppConstant.VER_, AppConstant.SDKVERSION);
+                hashMap.put("link",userModal.getLink());
+                hashMap.put("tt", iZooto.OT_ID); // 5 means swipe left or right 6 means on backPressed
+                hashMap.put("ot", iZooto.OT_ID);
+                hashMap.put("cid", iZooto.pulseCid);
+                hashMap.put("rid", iZooto.pulseRid);
+            }
+            RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_CLICK, hashMap, null, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+                    Log.e("HashMap", hashMap.toString());
+                }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                }
+            });
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "newsHubClickApi");
+        }
+    }
+
+    // pulse impression
+    protected static void pulseImpression(Context context) {
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            HashMap<String, String> hashMap = new HashMap<>();
+            if (preferenceUtil != null) {
+                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                hashMap.put(AppConstant.VER_, AppConstant.SDKVERSION);
+                hashMap.put("tt", iZooto.OT_ID); // 5 means swipe left or right 6 means on backPressed
+                hashMap.put("ot", iZooto.OT_ID);
+                hashMap.put("cid", iZooto.pulseCid);
+                hashMap.put("rid", iZooto.pulseRid);
+            }
+            RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_IMPRESSION, hashMap, null, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+
+                }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+
+                }
+            });
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "pulseImpression");
+        }
+    }
+
 
     /**
      * getApplication name
@@ -702,15 +775,13 @@ public class Util {
         return AppConstant.CHANNEL_NAME;
     }
 
-    protected static boolean notificationMode(){
+    protected static boolean notificationMode() {
         Locale locale = Locale.getDefault();
         return TextUtils.getLayoutDirectionFromLocale(locale) != ViewCompat.LAYOUT_DIRECTION_LTR;
     }
 
-
     /* check the expiry time to current time difference in seconds form */
-    /* check the expiry time to current time difference in seconds form */
-    static String getTimerValue(String createdTime, String expTime){
+    static String getTimerValue(String createdTime, String expTime) {
         try {
             long timerValue = 0;
             long timerValue_In_Seconds = 0;
@@ -726,12 +797,11 @@ public class Util {
             if (timerValue_In_Seconds >= 1 && timerValue_In_Seconds < 3600) {
                 return String.valueOf(timerValue_In_Seconds);
             } else {
-                DebugFileManager.createExternalStoragePublic(iZooto.appContext,AppConstant.IZ_TIMER_VALUE_MESSAGE,AppConstant.IZ_TIMER_MESSAGE);
+                DebugFileManager.createExternalStoragePublic(iZooto.appContext, AppConstant.IZ_TIMER_VALUE_MESSAGE, AppConstant.IZ_TIMER_MESSAGE);
                 return "";
             }
-        }
-        catch (Exception e) {
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext,AppConstant.IZ_TIMER_VALUE_MESSAGE,AppConstant.IZ_TIMER_MESSAGE);
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "getTimerValue");
             return "";
         }
     }
@@ -741,67 +811,13 @@ public class Util {
         return (minutes * 60 * 1000L);
     }
 
-    // news hub
-    protected static String getColorCode(String color){
-        if (color.startsWith("#")){
-            return color;
-        }else {
-            return "#"+color;
-        }
-    }
-
-    // NewsHub
-    protected static String toSHA1(String url) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-        crypt.reset();
-        crypt.update(url.getBytes("UTF-8"));
-
-        return new BigInteger(1, crypt.digest()).toString(16);
-    }
-
-    protected static void newsHubClickApi(Context context, Payload userModal) {
-        try {
-            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            HashMap<String, String> hashMap = new HashMap<>();
-            if (preferenceUtil != null) {
-                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
-                hashMap.put(AppConstant.VER_, "" + AppConstant.SDKVERSION);
-                hashMap.put("link",userModal.getLink());
-                hashMap.put("tt",iZooto.userEvent); // 5 means swipe left or right 6 means on backPressed
-                hashMap.put("ot",iZooto.pulseTemplate);
-                hashMap.put("cid",iZooto.pulseCid);
-                hashMap.put("rid",iZooto.pulseRid);
-            }
-            RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_CLICK, hashMap, null, new RestClient.ResponseHandler() {
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-                    Log.e("HashMap",hashMap.toString());
-                }
-
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    static boolean enableStickyNotification(Payload payload){
-        return payload.getMakeStickyNotification() != null &&
-                !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1");
-    }
-
     // parse vibration pattern
     static long[] parseVibrationPattern(Object patternObj) {
         try {
             JSONArray jsonVibArray;
             if (patternObj instanceof String) {
                 jsonVibArray = new JSONArray((String) patternObj);
-            }
-            else {
+            } else {
                 jsonVibArray = (JSONArray) patternObj;
             }
             long[] longArray = new long[jsonVibArray.length()];
@@ -809,38 +825,90 @@ public class Util {
                 longArray[i] = jsonVibArray.optLong(i);
             }
             return longArray;
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "parseVibrationPattern");
         }
         return null;
     }
 
+    static boolean enableSticky(Payload payload) {
+        return payload.getMakeStickyNotification() != null &&
+                !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1");
+    }
 
-    // To Handle Exception once
-    static void handleExceptionOnce(Context context, String exception, String className, String methodName){
-        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-        if(!preferenceUtil.getBoolean(methodName)){
-            setException(context, exception, className, methodName);
-            preferenceUtil.setBooleanData(methodName, true);
-        }
-        DebugFileManager.createExternalStoragePublic(context, exception + " " +methodName, "[Log.e]-> "+className);
+
+    static void parseXml(RssContentCallbackListener callbackListener) {
+        ArrayList<Payload> contentList = new ArrayList<>();
+        new Thread(() -> {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.newsHubContext);
+
+            try {
+                URL url = new URL(iZooto.pUrl);
+                XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.connect();
+                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
+                    int eventType = pullParser.getEventType();
+                    Payload payload = null;
+
+                    boolean isNull = true;
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        if (eventType == XmlPullParser.START_TAG) {
+                            String tagName = pullParser.getName();
+                            if (tagName.equals("title") && isNull) {
+                                isNull = false;
+                                String name = pullParser.nextText();
+                                preferenceUtil.setStringData("pubName", name);
+                                pullParser.require(XmlPullParser.END_TAG, null, "title");
+                            }
+                            if ("item".equals(tagName)) {
+                                payload = new Payload();
+                            } else if ("title".equals(tagName) && payload != null) {
+                                payload.setTitle(pullParser.nextText());
+
+                            } else if ("link".equals(tagName) && payload != null) {
+                                payload.setLink(pullParser.nextText());
+                            } else if ("description".equals(tagName) && payload != null) {
+                                payload.setDescription(pullParser.nextText());
+                            } else if ("pubDate".equals(tagName) && payload != null) {
+                                payload.setCreated_Time(pullParser.nextText());
+                            } else if ("image".equals(tagName) && payload != null) {
+                                payload.setBanner(pullParser.nextText());
+                            } else if ("media:content".equals(tagName) && payload != null) {
+                                String imageUrl = pullParser.getAttributeValue(null, "url");
+                                payload.setBanner(imageUrl);
+                            } else if ("category".equals(tagName) && payload != null) {
+                                String domain = pullParser.getAttributeValue(null, "domain");
+                                if ("foxnews.com/metadata/dc.source".equals(domain)) {
+                                    eventType = pullParser.next();
+                                    if (eventType == XmlPullParser.TEXT) {
+                                        String categoryValue = pullParser.getText();
+                                        payload.setCategory(categoryValue);
+                                    }
+
+                                }
+                            }
+                        } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
+                            contentList.add(payload);
+                            callbackListener.onCallback(contentList);
+                            contentList.clear();
+                            payload = null;
+                        }
+                        eventType = pullParser.next();
+                    }
+                } else {
+                    Log.e("http connection error", "bad request...");
+                }
+            } catch (Exception e) {
+                Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "parseVibrationPattern");
+            }
+        }).start();
     }
-    /* News Hub offline campaigns */
-    protected static int getValidIdForCampaigns(Payload payload){
-        int digit = 0;
-        try{
-            String digits = payload.getRid().trim();
-            digit = digits.charAt(0) - '0';
-        }catch (Exception e){
-            Util.handleExceptionOnce(iZooto.appContext,e.toString(),"Util","getValidIdForCampaigns");
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext, e.toString(), "[Log.e]->RID");
-        }
-        return digit;
-    }
-    static String getTimeAgo(String timestamp) {
+
+    public static String getTimeAgo(String timestamp) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-
         try {
             Date date = dateFormat.parse(timestamp);
             if (date != null) {
@@ -856,202 +924,149 @@ public class Util {
                         .replace(" second", "s");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Util.handleExceptionOnce(iZooto.appContext,e.toString(),"Util","getValidIdForCampaigns");
         }
         return "";
     }
 
-//    static void parseXml(RssContentCallbackListener callbackListener) {
-//        ArrayList<Payload> contentList = new ArrayList<>();
-//        new Thread(() -> {
-//            try {
-//
-//                URL url = new URL(iZooto.pUrl);
-//                XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
-//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-//                urlConnection.connect();
-//                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-//                    pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
-//                    int eventType = pullParser.getEventType();
-//                    Payload payload = null;
-//                    while (eventType != XmlPullParser.END_DOCUMENT) {
-//                        if (eventType == XmlPullParser.START_TAG) {
-//                            String tagName = pullParser.getName();
-//                            if ("item".equals(tagName)) {
-//                                payload = new Payload();
-//                            } else if ("title".equals(tagName) && payload != null) {
-//                                payload.setTitle(pullParser.nextText());
-//                            } else if ("link".equals(tagName) && payload != null) {
-//                                payload.setLink(pullParser.nextText());
-//                            } else if ("description".equals(tagName) && payload != null) {
-//                                payload.setDescription(pullParser.nextText());
-//                            } else if ("pubDate".equals(tagName) && payload != null) {
-//                                payload.setCreated_Time(pullParser.nextText());
-//                            }
-//                            else if ("image".equals(tagName) && payload != null) {
-//                                payload.setBanner(pullParser.nextText());
-//                            }
-//                            else if ("media:content".equals(tagName) && payload != null) {
-//                                String imageUrl = pullParser.getAttributeValue(null, "url");
-//                                payload.setBanner(imageUrl);
-//                            }else if ("category".equals(tagName) && payload != null) {
-//                                String domain = pullParser.getAttributeValue(null, "domain");
-//                                if ("foxnews.com/metadata/dc.source".equals(domain)) {
-//                                    eventType = pullParser.next();
-//                                    if (eventType == XmlPullParser.TEXT) {
-//                                        String categoryValue = pullParser.getText();
-//                                        payload.setCategory(categoryValue);
-//                                    }
-//
-//                                }
-//                            }
-//                        } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
-//                            contentList.add(payload);
-//                            callbackListener.onCallback(contentList);
-//                            contentList.clear();
-//                            payload = null;
-//                        }
-//                        eventType = pullParser.next();
-//                    }
-//                }else {
-//                    Log.e("http connection error","bad request");
-//                }
-//            } catch (XmlPullParserException | IOException e) {
-//                Log.e("http connection error","bad request");
-//            }
-//        }).start();
-//    }
-static void parseXml(RssContentCallbackListener callbackListener) {
-    ArrayList<Payload> contentList = new ArrayList<>();
-    PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.newsHubContext);
-
-    new Thread(() -> {
-        try {
-            URL url = new URL(iZooto.pUrl);
-            XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.connect();
-            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
-                int eventType = pullParser.getEventType();
-                Payload payload = null;
-
-                boolean isNull = true;
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    if (eventType == XmlPullParser.START_TAG) {
-                        String tagName = pullParser.getName();
-                        if (tagName.equals("title") && isNull) {
-                            isNull = false;
-                            String name = pullParser.nextText();
-                            preferenceUtil.setStringData("pubName",name);
-                            pullParser.require(XmlPullParser.END_TAG, null, "title");
-                        }
-                        if ("item".equals(tagName)) {
-                            payload = new Payload();
-                        } else if ("title".equals(tagName) && payload != null) {
-                            payload.setTitle(pullParser.nextText());
-                        } else if ("link".equals(tagName) && payload != null) {
-                            payload.setLink(pullParser.nextText());
-                        } else if ("description".equals(tagName) && payload != null) {
-                            payload.setDescription(pullParser.nextText());
-                        } else if ("pubDate".equals(tagName) && payload != null) {
-                            payload.setCreated_Time(pullParser.nextText());
-                        }
-                        else if ("image".equals(tagName) && payload != null) {
-                            payload.setBanner(pullParser.nextText());
-                        }
-                        else if ("media:content".equals(tagName) && payload != null) {
-                            String imageUrl = pullParser.getAttributeValue(null, "url");
-                            payload.setBanner(imageUrl);
-                        }else if ("category".equals(tagName) && payload != null) {
-                            String domain = pullParser.getAttributeValue(null, "domain");
-                            if ("foxnews.com/metadata/dc.source".equals(domain)) {
-                                eventType = pullParser.next();
-                                if (eventType == XmlPullParser.TEXT) {
-                                    String categoryValue = pullParser.getText();
-                                    payload.setCategory(categoryValue);
-                                }
-
-                            }
-                        }
-                    } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
-                        contentList.add(payload);
-                        callbackListener.onCallback(contentList);
-                        contentList.clear();
-                        payload = null;
-                    }
-                    eventType = pullParser.next();
-                }
-            }else {
-                Log.e("http connection error","bad request...");
-            }
-        } catch (XmlPullParserException | IOException e) {
-            Log.e("http connection error","bad request"+e);
+    // To Handle Exception once
+    static void handleExceptionOnce(Context context, String exception, String className, String methodName) {
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+        if (!preferenceUtil.getBoolean(methodName)) {
+            setException(context, exception, className, methodName);
+            preferenceUtil.setBooleanData(methodName, true);
         }
-    }).start();
-}
-    protected static void pulseClickAPI(Context context, Payload userModal) {
-        try {
-            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            HashMap<String, String> hashMap = new HashMap<>();
-            if (preferenceUtil != null) {
-                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
-                hashMap.put(AppConstant.VER_, "" + AppConstant.SDKVERSION);
-                hashMap.put("link",userModal.getLink());
-                hashMap.put("tt", String.valueOf(iZooto.OT_ID)); // 5 means swipe left or right 6 means on backPressed
-                hashMap.put("ot",String.valueOf(iZooto.OT_ID));
-                hashMap.put("cid",iZooto.pulseCid);
-                hashMap.put("rid",iZooto.pulseRid);
-            }
-            RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_CLICK, hashMap, null, new RestClient.ResponseHandler() {
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-                }
-
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        DebugFileManager.createExternalStoragePublic(context, exception + " " + methodName, "[Log.e]-> " + className);
     }
-    // pulse impression
-    protected static void pulseImpression(Context context) {
-        try {
-            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            HashMap<String, String> hashMap = new HashMap<>();
-            if (preferenceUtil != null) {
-                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
-                hashMap.put(AppConstant.VER_, "" + AppConstant.SDKVERSION);
-                hashMap.put("tt", String.valueOf(iZooto.OT_ID)); // 5 means swipe left or right 6 means on backPressed
-                hashMap.put("ot",String.valueOf(iZooto.OT_ID));
-                hashMap.put("cid",iZooto.pulseCid);
-                hashMap.put("rid",iZooto.pulseRid);
-            }
-            RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_IMPRESSION, hashMap, null, new RestClient.ResponseHandler() {
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-                    Log.e("HashMap",hashMap.toString());
-                }
 
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                }
-            });
+    /* News Hub offline campaigns */
+    protected static int getValidIdForCampaigns(Payload payload) {
+        int digit = 0;
+        try {
+            String digits = payload.getRid().trim();
+            digit = digits.charAt(0) - '0';
         } catch (Exception e) {
-            e.printStackTrace();
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "getValidIdForCampaigns");
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext, e.toString(), "[Log.e]->RID");
+        }
+        return digit;
+    }
+
+    static boolean isDarkModeEnabled(Context context) {
+        int currentNightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        switch (currentNightMode) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                return true;
+            case Configuration.UI_MODE_NIGHT_NO:
+                // Night mode is not active
+                return false;
+            default:
+                // Unknown mode
+                return false;
         }
     }
 
+    // To get default sender_id
+    static String getSenderId() {
+        try {
+            FirebaseOptions firebaseOptions = FirebaseOptions.fromResource(iZooto.appContext);
+            if (firebaseOptions != null) {
+                String senderId = firebaseOptions.getGcmSenderId();
+                if (senderId != null) {
+                    return senderId;
+                }
+            } else {
+                Util.handleExceptionOnce(iZooto.appContext, "Firebase options is null", "FCMTokenGenerator", "getSenderId()");
+
+            }
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(iZooto.appContext, ex.toString(), "FCMTokenGenerator", "getSenderId()");
+
+        }
+        Log.v(AppConstant.APP_NAME_TAG, "Sender ID should not be null");
+        return "";
+    }
+
+    /*  Required interaction */
+    static long getRequiredInteraction(Payload payload) {
+        long getRequiredInteraction = 0L;
+        try {
+            if (Util.verifyRequiredInteraction(payload)) {
+                getRequiredInteraction = TIME_OUT;
+            } else {
+                getRequiredInteraction = System.currentTimeMillis();
+            }
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "getRequiredInteraction");
+        }
+        return getRequiredInteraction;
+    }
+
+    private static boolean verifyRequiredInteraction(Payload payload) {
+        boolean verifyRequiredInteraction = false;
+        try {
+            verifyRequiredInteraction = payload.getMakeStickyNotification() != null && !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("2");
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "verifyRequiredInteraction");
+        }
+        return verifyRequiredInteraction;
+    }
 
 
+    static void setChannelId(String channelId){
+        channelId = channelId;
+    }
 
+
+    static boolean areNotificationsEnabled(Context context, String channelId) {
+        try {
+            boolean notificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled();
+            if (!notificationsEnabled) {
+                return false;
+            }
+            // Channels were introduced in O
+            if (channelId != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (getNotificationManager(context) != null) {
+                    NotificationChannel channel = getNotificationManager(context).getNotificationChannel(channelId);
+                    return channel == null || channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+                }
+            }
+        } catch (Throwable t) {
+            Util.handleExceptionOnce(context, t.toString(), "Util", "areNotificationsEnabled");
+        }
+        return true;
+    }
+
+
+    static NotificationManager getNotificationManager(Context context){
+        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    static String channelId(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return new Notification().getChannelId();
+        }
+        return null;
+    }
+
+    @RequiresApi(api = 33)
+    static boolean supportsNativePrompt(Context context) {
+        return Build.VERSION.SDK_INT > 32 &&
+                getTargetSdkVersion(context) > 32;
+    }
+
+
+    private static int getTargetSdkVersion(Context context) {
+        String packageName = context.getPackageName();
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            return applicationInfo.targetSdkVersion;
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "getTargetSdkVersion");
+        }
+        return Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
+    }
 
 }
+

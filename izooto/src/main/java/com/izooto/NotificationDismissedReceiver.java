@@ -25,11 +25,7 @@ public class NotificationDismissedReceiver extends BroadcastReceiver {
                 notificationManager.cancel(notificationID);
                 notificationDestroyApi(context, extras);
             }catch(Exception e){
-                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-                if (!preferenceUtil.getBoolean(AppConstant.IZ_LISTENER_KEY)) {
-                    preferenceUtil.setBooleanData(AppConstant.IZ_LISTENER_KEY, true);
-                    Util.setException(context, e.toString(), TAG, AppConstant.IZ_LISTENER_ERROR);
-                }
+                    Util.handleExceptionOnce(context, e.toString(), TAG, AppConstant.IZ_LISTENER_ERROR);
             }
         }
     }
@@ -64,10 +60,7 @@ public class NotificationDismissedReceiver extends BroadcastReceiver {
                     }
                 }
             } catch (Exception e) {
-                if (!preferenceUtil.getBoolean(AppConstant.DISMISSED)){
-                    preferenceUtil.setBooleanData(AppConstant.DISMISSED,true);
-                    Util.setException(context, e.toString(), TAG, AppConstant.IZ_LISTENER_ERROR);
-                }
+                Util.handleExceptionOnce(context, e.toString(), TAG, AppConstant.IZ_LISTENER_ERROR);
                 DebugFileManager.createExternalStoragePublic(context, TAG + e, "[Log.e]->Exception->");
             }
         }

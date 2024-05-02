@@ -30,11 +30,11 @@ public class NotificationExecutorService {
                         }
                         handler.post(runnable);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Util.handleExceptionOnce(mContext, e.toString(), "NotificationExecutorService", "executeNotification");
                     }
                 });
             } catch (Exception e){
-                Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationExecutorService", "executeNotification");
+                Util.handleExceptionOnce(mContext, e.toString(), "NotificationExecutorService", "executeNotification");
             }
         }
     }

@@ -41,7 +41,7 @@ public class OSTaskManager {
     ));
 
     boolean shouldQueueTaskForInit(String task) {
-        return iZooto.mIzooToAppId == null && METHODS_ADD_IN_QUEUE_FOR.contains(task);
+        return iZooto.iZootoAppId == null && METHODS_ADD_IN_QUEUE_FOR.contains(task);
     }
 
     boolean shouldRunTaskThroughQueue() {
@@ -118,8 +118,8 @@ public class OSTaskManager {
     }
 
     private static class PendingTaskRunnable implements Runnable {
-        private OSTaskManager osTaskManager;
-        private Runnable innerTask;
+        private final OSTaskManager osTaskManager;
+        private final Runnable innerTask;
 
         private long taskId;
 
