@@ -1126,7 +1126,6 @@ public class iZooto {
                                         super.onFailure(statusCode, response, throwable);
                                         JSONObject jsonObjectLocal = new JSONObject(object);
                                         preferenceUtil.setStringData(AppConstant.USER_LOCAL_DATA, jsonObjectLocal.toString());
-
                                     }
                                 });
                             } else {
