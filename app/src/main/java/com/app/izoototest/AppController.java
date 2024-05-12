@@ -29,6 +29,7 @@ public class AppController extends Application implements TokenReceivedListener,
                 .setTokenReceivedListener(this)
                 .build();
         iZooto.promptForPushNotifications();
+
     }
     @Override
     public void onTokenReceived(String token) {

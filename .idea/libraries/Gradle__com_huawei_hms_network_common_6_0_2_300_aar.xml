@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.huawei.hms:network-common:6.0.2.300@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/eefd9612a1980d46eefde6732354cdac/transformed/jetified-network-common-6.0.2.300/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/eefd9612a1980d46eefde6732354cdac/transformed/jetified-network-common-6.0.2.300/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9c43f70faebd9efd9cc5ddf13980210a/transformed/jetified-network-common-6.0.2.300/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9c43f70faebd9efd9cc5ddf13980210a/transformed/jetified-network-common-6.0.2.300/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/network-common/6.0.2.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/network-common-6.0.2.300-javadoc.jar!/" />

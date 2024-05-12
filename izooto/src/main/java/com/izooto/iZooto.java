@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,6 +40,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.izooto.core.Utilities;
+import com.izooto.feature.pulseweb.PulseWebHandler;
 import com.izooto.shortcutbadger.ShortcutBadger;
 
 import org.json.JSONArray;
@@ -86,6 +89,11 @@ public class iZooto {
     private static boolean pulseImp = false;
     public static boolean isBackPressedEvent = false;
     static ArrayList<Payload> payloadArrayList = new ArrayList<>();
+    // pulse web feature
+    private static String pw_Url = "";
+    private static String pw_Rid = "";
+    private static String pw_Cid = "";
+    private static String pw_Hash = "";
 
     static boolean isInitCompleted() {
         return initCompleted;
@@ -176,6 +184,21 @@ public class iZooto {
                                                 Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "init-pulse");
                                             }
                                         }
+                                        // pulse-web feature
+                                        if (jsonObject.has(AppConstant.IZ_PULSE_WEB)) {
+                                            try {
+                                                String pulseWebConfig = jsonObject.optString(AppConstant.IZ_PULSE_WEB);
+                                                if (!pulseWebConfig.isEmpty()) {
+                                                    JSONObject configObject = new JSONObject(pulseWebConfig);
+                                                    setPulseWebConfig(preferenceUtil, configObject);
+                                                } else {
+                                                    Log.d(APP_NAME_TAG, "pulse-web config should not be null or empty");
+                                                }
+                                            } catch (Exception e) {
+                                                Log.e(APP_NAME_TAG, e.toString());
+                                                Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "init-pulse-web");
+                                            }
+                                        }
                                         /* check Notification is enable or disable from setting or other */
                                         checkNotificationPermission(context, Util.channelId(), senderId);
 
@@ -186,7 +209,6 @@ public class iZooto {
                                         } catch (Exception e) {
                                             Log.e("branding", "branding is null or empty!");
                                         }
-
 
                                         if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB)) {
                                             fetchNewsHubData(context, newsHub);
@@ -255,6 +277,35 @@ public class iZooto {
             }
         } else {
             Log.d(APP_NAME_TAG, "pulse configuration setup failed");
+        }
+    }
+
+    // set pulse web configurations
+    private static void setPulseWebConfig(PreferenceUtil preferenceUtil, final JSONObject pulseWebConfig) {
+        if (pulseWebConfig != null && pulseWebConfig.length() > 0) {
+            try {
+                String status = pulseWebConfig.optString(AppConstant.isPulseEnable);
+                preferenceUtil.setStringData(AppConstant.PW_STATUS, status);
+                if (status.equals("1")) {
+                    iZooto.pw_Rid = pulseWebConfig.optString(AppConstant.RID_);
+                    iZooto.pw_Cid = pulseWebConfig.optString(AppConstant.CID_);
+                    iZooto.pw_Hash = pulseWebConfig.optString(AppConstant.PW_HASH);
+                    String url = pulseWebConfig.optString(AppConstant.PW_URL);
+                    if (!url.isEmpty()) {
+                        if (url.contains("?")) {
+                            iZooto.pw_Url = url + "&pid=" + iZootoAppId + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" +iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" +iZooto.pw_Hash;
+                        } else {
+                            iZooto.pw_Url = url + "?pid=" + iZootoAppId + "&bKey=" + Util.getAndroidId(appContext)+ "&cid=" +iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" +iZooto.pw_Hash;
+                        }
+                    }
+                } else {
+                    Log.d(APP_NAME_TAG, "pulse-web feature is disable");
+                }
+            } catch (Exception ex) {
+                Util.handleExceptionOnce(appContext, ex.toString(), AppConstant.APP_NAME_TAG, "setPulseWebConfig");
+            }
+        } else {
+            Log.d(APP_NAME_TAG, "pulse-web configuration setup failed");
         }
     }
 
@@ -2857,6 +2908,32 @@ public class iZooto {
             Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "checkNotificationPermission");
         }
 
+    }
+
+    // Pulse web Feature (Native)
+    public static void enablePulseWeb(Context context, LinearLayout layout, Boolean shouldShowProgressBar) {
+        if (context == null || layout == null) {
+            return;
+        }
+        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            try {
+                String status = preferenceUtil.getStringData(AppConstant.PW_STATUS);
+                if (!Utilities.hasUserPid(context)) {
+                    return;
+                }
+                if (!status.equals("1")) {
+                    return;
+                }
+                if (Utilities.isNullOrEmpty(iZooto.pw_Url)) {
+                    return;
+                }
+                PulseWebHandler.addConfiguration(context, iZooto.pw_Url).createWebView(layout, shouldShowProgressBar);
+
+            } catch (Exception e) {
+                Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "enablePulseWeb");
+            }
+        }, 1000);
     }
 
 }

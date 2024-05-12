@@ -185,7 +185,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION = "2.4.0";
+    String SDKVERSION = "2.4.1";
     String QSDK_VERSION = "av";
     String SDK = "SDKVERSION";
     String AD_NETWORK = "an";
@@ -299,7 +299,7 @@ public interface AppConstant {
     String NOTIFICATION_CHANNEL_DELETE_ID = "delchnl_id";
     String NOTIFICATION_CHANNEL_DELETE_GROUP_ID = "delgrp_id";
     String CUSTOM_CHANNEL_CURRENT_DATE = "customChannelCurrentDate";
-    String NOTIFICATION_ENABLE_DISABLE = "isEnable";
+    String NOTIFICATION_ENABLE_DISABLE = "notificationEnableDisable";
     String NOTIFICATION_ACCENT_COLOR = "izooto_notification_accent_color";
     String STRING_RESOURCE_NAME = "string";
     String SDC_ = "sdc";
@@ -391,6 +391,11 @@ public interface AppConstant {
     String P_CFG = "cfg";
     String P_STATUS = "isEnable";
     String PROMPT_ENABLE = "isPrompt";
+    // pulse web feature
+    String IZ_PULSE_WEB = "pulseWeb";
+    String PW_URL = "url";
+    String PW_STATUS = "isPulseWebEnable";
+    String PW_HASH = "rfiIdHash";
 
 }
 
