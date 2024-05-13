@@ -4,7 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ff3d91335ed8ed2c2a933480679e1b41/transformed/jetified-googleid-1.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ff3d91335ed8ed2c2a933480679e1b41/transformed/jetified-googleid-1.1.0/AndroidManifest.xml" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.libraries.identity.googleid/googleid/1.1.0/abe94b40a7e5ade1a8be99abea3bf703289c82b3/googleid-1.1.0-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>

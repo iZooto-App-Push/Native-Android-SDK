@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 
 import com.izooto.ActivityLifecycleListener;
@@ -34,9 +35,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar =  findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_main_pulse);
+//        Toolbar toolbar =  findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
+        LinearLayout layout = findViewById(R.id.webLayout);
+        iZooto.enablePulseWeb(this, layout, true);
+
        // iZooto.enablePulse(MainActivity.this,false);
     }
     @Override

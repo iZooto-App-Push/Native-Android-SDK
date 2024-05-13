@@ -930,7 +930,7 @@ public class Util {
     }
 
     // To Handle Exception once
-    static void handleExceptionOnce(Context context, String exception, String className, String methodName) {
+    public static void handleExceptionOnce(Context context, String exception, String className, String methodName) {
         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
         if (!preferenceUtil.getBoolean(methodName)) {
             setException(context, exception, className, methodName);
