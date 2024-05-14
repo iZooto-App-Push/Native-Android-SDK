@@ -38,11 +38,14 @@
   <component name="ChangeListManager">
     <list default="true" id="8e526a21-7e02-402a-a6d1-94a81cce592b" name="Default Changelist" comment="&#10;Uploaded the bintray module">
 <<<<<<< HEAD
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" afterDir="false" />
 =======
       <change afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_experimental_1_4_0_aar.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_browser_browser_1_8_0_aar.xml" afterDir="false" />
+=======
+>>>>>>> 3a71b44 (commit and pull)
       <change afterPath="$PROJECT_DIR$/.idea/modules/Native-Android-SDK.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.androidTest.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.iml" afterDir="false" />
@@ -52,12 +55,15 @@
       <change afterPath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.main.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.unitTest.iml" afterDir="false" />
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/core/Utilities.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseJsInterface.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseWebChromeClient.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseWebHandler.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseWebViewClient.java" afterDir="false" />
 >>>>>>> fa9cd37cb36d4a761bde36f1fd6fa49ed3b6a626
+=======
+>>>>>>> 3a71b44 (commit and pull)
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
@@ -66,6 +72,7 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+<<<<<<< HEAD
 <<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
@@ -90,16 +97,42 @@
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
 >>>>>>> fa9cd37cb36d4a761bde36f1fd6fa49ed3b6a626
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_agconnect_agconnect_core_1_6_5_300_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_agconnect_agconnect_core_1_6_5_300_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_android_hms_security_base_1_1_5_310_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_android_hms_security_base_1_1_5_310_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_network_common_6_0_2_300_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_network_common_6_0_2_300_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_picasso_picasso_2_71828_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_picasso_picasso_2_71828_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/android-X.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.androidTest.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/android-X.app.unitTest.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
+>>>>>>> 3a71b44 (commit and pull)
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< HEAD
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=c44f82cc)]" />
+=======
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[adb-7ff2d3130509-GkEX2e._adb-tls-connect._tcp.]" />
+>>>>>>> 3a71b44 (commit and pull)
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -188,6 +221,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Android App.app.executor&quot;: &quot;Run&quot;,
@@ -209,18 +243,42 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "last_directory_selection": "/Users/amit_sdk_develoer/Documents/AndroidSDK/AndroidSDK/android-X/izooto/src/main/res/drawable",
+    "last_opened_file_path": "/Users/pramodrai/Documents/AndroidStudioProjects/GitHubProjects/Native-Android-SDK",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "experimental",
+    "show.migrate.to.gradle.popup": "false"
+>>>>>>> 3a71b44 (commit and pull)
   }
-}</component>
+}]]></component>
   <component name="PsdUISettings">
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+<<<<<<< HEAD
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
       <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
       <recent name="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature" />
       <recent name="$PROJECT_DIR$/izooto/src/main/java/com/izooto" />
       <recent name="$PROJECT_DIR$/izooto/src/main/res/drawable" />
+=======
+      <recent name="$PROJECT_DIR$/izooto/libs" />
+      <recent name="$PROJECT_DIR$/izooto/src/main/java/com/izooto" />
+      <recent name="$PROJECT_DIR$/izooto/src/main/res/drawable" />
+      <recent name="$PROJECT_DIR$/izooto/src/main/res/layout" />
+      <recent name="$PROJECT_DIR$/izooto/src/main/res" />
+>>>>>>> 3a71b44 (commit and pull)
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/izooto/src/main/res/values" />

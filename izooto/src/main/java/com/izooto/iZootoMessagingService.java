@@ -206,29 +206,29 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setCreated_Time(payloadObj.optString(ShortPayloadConstant.CREATEDON));
                     payload.setFetchURL(payloadObj.optString(ShortPayloadConstant.FETCHURL));
                     payload.setKey(payloadObj.optString(ShortPayloadConstant.KEY));
-                    payload.setId(payloadObj.optString(ShortPayloadConstant.ID));
+                    payload.setId(payloadObj.optString(ShortPayloadConstant.ID).replace("['","").replace("']","").replace("~",""));
                     payload.setRid(payloadObj.optString(ShortPayloadConstant.RID));
-                    payload.setLink(payloadObj.optString(ShortPayloadConstant.LINK));
-                    payload.setTitle(payloadObj.optString(ShortPayloadConstant.TITLE));
-                    payload.setMessage(payloadObj.optString(ShortPayloadConstant.NMESSAGE));
-                    payload.setIcon(payloadObj.optString(ShortPayloadConstant.ICON));
+                    payload.setLink(payloadObj.optString(ShortPayloadConstant.LINK).replace("['","").replace("']",""));
+                    payload.setTitle(payloadObj.optString(ShortPayloadConstant.TITLE).replace("['","").replace("']",""));
+                    payload.setMessage(payloadObj.optString(ShortPayloadConstant.NMESSAGE).replace("['","").replace("']",""));
+                    payload.setIcon(payloadObj.optString(ShortPayloadConstant.ICON).replace("['","").replace("']",""));
                     payload.setReqInt(payloadObj.optInt(ShortPayloadConstant.REQINT));
                     payload.setTag(payloadObj.optString(ShortPayloadConstant.TAG));
-                    payload.setBanner(payloadObj.optString(ShortPayloadConstant.BANNER));
+                    payload.setBanner(payloadObj.optString(ShortPayloadConstant.BANNER).replace("['","").replace("']",""));
                     payload.setAct_num(payloadObj.optInt(ShortPayloadConstant.ACTNUM));
-                    payload.setBadgeicon(payloadObj.optString(ShortPayloadConstant.BADGE_ICON));
+                    payload.setBadgeicon(payloadObj.optString(ShortPayloadConstant.BADGE_ICON).replace("['","").replace("']",""));
                     payload.setBadgecolor(payloadObj.optString(ShortPayloadConstant.BADGE_COLOR));
                     payload.setSubTitle(payloadObj.optString(ShortPayloadConstant.SUBTITLE));
                     payload.setGroup(payloadObj.optInt(ShortPayloadConstant.GROUP));
                     payload.setBadgeCount(payloadObj.optInt(ShortPayloadConstant.BADGE_COUNT));
                     // Button 2
                     payload.setAct1name(payloadObj.optString(ShortPayloadConstant.ACT1NAME));
-                    payload.setAct1link(payloadObj.optString(ShortPayloadConstant.ACT1LINK));
+                    payload.setAct1link(payloadObj.optString(ShortPayloadConstant.ACT1LINK).replace("['","").replace("']",""));
                     payload.setAct1icon(payloadObj.optString(ShortPayloadConstant.ACT1ICON));
                     payload.setAct1ID(payloadObj.optString(ShortPayloadConstant.ACT1ID));
                     // Button 2
                     payload.setAct2name(payloadObj.optString(ShortPayloadConstant.ACT2NAME));
-                    payload.setAct2link(payloadObj.optString(ShortPayloadConstant.ACT2LINK));
+                    payload.setAct2link(payloadObj.optString(ShortPayloadConstant.ACT2LINK).replace("['","").replace("']",""));
                     payload.setAct2icon(payloadObj.optString(ShortPayloadConstant.ACT2ICON));
                     payload.setAct2ID(payloadObj.optString(ShortPayloadConstant.ACT2ID));
 
@@ -253,7 +253,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                     payload.setMakeStickyNotification(payloadObj.optString(ShortPayloadConstant.MAKE_STICKY_NOTIFICATION));
                     payload.setOfflineCampaign(payloadObj.optString(ShortPayloadConstant.OFFLINE_CAMPAIGN));
 
-                    // notification channel paylaod
+                    // notification channel payload
                     payload.setPriority(payloadObj.optInt(ShortPayloadConstant.PRIORITY));
                     payload.setGroupKey(payloadObj.optString(ShortPayloadConstant.GKEY));
                     payload.setGroupMessage(payloadObj.optString(ShortPayloadConstant.GMESSAGE));

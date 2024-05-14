@@ -131,9 +131,8 @@ public class TargetActivity extends Activity {
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
                 if (AdMediation.clicksData.size() > 0) {
                     for (int i = 0; i < AdMediation.clicksData.size(); i++) {
-                        if (i == AdMediation.clicksData.size()) {
-                        }
-                        callRandomClick(AdMediation.clicksData.get(i));
+                        AdMediation.clicksData.size();
+                        NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
                     }
                 }
             }
@@ -489,22 +488,6 @@ public class TargetActivity extends Activity {
 
     }
 
-    static void callRandomClick(String rv) {
-        if (!rv.isEmpty()) {
-            RestClient.get(rv, new RestClient.ResponseHandler() {
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-                }
-
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-
-                }
-            });
-        }
-    }
 
     static void callMediationClicks(final String medClick, int cNUmber) {
         try {

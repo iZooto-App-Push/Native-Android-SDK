@@ -46,7 +46,7 @@ public class NotificationPermission extends Activity {
             if (grantResults.length > 0) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-                    if (!iZooto.hms_appId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Huawei") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_HUAWEI_TOKEN)) {
+                    if (iZooto.hms_appId != null && !iZooto.hms_appId.isEmpty() && Build.MANUFACTURER.equalsIgnoreCase("Huawei") && !preferenceUtil.getBoolean(AppConstant.CAN_GENERATE_HUAWEI_TOKEN)) {
                         iZooto.initHmsService(iZooto.appContext);
                     }
                     if (iZooto.senderId != null && !iZooto.senderId.isEmpty()) {

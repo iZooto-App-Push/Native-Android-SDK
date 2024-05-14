@@ -86,7 +86,7 @@ public class RestClient {
         boolean delay = false;
         do {
             if (delay) {
-                Util.sleepTime(2000);
+                Util.sleepTime(0);
             }
             try {
                 if (url.contains(AppConstant.HTTPS) || url.contains(AppConstant.HTTP) || url.contains(AppConstant.IMPR)) {
