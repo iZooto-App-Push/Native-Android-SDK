@@ -102,8 +102,6 @@ public class iZooto {
     private static final OSTaskManager osTaskManager = new OSTaskManager();
     private static int pageNumber;   // index handling for notification center data
     private static String notificationData;  // notification data
-    static String appId;
-    static String apiKey;
     static String hms_appId;
 
     public static void setSenderId(String senderId) {
@@ -148,6 +146,7 @@ public class iZooto {
                             super.onFailure(statusCode, response, throwable);
                         }
 
+                        @SuppressLint("NewApi")
                         @Override
                         void onSuccess(String response) {
                             super.onSuccess(response);
@@ -161,8 +160,6 @@ public class iZooto {
                                         } else {
                                             senderId = Util.getSenderId();
                                         }
-                                        appId = jsonObject.optString(AppConstant.APPID);
-                                        apiKey = jsonObject.optString(AppConstant.APIKEY);
                                         iZootoAppId = jsonObject.optString(APPPID);
                                         preferenceUtil.setIZootoID(IZOOTO_APP_ID, iZootoAppId);
                                         preferenceUtil.setStringData(APPPID, iZootoAppId);
@@ -238,7 +235,6 @@ public class iZooto {
                                     DebugFileManager.createExternalStoragePublic(context, AppConstant.ACCOUNT_ID_EXCEPTION, "[Log.e]-->");
                                 }
                             } catch (Exception ex) {
-                                Log.d(APP_NAME_TAG, "DAT Response Failure" + " " + ex);
                                 Util.handleExceptionOnce(appContext, ex.toString(), APP_NAME_TAG, "init_onSuccess");
                             }
                         }
@@ -454,11 +450,9 @@ public class iZooto {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
             if (preferenceUtil.getiZootoID(APPPID) != null && !preferenceUtil.getiZootoID(APPPID).isEmpty()) {
                 if (!preferenceUtil.getBoolean(AppConstant.IS_TOKEN_UPDATED)) {
-                    if (!preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
+                    if (!preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
                         preferenceUtil.setIntData(AppConstant.CLOUD_PUSH, 3);
-                    } else if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
-                        preferenceUtil.setIntData(AppConstant.CLOUD_PUSH, 2);
-                    } else if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
+                    }  else if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() && !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
                         preferenceUtil.setIntData(AppConstant.CLOUD_PUSH, 2);
                     } else {
                         preferenceUtil.setIntData(AppConstant.CLOUD_PUSH, 1);
@@ -466,8 +460,7 @@ public class iZooto {
                     try {
                         if (!preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty())
                             preferenceUtil.setBooleanData(AppConstant.IS_UPDATED_HMS_TOKEN, true);
-                        if (!preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty())
-                            preferenceUtil.setBooleanData(AppConstant.IS_UPDATED_XIAOMI_TOKEN, true);
+
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(AppConstant.ADDURL, "" + AppConstant.STYPE);
                         mapData.put(AppConstant.PID, iZootoAppId);
@@ -483,7 +476,6 @@ public class iZooto {
                         mapData.put(AppConstant.QSDK_VERSION, AppConstant.SDKVERSION);
                         mapData.put(AppConstant.TOKEN, preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                         mapData.put(AppConstant.ADVERTISEMENTID, preferenceUtil.getStringData(AppConstant.ADVERTISING_ID));
-                        mapData.put(AppConstant.XIAOMITOKEN, preferenceUtil.getStringData(AppConstant.XiaomiToken));
                         mapData.put(AppConstant.PACKAGE_NAME, appContext.getPackageName());
                         mapData.put(AppConstant.SDKTYPE, SDKDEF);
                         mapData.put(AppConstant.KEY_HMS, preferenceUtil.getStringData(AppConstant.HMS_TOKEN));
@@ -524,7 +516,6 @@ public class iZooto {
                                     preferenceUtil.setIntData(AppConstant.CAN_STORED_QUEUE, 1);
 
                                     if (!preferenceUtil.getStringData(AppConstant.USER_LOCAL_DATA).isEmpty()) {
-                                        Util.sleepTime(5000);
                                         JSONObject json = new JSONObject(preferenceUtil.getStringData(AppConstant.USER_LOCAL_DATA));
                                         addUserProperty(Util.toMap(json));
                                     }
@@ -616,7 +607,6 @@ public class iZooto {
                                 mapData.put(AppConstant.QSDK_VERSION, AppConstant.SDKVERSION);
                                 mapData.put(AppConstant.TOKEN, preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
                                 mapData.put(AppConstant.ADVERTISEMENTID, preferenceUtil.getStringData(AppConstant.ADVERTISING_ID));
-                                mapData.put(AppConstant.XIAOMITOKEN, preferenceUtil.getStringData(AppConstant.XiaomiToken));
                                 mapData.put(AppConstant.PACKAGE_NAME, appContext.getPackageName());
                                 mapData.put(AppConstant.SDKTYPE, SDKDEF);
                                 mapData.put(AppConstant.KEY_HMS, preferenceUtil.getStringData(AppConstant.HMS_TOKEN));
@@ -1012,7 +1002,7 @@ public class iZooto {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             try {
                 if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
-                    if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
+                    if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
@@ -1069,7 +1059,7 @@ public class iZooto {
                     JSONObject jsonObject = new JSONObject(filterEventData);
 
                     if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
-                        if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
+                        if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
                             Map<String, String> mapData = new HashMap<>();
                             mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                             mapData.put(AppConstant.ACT, eventName);
@@ -1158,7 +1148,7 @@ public class iZooto {
                     if (filterUserPropertyData.size() > 0) {
                         JSONObject jsonObject = new JSONObject(filterUserPropertyData);
                         if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
-                            if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
+                            if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
                                 Map<String, String> mapData = new HashMap<>();
                                 mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                                 mapData.put(AppConstant.ACT, "add");
@@ -1273,7 +1263,7 @@ public class iZooto {
                 }
 
                 if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty() && preferenceUtil.getIntData(AppConstant.CAN_STORED_QUEUE) > 0) {
-                    if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
+                    if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(appContext));
@@ -2598,9 +2588,7 @@ public class iZooto {
                 token = preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN);
             } else if (preferenceUtil.getStringData(AppConstant.HMS_TOKEN) != null && !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
                 token = preferenceUtil.getStringData(AppConstant.HMS_TOKEN);
-            } else if (preferenceUtil.getStringData(AppConstant.XiaomiToken) != null && !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
-                token = preferenceUtil.getStringData(AppConstant.XiaomiToken);
-            } else {
+            }  else {
                 token = null;
             }
 
@@ -2609,7 +2597,7 @@ public class iZooto {
                 if (!isPagination) {
                     pageNumber = 0;
                     fetchNotificationData(context, pageNumber);
-                    Util.sleepTime(2000);
+                    Util.sleepTime(1500);
                     notificationData = preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_DATA);
                 } else {
                     try {
@@ -2618,7 +2606,7 @@ public class iZooto {
                             pageNumber++;
                             if (pageNumber < 5) {
                                 fetchNotificationData(context, pageNumber);
-                                Util.sleepTime(2000);
+                                Util.sleepTime(1500);
                                 notificationData = preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_DATA);
                             } else {
                                 return AppConstant.IZ_NO_MORE_DATA;

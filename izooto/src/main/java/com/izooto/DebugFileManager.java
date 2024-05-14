@@ -185,13 +185,7 @@ public class DebugFileManager {
                     String to[] = {"amit@datability.co"};
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
                     emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                    if(Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
-                        if(PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken)!=null)
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "MI Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken) + "Android Id"+Util.getAndroidId(context));
-                        else
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "Android Id"+Util.getAndroidId(context));
 
-                    }
                     if(Build.MANUFACTURER.equalsIgnoreCase("Huawei"))
                     {
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "Android Id"+Util.getAndroidId(context));
@@ -220,13 +214,6 @@ public class DebugFileManager {
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
                     emailIntent.putExtra(Intent.EXTRA_STREAM, pngUri);
 
-                    if(Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
-                        if(PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken)!=null)
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "MI Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.XiaomiToken) + "Android Id"+Util.getAndroidId(context));
-                        else
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "Android Id"+Util.getAndroidId(context));
-
-                    }
                     if(Build.MANUFACTURER.equalsIgnoreCase("Huawei"))
                     {
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "Android Id"+Util.getAndroidId(context));

@@ -243,8 +243,6 @@ public interface AppConstant {
     String IZ_ADD_TOPIC_OFFLINE = "iz_add_topic_offline";
     String IZ_REMOVE_TOPIC_OFFLINE = "iz_remove_topic_offline";
     ///////// JSON Payload Data
-    String XIAOMITOKEN = "mt";
-    String XiaomiToken = "xiaomi_token";
     String CHECK_CREATED_ON = "CT";
     String CHECK_RID = "RID";
     String CHECK_TTL = "TTL";
@@ -265,15 +263,11 @@ public interface AppConstant {
     String Check_Notification = "CheckData";
     String Check_YES = "true";
     String Check_NO = "false";
-    String IS_UPDATED_XIAOMI_TOKEN = "iz_xiaomi_token_updated";
     String IS_UPDATED_HMS_TOKEN = "iz_hms_token_updated";
-    String R_XIAOMI_TOKEN = "{~MITOKEN~}";
     String R_HMS_TOKEN = "{~HMSTOKEN~}";
     String ACCOUNT_ID = "{~PID~}";
     String ADID = "{~ADID~}";
     String CAN_GENERATE_HUAWEI_TOKEN = "iz_canGenerateHuaweiToken";
-    //    String CAN_GENERATE_XIAOMI_TOKEN = "iz_canGenerateXiaomiToken";
-//    String XIAOMI_TOKEN_FROM_JSON = "xiaomiToken";
     String HUAWEI_TOKEN_FROM_JSON = "huaweiToken";
     String CLOUD_PUSH = "iz_Counter";
     String FILE_EXIST = "iz_fileExits";

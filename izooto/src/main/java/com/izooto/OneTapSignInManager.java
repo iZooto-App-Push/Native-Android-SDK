@@ -207,8 +207,7 @@ public class OneTapSignInManager {
             String pid = preferenceUtil.getStringData(AppConstant.APPPID);
             String fcmToken = preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN);
             String hmsToken = preferenceUtil.getStringData(AppConstant.HMS_TOKEN);
-            String xiaomiToken = preferenceUtil.getStringData(AppConstant.XiaomiToken);
-            boolean checkValidity = !pid.isEmpty() && (!fcmToken.isEmpty() || !hmsToken.isEmpty() || !xiaomiToken.isEmpty());
+            boolean checkValidity = !pid.isEmpty() && (!fcmToken.isEmpty() || !hmsToken.isEmpty());
             if(!checkValidity){
                 Log.d(AppConstant.APP_NAME_TAG, "iZooto SDK should be properly initialized");
             }

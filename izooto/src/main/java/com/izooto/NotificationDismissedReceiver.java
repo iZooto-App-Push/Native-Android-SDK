@@ -36,7 +36,7 @@ public class NotificationDismissedReceiver extends BroadcastReceiver {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             try {
                 if (!preferenceUtil.getiZootoID(AppConstant.APPPID).isEmpty()) {
-                    if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.XiaomiToken).isEmpty()) {
+                    if (!preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty() || !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
                         Map<String, String> mapData = new HashMap<>();
                         mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                         mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
