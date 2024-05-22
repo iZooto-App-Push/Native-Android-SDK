@@ -163,7 +163,7 @@ public class iZooto {
                                         iZootoAppId = jsonObject.optString(APPPID);
                                         preferenceUtil.setIZootoID(IZOOTO_APP_ID, iZootoAppId);
                                         preferenceUtil.setStringData(APPPID, iZootoAppId);
-                                        serverClientId = "1007215295999-br86884ahqd0dah3a085k74p8r6a7dti.apps.googleusercontent.com";//jsonObject.optString(AppConstant.SERVER_CLIENT_ID);
+                                        serverClientId = jsonObject.optString(AppConstant.SERVER_CLIENT_ID);
                                         hms_appId = jsonObject.optString(AppConstant.HMS_APP_ID);
                                         String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                         boolean isPrompt = jsonObject.optBoolean(AppConstant.PROMPT_ENABLE);

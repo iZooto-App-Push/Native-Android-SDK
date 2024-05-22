@@ -4,7 +4,7 @@ class Global {
     static def POM_NAME = 'android-sdk'
     static def POM_ARTIFACT_ID = 'android-sdk'
     static def POM_PACKAGING = 'aar'
-    static def VERSION_NAME = "2.4.3"
+    static def VERSION_NAME = "2.4.4"
     static def GROUP_ID = 'com.izooto'
     static def POM_DESCRIPTION = 'Push Notification Services'
     static def POM_URL = 'https://github.com/izooto-mobile-sdk/android-X'
