@@ -83,7 +83,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                             }
 
                             // NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL,cid,rid,-1,AppConstant.PUSH_HMS);
-                            AdMediation.getMediationGPL(context, jsonObject, urlData);
+                            AdMediation.mediationGPL(context, jsonObject, urlData);
                             preferenceUtil.setBooleanData(AppConstant.MEDIATION, false);
                         } else {
                             NotificationEventManager.handleNotificationError(IZ_ERROR_NAME, data, IZ_TAG_NAME, IZ_ERROR_NAME);

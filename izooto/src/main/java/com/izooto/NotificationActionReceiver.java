@@ -138,18 +138,16 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             }
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
-                if (AdMediation.clicksData.size() > 0) {
+                if (!AdMediation.clicksData.isEmpty()) {
                     for (int i = 0; i < AdMediation.clicksData.size(); i++) {
                         AdMediation.clicksData.size();
                         try {
                             NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
                         } catch (Exception e) {
-                            Log.e("onReceive", e.toString());
+                            Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
                         }
 
-
                     }
-
 
                 }
             }
@@ -207,7 +205,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         notificationClick = jsonObject.toString();
                         launchApp(context);
                     }
-
 
                 }
 
@@ -373,7 +370,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
     static void callMediationClicks(Context context, final String medClick, int cNUmber) {
         try {
-            if (!medClick.isEmpty()) {
+            if (medClick != null && !medClick.isEmpty()) {
                 DebugFileManager.createExternalStoragePublic(context, medClick, "mediationClick");
                 JSONObject jsonObject = new JSONObject(medClick);
                 RestClient.postRequest(RestClient.MEDIATION_CLICKS, null, jsonObject, new RestClient.ResponseHandler() {
@@ -471,8 +468,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     static void notificationClickAPI(Context context, String clkURL, String cid, String rid, int btnCount, int i, String pushType) {
         if (context == null)
             return;
-
-
         try {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             Map<String, String> mapData = new HashMap<>();
@@ -502,8 +497,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         }
                     } catch (Exception e) {
                         DebugFileManager.createExternalStoragePublic(context, mapData.toString(), "clickData");
-
-
                     }
                 }
 
@@ -539,14 +532,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
 
     private static void launchApp(Context context) {
-
-
         PackageManager pm = context.getPackageManager();
         Intent launchIntent = null;
         String name = "";
         try {
-
-
             if (pm != null && !Util.isAppInForeground(context)) {
                 ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                 name = (String) pm.getApplicationLabel(app);
@@ -578,7 +567,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), AppConstant.APPName_3, "launch App");
         }
-
 
     }
 }

@@ -294,7 +294,7 @@ public class NotificationEventManager {
 
 
                             String fallBackURL = AdMediation.callFallbackAPI(payload);
-                            AdMediation.ShowFallBackResponse(fallBackURL, payload);
+                            AdMediation.showFallBackResponse(fallBackURL, payload);
                         }
                     }
                 }
@@ -305,7 +305,7 @@ public class NotificationEventManager {
                     super.onFailure(statusCode, response, throwable);
                     DebugFileManager.createExternalStoragePublic(iZooto.appContext, response, "fetcherPayloadResponse");
                     String fallBackURL = AdMediation.callFallbackAPI(payload);
-                    AdMediation.ShowFallBackResponse(fallBackURL, payload);
+                    AdMediation.showFallBackResponse(fallBackURL, payload);
                 }
             });
         }
@@ -360,24 +360,19 @@ public class NotificationEventManager {
                 url = "https://" + url;
                 payload.setAct2link(url);
             }
-
-
             parseRvValues(payload, jsonObject);
             parseRcValues(payload, jsonObject);
-
-
             payload.setAp("");
             payload.setInapp(0);
-            Log.e("title",""+payload.getTitle());
-            Log.e("title",""+payload.getMessage());
+
             if (payload.getTitle() != null && !payload.getTitle().isEmpty()) {
                 notificationPreview(iZooto.appContext, payload);
                 AdMediation.successList.clear();
                 AdMediation.failsList.clear();
-                AdMediation.ShowClickAndImpressionData(payload);
+                AdMediation.showClicksAndImpressionData(payload);
             } else {
                 String fallBackURL = AdMediation.callFallbackAPI(payload);
-                AdMediation.ShowFallBackResponse(fallBackURL, payload);
+                AdMediation.showFallBackResponse(fallBackURL, payload);
             }
         } catch (Exception e) {
             Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "parseJson");
@@ -391,7 +386,6 @@ public class NotificationEventManager {
         Object json = new JSONTokener(jsonStr).nextValue();
         return json instanceof JSONObject || json instanceof JSONArray;
     }
-
 
     static void parseRcValues(Payload payload, JSONObject jsonObject) {
         try {
@@ -507,7 +501,6 @@ public class NotificationEventManager {
                             callRandomView(payload.getRv());
                         }
                     }catch (Exception e){
-                        Log.i("parseRvValues", e.toString());
                         Util.handleExceptionOnce(iZooto.appContext, e.toString(),"NotificationEventManager","parseAgainJson");
 
                     }
@@ -526,9 +519,7 @@ public class NotificationEventManager {
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
-                    Log.d("RandomViewURL", "OK");
                 }
-
 
                 @Override
                 void onFailure(int statusCode, String response, Throwable throwable) {
@@ -546,7 +537,6 @@ public class NotificationEventManager {
             if (sourceString.startsWith("~"))
                 return sourceString.replace("~", "");
             else {
-                sourceString.replace("['", "").replace("']", "");
                 if (sourceString.contains(".")) {
                     JSONObject jsonObject1 = null;
                     String[] linkArray = sourceString.split("\\.");
@@ -554,7 +544,6 @@ public class NotificationEventManager {
                         for (int i = 0; i < linkArray.length; i++) {
                             if (linkArray[i].contains("[")) {
                                 String[] linkArray1 = linkArray[i].split("\\[");
-
                                 if (jsonObject1 == null)
                                     jsonObject1 = jsonObject.getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
                                 else {
@@ -567,19 +556,13 @@ public class NotificationEventManager {
                     } else if (linkArray.length == 4) {
                         if (linkArray[2].contains("[")) {
                             String[] linkArray1 = linkArray[2].split("\\[");
-                            if (jsonObject1 == null) {
-                                jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
-                            } else
-                                jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
+                            jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
                             return jsonObject1.optString(linkArray[3]);
                         }
                     } else if (linkArray.length == 5) {
                         if (linkArray[2].contains("[")) {
                             String[] link1 = linkArray[2].split("\\[");
-                            if (jsonObject1 == null)
-                                jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(link1[0]).getJSONObject(Integer.parseInt(link1[1].replace("]", ""))).getJSONObject(linkArray[3]);
-                            else
-                                jsonObject1 = jsonObject1.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(link1[0]).getJSONObject(Integer.parseInt(link1[1].replace("]", ""))).getJSONObject(linkArray[3]);
+                            jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(link1[0]).getJSONObject(Integer.parseInt(link1[1].replace("]", ""))).getJSONObject(linkArray[3]);
                             return jsonObject1.optString(linkArray[4]);
                         }
                     } else {
@@ -1572,8 +1555,6 @@ public class NotificationEventManager {
         if (payload != null && iZooto.appContext != null) {
             try {
                 String impressionIndex = "0";
-
-
                 String data = Util.getIntegerToBinary(payload.getCfg());
                 if (data != null && !data.isEmpty()) {
                     impressionIndex = String.valueOf(data.charAt(data.length() - 1));
@@ -1722,8 +1703,6 @@ public class NotificationEventManager {
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
-                    Log.d("RandomClickURL", "OK");
-
                 }
 
                 @Override

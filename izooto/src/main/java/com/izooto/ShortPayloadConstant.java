@@ -63,6 +63,8 @@ public interface ShortPayloadConstant {
     String EXPIRY_TIMER_VALUE ="et";
     String MAKE_STICKY_NOTIFICATION ="ri";
     String OFFLINE_CAMPAIGN ="o";
+    String FLOOR_PRICE = "fp";
+
 
     String NOTIFICATION_CHANNEL="c";
     String OTHER_CHANNEL = "oth_chnl";

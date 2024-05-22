@@ -17,6 +17,7 @@ import com.izooto.ActivityLifecycleListener;
 import com.izooto.AppConstant;
 import com.izooto.PreferenceUtil;
 import com.izooto.Util;
+import com.izooto.feature.pulseweb.PulseWebHandler;
 import com.izooto.iZooto;
 
 import java.text.SimpleDateFormat;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayout layout = findViewById(R.id.webLayout);
         iZooto.enablePulseWeb(this, layout, true);
+      //  PulseWebHandler.addConfiguration(this, "iZooto.pw_Url").createWebView(layout, true);
 
        // iZooto.enablePulse(MainActivity.this,false);
     }

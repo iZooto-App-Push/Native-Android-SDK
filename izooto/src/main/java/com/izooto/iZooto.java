@@ -1344,7 +1344,7 @@ public class iZooto {
                             String cid = jsonObject.optString(ShortPayloadConstant.ID);
                             String rid = jsonObject.optString(ShortPayloadConstant.RID);
                             NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1, "FCM");
-                            AdMediation.getMediationGPL(context, jsonObject, urlData);
+                            AdMediation.mediationGPL(context, jsonObject, urlData);
                         } else {
                             NotificationEventManager.handleNotificationError("Payload Error", data.toString(), "MessagingSevices", "HandleNow");
                         }
