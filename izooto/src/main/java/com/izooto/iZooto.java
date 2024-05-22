@@ -163,7 +163,7 @@ public class iZooto {
                                         iZootoAppId = jsonObject.optString(APPPID);
                                         preferenceUtil.setIZootoID(IZOOTO_APP_ID, iZootoAppId);
                                         preferenceUtil.setStringData(APPPID, iZootoAppId);
-                                        serverClientId = jsonObject.optString(AppConstant.SERVER_CLIENT_ID);
+                                        serverClientId = "1007215295999-br86884ahqd0dah3a085k74p8r6a7dti.apps.googleusercontent.com";//jsonObject.optString(AppConstant.SERVER_CLIENT_ID);
                                         hms_appId = jsonObject.optString(AppConstant.HMS_APP_ID);
                                         String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
                                         boolean isPrompt = jsonObject.optBoolean(AppConstant.PROMPT_ENABLE);
@@ -198,6 +198,8 @@ public class iZooto {
                                         }
                                         /* check Notification is enable or disable from setting or other */
                                         checkNotificationPermission(context, Util.channelId(), senderId);
+                                        // To check and execute saved oneTap record
+                                        checkAndExecuteOneTapRecord(context, preferenceUtil);
 
                                         payloadArrayList.clear();
                                         try {
@@ -247,6 +249,27 @@ public class iZooto {
         } catch (Throwable t) {
             DebugFileManager.createExternalStoragePublic(context, t.toString(), "[Log.e]-->initBuilder");
             Util.handleExceptionOnce(appContext, t.toString(), AppConstant.APP_NAME_TAG, "initBuilder");
+        }
+    }
+
+
+    private static void checkAndExecuteOneTapRecord(Context context, PreferenceUtil preferenceUtil) {
+        if (context == null) {return;}
+        try {
+            boolean isSyncFailure = preferenceUtil.getBoolean(AppConstant.OT_SYNC_FAILURE);
+            boolean isEmailNotNull = !Utilities.isNullOrEmpty(preferenceUtil.getStringData(AppConstant.IZ_EMAIL));
+            boolean isAlreadySignIn = preferenceUtil.getBoolean(AppConstant.OT_SIGN_IN);
+
+            if (!isSyncFailure || !isEmailNotNull || !isAlreadySignIn) {
+                return;
+            }
+            String email = preferenceUtil.getStringData(AppConstant.IZ_EMAIL);
+            String firstName = preferenceUtil.getStringData(AppConstant.IZ_FIRST_NAME);
+            String lastName = preferenceUtil.getStringData(AppConstant.IZ_LAST_NAME);
+            OneTapSignInManager.syncUserDetails(context, email, firstName, lastName);
+
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(context, ex.toString(), AppConstant.APP_NAME_TAG, "checkAndExecuteOneTapRecord");
         }
     }
 
