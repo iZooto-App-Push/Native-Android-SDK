@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":izooto:unitTest" external.linked.project.path="$MODULE_DIR$/../../../izooto" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
-    <facet type="android" name="Android">
+    <facet external-system-id="GRADLE" type="android" name="Android">
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="debug" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
@@ -22,7 +22,7 @@
     <content url="file://$MODULE_DIR$/../../../izooto/src/testDebug" />
     <orderEntry type="jdk" jdkName="Android API 34, extension level 7 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Native-Android-SDK.izooto.main" scope="TEST" />
+    <orderEntry type="module" module-name="android-X.izooto.main" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.legacy:legacy-support-v4:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.core:core:1.7.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation-experimental:1.1.0@aar" level="project" />
@@ -71,7 +71,6 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.testng:testng:7.4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.beust:jcommander:1.78" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.webjars:jquery:3.5.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ./izooto/libs/MiPush_SDK_Client_5_1_1-G.jar" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="Native-Android-SDK.izooto.main" />
+  <component name="TestModuleProperties" production-module="android-X.izooto.main" />
 </module>
