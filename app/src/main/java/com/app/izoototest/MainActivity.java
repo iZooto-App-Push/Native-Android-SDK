@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity
 //        iZooto.enablePulseWeb(this, layout, true);
 
        // iZooto.enablePulse(MainActivity.this,false);
-        iZooto.requestOneTapActivity(this, new OneTapCallback() {
-            @Override
-            public void syncOneTapResponse(String email, String firstName, String lastName) {
-                Log.e("abc","email is: -> "+email);
-            }
-        });
+//        iZooto.requestOneTapActivity(this, new OneTapCallback() {
+//            @Override
+//            public void syncOneTapResponse(String email, String firstName, String lastName) {
+//                Log.e("abc","email is: -> "+email);
+//            }
+//        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

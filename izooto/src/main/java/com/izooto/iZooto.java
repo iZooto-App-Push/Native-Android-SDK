@@ -88,7 +88,6 @@ public class iZooto {
     static String swipeGesture = "left";
     private static boolean pulseImp = false;
     public static boolean isBackPressedEvent = false;
-    static ArrayList<Payload> payloadArrayList = new ArrayList<>();
     // pulse web feature
     private static String pw_Url = "";
     private static String pw_Rid = "";
@@ -201,7 +200,6 @@ public class iZooto {
                                         // To check and execute saved oneTap record
                                         checkAndExecuteOneTapRecord(context, preferenceUtil);
 
-                                        payloadArrayList.clear();
                                         try {
                                             int brand_key = jsonObject.optInt(AppConstant.NEWS_HUB_B_KEY);
                                             preferenceUtil.setIntData(AppConstant.NEWS_HUB_B_KEY, brand_key);
@@ -212,21 +210,11 @@ public class iZooto {
                                         if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB)) {
                                             fetchNewsHubData(context, newsHub);
                                         }
-                                        trackAdvertisingId();
+                                        if(preferenceUtil.getStringData(AppConstant.ADVERTISING_ID)=="")
+                                            trackAdvertisingId();
 
                                         if (iZootoAppId != null && preferenceUtil.getBoolean(AppConstant.IS_CONSENT_STORED)) {
                                             preferenceUtil.setIntData(AppConstant.CAN_STORED_QUEUE, 1);
-                                        }
-                                        if (iZooto.pUrl != null && !iZooto.pUrl.isEmpty()) {
-                                            try {
-                                                Util.parseXml(contentListener -> {
-                                                    payloadArrayList.addAll(contentListener);
-                                                    contentListener.clear();
-                                                });
-
-                                            } catch (Exception e) {
-                                                Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "init-parse-xml");
-                                            }
                                         }
                                         if (iZooto.isHybrid)
                                             preferenceUtil.setBooleanData(AppConstant.IS_HYBRID_SDK, iZooto.isHybrid);
@@ -396,9 +384,9 @@ public class iZooto {
                     preferenceUtil.setStringData(AppConstant.ADVERTISING_ID, advertisementID);
                     invokeFinish(advertisementID, preferenceUtil.getStringData(AppConstant.ENCRYPTED_PID));
                 }
-
                 @Override
                 public void onAdvertisingIdClientFail(Exception exception) {
+                    preferenceUtil.setStringData(AppConstant.ADVERTISING_ID, "000000000000");
                     invokeFail(new Exception(TAG + " - Error: context null"));
                 }
             });
@@ -2718,7 +2706,7 @@ public class iZooto {
                     if (context != null && serverClientId != null && !serverClientId.trim().isEmpty()) {
                         OneTapSignInManager.manageSignInRequest(context, serverClientId, callback);
                     } else {
-                        Log.d(AppConstant.APP_NAME_TAG, "server-client-id should not be null or empty!");
+                        Log.d(AppConstant.APP_NAME_TAG, "server-client-id should not be null or empty! or ");
                     }
                 }
             }, 2000);
@@ -2752,140 +2740,6 @@ public class iZooto {
     }
 
     // To Native pulse support
-
-    /**
-     *
-     * @param context Pass the current Object
-     * @param isBackIntent  true -> is working on onBackPressed clicked - false -> no happened
-     */
-    public static void enablePulse(Context context, boolean isBackIntent) {
-        try {
-            if (context != null) {
-                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-                new Handler().postDelayed(() -> {
-                    String status = preferenceUtil.getStringData(AppConstant.P_STATUS);
-                    if(status.equals("1") && iZooto.OT_ID.equals("6") && !preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                        String appId = preferenceUtil.getiZootoID(APPPID);
-                        if (appId != null && !appId.isEmpty()) {
-                            iZootoPulse pulse = new iZootoPulse();
-                            pulse.setContents(payloadArrayList);
-                            if (isBackIntent) {
-                                iZooto.swipeEdge = true;
-                                pulse.onCreateDrawer(context, pulse, android.R.id.content);
-
-                                if (iZooto.pulseImp) {
-                                    Util.pulseImpression(context);
-                                }
-                            }
-                            try {
-                                View onTouchView = ((Activity) context).getWindow().getDecorView().getRootView();
-                                handleTouchListener(context, pulse, onTouchView, isBackIntent);
-
-                            } catch (Exception e) {
-                                Log.e(APP_NAME_TAG, e.toString());
-                            }
-
-                        } else {
-                            Log.i(APP_NAME_TAG, "The iZooto is not initialized properly!");
-                        }
-                    } else {
-                        Log.i(APP_NAME_TAG, "pulse is not enable! Kindly connect with support team");
-                    }
-                }, 200);
-            } else {
-                Log.i(APP_NAME_TAG, "Context should not be null");
-            }
-        } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "enablePulse");
-        }
-    }
-
-    // To Hybrid pulse support
-
-    /**
-     *
-     * @param context
-     * @param onTouchView pass the view from plugin side
-     * @param isBackIntent onBackPressed when value is true
-     */
-    public static void enablePulseHybrid(Context context, View onTouchView, boolean isBackIntent) {
-        try {
-            if (context != null) {
-                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-                new Handler().postDelayed(() -> {
-                    String status = preferenceUtil.getStringData(AppConstant.P_STATUS);
-                    if(status.equals("1") && iZooto.OT_ID.equals("6") && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                        String appId = preferenceUtil.getiZootoID(APPPID);
-                        if (appId != null && !appId.isEmpty()) {
-                            iZootoPulse pulse = new iZootoPulse();
-                            pulse.setContents(payloadArrayList);
-                            if (isBackIntent) {
-                                iZooto.swipeEdge = true;
-                                pulse.onCreateDrawer(context, pulse, android.R.id.content);
-
-                                if (iZooto.pulseImp) {
-                                    Util.pulseImpression(context);
-                                }
-                            }
-                            try {
-                                handleTouchListener(context, pulse, onTouchView, isBackIntent);
-                            } catch (Exception e) {
-                                Log.e(APP_NAME_TAG, e.toString());
-                            }
-
-                        } else {
-                            Log.i(APP_NAME_TAG, "The iZooto is not initialized properly!");
-                        }
-                    } else {
-                        Log.i(APP_NAME_TAG, "pulse is not enable! Kindly connect with support team");
-                    }
-                }, 200);
-            } else {
-                Log.i(APP_NAME_TAG, "Context should not be null");
-            }
-        } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "enablePulse");
-        }
-    }
-
-    private static void handleTouchListener(Context context, iZootoPulse pulse, View onTouchView, boolean isEnable) {
-        try {
-            if (onTouchView != null) {
-                onTouchView.setOnTouchListener(new iZootoNewsHubOnSwipeListener(context) {
-                    @Override
-                    public void onSwipeRight() {
-                        if (iZooto.swipeGesture.equalsIgnoreCase("left") && !isEnable) {
-                            iZooto.swipeEdge = true;
-                            pulse.onCreateDrawer(context, pulse, android.R.id.content);
-
-                            if (iZooto.pulseImp) {
-                                Util.pulseImpression(context);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onSwipeLeft() {
-                        if (iZooto.swipeGesture.equalsIgnoreCase("right") && !isEnable) {
-                            iZooto.swipeEdge = false;
-                            pulse.onCreateDrawer(context, pulse, android.R.id.content);
-                            if (iZooto.pulseImp) {
-                                Util.pulseImpression(context);
-                            }
-                        }
-                    }
-                });
-            }
-        } catch (Exception ex) {
-            Util.handleExceptionOnce(context, ex.toString(), APP_NAME_TAG, "handleTouchListener");
-        }
-    }
-
-    public static void closeDrawer() {
-        iZootoPulse drawer = new iZootoPulse();
-        drawer.closeDrawer();
-    }
-
     /**
      *
      * @param context  Current object
@@ -2923,7 +2777,7 @@ public class iZooto {
     }
 
     // Pulse web Feature (Native)
-    public static void enablePulseWeb(Context context, LinearLayout layout, Boolean shouldShowProgressBar) {
+    public static void enablePulse(Context context, LinearLayout layout, Boolean shouldShowProgressBar) {
         if (context == null || layout == null) {
             return;
         }
