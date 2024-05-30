@@ -198,6 +198,8 @@ public class iZooto {
                                         }
                                         /* check Notification is enable or disable from setting or other */
                                         checkNotificationPermission(context, Util.channelId(), senderId);
+                                        // To check and execute saved oneTap record
+                                        checkAndExecuteOneTapRecord(context, preferenceUtil);
 
                                         payloadArrayList.clear();
                                         try {
@@ -247,6 +249,27 @@ public class iZooto {
         } catch (Throwable t) {
             DebugFileManager.createExternalStoragePublic(context, t.toString(), "[Log.e]-->initBuilder");
             Util.handleExceptionOnce(appContext, t.toString(), AppConstant.APP_NAME_TAG, "initBuilder");
+        }
+    }
+
+
+    private static void checkAndExecuteOneTapRecord(Context context, PreferenceUtil preferenceUtil) {
+        if (context == null) {return;}
+        try {
+            boolean isSyncFailure = preferenceUtil.getBoolean(AppConstant.OT_SYNC_FAILURE);
+            boolean isEmailNotNull = !Utilities.isNullOrEmpty(preferenceUtil.getStringData(AppConstant.IZ_EMAIL));
+            boolean isAlreadySignIn = preferenceUtil.getBoolean(AppConstant.OT_SIGN_IN);
+
+            if (!isSyncFailure || !isEmailNotNull || !isAlreadySignIn) {
+                return;
+            }
+            String email = preferenceUtil.getStringData(AppConstant.IZ_EMAIL);
+            String firstName = preferenceUtil.getStringData(AppConstant.IZ_FIRST_NAME);
+            String lastName = preferenceUtil.getStringData(AppConstant.IZ_LAST_NAME);
+            OneTapSignInManager.syncUserDetails(context, email, firstName, lastName);
+
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(context, ex.toString(), AppConstant.APP_NAME_TAG, "checkAndExecuteOneTapRecord");
         }
     }
 
@@ -1122,7 +1145,7 @@ public class iZooto {
     }
 
     public static void addUserProperty(HashMap<String, Object> object) {
-        if (osTaskManager.shouldQueueTaskForInit(OSTaskManager.ADD_USERPROPERTY) && appContext == null) {
+        if (osTaskManager.shouldQueueTaskForInit(OSTaskManager.ADD_USER_PROPERTY) && appContext == null) {
             osTaskManager.addTaskToQueue(new Runnable() {
                 @Override
                 public void run() {
@@ -1344,7 +1367,7 @@ public class iZooto {
                             String cid = jsonObject.optString(ShortPayloadConstant.ID);
                             String rid = jsonObject.optString(ShortPayloadConstant.RID);
                             NotificationEventManager.impressionNotification(RestClient.IMPRESSION_URL, cid, rid, -1, "FCM");
-                            AdMediation.getMediationGPL(context, jsonObject, urlData);
+                            AdMediation.mediationGPL(context, jsonObject, urlData);
                         } else {
                             NotificationEventManager.handleNotificationError("Payload Error", data.toString(), "MessagingSevices", "HandleNow");
                         }

@@ -21,7 +21,7 @@ public class OSTaskManager {
     private final ConcurrentLinkedQueue<Runnable> taskQueueWaitingForInit = new ConcurrentLinkedQueue<>();
     private final AtomicLong lastTaskId = new AtomicLong();
     private ExecutorService pendingTaskExecutor;
-    static final String ADD_USERPROPERTY = "addUserProperty()";
+    static final String ADD_USER_PROPERTY = "addUserProperty()";
     static final String ADD_EVENT = "addEvent()";
     static final String SET_SUBSCRIPTION = "setSubscription()";
     static final String SET_FIREBASE_ANALYTICS = "setFirebaseAnalytics()";
@@ -30,7 +30,7 @@ public class OSTaskManager {
     static final String SET_CUSTOM_TEMPLATE = "setCustomTemplate()";
     static final String SET_SUBSCRIBER_ID="setSubscriberID()";
     static final HashSet<String> METHODS_ADD_IN_QUEUE_FOR = new HashSet<>(Arrays.asList(
-            ADD_USERPROPERTY,
+            ADD_USER_PROPERTY,
             ADD_EVENT,
             SET_SUBSCRIPTION,
             SET_FIREBASE_ANALYTICS,

@@ -153,7 +153,7 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                                 }
                             }
 
-                            AdMediation.getMediationGPL(this, jsonObject, urlData);
+                            AdMediation.mediationGPL(this, jsonObject, urlData);
                             preferenceUtil.setBooleanData(AppConstant.MEDIATION, false);
 
                         }

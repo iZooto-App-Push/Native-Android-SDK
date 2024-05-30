@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.huawei.android.hms:security-base:1.1.5.310@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0001ddad258f71ed08662bf5bc6052f9/transformed/jetified-security-base-1.1.5.310/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0001ddad258f71ed08662bf5bc6052f9/transformed/jetified-security-base-1.1.5.310/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fcf56588bdc4e20bf2e53ed10448926c/transformed/jetified-security-base-1.1.5.310/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/fcf56588bdc4e20bf2e53ed10448926c/transformed/jetified-security-base-1.1.5.310/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -185,7 +185,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION = "2.4.2";
+    String SDKVERSION = "2.4.4";
     String QSDK_VERSION = "av";
     String SDK = "SDKVERSION";
     String AD_NETWORK = "an";
@@ -371,6 +371,8 @@ public interface AppConstant {
     String IZ_DEFAULT_NEWSLETTER_KEY = "nlo";
     String IZ_STORED_EMAIL = "storedEmail";
     String EMAIL_VALIDATION_REGx = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    String OT_SYNC_FAILURE = "isSyncFail";
+    String OT_SIGN_IN = "isSignedIn";
     //    String EMAIL_VALIDATION_REGx = "^\\S+@\\S+\\.\\S+$";
     String SERVER_CLIENT_ID = "serverClientId";
     int CAMPAIGN_SI = 6;

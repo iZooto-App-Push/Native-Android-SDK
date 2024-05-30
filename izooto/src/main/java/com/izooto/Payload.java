@@ -40,7 +40,7 @@ public class Payload {
     private String rawPayload;
     private String act1ID;
     private String act2ID;
-
+    private String floorPrice;
 
     private String ap;
     private String type_input_to_payload;
@@ -731,5 +731,13 @@ public class Payload {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public void setFloorPrice(String floorPrice) {
+        this.floorPrice = floorPrice;
+    }
+
+    public String getFloorPrice() {
+        return floorPrice;
     }
 }

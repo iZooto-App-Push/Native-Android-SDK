@@ -15,8 +15,10 @@ import android.widget.LinearLayout;
 
 import com.izooto.ActivityLifecycleListener;
 import com.izooto.AppConstant;
+import com.izooto.OneTapCallback;
 import com.izooto.PreferenceUtil;
 import com.izooto.Util;
+import com.izooto.feature.pulseweb.PulseWebHandler;
 import com.izooto.iZooto;
 
 import java.text.SimpleDateFormat;
@@ -39,10 +41,16 @@ public class MainActivity extends AppCompatActivity
 //        Toolbar toolbar =  findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        LinearLayout layout = findViewById(R.id.webLayout);
-        iZooto.enablePulseWeb(this, layout, true);
+//        LinearLayout layout = findViewById(R.id.webLayout);
+//        iZooto.enablePulseWeb(this, layout, true);
 
        // iZooto.enablePulse(MainActivity.this,false);
+        iZooto.requestOneTapActivity(this, new OneTapCallback() {
+            @Override
+            public void syncOneTapResponse(String email, String firstName, String lastName) {
+                Log.e("abc","email is: -> "+email);
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
