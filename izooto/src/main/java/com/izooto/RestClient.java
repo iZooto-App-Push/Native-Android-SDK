@@ -42,39 +42,23 @@ public class RestClient {
         return timeout + 5000;
     }
     static void get(final String url, final ResponseHandler responseHandler) {
-        new Thread(new Runnable() {
-            public void run() {
-                makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT);
-            }
-        }).start();
+        new Thread(() -> makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT)).start();
     }
     static void getRequest(final String url, final int timeOut,final ResponseHandler responseHandler) {
-        new Thread(new Runnable() {
-            public void run() {
-                if(timeOut==0)
-                    makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT);
-                else
-                    makeApiCall(url, null, null,null, responseHandler,timeOut);
-            }
+        new Thread(() -> {
+            if(timeOut==0)
+                makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT);
+            else
+                makeApiCall(url, null, null,null, responseHandler,timeOut);
         }).start();
     }
 
     static void postRequest(final String url, final Map<String,String> data,JSONObject jsonObject, final ResponseHandler responseHandler) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                makeApiCall(url, AppConstant.POST, data,jsonObject, responseHandler, GET_TIMEOUT);
-            }
-        }).start();
+        new Thread(() -> makeApiCall(url, AppConstant.POST, data,jsonObject, responseHandler, GET_TIMEOUT)).start();
     }
     public static void makeApiCall(final String url, final String method, final Map<String,String> data,JSONObject jsonObject, final ResponseHandler responseHandler, final int timeout) {
         ExecutorService es = Executors.newSingleThreadExecutor();
-        es.submit(new Runnable() {
-            @Override
-            public void run() {
-                startHTTPConnection(url, method, data, jsonObject ,responseHandler, timeout);
-            }
-        });
+        es.submit(() -> startHTTPConnection(url, method, data, jsonObject ,responseHandler, timeout));
     }
 
     private static void startHTTPConnection(String url, String method, final Map<String,String> data,JSONObject jsonBody, ResponseHandler responseHandler, int timeout) {
@@ -210,22 +194,12 @@ public class RestClient {
     }
 
     private static void callResponseHandlerOnSuccess(final ResponseHandler handler, final String response) {
-        new AppExecutors().networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                handler.onSuccess(response);
-            }
-        });
+        new AppExecutors().networkIO().execute(() -> handler.onSuccess(response));
 
     }
 
     private static void callResponseHandlerOnFailure(final ResponseHandler handler, final int statusCode, final String response, final Throwable throwable) {
-        new AppExecutors().networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                handler.onFailure(statusCode, response, throwable);
-            }
-        });
+        new AppExecutors().networkIO().execute(() -> handler.onFailure(statusCode, response, throwable));
     }
 
     static class ResponseHandler {

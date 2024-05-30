@@ -125,14 +125,9 @@ public interface AppConstant {
     String MISSINGID = "App Id is missing.";
     // Register String
     String SENDERID = "senderId";
-    String APPID = "appId";
-    String APIKEY = "apiKey";
     String ID = "id";
     String RID = "rid";
     String TAG = "TAG";
-    String ACT1ID = "act1id";
-    String ACT2ID = "act2id";
-    String FIREBASEEXCEPTION = "exception";
     String FCMNAME = "FireBase Name";
     String NOTIFICATIONRECEIVED = "Short lived task is done.";
     String CHECKFCMLIBRARY = "The FCM library is missing! Please make sure to include it in your project.";
@@ -148,8 +143,6 @@ public interface AppConstant {
     String ACT2URL = "act2URL";
     String ACT1TITLE = "act1title";
     String ACT2TITLE = "act2title";
-    String DIALOG_DISMISS = "Dismiss";
-    String DIALOG_OK = "Take me there";
     String URL_FWD = "&frwd";
     String URL_FWD_ = "&frwd=";
     String URL_BKEY = "&bkey=";
@@ -185,7 +178,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION = "2.4.4";
+    String SDKVERSION = "2.4.5";
     String QSDK_VERSION = "av";
     String SDK = "SDKVERSION";
     String AD_NETWORK = "an";
