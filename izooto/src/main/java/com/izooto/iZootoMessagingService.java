@@ -59,7 +59,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 public void run() {
                     try {
                         executeBackgroundTask(remoteMessage);
-                        Thread.sleep(2000);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -67,7 +66,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
             };
             executorService.execute(runnable);
         } catch (Exception ex){
-            Log.e(AppConstant.FIREBASEEXCEPTION, IZ_TAG_NAME + ex);
             Util.handleExceptionOnce(this, remoteMessage + ex.toString(), IZ_TAG_NAME, "onMessageReceived");
         }
     }
@@ -88,7 +86,6 @@ public class iZootoMessagingService extends FirebaseMessagingService {
                 }
             }
         } catch (Exception ex) {
-            Log.e(AppConstant.FIREBASEEXCEPTION, IZ_TAG_NAME + ex);
             Util.handleExceptionOnce(this, remoteMessage + ex.toString(), IZ_TAG_NAME, "executeBackgroundTask");
         }
     }

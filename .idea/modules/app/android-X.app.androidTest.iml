@@ -19,6 +19,11 @@
     <content url="file://$MODULE_DIR$/../../../app/build/generated/aidl_source_output_dir/debugAndroidTest/out" />
     <content url="file://$MODULE_DIR$/../../../app/build/generated/ap_generated_sources/debugAndroidTest/out">
       <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/ap_generated_sources/debugAndroidTest/out" isTestSource="true" generated="true" />
+<<<<<<< HEAD:.idea/modules/app/android-X.app.androidTest.iml
+=======
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/ap_generated_sources/debugAndroidTest/out" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/ap_generated_sources/debugAndroidTest/out" isTestSource="true" generated="true" />
+>>>>>>> 33c20aeec4ce84860c35c8936ee3ec3a795af089:.idea/modules/app/Native-Android-SDK.app.androidTest.iml
     </content>
     <content url="file://$MODULE_DIR$/../../../app/build/generated/renderscript_source_output_dir/debugAndroidTest/out" />
     <content url="file://$MODULE_DIR$/../../../app/build/generated/res/resValues/androidTest/debug">
@@ -27,6 +32,11 @@
     <content url="file://$MODULE_DIR$/../../../app/build/generated/res/rs/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../app/build/generated/source/buildConfig/androidTest/debug">
       <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/source/buildConfig/androidTest/debug" isTestSource="true" generated="true" />
+<<<<<<< HEAD:.idea/modules/app/android-X.app.androidTest.iml
+=======
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/source/buildConfig/androidTest/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/source/buildConfig/androidTest/debug" isTestSource="true" generated="true" />
+>>>>>>> 33c20aeec4ce84860c35c8936ee3ec3a795af089:.idea/modules/app/Native-Android-SDK.app.androidTest.iml
     </content>
     <content url="file://$MODULE_DIR$/../../../app/src/androidTest" />
     <content url="file://$MODULE_DIR$/../../../app/src/androidTestDebug" />

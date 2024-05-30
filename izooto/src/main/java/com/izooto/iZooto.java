@@ -1386,36 +1386,35 @@ public class iZooto {
                     payload.setCreated_Time(payloadObj.optString(ShortPayloadConstant.CREATEDON));
                     payload.setFetchURL(payloadObj.optString(ShortPayloadConstant.FETCHURL));
                     payload.setKey(payloadObj.optString(ShortPayloadConstant.KEY));
-                    payload.setId(payloadObj.optString(ShortPayloadConstant.ID));
+                    payload.setId(payloadObj.optString(ShortPayloadConstant.ID).replace("['","").replace("']","").replace("~",""));
                     payload.setRid(payloadObj.optString(ShortPayloadConstant.RID));
-                    payload.setLink(payloadObj.optString(ShortPayloadConstant.LINK));
-                    payload.setTitle(payloadObj.optString(ShortPayloadConstant.TITLE));
-                    payload.setMessage(payloadObj.optString(ShortPayloadConstant.NMESSAGE));
-                    payload.setIcon(payloadObj.optString(ShortPayloadConstant.ICON));
+                    payload.setLink(payloadObj.optString(ShortPayloadConstant.LINK).replace("['","").replace("']",""));
+                    payload.setTitle(payloadObj.optString(ShortPayloadConstant.TITLE).replace("['","").replace("']",""));
+                    payload.setMessage(payloadObj.optString(ShortPayloadConstant.NMESSAGE).replace("['","").replace("']",""));
+                    payload.setIcon(payloadObj.optString(ShortPayloadConstant.ICON).replace("['","").replace("']",""));
                     payload.setReqInt(payloadObj.optInt(ShortPayloadConstant.REQINT));
                     payload.setTag(payloadObj.optString(ShortPayloadConstant.TAG));
-                    payload.setBanner(payloadObj.optString(ShortPayloadConstant.BANNER));
+                    payload.setBanner(payloadObj.optString(ShortPayloadConstant.BANNER).replace("['","").replace("']",""));
                     payload.setAct_num(payloadObj.optInt(ShortPayloadConstant.ACTNUM));
-                    payload.setBadgeicon(payloadObj.optString(ShortPayloadConstant.BADGE_ICON));
+                    payload.setBadgeicon(payloadObj.optString(ShortPayloadConstant.BADGE_ICON).replace("['","").replace("']",""));
                     payload.setBadgecolor(payloadObj.optString(ShortPayloadConstant.BADGE_COLOR));
                     payload.setSubTitle(payloadObj.optString(ShortPayloadConstant.SUBTITLE));
                     payload.setGroup(payloadObj.optInt(ShortPayloadConstant.GROUP));
                     payload.setBadgeCount(payloadObj.optInt(ShortPayloadConstant.BADGE_COUNT));
                     // Button 2
                     payload.setAct1name(payloadObj.optString(ShortPayloadConstant.ACT1NAME));
-                    payload.setAct1link(payloadObj.optString(ShortPayloadConstant.ACT1LINK));
+                    payload.setAct1link(payloadObj.optString(ShortPayloadConstant.ACT1LINK).replace("['","").replace("']",""));
                     payload.setAct1icon(payloadObj.optString(ShortPayloadConstant.ACT1ICON));
                     payload.setAct1ID(payloadObj.optString(ShortPayloadConstant.ACT1ID));
                     // Button 2
                     payload.setAct2name(payloadObj.optString(ShortPayloadConstant.ACT2NAME));
-                    payload.setAct2link(payloadObj.optString(ShortPayloadConstant.ACT2LINK));
+                    payload.setAct2link(payloadObj.optString(ShortPayloadConstant.ACT2LINK).replace("['","").replace("']",""));
                     payload.setAct2icon(payloadObj.optString(ShortPayloadConstant.ACT2ICON));
                     payload.setAct2ID(payloadObj.optString(ShortPayloadConstant.ACT2ID));
 
                     payload.setInapp(payloadObj.optInt(ShortPayloadConstant.INAPP));
                     payload.setTrayicon(payloadObj.optString(ShortPayloadConstant.TARYICON));
                     payload.setSmallIconAccentColor(payloadObj.optString(ShortPayloadConstant.ICONCOLOR));
-                    payload.setSound(payloadObj.optString(ShortPayloadConstant.SOUND));
                     payload.setLedColor(payloadObj.optString(ShortPayloadConstant.LEDCOLOR));
                     payload.setLockScreenVisibility(payloadObj.optInt(ShortPayloadConstant.VISIBILITY));
                     payload.setGroupKey(payloadObj.optString(ShortPayloadConstant.GKEY));
@@ -1424,14 +1423,27 @@ public class iZooto {
                     payload.setCollapseId(payloadObj.optString(ShortPayloadConstant.COLLAPSEID));
                     payload.setPriority(payloadObj.optInt(ShortPayloadConstant.PRIORITY));
                     payload.setRawPayload(payloadObj.optString(ShortPayloadConstant.RAWDATA));
+                    payload.setRc(payloadObj.optString(ShortPayloadConstant.RC));
+                    payload.setRv(payloadObj.optString(ShortPayloadConstant.RV));
                     payload.setAp(payloadObj.optString(ShortPayloadConstant.ADDITIONALPARAM));
                     payload.setCfg(payloadObj.optInt(ShortPayloadConstant.CFG));
-                    payload.setTime_to_live(payloadObj.optString(ShortPayloadConstant.TIME_TO_LIVE));
-                    payload.setPush_type(AppConstant.PUSH_FCM);
-                    payload.setSound(payloadObj.optString(ShortPayloadConstant.NOTIFICATION_SOUND));
+                    payload.setPush_type("fcm");
+                    // Notification Channel .............
+                    payload.setChannel(payloadObj.optString(ShortPayloadConstant.NOTIFICATION_CHANNEL));
+                    payload.setVibration(payloadObj.optString(ShortPayloadConstant.VIBRATION));
+                    payload.setBadge(payloadObj.optInt(ShortPayloadConstant.BADGE));
+                    payload.setOtherChannel(payloadObj.optString(ShortPayloadConstant.OTHER_CHANNEL));
+                    payload.setSound(payloadObj.optString(ShortPayloadConstant.SOUND));
                     payload.setMaxNotification(payloadObj.optInt(ShortPayloadConstant.MAX_NOTIFICATION));
+                    payload.setFallBackDomain(payloadObj.optString(ShortPayloadConstant.FALL_BACK_DOMAIN));
+                    payload.setFallBackSubDomain(payloadObj.optString(ShortPayloadConstant.FALLBACK_SUB_DOMAIN));
+                    payload.setFallBackPath(payloadObj.optString(ShortPayloadConstant.FAll_BACK_PATH));
+                    payload.setDefaultNotificationPreview(payloadObj.optInt(ShortPayloadConstant.TEXTOVERLAY));
+                    payload.setNotification_bg_color(payloadObj.optString(ShortPayloadConstant.BGCOLOR));
+                    payload.setOfflineCampaign(payloadObj.optString(ShortPayloadConstant.OFFLINE_CAMPAIGN));
                     payload.setExpiryTimerValue(payloadObj.optString(ShortPayloadConstant.EXPIRY_TIMER_VALUE));
                     payload.setMakeStickyNotification(payloadObj.optString(ShortPayloadConstant.MAKE_STICKY_NOTIFICATION));
+
 
                     try {
                         if (payload.getRid() != null && !payload.getRid().isEmpty()) {

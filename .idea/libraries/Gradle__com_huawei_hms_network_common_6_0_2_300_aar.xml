@@ -1,10 +1,19 @@
 <component name="libraryTable">
   <library name="Gradle: com.huawei.hms:network-common:6.0.2.300@aar" external-system-id="GRADLE">
     <CLASSES>
+<<<<<<< HEAD
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2356588f3a2acea04852d37f5339456b/transformed/jetified-network-common-6.0.2.300/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2356588f3a2acea04852d37f5339456b/transformed/jetified-network-common-6.0.2.300/jars/classes.jar!/" />
+=======
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4790417f092095cb28e444a58bd76f0c/transformed/jetified-network-common-6.0.2.300/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4790417f092095cb28e444a58bd76f0c/transformed/jetified-network-common-6.0.2.300/jars/classes.jar!/" />
+>>>>>>> 33c20aeec4ce84860c35c8936ee3ec3a795af089
     </CLASSES>
-    <JAVADOC />
-    <SOURCES />
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/network-common/6.0.2.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/network-common-6.0.2.300-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/network-common/6.0.2.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/network-common-6.0.2.300-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
