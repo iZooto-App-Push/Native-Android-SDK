@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+
 import androidx.annotation.RequiresApi;
 
 import com.izooto.ActivityLifecycleListener;
@@ -15,9 +16,7 @@ import com.izooto.Payload;
 import com.izooto.TokenReceivedListener;
 import com.izooto.PushTemplate;
 
-public class AppController extends Application implements TokenReceivedListener,NotificationHelperListener, NotificationWebViewListener
-
-{
+public class AppController extends Application implements TokenReceivedListener, NotificationHelperListener, NotificationWebViewListener {
 
     @SuppressLint("NewApi")
     @Override
@@ -31,27 +30,29 @@ public class AppController extends Application implements TokenReceivedListener,
         iZooto.promptForPushNotifications();
 
     }
+
     @Override
     public void onTokenReceived(String token) {
-        Log.e("TokenData",token);
+        Log.e("TokenData", token);
 
     }
+
     @Override
     public void onNotificationReceived(Payload payload) {
-        Log.e("Payload",payload.getTitle());
+        Log.e("Payload", payload.getTitle());
     }
 
     @Override
     public void onNotificationOpened(String data) {
-         Intent intent=new Intent(this,MainActivity.class);// launch activity name
-         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-         startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);// launch activity name
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 
     @Override
     public void onWebView(String landingUrl) {
-        Intent intent=new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

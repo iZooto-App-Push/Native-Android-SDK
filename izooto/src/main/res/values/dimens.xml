@@ -1,64 +1,71 @@
 <resources>
- <dimen name="fab_margin">16dp</dimen>
- <dimen name="fab_margin35">35dp</dimen>
- <dimen name="fab_margin32">32dp</dimen>
- <!-- width -->
- <dimen name="width_35dp">35dp</dimen>
- <dimen name="width_17dp">17dp</dimen>
- <dimen name="width_21dp">21dp</dimen>
- <dimen name="width_25dp">25dp</dimen>
- <dimen name="width_110dp">110dp</dimen>
- <!-- height -->
- <dimen name="height_17dp">17dp</dimen>
- <dimen name="height_18dp">18dp</dimen>
- <dimen name="height_21dp">21dp</dimen>
- <dimen name="height_25dp">25dp</dimen>
- <dimen name="height_35dp">35dp</dimen>
- <dimen name="height_40dp">40dp</dimen>
- <dimen name="height_45dp">45dp</dimen>
- <dimen name="height_75dp">75dp</dimen>
- <dimen name="height_256dp">270dp</dimen>
- <dimen name="height_125dp">125dp</dimen>
- <!-- margin  -->
- <dimen name="margin_1dp">1dp</dimen>
- <dimen name="margin_5dp">5dp</dimen>
- <dimen name="margin_8dp">8dp</dimen>
- <dimen name="margin_10dp">10dp</dimen>
- <dimen name="margin_14dp">14dp</dimen>
- <dimen name="margin_15dp">15dp</dimen>
- <dimen name="margin_20dp">20dp</dimen>
- <dimen name="margin_30dp">30dp</dimen>
- <dimen name="margin_35dp">35dp</dimen>
- <dimen name="margin_40dp">40dp</dimen>
- <dimen name="margin_45dp">45dp</dimen>
- <dimen name="margin_50dp">50dp</dimen>
- <dimen name="margin_1.5dp">1.5dp</dimen>
- <dimen name="margin_2dp">2dp</dimen>
- <dimen name="margin_3dp">3dp</dimen>
- <dimen name="margin_4dp">4dp</dimen>
- <dimen name="margin_6dp">6dp</dimen>
- <dimen name="margin_7dp">7dp</dimen>
- <dimen name="margin_9dp">9dp</dimen>
- <dimen name="margin_11dp">11dp</dimen>
- <dimen name="margin_12dp">12dp</dimen>
- <!-- Text size-->
- <dimen name="text_1sp">1sp</dimen>
- <dimen name="text_2sp">2sp</dimen>
- <dimen name="text_3sp">3sp</dimen>
- <dimen name="text_4sp">4sp</dimen>
- <dimen name="text_6sp">6sp</dimen>
- <dimen name="text_7sp">7sp</dimen>
- <dimen name="text_8sp">8sp</dimen>
- <dimen name="text_9sp">9sp</dimen>
- <dimen name="text_10sp">10sp</dimen>
- <dimen name="text_11sp">11sp</dimen>
- <dimen name="text_12sp">12sp</dimen>
- <dimen name="text_13sp">13sp</dimen>
- <dimen name="text_14sp">14sp</dimen>
- <dimen name="text_18sp">18sp</dimen>
- <dimen name="text_15sp">14sp</dimen>
- <dimen name="width_24dp">24dp</dimen>
- <dimen name="height_width17">16sp</dimen>
- <dimen name="height_width14">13sp</dimen>
- <dimen name="height_width24">24sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_margin35">35dp</dimen>
+    <dimen name="fab_margin32">32dp</dimen>
+    <!-- width -->
+    <dimen name="width_35dp">35dp</dimen>
+    <dimen name="width_17dp">17dp</dimen>
+    <dimen name="width_21dp">21dp</dimen>
+    <dimen name="width_25dp">25dp</dimen>
+    <dimen name="width_110dp">110dp</dimen>
+    <!-- height -->
+    <dimen name="height_17dp">17dp</dimen>
+
+    <dimen name="height_18dp">18dp</dimen>
+    <dimen name="height_21dp">21dp</dimen>
+    <dimen name="height_25dp">25dp</dimen>
+    <dimen name="height_35dp">35dp</dimen>
+    <dimen name="height_40dp">40dp</dimen>
+    <dimen name="height_45dp">45dp</dimen>
+    <dimen name="height_75dp">75dp</dimen>
+    <dimen name="height_256dp">270dp</dimen>
+
+    <dimen name="height_125dp">125dp</dimen>
+    <!-- margin  -->
+    <dimen name="margin_1dp">1dp</dimen>
+    <dimen name="margin_5dp">5dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_14dp">14dp</dimen>
+    <dimen name="margin_15dp">15dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="margin_35dp">35dp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="margin_45dp">45dp</dimen>
+    <dimen name="margin_50dp">50dp</dimen>
+
+
+    <dimen name="margin_1.5dp">1.5dp</dimen>
+    <dimen name="margin_2dp">2dp</dimen>
+    <dimen name="margin_3dp">3dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_6dp">6dp</dimen>
+    <dimen name="margin_7dp">7dp</dimen>
+    <dimen name="margin_9dp">9dp</dimen>
+    <dimen name="margin_11dp">11dp</dimen>
+    <dimen name="margin_12dp">12dp</dimen>
+
+    <!-- Text size-->
+    <dimen name="text_1sp">1sp</dimen>
+    <dimen name="text_2sp">2sp</dimen>
+    <dimen name="text_3sp">3sp</dimen>
+    <dimen name="text_4sp">4sp</dimen>
+    <dimen name="text_6sp">6sp</dimen>
+    <dimen name="text_7sp">7sp</dimen>
+    <dimen name="text_8sp">8sp</dimen>
+    <dimen name="text_9sp">9sp</dimen>
+    <dimen name="text_10sp">10sp</dimen>
+    <dimen name="text_11sp">11sp</dimen>
+    <dimen name="text_12sp">12sp</dimen>
+    <dimen name="text_13sp">13sp</dimen>
+    <dimen name="text_14sp">14sp</dimen>
+    <dimen name="text_18sp">18sp</dimen>
+    <dimen name="text_15sp">14sp</dimen>
+    <dimen name="width_24dp">24dp</dimen>
+    <dimen name="height_width17">16sp</dimen>
+    <dimen name="height_width14">13sp</dimen>
+    <dimen name="height_width24">24sp</dimen>
+
+
 </resources>

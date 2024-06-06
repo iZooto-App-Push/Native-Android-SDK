@@ -9,6 +9,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
+
+import com.izooto.AppConstant;
+import com.izooto.Payload;
+import com.izooto.PreferenceUtil;
+import com.izooto.R;
+import com.izooto.Util;
+import com.izooto.iZooto;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -227,7 +235,6 @@ public class iZootoNotificationChannelHandler {
 
         } catch (JSONException e) {
             Util.handleExceptionOnce(context, e.toString(), "deleteNotificationChannel()", IZ_CLASS_NAME);
-            e.printStackTrace();
         }
     }
 
@@ -252,7 +259,6 @@ public class iZootoNotificationChannelHandler {
 
         } catch (JSONException e) {
             Util.handleExceptionOnce(context, e.toString(), "deleteNotificationChannelGroup()", IZ_CLASS_NAME);
-            e.printStackTrace();
         }
     }
 

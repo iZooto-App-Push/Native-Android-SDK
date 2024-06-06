@@ -1,16 +1,17 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/iz_colorPrimary</item>
-        <item name="colorPrimaryDark">@color/iz_colorPrimaryDark</item>
-        <item name="colorAccent">@color/iz_colorAccent</item>
+        <item name="colorPrimary">@color/cardview_light_background</item>
+        <item name="colorPrimaryDark">@color/cardview_light_background</item>
+        <item name="colorAccent">@color/cardview_light_background</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -18,7 +19,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.Progressbar_Accent">
-        <item name="colorAccent">@color/iz_colorPrimary</item>
+        <item name="colorAccent">@color/iz_white</item>
     </style>
     <style name="NH_ALERT_DIALOG" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/iz_nh_background</item>
@@ -27,4 +28,22 @@
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/popup_background</item>
     </style>
+
+    <!-- Use for top alert -->
+
+
+
+
+
+   <!-- Use for transparent interaction ui -->
+
+    <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+    </style>
+
 </resources>

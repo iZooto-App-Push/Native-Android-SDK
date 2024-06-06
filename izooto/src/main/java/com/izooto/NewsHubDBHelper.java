@@ -8,9 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.izooto.Payload;
+import com.izooto.Util;
+import com.izooto.iZooto;
+
 import java.util.ArrayList;
 
-class NewsHubDBHelper extends SQLiteOpenHelper {
+ public class NewsHubDBHelper extends SQLiteOpenHelper {
 
     // creating a constant variables for our database.
     // below variable is for our database name.
@@ -75,61 +79,61 @@ class NewsHubDBHelper extends SQLiteOpenHelper {
     // below method is for creating a database by running a sqlite query
     @Override
     public void onCreate(SQLiteDatabase db) {
-        try {
-            String query = "CREATE TABLE " + TABLE_NAME + " ("
-                    + NOTIFICATION_RID + " INTEGER PRIMARY KEY, "
-                    + NOTIFICATION_TITLE + " TEXT,"
-                    + NOTIFICATION_SUBTITLE + " TEXT,"
-                    + NOTIFICATION_MESSAGE + " TEXT,"
-                    + NOTIFICATION_ICON + " TEXT,"
-                    + NOTIFICATION_BANNER_IMAGE + " TEXT,"
-                    + NOTIFICATION_CID + " TEXT,"
-                    + NOTIFICATION_ID + " TEXT,"
-                    + NOTIFICATION_BADGE_ICON + " TEXT,"
-                    + NOTIFICATION_BADGE_COLOR + " TEXT,"
-                    + FETCH_URL + " TEXT,"
-                    + LANDING_URL + " TEXT,"
-                    + BUTTON1_NAME + " TEXT,"
-                    + BUTTON1_URL + " TEXT,"
-                    + BUTTON2_NAME + " TEXT,"
-                    + BUTTON2_URL + " TEXT,"
-                    + BADGE_COUNT + " TEXT,"
-                    + INAPP + " TEXT,"
-                    + NOTIFICATION_SOUND + " TEXT,"
-                    + ADDITIONAL_PARAM + " TEXT,"
-                    + MAX_NOTIFICATION + " TEXT,"
-                    + TEXT_OVERLAY + " TEXT,"
-                    + BG_COLOR + " TEXT,"
-                    + ICON_COLOR + " TEXT,"
-                    + LED_COLOR + " TEXT,"
-                    + COLLAPSE_ID + " TEXT,"
-                    + PRIORITY + " TEXT,"
-                    + CFG + " TEXT,"
-                    + PUSH_TYPE + " TEXT,"
-                    + VISIBILITY + " TEXT,"
-                    + GMESSAGE + " TEXT,"
-                    + GKEY + " TEXT,"
-                    + ACT1ID + " TEXT,"
-                    + ACT2ID + " TEXT,"
-                    + TAG + " TEXT,"
-                    + TTL + " TEXT,"
-                    + REQUIREDINT + " TEXT,"
-                    + BUTTONCOUNT + " TEXT,"
-                    + CREATE_ON + " TEXT,"
-                    + NOTIFCATION_BANNER_DATA + " TEXT)";
+           try {
+               String query = "CREATE TABLE " + TABLE_NAME + " ("
+                       + NOTIFICATION_RID + " INTEGER PRIMARY KEY, "
+                       + NOTIFICATION_TITLE + " TEXT,"
+                       + NOTIFICATION_SUBTITLE + " TEXT,"
+                       + NOTIFICATION_MESSAGE + " TEXT,"
+                       + NOTIFICATION_ICON + " TEXT,"
+                       + NOTIFICATION_BANNER_IMAGE + " TEXT,"
+                       + NOTIFICATION_CID + " TEXT,"
+                       + NOTIFICATION_ID + " TEXT,"
+                       + NOTIFICATION_BADGE_ICON + " TEXT,"
+                       + NOTIFICATION_BADGE_COLOR + " TEXT,"
+                       + FETCH_URL + " TEXT,"
+                       + LANDING_URL + " TEXT,"
+                       + BUTTON1_NAME + " TEXT,"
+                       + BUTTON1_URL + " TEXT,"
+                       + BUTTON2_NAME + " TEXT,"
+                       + BUTTON2_URL + " TEXT,"
+                       + BADGE_COUNT + " TEXT,"
+                       + INAPP + " TEXT,"
+                       + NOTIFICATION_SOUND + " TEXT,"
+                       + ADDITIONAL_PARAM + " TEXT,"
+                       + MAX_NOTIFICATION + " TEXT,"
+                       + TEXT_OVERLAY + " TEXT,"
+                       + BG_COLOR + " TEXT,"
+                       + ICON_COLOR + " TEXT,"
+                       + LED_COLOR + " TEXT,"
+                       + COLLAPSE_ID + " TEXT,"
+                       + PRIORITY + " TEXT,"
+                       + CFG + " TEXT,"
+                       + PUSH_TYPE + " TEXT,"
+                       + VISIBILITY + " TEXT,"
+                       + GMESSAGE + " TEXT,"
+                       + GKEY + " TEXT,"
+                       + ACT1ID + " TEXT,"
+                       + ACT2ID + " TEXT,"
+                       + TAG + " TEXT,"
+                       + TTL + " TEXT,"
+                       + REQUIREDINT + " TEXT,"
+                       + BUTTONCOUNT + " TEXT,"
+                       + CREATE_ON + " TEXT,"
+                       + NOTIFCATION_BANNER_DATA + " TEXT)";
 //                + TRACKS_COL + " TEXT)";
 
-            // at last we are calling a exec sql
-            // method to execute above sql query
-            db.execSQL(query);
-        }
-        catch (Exception ex){
-            Log.e("SQLITE Exception",ex.toString());
-        }
+               // at last we are calling a exec sql
+               // method to execute above sql query
+               db.execSQL(query);
+           }
+           catch (Exception ex){
+               Log.e("SQLITE Exception",ex.toString());
+           }
     }
 
     // this method is use to add new course to our sqlite database.
-    protected void addNewsHubPayload(Payload payload) {
+    public void addNewsHubPayload(Payload payload) {
         try {
             if (payload.getLink() != null && !payload.getLink().isEmpty()) {
                 // on below line we are creating a variable for
@@ -267,7 +271,10 @@ class NewsHubDBHelper extends SQLiteOpenHelper {
                     payloadArrayList.add(mPayload);
                 } while (cursor.moveToNext());
             }
+            // at last closing our cursor
+            // and returning our array list.
             cursor.close();
+//            Log.e(TAG, "fetchNewsHubData: -- "+payloadArrayList );
             return payloadArrayList;
         } catch (Exception e) {
             Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NewsHubDBHelper", "fetchNewsHubData");

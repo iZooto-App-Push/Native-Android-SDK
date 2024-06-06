@@ -65,7 +65,6 @@ public class AdvertisingIdClient {
 
     protected void start(final Context context, final Listener listener) {
         if (listener == null) {
-            Log.e(TAG, "getAdvertisingId - Error: null listener, dropping call");
             return;
         }
 

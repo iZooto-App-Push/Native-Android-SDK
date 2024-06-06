@@ -3,8 +3,6 @@ package com.izooto;
 
 import android.content.Context;
 
-import android.content.Context;
-
 public interface TokenGenerator {
 
     void getToken(Context context, String senderId,TokenGenerationHandler callback);

@@ -100,18 +100,22 @@ public class FCMTokenGenerator implements TokenGenerator {
     public void initFireBaseApp(final String senderId) {
         if (firebaseApp != null)
             return;
-        if (!get_Project_ID().isEmpty() && !getAPI_KEY().isEmpty() && !senderId.isEmpty()) {
-            FirebaseOptions firebaseOptions =
-                    new FirebaseOptions.Builder()
-                            .setGcmSenderId(senderId) //senderID
-                            .setApplicationId(get_App_ID()) //application ID
-                            .setApiKey(getAPI_KEY()) //Application Key
-                            .setProjectId(get_Project_ID()) //Project ID
-                            .build();
-            firebaseApp = FirebaseApp.initializeApp(iZooto.appContext, firebaseOptions, AppConstant.SDK_NAME);
-            Lg.d(AppConstant.FCMNAME, firebaseApp.getName());
-        } else {
-            Log.v(AppConstant.APP_NAME_TAG, AppConstant.IZ_MISSING_GOOGLE_JSON_SERVICES_FILE);
+        try {
+            if (!get_Project_ID().isEmpty() && !getAPI_KEY().isEmpty() && !senderId.isEmpty()) {
+                FirebaseOptions firebaseOptions =
+                        new FirebaseOptions.Builder()
+                                .setGcmSenderId(senderId) //senderID
+                                .setApplicationId(get_App_ID()) //application ID
+                                .setApiKey(getAPI_KEY()) //Application Key
+                                .setProjectId(get_Project_ID()) //Project ID
+                                .build();
+                firebaseApp = FirebaseApp.initializeApp(iZooto.appContext, firebaseOptions, AppConstant.SDK_NAME);
+                Lg.d(AppConstant.FCMNAME, firebaseApp.getName());
+            } else {
+                Log.v(AppConstant.APP_NAME_TAG, AppConstant.IZ_MISSING_GOOGLE_JSON_SERVICES_FILE);
+            }
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "FCMTokenGenerator", "initFireBaseApp");
         }
     }
 

@@ -1,19 +1,5 @@
 package com.izooto;
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Build;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
-import org.json.JSONArray;
-
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -66,9 +52,15 @@ public class PreferenceUtil {
     }
 
     public void setStringData(String key, String value) {
-        SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
-        appInstallInfoEditor.putString(key, value);
-        appInstallInfoEditor.apply();
+        try {
+            SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
+            appInstallInfoEditor.putString(key, value);
+            appInstallInfoEditor.apply();
+        }
+        catch (Exception ex)
+        {
+            Log.e("PreferenceUtil","setStringData"+ ex);
+        }
     }
 
     public boolean getBoolean(String key) {
@@ -91,9 +83,16 @@ public class PreferenceUtil {
     }
 
     public void setBooleanData(String key, boolean value) {
-        SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
-        appInstallInfoEditor.putBoolean(key, value);
-        appInstallInfoEditor.apply();
+        try {
+            SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
+            appInstallInfoEditor.putBoolean(key, value);
+            appInstallInfoEditor.apply();
+        }catch (Exception ex)
+        {
+            Log.e("PreferenceUtil","setBooleanData"+ ex);
+
+        }
+
     }
 
     public long getLongValue(String key) {
@@ -106,15 +105,28 @@ public class PreferenceUtil {
     }
 
     public void setLongData(String key, long value) {
-        SharedPreferences.Editor editor = mSpref.edit();
-        editor.putLong(key, value);
-        editor.apply();
+        try {
+            SharedPreferences.Editor editor = mSpref.edit();
+            editor.putLong(key, value);
+            editor.apply();
+        }
+        catch (Exception ex)
+        {
+            Log.e("PreferenceUtil","setBooleanData"+ ex);
+        }
     }
     public void setIZootoID(String key, String id)
     {
-        SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
-        appInstallInfoEditor.putString(key, id);
-        appInstallInfoEditor.apply();
+        try {
+            SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
+            appInstallInfoEditor.putString(key, id);
+            appInstallInfoEditor.apply();
+        }
+        catch (Exception ex)
+        {
+            Log.e("PreferenceUtil","setBooleanData"+ ex);
+
+        }
     }
     public String getiZootoID(String key)
     {
@@ -151,14 +163,27 @@ public class PreferenceUtil {
     }
 
     public void setPlacement(String key, JSONArray value) {
-        SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
-        appInstallInfoEditor.putString(key, value.toString());
-        appInstallInfoEditor.apply();
+        try {
+            SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
+            appInstallInfoEditor.putString(key, value.toString());
+            appInstallInfoEditor.apply();
+        }
+        catch (Exception ex)
+        {
+            Log.e("setPlacement",ex.toString());
+
+        }
     }
 
     public String getPlacement(String key) {
         return mSpref.getString(key, "");
 
+    }
+
+    void remove(String key){
+        SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
+        appInstallInfoEditor.remove(key);
+        appInstallInfoEditor.apply();
     }
 
 }

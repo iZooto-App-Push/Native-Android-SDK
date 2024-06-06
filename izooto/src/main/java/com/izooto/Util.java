@@ -1,5 +1,7 @@
 package com.izooto;
 
+import static com.izooto.AppConstant.APP_NAME_TAG;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -24,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
@@ -38,20 +41,18 @@ import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 
+import com.google.firebase.FirebaseOptions;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +61,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,17 +71,10 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import static com.izooto.AppConstant.APP_NAME_TAG;
-
-import com.google.firebase.FirebaseOptions;
-
 public class Util {
     private static final String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
     private static final int CIPHER_KEY_LEN = 16;
     private static final long TIME_OUT = 20 * 1000L;
-    private static final String SERVICE_ACTION = "android.support.customtabs.action.CustomTabsService";
-    private static final String CHROME_PACKAGE = "com.android.chrome";
-    private static String channelId;
 
     public enum SchemaType {
         DATA("data"),
@@ -140,9 +136,8 @@ public class Util {
     private static Bitmap getBitMap(String src) {
         try {
             return BitmapFactory.decodeStream(new URL(src).openConnection().getInputStream());
-
-        } catch (Exception e){
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext, src + " "+ e, "[Log-> e]-> getBitMap");
+        } catch (Exception e) {
+            DebugFileManager.createExternalStoragePublic(iZooto.appContext, src + " " + e, "[Log-> e]-> getBitMap");
             return null;
         }
     }
@@ -171,7 +166,6 @@ public class Util {
 
     static String getAndroidId(Context mContext) {
         @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        Log.v(APP_NAME_TAG, "android id ---- " + android_id);
         return android_id;
     }
 
@@ -234,7 +228,7 @@ public class Util {
 
     }
 
-    static String getDeviceLanguage() {
+     static String getDeviceLanguage() {
         Locale locale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
@@ -245,17 +239,17 @@ public class Util {
 
     }
 
-    static String getIntegerToBinary(int number) {
+     public static String getIntegerToBinary(int number) {
         return String.format("%16s", Integer.toBinaryString(number)).replace(' ', '0');
 
     }
 
-    static boolean checkNotificationEnable() {
+     static boolean checkNotificationEnable() {
         return NotificationManagerCompat.from(iZooto.appContext).areNotificationsEnabled();
 
     }
 
-    static String getPackageName(Context context) {
+     public static String getPackageName(Context context) {
         ApplicationInfo ai;
         try {
             ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
@@ -266,7 +260,7 @@ public class Util {
         return context.getPackageName();
     }
 
-    static boolean isMatchedString(String s) {
+     static boolean isMatchedString(String s) {
         try {
             Pattern pattern = Pattern.compile("[a-zA-Z0-9-_.~%]{1,900}");
             Matcher matcher = pattern.matcher(s);
@@ -276,7 +270,7 @@ public class Util {
         }
     }
 
-    static int convertStringToDecimal(String number) {
+     static int convertStringToDecimal(String number) {
         char[] numChar = number.toCharArray();
         int intValue = 0;
         int decimal = 1;
@@ -294,7 +288,7 @@ public class Util {
         return intValue;
     }
 
-    static CharSequence makeBoldString(CharSequence title) {
+     static CharSequence makeBoldString(CharSequence title) {
         if (Build.VERSION.SDK_INT >= 24) {
             title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\"><b>" + title + "</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
         } else {
@@ -303,7 +297,7 @@ public class Util {
         return title;
     }
 
-    static CharSequence makeBlackString(CharSequence title) {
+     static CharSequence makeBlackString(CharSequence title) {
         if (Build.VERSION.SDK_INT >= 24) {
             title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\">" + title + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
         } else {
@@ -312,7 +306,7 @@ public class Util {
         return title;
     }
 
-    static Bitmap makeCornerRounded(Bitmap image) {
+     static Bitmap makeCornerRounded(Bitmap image) {
         try {
             Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
             Canvas canvas = new Canvas(imageRounded);
@@ -354,7 +348,7 @@ public class Util {
 
     }
 
-    static String getTime() {
+   public static String getTime() {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
         return sdf.format(new Date());
     }
@@ -381,7 +375,7 @@ public class Util {
 
 
 
-    static void sleepTime(int time) {
+     static void sleepTime(int time) {
         try {
             Thread.sleep(time);
         } catch (Exception e) {
@@ -459,7 +453,7 @@ public class Util {
                 mapData.put(AppConstant.ClASS_NAME, className);
                 mapData.put(AppConstant.SDK, AppConstant.SDKVERSION);
                 mapData.put(AppConstant.ANDROIDVERSION, Build.VERSION.RELEASE);
-                mapData.put(AppConstant.DEVICENAME, Util.getDeviceName());
+                mapData.put(AppConstant.DEVICE_NAME, Util.getDeviceName());
                 RestClient.postRequest(RestClient.APP_EXCEPTION_URL, mapData,null, new RestClient.ResponseHandler() {
                     @Override
                     void onSuccess(final String response) {
@@ -670,7 +664,7 @@ public class Util {
     }
 
     // news hub
-    protected static String getColorCode(String color) {
+    public static String getColorCode(String color) {
         if (color.startsWith("#")) {
             return color;
         } else {
@@ -696,16 +690,12 @@ public class Util {
                 hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
                 hashMap.put(AppConstant.VER_, AppConstant.SDKVERSION);
                 hashMap.put("link",userModal.getLink());
-                hashMap.put("tt", iZooto.OT_ID); // 5 means swipe left or right 6 means on backPressed
-                hashMap.put("ot", iZooto.OT_ID);
-                hashMap.put("cid", iZooto.pulseCid);
-                hashMap.put("rid", iZooto.pulseRid);
+
             }
             RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_CLICK, hashMap, null, new RestClient.ResponseHandler() {
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
-                    Log.e("HashMap", hashMap.toString());
                 }
 
                 @Override
@@ -715,38 +705,6 @@ public class Util {
             });
         } catch (Exception e) {
             Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "newsHubClickApi");
-        }
-    }
-
-    // pulse impression
-    protected static void pulseImpression(Context context) {
-        try {
-            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            HashMap<String, String> hashMap = new HashMap<>();
-            if (preferenceUtil != null) {
-                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
-                hashMap.put(AppConstant.VER_, AppConstant.SDKVERSION);
-                hashMap.put("tt", iZooto.OT_ID); // 5 means swipe left or right 6 means on backPressed
-                hashMap.put("ot", iZooto.OT_ID);
-                hashMap.put("cid", iZooto.pulseCid);
-                hashMap.put("rid", iZooto.pulseRid);
-            }
-            RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_IMPRESSION, hashMap, null, new RestClient.ResponseHandler() {
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-
-                }
-
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-
-                }
-            });
-        } catch (Exception e) {
-            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "pulseImpression");
         }
     }
 
@@ -775,7 +733,7 @@ public class Util {
         return AppConstant.CHANNEL_NAME;
     }
 
-    protected static boolean notificationMode() {
+    public static boolean notificationMode() {
         Locale locale = Locale.getDefault();
         return TextUtils.getLayoutDirectionFromLocale(locale) != ViewCompat.LAYOUT_DIRECTION_LTR;
     }
@@ -836,100 +794,31 @@ public class Util {
                 !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1");
     }
 
+     public static String getTimeAgo(String timestamp) {
 
-    static void parseXml(RssContentCallbackListener callbackListener) {
-        ArrayList<Payload> contentList = new ArrayList<>();
-        new Thread(() -> {
-            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.newsHubContext);
+         try {
+             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
+             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+             Date date = dateFormat.parse(timestamp);
+             if (date != null) {
+                 long timeInMillis = date.getTime();
+                 long now = System.currentTimeMillis();
+                 CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(timeInMillis, now, DateUtils.MINUTE_IN_MILLIS);
+                 return relativeTimeSpan.toString()
+                         .replace(" minutes", "m")
+                         .replace(" minute", "m")
+                         .replace(" hours", "h")
+                         .replace(" hour", "h")
+                         .replace(" seconds", "s")
+                         .replace(" second", "s");
+             }
+         } catch (Exception e) {
+             Util.handleExceptionOnce(iZooto.appContext,e.toString(),"Util","getValidIdForCampaigns");
+         }
+         return "";
+     }
 
-            try {
-                URL url = new URL(iZooto.pUrl);
-                XmlPullParser pullParser = XmlPullParserFactory.newInstance().newPullParser();
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.connect();
-                if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    pullParser.setInput(new InputStreamReader(urlConnection.getInputStream()));
-                    int eventType = pullParser.getEventType();
-                    Payload payload = null;
-
-                    boolean isNull = true;
-                    while (eventType != XmlPullParser.END_DOCUMENT) {
-                        if (eventType == XmlPullParser.START_TAG) {
-                            String tagName = pullParser.getName();
-                            if (tagName.equals("title") && isNull) {
-                                isNull = false;
-                                String name = pullParser.nextText();
-                                preferenceUtil.setStringData("pubName", name);
-                                pullParser.require(XmlPullParser.END_TAG, null, "title");
-                            }
-                            if ("item".equals(tagName)) {
-                                payload = new Payload();
-                            } else if ("title".equals(tagName) && payload != null) {
-                                payload.setTitle(pullParser.nextText());
-
-                            } else if ("link".equals(tagName) && payload != null) {
-                                payload.setLink(pullParser.nextText());
-                            } else if ("description".equals(tagName) && payload != null) {
-                                payload.setDescription(pullParser.nextText());
-                            } else if ("pubDate".equals(tagName) && payload != null) {
-                                payload.setCreated_Time(pullParser.nextText());
-                            } else if ("image".equals(tagName) && payload != null) {
-                                payload.setBanner(pullParser.nextText());
-                            } else if ("media:content".equals(tagName) && payload != null) {
-                                String imageUrl = pullParser.getAttributeValue(null, "url");
-                                payload.setBanner(imageUrl);
-                            } else if ("category".equals(tagName) && payload != null) {
-                                String domain = pullParser.getAttributeValue(null, "domain");
-                                if ("foxnews.com/metadata/dc.source".equals(domain)) {
-                                    eventType = pullParser.next();
-                                    if (eventType == XmlPullParser.TEXT) {
-                                        String categoryValue = pullParser.getText();
-                                        payload.setCategory(categoryValue);
-                                    }
-
-                                }
-                            }
-                        } else if (eventType == XmlPullParser.END_TAG && "item".equals(pullParser.getName()) && payload != null) {
-                            contentList.add(payload);
-                            callbackListener.onCallback(contentList);
-                            contentList.clear();
-                            payload = null;
-                        }
-                        eventType = pullParser.next();
-                    }
-                } else {
-                    Log.e("http connection error", "bad request...");
-                }
-            } catch (Exception e) {
-                Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "parseVibrationPattern");
-            }
-        }).start();
-    }
-
-    public static String getTimeAgo(String timestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        try {
-            Date date = dateFormat.parse(timestamp);
-            if (date != null) {
-                long timeInMillis = date.getTime();
-                long now = System.currentTimeMillis();
-                CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(timeInMillis, now, DateUtils.MINUTE_IN_MILLIS);
-                return relativeTimeSpan.toString()
-                        .replace(" minutes", "m")
-                        .replace(" minute", "m")
-                        .replace(" hours", "h")
-                        .replace(" hour", "h")
-                        .replace(" seconds", "s")
-                        .replace(" second", "s");
-            }
-        } catch (Exception e) {
-            Util.handleExceptionOnce(iZooto.appContext,e.toString(),"Util","getValidIdForCampaigns");
-        }
-        return "";
-    }
-
-    // To Handle Exception once
+    // To PulseManager Exception once
     public static void handleExceptionOnce(Context context, String exception, String className, String methodName) {
         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
         if (!preferenceUtil.getBoolean(methodName)) {
@@ -940,7 +829,7 @@ public class Util {
     }
 
     /* News Hub offline campaigns */
-    protected static int getValidIdForCampaigns(Payload payload) {
+    public static int getValidIdForCampaigns(Payload payload) {
         int digit = 0;
         try {
             String digits = payload.getRid().trim();
@@ -987,6 +876,68 @@ public class Util {
         return "";
     }
 
+    public static String setExtrasAsJson(Context context, Bundle bundle) {
+        try {
+            JSONObject json = new JSONObject();
+            Set<String> keys = bundle.keySet();
+            for (String key : keys) {
+                try {
+                    json.put(key, JSONObject.wrap(bundle.get(key)));
+                } catch (JSONException e) {
+                    Util.handleExceptionOnce(context, e.toString(), "Util", "setExtrasAsJson");
+
+                }
+            }
+            return json.toString();
+        }catch (Exception e){
+            Util.handleExceptionOnce(context, e.toString(), "Util", "setExtrasAsJson");
+            return null;
+        }
+    }
+
+
+    public static Map<String, String> setJsonAsMap(Context context, JSONObject data){
+        Map<String, String> map = new HashMap<>();
+        try{
+            Iterator<?> keys = data.keys();
+            while (keys.hasNext()){
+                String key = (String) keys.next();
+                String value = data.getString(key);
+                map.put(key, value);
+            }
+        }catch (Exception e){
+            Util.handleExceptionOnce(context, e.toString(), "Util", "setJsonAsMap");
+        }
+        return map;
+    }
+
+
+     public static String getOsNotificationId(Context context) {
+        UUID uuid = null;
+        try {
+            uuid = UUID.randomUUID();
+        }catch (Exception e){
+            Util.handleExceptionOnce(context, e.toString(), "Util", "getOsNotificationId");
+        }
+        if (uuid != null) {
+            return uuid.toString();
+        }
+        return null;
+    }
+
+
+    public static boolean isStringNotEmpty(String body) {
+        return !TextUtils.isEmpty(body);
+    }
+
+   public static boolean getNotificationKey(Bundle extras){
+        return extras.containsKey(ShortPayloadConstant.GCM_TITLE) && extras.containsKey(ShortPayloadConstant.GCM_MESSAGE) && extras.containsKey(ShortPayloadConstant.GCM_ID);
+    }
+
+    public static boolean getDataKey(Bundle extras){
+        return ((extras.containsKey(ShortPayloadConstant.TITLE) && extras.containsKey(AppConstant.P_CFG) && extras.containsKey(ShortPayloadConstant.RID)) || (extras.containsKey(AppConstant.AD_NETWORK) || extras.containsKey(AppConstant.GLOBAL_PUBLIC_KEY)));
+    }
+
     /*  Required interaction */
     static long getRequiredInteraction(Payload payload) {
         long getRequiredInteraction = 0L;
@@ -1013,12 +964,7 @@ public class Util {
     }
 
 
-    static void setChannelId(String channelId){
-        channelId = channelId;
-    }
-
-
-    static boolean areNotificationsEnabled(Context context, String channelId) {
+       static boolean areNotificationsEnabled(Context context, String channelId) {
         try {
             boolean notificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled();
             if (!notificationsEnabled) {
@@ -1038,7 +984,7 @@ public class Util {
     }
 
 
-    static NotificationManager getNotificationManager(Context context){
+    private static NotificationManager getNotificationManager(Context context){
         return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
@@ -1057,15 +1003,28 @@ public class Util {
 
 
     private static int getTargetSdkVersion(Context context) {
-        String packageName = context.getPackageName();
-        PackageManager packageManager = context.getPackageManager();
         try {
+            String packageName = context.getPackageName();
+            PackageManager packageManager = context.getPackageManager();
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
             return applicationInfo.targetSdkVersion;
         } catch (Exception e) {
             Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "getTargetSdkVersion");
         }
         return Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
+    }
+
+    static boolean isPulseDeepLink(int cfgValue) {
+        try {
+            String eleventhDigit = "0";
+            String data = Util.getIntegerToBinary(cfgValue);
+            if (!data.isEmpty()) {
+                eleventhDigit = String.valueOf(data.charAt(data.length() - 11));
+            }
+            return eleventhDigit.equals("1");
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
 }

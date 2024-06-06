@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.UnsupportedEncodingException;
@@ -173,7 +171,7 @@ public class NewsHubActivity extends AppCompatActivity {
                 toolbarLayout.setBackgroundColor(Color.parseColor(Util.getColorCode(color)));
             }
         } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), className, "setJsonData");
+                Util.handleExceptionOnce(context, e.toString(), className, "setJsonData");
         }
     }
 

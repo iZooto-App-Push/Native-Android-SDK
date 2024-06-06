@@ -26,7 +26,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OneTapSignInManager {
-
     private static final String IZ_CLASS_NAME = "OneTapSignInManager";
 
     static void manageSignInRequest(Context context, String serverClientId, OneTapCallback callback) {
@@ -87,6 +86,7 @@ public class OneTapSignInManager {
         }
     }
 
+
     // Handle for success Response
     private static void handleSuccessResponse(Context context, GetCredentialResponse response, OneTapCallback callback) {
         try {
@@ -117,8 +117,9 @@ public class OneTapSignInManager {
         }
     }
 
-    // Handle for error Response
-    private static void handleErrorResponse(Context context, GetCredentialException error) {
+    // PulseManager for error Response
+    private static void handleErrorResponse(Context context, GetCredentialException error){
+
         try {
             Log.d(AppConstant.APP_NAME_TAG, Objects.requireNonNull(error.getMessage()));
         } catch (Exception e) {
@@ -129,10 +130,14 @@ public class OneTapSignInManager {
     // Generalized method for get user details
     protected static void syncUserDetails(Context context, String email, String firstName, String lastName) {
         try {
-            if (context == null) {return;}
+            if (context == null) {
+                return;
+            }
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             boolean isValidEmail = validateAndStoreEmail(email.trim(), preferenceUtil);
-            if (!isValidEmail) {return;}
+            if (!isValidEmail) {
+                return;
+            }
             String fn = trimmedString(firstName);
             String ln = trimmedString(lastName);
             storeOfflineRecord(context, fn, ln);
@@ -150,7 +155,9 @@ public class OneTapSignInManager {
 
     // To prepare and invoke Api
     private static void prepareAndInvokeApi(Context context, String firstName, String lastName) {
-        if (context == null) {return;}
+        if (context == null) {
+            return;
+        }
         try {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             Map<String, String> mapData = new HashMap<>();
@@ -243,7 +250,9 @@ public class OneTapSignInManager {
 
     // To store offline oneTap record
     private static void storeOfflineRecord(Context context, String firstName, String lastName) {
-        if (context == null) {return;}
+        if (context == null) {
+            return;
+        }
         try {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             preferenceUtil.setStringData(AppConstant.IZ_EMAIL, preferenceUtil.getStringData(AppConstant.IZ_STORED_EMAIL));
@@ -256,7 +265,9 @@ public class OneTapSignInManager {
 
     // To clear offline record
     private static void clearOfflineRecord(Context context) {
-        if (context == null) {return;}
+        if (context == null) {
+            return;
+        }
         try {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             preferenceUtil.setStringData(AppConstant.IZ_EMAIL, "");
@@ -269,7 +280,9 @@ public class OneTapSignInManager {
 
     // To handle sync failure state
     private static void handleSyncFailure(Context context) {
-        if (context == null) {return;}
+        if (context == null) {
+            return;
+        }
         try {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             preferenceUtil.setBooleanData(AppConstant.OT_SYNC_FAILURE, true);

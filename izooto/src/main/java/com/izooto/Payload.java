@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 /* Developed By Amit Gupta */
 public class Payload {
 
-
     private String fetchURL;
     private String key;
     private String id;//campain id
@@ -40,17 +39,12 @@ public class Payload {
     private String rawPayload;
     private String act1ID;
     private String act2ID;
-    private String floorPrice;
-
     private String ap;
     private String type_input_to_payload;
     private String dropdown_text;
     private String validation;
     private String editbox_title;
     private String type;
-    public boolean isAndroid;
-    public boolean isiOS;
-    public  boolean isWeb;
     private String  act1icon;
     private String  act2icon;
     private int  badgeCount;
@@ -79,27 +73,72 @@ public class Payload {
     private String public_global_key;
     private int defaultNotificationPreview;
     private String notification_bg_color;
-
-    private String offlineCampaign;
-
+    private String expiryTimerValue;
+    private String makeStickyNotification;
     private String otherChannel;
-
     // Notification Channel
     private String  channel;
     private String vibration;
     private int badge;
-    private String category;
-
+    private String floorPrice;
     // Added Bitmap setter() and getter()
     private Bitmap iconBitmap = null;
     private Bitmap bannerBitmap = null;
-
-    //////////////////////////////////////////////
+    private String offlineCampaign;
+    private String pubDate;
     private String description;
-    private int cfg;
+    private String mediaContentUrl;
+    private String category;
+    private boolean isLike;
 
-    private String expiryTimerValue;
-    private String makeStickyNotification;
+    public Bitmap getIconBitmap() {
+        return iconBitmap;
+    }
+
+    public void setIconBitmap(Bitmap iconBitmap) {
+        this.iconBitmap = iconBitmap;
+    }
+
+    public Bitmap getBannerBitmap() {
+        return bannerBitmap;
+    }
+
+    public void setBannerBitmap(Bitmap bannerBitmap) {
+        this.bannerBitmap = bannerBitmap;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+    public String getVibration() {
+        return vibration;
+    }
+    public void setVibration(String vibration) {
+        this.vibration = vibration;
+    }
+    public int getBadge() {
+        return badge;
+    }
+    public void setBadge(int badge) {
+        this.badge = badge;
+    }
+    public String getOtherChannel() {
+        return otherChannel;
+    }
+    public void setOtherChannel(String otherChannel) {
+        this.otherChannel = otherChannel;
+    }
+
+    public int getMaxNotification() {
+        return maxNotification;
+    }
+    public void setMaxNotification(int maxNotification) {
+        this.maxNotification = maxNotification;
+    }
+    private int cfg;
     public int getCfg() {
         return cfg;
     }
@@ -664,58 +703,12 @@ public class Payload {
         this.offlineCampaign = offlineCampaign;
     }
 
-    public String getOtherChannel() {
-        return otherChannel;
+    public String getPubDate() {
+        return pubDate;
     }
 
-    public void setOtherChannel(String otherChannel) {
-        this.otherChannel = otherChannel;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
-    public String getVibration() {
-        return vibration;
-    }
-
-    public void setVibration(String vibration) {
-        this.vibration = vibration;
-    }
-
-    public int getBadge() {
-        return badge;
-    }
-    public int getMaxNotification() {
-        return maxNotification;
-    }
-
-    public void setMaxNotification(int maxNotification) {
-        this.maxNotification = maxNotification;
-    }
-
-    public void setBadge(int badge) {
-        this.badge = badge;
-    }
-    public Bitmap getIconBitmap() {
-        return iconBitmap;
-    }
-
-    public void setIconBitmap(Bitmap iconBitmap) {
-        this.iconBitmap = iconBitmap;
-    }
-
-    public Bitmap getBannerBitmap() {
-        return bannerBitmap;
-    }
-
-    public void setBannerBitmap(Bitmap bannerBitmap) {
-        this.bannerBitmap = bannerBitmap;
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
     }
 
     public String getDescription() {
@@ -725,12 +718,29 @@ public class Payload {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getMediaContentUrl() {
+        return mediaContentUrl;
+    }
+
+    public void setMediaContentUrl(String mediaContentUrl) {
+        this.mediaContentUrl = mediaContentUrl;
+    }
+
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public boolean isLike() {
+        return isLike;
+    }
+
+    public void setLike(boolean like) {
+        isLike = like;
     }
 
     public void setFloorPrice(String floorPrice) {

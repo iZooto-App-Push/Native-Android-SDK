@@ -3,7 +3,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -43,8 +42,6 @@
             android:visibility="gone"
             android:maxLines="3"
             style="@style/TextAppearance.Compat.Notification"/>
-
-
         <TextView
             android:id="@+id/tv_message_with_banner_with_button"
             android:layout_width="wrap_content"
@@ -59,8 +56,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
+        android:contentDescription="image"
 
-        />
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
+
 </LinearLayout>

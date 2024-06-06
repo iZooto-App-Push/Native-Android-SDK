@@ -1,41 +1,63 @@
+ext {
+    buildVersions = [
+            minSdkVersion: 21
+    ]
+}
 apply plugin: 'com.android.library'
 android {
+    namespace "com.izooto"
+
     compileSdk 34
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
+        //noinspection OldTargetApi
         targetSdkVersion 33
-        versionCode 23
-        versionName "1.6.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-}
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    api 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.6.0'
-    compileOnly 'com.google.android.gms:play-services-ads-identifier:18.0.1'
-    compileOnly 'com.google.firebase:firebase-messaging:23.1.2'
-    compileOnly 'com.huawei.hms:push:6.7.0.300'
-    testImplementation 'org.testng:testng:7.4.0'
-    compileOnly 'com.github.bumptech.glide:glide:4.16.0'
-    //noinspection GradleCompatible
-    compileOnly 'androidx.browser:browser:1.7.0'
-// Credential Manager API
-    compileOnly("androidx.credentials:credentials:1.2.0")
-    compileOnly("androidx.credentials:credentials-play-services-auth:1.2.0")
-    compileOnly("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+
+
+    buildFeatures {
+        viewBinding true
+    }
 
 }
-apply from: 'maven-push.gradle'
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    api 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.12.0'
+    testImplementation 'org.testng:testng:7.4.0'
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "com.google.android.gms:play-services-ads-identifier:18.1.0"
+    // handle the all latest version in FCM
+    compileOnly platform('com.google.firebase:firebase-bom:33.0.0')
+    compileOnly 'com.google.firebase:firebase-messaging'
+    compileOnly "com.huawei.hms:push:6.11.0.300"
+    testImplementation 'org.testng:testng:7.4.0'
+    implementation 'androidx.work:work-runtime:2.9.0'
+    compileOnly 'com.github.bumptech.glide:glide:4.16.0'
+    // Credential Manager API
+    compileOnly("androidx.credentials:credentials:1.2.2")
+    compileOnly("androidx.credentials:credentials-play-services-auth:1.2.2")
+    compileOnly("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+    compileOnly 'androidx.browser:browser:1.8.0'
+
+}
+//apply from: 'publish-remote.gradle'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+//apply from: 'maven-push.gradle'

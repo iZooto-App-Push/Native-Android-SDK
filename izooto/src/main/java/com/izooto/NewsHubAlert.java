@@ -1,7 +1,6 @@
 package com.izooto;
 
 import static android.graphics.Typeface.NORMAL;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,13 +30,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-
- class NewsHubAlert {
+class NewsHubAlert {
     private ImageView backButton;
     private NestedScrollView nestedScrollViewAlert;
     private ProgressBar loadingPBAlert, loadingPBAlert1;
@@ -56,7 +52,6 @@ import java.util.ArrayList;
     static int page = 0, limit;
     private LinearLayout footer;
     private static AlertDialog alertDialog;
-    static Boolean newsHubEnable = false;
 
     public void showAlertData(Activity context) {
         if (context != null) {
@@ -176,7 +171,8 @@ import java.util.ArrayList;
 
             if (!iZootoAppId.isEmpty()) {
                 newsHubUrl = RestClient.NEWS_HUB_URL + shaKey + "/" + page + ".json";
-                newsHubEnable = true;
+//                newsHubUrl = "https://nh-stage.izooto.com/nh/" + shaKey + "/" + page + ".json";
+//                Log.i("NewsHub", "" + newsHubUrl);
             }
         } catch (Exception e) {
             if (!preferenceUtil.getBoolean("getDataFromAPI")) {
@@ -185,154 +181,162 @@ import java.util.ArrayList;
             }
         }
         payloadModalArrayList = new ArrayList<>();
-        RestClient.get(newsHubUrl, new RestClient.ResponseHandler() {
-            @Override
-            void onSuccess(String response) {
-                super.onSuccess(response);
-                activity.runOnUiThread(() -> {
-                    try {
-                        //On below line we are extracting data from our json array
-                        JSONArray dataArray = new JSONArray(response);
-                        JSONObject jsonObject1;
+        recyclerView.setItemAnimator(null);
+            RestClient.get(newsHubUrl, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response){
+                    super.onSuccess(response);
+                    activity.runOnUiThread(() -> {
+                        try {
+                            //On below line we are extracting data from our json array
+                            JSONArray dataArray = new JSONArray(response);
+                            JSONObject jsonObject1;
 
-                        // passing data from our json array in our array list.
-                        for (int i = 0; i < dataArray.length(); i++) {
-                            JSONObject jsonObject = dataArray.getJSONObject(i);
-                            jsonObject1 = jsonObject.optJSONObject("p");
+                            // passing data from our json array in our array list.
+                            for (int i = 0; i < dataArray.length(); i++) {
+                                JSONObject jsonObject = dataArray.getJSONObject(i);
+                                jsonObject1 = jsonObject.optJSONObject("p");
 
-                            if (jsonObject1 == null) {
-                                jsonObject1 = jsonObject.optJSONObject("a");
-                            }
-                               mPayload = new Payload();
-                              if (jsonObject1 != null) {
-                                  mPayload.setCreated_Time(jsonObject1.optString(ShortPayloadConstant.CREATEDON));
-                                  mPayload.setFetchURL(jsonObject1.optString(ShortPayloadConstant.FETCHURL));
-                                  mPayload.setKey(jsonObject1.optString(ShortPayloadConstant.KEY));
-                                  mPayload.setId(jsonObject1.optString(ShortPayloadConstant.ID));
-                                  mPayload.setRid(jsonObject1.optString(ShortPayloadConstant.RID));
-                                  mPayload.setLink(jsonObject1.optString(ShortPayloadConstant.LINK));
-                                  mPayload.setTitle(jsonObject1.optString(ShortPayloadConstant.TITLE));
-                                  mPayload.setMessage(jsonObject1.optString(ShortPayloadConstant.NMESSAGE));
-                                  mPayload.setIcon(jsonObject1.optString(ShortPayloadConstant.ICON));
-                                  mPayload.setReqInt(jsonObject1.optInt(ShortPayloadConstant.REQINT));
-                                  mPayload.setTag(jsonObject1.optString(ShortPayloadConstant.TAG));
-                                  mPayload.setBanner(jsonObject1.optString(ShortPayloadConstant.BANNER));
-                                  mPayload.setAct_num(jsonObject1.optInt(ShortPayloadConstant.ACTNUM));
-                                  mPayload.setBadgeicon(jsonObject1.optString(ShortPayloadConstant.BADGE_ICON));
-                                  mPayload.setBadgecolor(jsonObject1.optString(ShortPayloadConstant.BADGE_COLOR));
-                                  mPayload.setSubTitle(jsonObject1.optString(ShortPayloadConstant.SUBTITLE));
-                                  mPayload.setGroup(jsonObject1.optInt(ShortPayloadConstant.GROUP));
-                                  mPayload.setBadgeCount(jsonObject1.optInt(ShortPayloadConstant.BADGE_COUNT));
-                                  // Button 1
-                                  mPayload.setAct1name(jsonObject1.optString(ShortPayloadConstant.ACT1NAME));
-                                  mPayload.setAct1link(jsonObject1.optString(ShortPayloadConstant.ACT1LINK));
-                                  mPayload.setAct1icon(jsonObject1.optString(ShortPayloadConstant.ACT1ICON));
-                                  mPayload.setAct1ID(jsonObject1.optString(ShortPayloadConstant.ACT1ID));
-                                  // Button 2
-                                  mPayload.setAct2name(jsonObject1.optString(ShortPayloadConstant.ACT2NAME));
-                                  mPayload.setAct2link(jsonObject1.optString(ShortPayloadConstant.ACT2LINK));
-                                  mPayload.setAct2icon(jsonObject1.optString(ShortPayloadConstant.ACT2ICON));
-                                  mPayload.setAct2ID(jsonObject1.optString(ShortPayloadConstant.ACT2ID));
+                                if (jsonObject1 == null) {
+                                    jsonObject1 = jsonObject.optJSONObject("a");
+                                }
+                                mPayload = new Payload();
+                                if (jsonObject1 != null) {
+                                    mPayload.setCreated_Time(jsonObject1.optString(ShortPayloadConstant.CREATEDON));
+                                    mPayload.setFetchURL(jsonObject1.optString(ShortPayloadConstant.FETCHURL));
+                                    mPayload.setKey(jsonObject1.optString(ShortPayloadConstant.KEY));
+                                    mPayload.setId(jsonObject1.optString(ShortPayloadConstant.ID));
+                                    mPayload.setRid(jsonObject1.optString(ShortPayloadConstant.RID));
+                                    mPayload.setLink(jsonObject1.optString(ShortPayloadConstant.LINK));
+                                    mPayload.setTitle(jsonObject1.optString(ShortPayloadConstant.TITLE));
+                                    mPayload.setMessage(jsonObject1.optString(ShortPayloadConstant.NMESSAGE));
+                                    mPayload.setIcon(jsonObject1.optString(ShortPayloadConstant.ICON));
+                                    mPayload.setReqInt(jsonObject1.optInt(ShortPayloadConstant.REQINT));
+                                    mPayload.setTag(jsonObject1.optString(ShortPayloadConstant.TAG));
+                                    mPayload.setBanner(jsonObject1.optString(ShortPayloadConstant.BANNER));
+                                    mPayload.setAct_num(jsonObject1.optInt(ShortPayloadConstant.ACTNUM));
+                                    mPayload.setBadgeicon(jsonObject1.optString(ShortPayloadConstant.BADGE_ICON));
+                                    mPayload.setBadgecolor(jsonObject1.optString(ShortPayloadConstant.BADGE_COLOR));
+                                    mPayload.setSubTitle(jsonObject1.optString(ShortPayloadConstant.SUBTITLE));
+                                    mPayload.setGroup(jsonObject1.optInt(ShortPayloadConstant.GROUP));
+                                    mPayload.setBadgeCount(jsonObject1.optInt(ShortPayloadConstant.BADGE_COUNT));
+                                    // Button 1
+                                    mPayload.setAct1name(jsonObject1.optString(ShortPayloadConstant.ACT1NAME));
+                                    mPayload.setAct1link(jsonObject1.optString(ShortPayloadConstant.ACT1LINK));
+                                    mPayload.setAct1icon(jsonObject1.optString(ShortPayloadConstant.ACT1ICON));
+                                    mPayload.setAct1ID(jsonObject1.optString(ShortPayloadConstant.ACT1ID));
+                                    // Button 2
+                                    mPayload.setAct2name(jsonObject1.optString(ShortPayloadConstant.ACT2NAME));
+                                    mPayload.setAct2link(jsonObject1.optString(ShortPayloadConstant.ACT2LINK));
+                                    mPayload.setAct2icon(jsonObject1.optString(ShortPayloadConstant.ACT2ICON));
+                                    mPayload.setAct2ID(jsonObject1.optString(ShortPayloadConstant.ACT2ID));
 
-                                  mPayload.setInapp(jsonObject1.optInt(ShortPayloadConstant.INAPP));
-                                  mPayload.setTrayicon(jsonObject1.optString(ShortPayloadConstant.TARYICON));
-                                  mPayload.setSmallIconAccentColor(jsonObject1.optString(ShortPayloadConstant.ICONCOLOR));
-                                  mPayload.setSound(jsonObject1.optString(ShortPayloadConstant.SOUND));
-                                  mPayload.setLedColor(jsonObject1.optString(ShortPayloadConstant.LEDCOLOR));
-                                  mPayload.setLockScreenVisibility(jsonObject1.optInt(ShortPayloadConstant.VISIBILITY));
-                                  mPayload.setGroupKey(jsonObject1.optString(ShortPayloadConstant.GKEY));
-                                  mPayload.setGroupMessage(jsonObject1.optString(ShortPayloadConstant.GMESSAGE));
-                                  mPayload.setFromProjectNumber(jsonObject1.optString(ShortPayloadConstant.PROJECTNUMBER));
-                                  mPayload.setCollapseId(jsonObject1.optString(ShortPayloadConstant.COLLAPSEID));
-                                  mPayload.setPriority(jsonObject1.optInt(ShortPayloadConstant.PRIORITY));
-                                  mPayload.setRawPayload(jsonObject1.optString(ShortPayloadConstant.RAWDATA));
-                                  mPayload.setAp(jsonObject1.optString(ShortPayloadConstant.ADDITIONALPARAM));
-                                  mPayload.setCfg(jsonObject1.optInt(ShortPayloadConstant.CFG));
-                                  mPayload.setPush_type(AppConstant.PUSH_FCM);
-                                  mPayload.setOfflineCampaign(jsonObject1.optString(ShortPayloadConstant.OFFLINE_CAMPAIGN));
-                                  mPayload.setSound(jsonObject1.optString(ShortPayloadConstant.NOTIFICATION_SOUND));
-                                  mPayload.setMaxNotification(jsonObject1.optInt(ShortPayloadConstant.MAX_NOTIFICATION));
-                                  mPayload.setFallBackDomain(jsonObject1.optString(ShortPayloadConstant.FALL_BACK_DOMAIN));
-                                  mPayload.setFallBackSubDomain(jsonObject1.optString(ShortPayloadConstant.FALLBACK_SUB_DOMAIN));
-                                  mPayload.setFallBackPath(jsonObject1.optString(ShortPayloadConstant.FAll_BACK_PATH));
-                                  mPayload.setDefaultNotificationPreview(jsonObject1.optInt(ShortPayloadConstant.TEXTOVERLAY));
-                                  mPayload.setNotification_bg_color(jsonObject1.optString(ShortPayloadConstant.BGCOLOR));
-                                  mPayload.setOfflineCampaign(jsonObject1.optString(ShortPayloadConstant.OFFLINE_CAMPAIGN));
-                                  try {
-                                      if (mPayload.getRid() != null && !mPayload.getRid().isEmpty()) {
-                                          preferenceUtil.setIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(mPayload));
-                                      } else {
-                                          Log.v("campaign", "rid null or empty!");
-                                      }
-                                      if (mPayload.getLink() != null && !mPayload.getLink().isEmpty()) {
-                                          int campaigns = preferenceUtil.getIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN);
-                                          if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
-                                              Log.v("campaign", "...");
-                                          } else {
-                                              newsHubDBHelper.addNewsHubPayload(mPayload);
-                                          }
+                                    mPayload.setInapp(jsonObject1.optInt(ShortPayloadConstant.INAPP));
+                                    mPayload.setTrayicon(jsonObject1.optString(ShortPayloadConstant.TARYICON));
+                                    mPayload.setSmallIconAccentColor(jsonObject1.optString(ShortPayloadConstant.ICONCOLOR));
+                                    mPayload.setSound(jsonObject1.optString(ShortPayloadConstant.SOUND));
+                                    mPayload.setLedColor(jsonObject1.optString(ShortPayloadConstant.LEDCOLOR));
+                                    mPayload.setLockScreenVisibility(jsonObject1.optInt(ShortPayloadConstant.VISIBILITY));
+                                    mPayload.setGroupKey(jsonObject1.optString(ShortPayloadConstant.GKEY));
+                                    mPayload.setGroupMessage(jsonObject1.optString(ShortPayloadConstant.GMESSAGE));
+                                    mPayload.setFromProjectNumber(jsonObject1.optString(ShortPayloadConstant.PROJECTNUMBER));
+                                    mPayload.setCollapseId(jsonObject1.optString(ShortPayloadConstant.COLLAPSEID));
+                                    mPayload.setPriority(jsonObject1.optInt(ShortPayloadConstant.PRIORITY));
+                                    mPayload.setRawPayload(jsonObject1.optString(ShortPayloadConstant.RAWDATA));
+                                    mPayload.setAp(jsonObject1.optString(ShortPayloadConstant.ADDITIONALPARAM));
+                                    mPayload.setCfg(jsonObject1.optInt(ShortPayloadConstant.CFG));
+                                    mPayload.setPush_type(AppConstant.PUSH_FCM);
+                                    mPayload.setOfflineCampaign(jsonObject1.optString(ShortPayloadConstant.OFFLINE_CAMPAIGN));
+                                    mPayload.setSound(jsonObject1.optString(ShortPayloadConstant.NOTIFICATION_SOUND));
+                                    mPayload.setMaxNotification(jsonObject1.optInt(ShortPayloadConstant.MAX_NOTIFICATION));
+                                    mPayload.setFallBackDomain(jsonObject1.optString(ShortPayloadConstant.FALL_BACK_DOMAIN));
+                                    mPayload.setFallBackSubDomain(jsonObject1.optString(ShortPayloadConstant.FALLBACK_SUB_DOMAIN));
+                                    mPayload.setFallBackPath(jsonObject1.optString(ShortPayloadConstant.FAll_BACK_PATH));
+                                    mPayload.setDefaultNotificationPreview(jsonObject1.optInt(ShortPayloadConstant.TEXTOVERLAY));
+                                    mPayload.setNotification_bg_color(jsonObject1.optString(ShortPayloadConstant.BGCOLOR));
 
-                                      }
-                                  }catch (Exception e){
-                                      Log.v("campaign", "..");
-                                  }
+                                try {
+                                    if (mPayload.getRid() != null && !mPayload.getRid().isEmpty()) {
+                                        preferenceUtil.setIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(mPayload));
+                                    } else {
+                                        Log.e("campaign", "rid null or empty!");
+                                    }
+                                    if (mPayload.getLink() != null && !mPayload.getLink().isEmpty()) {
+                                        int campaigns = preferenceUtil.getIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN);
+                                        if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
+                                            Log.e("campaign", "...");
+                                        } else {
+                                            newsHubDBHelper.addNewsHubPayload(mPayload);
+                                        }
+                                    }
+
+                                }catch (Exception e){
+                                    Log.e("campaign", "..");
+                                }
 
 
-                                  // on below line we are extracting data from our json object.
+                                    // on below line we are extracting data from our json object.
 
-                                  // passing array list to our adapter class.
-                                  if (preferenceUtil.getIntData(AppConstant.SET_PAGE_NO) < 4)
-                                      preferenceUtil.setIntData(AppConstant.SET_PAGE_NO, page);
-                                  if (newsHubDBHelper.fetchNewsHubData() != null && !newsHubDBHelper.fetchNewsHubData().isEmpty()) {
-                                      progressBar1.setVisibility(View.GONE);
+                                    // passing array list to our adapter class.
+                                    if (preferenceUtil.getIntData(AppConstant.SET_PAGE_NO) < 4)
+                                        preferenceUtil.setIntData(AppConstant.SET_PAGE_NO, page);
+                                    if (newsHubDBHelper.fetchNewsHubData() != null && !newsHubDBHelper.fetchNewsHubData().isEmpty()) {
+                                        progressBar1.setVisibility(View.GONE);
 //                                    Log.e("TAG", "run: page -- " + page );
-                                      payloadModalArrayList = newsHubDBHelper.fetchNewsHubData();
-                                      newsHubAdapter = new NewsHubAdapter(activity,payloadModalArrayList, alertDialog);
+                                        payloadModalArrayList = newsHubDBHelper.fetchNewsHubData();
+                                        Log.e("campaigns", "" + payloadModalArrayList.size());
 
-                                      // setting layout manager to our recycler view.
-                                      recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-                                      // setting adapter to our recycler view.
-                                      recyclerView.setAdapter(newsHubAdapter);
+                                        newsHubAdapter = new NewsHubAdapter(activity, payloadModalArrayList, alertDialog, null);
+                                        // setting layout manager to our recycler view.
+                                        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                                        // setting adapter to our recycler view.
+                                        recyclerView.setAdapter(newsHubAdapter);
 
-                                  } else {
-                                      nestedSV.setVisibility(View.GONE);
-                                      notFoundLayout.setVisibility(View.VISIBLE);
-                                  }
-                              }
+                                    } else {
+                                        nestedSV.setVisibility(View.GONE);
+                                        notFoundLayout.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            if (!preferenceUtil.getBoolean("getDataFromAPI")) {
+                                preferenceUtil.setBooleanData("getDataFromAPI", true);
+                                Util.setException(activity, e.toString(), "NewsHubAlert", "getDataFromAPI");
+                            }
+
                         }
 
-                    } catch (JSONException e) {
-                        if (!preferenceUtil.getBoolean("getDataFromAPI")) {
-                            preferenceUtil.setBooleanData("getDataFromAPI", true);
-                            Util.setException(activity, e.toString(), "NewsHubAlert", "getDataFromAPI");
+                    });
+
+                    }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+                    activity.runOnUiThread(() -> {
+                        if (newsHubDBHelper.fetchNewsHubData() != null && newsHubDBHelper.fetchNewsHubData().size() > 0) {
+                            payloadModalArrayList = newsHubDBHelper.fetchNewsHubData();
+                            progressBar.setVisibility(View.GONE);
+                            progressBar1.setVisibility(View.GONE);
+
+                            newsHubAdapter = new NewsHubAdapter(activity, payloadModalArrayList, alertDialog, null);
+                            // setting layout manager to our recycler view.
+                            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                            // setting adapter to our recycler view.
+                            recyclerView.setAdapter(newsHubAdapter);
+
+
+                        } else {
+                            nestedSV.setVisibility(View.GONE);
+                            notFoundLayout.setVisibility(View.VISIBLE);
                         }
-                    }
+                    });
 
-                });
 
-            }
+                }
+            });
 
-            @Override
-            void onFailure(int statusCode, String response, Throwable throwable) {
-                super.onFailure(statusCode, response, throwable);
-                activity.runOnUiThread(() -> {
-                    if (newsHubDBHelper.fetchNewsHubData() != null && newsHubDBHelper.fetchNewsHubData().size() > 0) {
-                        payloadModalArrayList = newsHubDBHelper.fetchNewsHubData();
-                        progressBar.setVisibility(View.GONE);
-                        progressBar1.setVisibility(View.GONE);
-                        newsHubAdapter = new NewsHubAdapter(activity,payloadModalArrayList,alertDialog);
-                        // setting layout manager to our recycler view.
-                        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-                        // setting adapter to our recycler view.
-                        recyclerView.setAdapter(newsHubAdapter);
-                    } else {
-                        nestedSV.setVisibility(View.GONE);
-                        notFoundLayout.setVisibility(View.VISIBLE);
-                    }
-                });
-
-            }
-        });
     }
 
     @SuppressLint("SetTextI18n")

@@ -1,13 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.huawei.agconnect:agconnect-core:1.6.5.300@aar" external-system-id="GRADLE">
     <CLASSES>
-<<<<<<< HEAD
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ee8256d55d108f8cad234538126a9959/transformed/jetified-agconnect-core-1.6.5.300/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ee8256d55d108f8cad234538126a9959/transformed/jetified-agconnect-core-1.6.5.300/AndroidManifest.xml" />
-=======
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fe2b694790887e40427a8422ec53abc0/transformed/jetified-agconnect-core-1.6.5.300/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/fe2b694790887e40427a8422ec53abc0/transformed/jetified-agconnect-core-1.6.5.300/jars/classes.jar!/" />
->>>>>>> 33c20aeec4ce84860c35c8936ee3ec3a795af089
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/6e563c10cad6c8e6b5027447ca89a6ae/transformed/jetified-agconnect-core-1.6.5.300/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6e563c10cad6c8e6b5027447ca89a6ae/transformed/jetified-agconnect-core-1.6.5.300/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

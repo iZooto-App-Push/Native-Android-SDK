@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdk 34
+    namespace "com.app.izoototest"
     defaultConfig {
-        applicationId "com.app.izoototest"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 33
         versionCode 14
         versionName "1.4.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
-                izooto_app_id:"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"// "794f882d998a83f8afa26d96c8e254f74625e4af"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
+                izooto_app_id: "f8908fd9817ad7f76dea934067955773a8f1c3d5"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"// "794f882d998a83f8afa26d96c8e254f74625e4af"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
         ]
         multiDexEnabled true
     }
@@ -27,7 +27,7 @@ android {
     }
 }
 dependencies {
-    implementation project(path: ':izooto')
+    implementation project(path:':izooto')
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation  'com.google.firebase:firebase-messaging:23.1.2'
@@ -35,9 +35,10 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation('com.github.bumptech.glide:glide:4.16.0')
     implementation('androidx.browser:browser:1.8.0')
-    implementation("androidx.credentials:credentials:1.2.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.2.0")
+    implementation("androidx.credentials:credentials:1.2.2")
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+    implementation("androidx.work:work-runtime:2.9.0")
 
 }
 apply plugin: 'com.google.gms.google-services'

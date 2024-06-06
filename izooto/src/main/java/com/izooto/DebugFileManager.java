@@ -7,39 +7,23 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileWriter;
 
 public class DebugFileManager {
-    static boolean hasPermission() {
-        return true;
 
-    }
+    static final String IZ_TAG_NAME = "DebugFileManager";
 
-    static void createTempFolder(String folderName) {
-
-    }
-
-    static void addFileTempFolder(String folderName, File fileName, String jsonData) {
-
-    }
-
-    static boolean isFileExitNot(String folderName, File fileName) {
-        return true;
-    }
-
-    static void createExternalStoragePublic(Context context, String data, String requestName) {
+    public static void createExternalStoragePublic(Context context, String data, String requestName) {
         try {
-            File outputDirectory = CheckDirectory_ExitsORNot(AppConstant.DIRECTORYNAME);
+            File outputDirectory = CheckDirectory_ExitsORNot(AppConstant.DIRECTORY_NAME);
 
-            GenerateTimeStampAppData(context, outputDirectory, "pid.debug", data, requestName);
+            GenerateTimeStampAppData(context, outputDirectory, AppConstant.IZ_DEBUG_FILE_NAME, data, requestName);
 
         } catch (Exception e) {
-            Log.v("File", "No File Exits");
-
+            Log.v(AppConstant.IZ_DEBUG_EXCEPTION, e.toString());
         }
     }
 
@@ -49,9 +33,9 @@ public class DebugFileManager {
                 String externalStorageState = Environment.getExternalStorageState();
                 if (externalStorageState.equals(Environment.MEDIA_MOUNTED)) {
 
-                    File fileDirectory = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORYNAME);
+                    File fileDirectory = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORY_NAME);
                     if (fileDirectory.exists() && fileDirectory.isDirectory()) {
-                        // File outputDirectory = new File(fileDirectory, Util.getPackageName(DATB.appContext));
+                        Log.v(IZ_TAG_NAME, "FileAlready exits");
 
                     } else {
                         if (!fileDirectory.exists()) {
@@ -65,7 +49,7 @@ public class DebugFileManager {
                 }
             }
         } catch (Exception ex) {
-            Log.v("File", "No File Exits");
+            Log.v(AppConstant.IZ_DEBUG_EXCEPTION, ex.toString());
 
         }
 
@@ -77,11 +61,11 @@ public class DebugFileManager {
                 String externalStorageState = Environment.getExternalStorageState();
                 if (externalStorageState.equals(Environment.MEDIA_MOUNTED)) {
 
-                    File fileDirectory = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORYNAME);
+                    File fileDirectory = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORY_NAME);
                     if (fileDirectory.exists() && fileDirectory.isDirectory()) {
                         if (!fileDirectory.isDirectory()) {
+                            Log.v(IZ_TAG_NAME, "Directory exits");
 
-                            Log.v("Not a directory ", fileDirectory.getAbsolutePath());
                         }
 
                         File[] files = fileDirectory.listFiles();
@@ -94,7 +78,7 @@ public class DebugFileManager {
                             } else {
                                 boolean deleted = file.delete();
                                 if (!deleted) {
-                                    Log.v("Not a directory ", fileDirectory.getAbsolutePath());
+                                    Log.e("Not a directory ", fileDirectory.getAbsolutePath());
                                 }
                             }
                         }
@@ -102,9 +86,8 @@ public class DebugFileManager {
                         fileDirectory.delete();
                     }
 
-                    File fileDirectory1 = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORYNAME);
+                    File fileDirectory1 = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORY_NAME);
                     fileDirectory1.delete();
-                    // File outputDirectory = new File(fileDirectory, Util.getPackageName(DATB.appContext));
                     PreferenceUtil.getInstance(context).setBooleanData(AppConstant.FILE_EXIST, false);
 
                 } else {
@@ -115,7 +98,7 @@ public class DebugFileManager {
 
             }
         } catch (Exception ex) {
-            Log.v("File", "No File Exits");
+            Log.v(AppConstant.IZ_DEBUG_EXCEPTION, ex.toString());
 
         }
     }
@@ -128,8 +111,8 @@ public class DebugFileManager {
 
             try {
                 FileWriter writer = new FileWriter(file, true);
-                writer.append(requestName +"\n");
-                writer.append(data +"\n");
+                writer.append(requestName + "\n");
+                writer.append(data + "\n");
                 writer.flush();
                 writer.close();
                 if (requestName.equalsIgnoreCase("RegisterToken")) {
@@ -137,7 +120,6 @@ public class DebugFileManager {
                 }
             } catch (Exception e) {
                 preferenceUtil.setBooleanData(AppConstant.FILE_EXIST, false);
-                Log.v("File", "No File Exits");
 
             }
         }
@@ -152,17 +134,14 @@ public class DebugFileManager {
             File fileDirectory = Environment.getExternalStoragePublicDirectory(inWhichFolder);
             if (fileDirectory.exists() && fileDirectory.isDirectory()) {
 
-                outputDirectory =fileDirectory;// new File(fileDirectory, Util.getPackageName(DATB.appContext));
+                outputDirectory = fileDirectory;
                 return outputDirectory;
-
-            } else {
-                outputDirectory = null;
 
             }
 
         }
 
-        return outputDirectory;
+        return null;
     }
 
     public static void shareDebuginfo(Context context) {
@@ -171,10 +150,10 @@ public class DebugFileManager {
         String externalStorageState = Environment.getExternalStorageState();
         if (externalStorageState.equals(Environment.MEDIA_MOUNTED)) {
 
-            File fileDirectory = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORYNAME);
+            File fileDirectory = Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORY_NAME);
             if (fileDirectory.exists() && fileDirectory.isDirectory()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    String path = String.valueOf(Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORYNAME + "/pid.debug"));
+                    String path = String.valueOf(Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORY_NAME + "/pid.debug"));
                     File file = new File(path);
                     Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
@@ -182,54 +161,32 @@ public class DebugFileManager {
                     emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     emailIntent.setType("message/rfc822");
                     emailIntent.setType("*/*");
-                    String to[] = {"amit@datability.co"};
+                    String[] to = {"amit@datability.co"};
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
                     emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-
-                    if(Build.MANUFACTURER.equalsIgnoreCase("Huawei"))
-                    {
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "Android Id"+Util.getAndroidId(context));
-                    }
-                    else
-                    {
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "Android Id"+Util.getAndroidId(context));
-
-                    }
-                    emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Token->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) );
                     context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
-                }
-                else
-                {
-                    String path = String.valueOf(Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORYNAME + "/pid.debug"));
+                } else {
+                    String path = String.valueOf(Environment.getExternalStoragePublicDirectory(AppConstant.DIRECTORY_NAME + "/pid.debug"));
                     File file = new File(path);
 
                     Uri pngUri = Uri.fromFile(file);
-
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     emailIntent.setType("message/rfc822");
                     emailIntent.setType("*/*");
-                    String to[] = {"amit@datability.co"};
+                    String[] to = {"amit@datability.co"};
                     emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
                     emailIntent.putExtra(Intent.EXTRA_STREAM, pngUri);
-
-                    if(Build.MANUFACTURER.equalsIgnoreCase("Huawei"))
-                    {
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN) + "Android Id"+Util.getAndroidId(context));
+                    if (Build.MANUFACTURER.equalsIgnoreCase("Huawei")) {
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "HMS Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.HMS_TOKEN));
+                    } else {
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
                     }
-                    else
-                    {
-                        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  "FCM Token ->" + PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN) + "Android Id"+Util.getAndroidId(context));
-
-                    }
-                    // Add line -> fixed the flutter issue
-                    emailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
 
                 }
-            } else {
-                Log.v("File", "No File Exits");
             }
 
         }

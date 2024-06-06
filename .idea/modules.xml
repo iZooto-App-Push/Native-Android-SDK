@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android-X.iml" filepath="$PROJECT_DIR$/.idea/modules/android-X.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-X.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-X.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Native-Android-SDK.iml" filepath="$PROJECT_DIR$/.idea/modules/Native-Android-SDK.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.main.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-X.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-X.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-X.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android-X.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android-X.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/izooto/android-X.izooto.unitTest.iml" />
     </modules>
   </component>
 </project>

@@ -1,17 +1,13 @@
 package com.izooto;
-
 import static com.izooto.NewsHubAlert.newsHubDBHelper;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
-
 import org.json.JSONObject;
-
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,20 +24,17 @@ public class iZootoHmsMessagingService extends HmsMessageService {
         super.onNewToken(s);
         HMSTokenGenerator.getTokenFromOnNewToken(s);
     }
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         try {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        executeBackgroundTask(remoteMessage);
-                        Thread.sleep(2000);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+            Runnable runnable = () -> {
+                try {
+                    if (iZooto.initialized()) {return;}
+                    executeBackgroundTask(remoteMessage);
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             };
             executorService.execute(runnable);
@@ -61,6 +54,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
             Util.handleExceptionOnce(this, ex.toString(), IZ_TAG_NAME, "executeBackgroundTask");
         }
     }
+
     private void handleNow(final Context context, final String data) {
         try {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
@@ -161,7 +155,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                     payload.setAp(payloadObj.optString(ShortPayloadConstant.ADDITIONALPARAM));
                     payload.setCfg(payloadObj.optInt(ShortPayloadConstant.CFG));
                     payload.setTime_to_live(payloadObj.optString(ShortPayloadConstant.TIME_TO_LIVE));
-                    payload.setPush_type(AppConstant.PUSH_HMS);
+                    payload.setPush_type(String.valueOf(PushType.hms));
                     // Notification Channel
                     payload.setChannel(payloadObj.optString(ShortPayloadConstant.NOTIFICATION_CHANNEL));
                     payload.setVibration(payloadObj.optString(ShortPayloadConstant.VIBRATION));
@@ -182,12 +176,12 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                         if (payload.getRid() != null && !payload.getRid().isEmpty()) {
                             preferenceUtil.setIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
                         } else {
-                            Log.v("campaign", "rid null or empty!");
+                            Log.e("campaign", "rid null or empty!");
                         }
                         if (payload.getLink() != null && !payload.getLink().isEmpty()) {
                             int campaigns = preferenceUtil.getIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN);
                             if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
-                                Log.v("campaign", "...");
+                                Log.e("campaign", "...");
                             } else {
                                 newsHubDBHelper.addNewsHubPayload(payload);
                             }
@@ -211,7 +205,7 @@ public class iZootoHmsMessagingService extends HmsMessageService {
                         NotificationEventManager.handleImpressionAPI(payload, AppConstant.PUSH_HMS);
                         iZooto.processNotificationReceived(context, payload);
 
-                    } // This is your code
+                    }
                 };
 
                 try {
@@ -229,5 +223,4 @@ public class iZootoHmsMessagingService extends HmsMessageService {
 
         }
     }
-
 }

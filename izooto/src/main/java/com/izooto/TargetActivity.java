@@ -49,14 +49,15 @@ public class TargetActivity extends Activity {
     public static String mWebViewClick;
     static boolean isDeepLinkCheck = false;
     private static String notificationTitle;
+    private static String notificationMessage = "";
+    private static String notificationBannerImage = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = TargetActivity.this;
-        if (context != null) {
+        try {
             Intent intent = getIntent();
-            context = TargetActivity.this;
             getBundleData(TargetActivity.this, intent);
             String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
@@ -129,14 +130,11 @@ public class TargetActivity extends Activity {
             }
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
-                if (!AdMediation.clicksData.isEmpty()) {
+                if (AdMediation.clicksData.size() > 0) {
                     for (int i = 0; i < AdMediation.clicksData.size(); i++) {
-                        AdMediation.clicksData.size();
-                        try{
-                            NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
-                        }catch (Exception e){
-                            Util.handleExceptionOnce(context, e.toString(), "TargetActivity", "onCreate");
+                        if (i == AdMediation.clicksData.size()) {
                         }
+                        NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
                     }
                 }
             }
@@ -158,17 +156,26 @@ public class TargetActivity extends Activity {
                 hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
                 hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
                 hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
+                hashMap.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
                 hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
+
+                HashMap<String, String> pulseMap = new HashMap<>();
+                pulseMap.put(AppConstant.P_TITLE, notificationTitle);
+                pulseMap.put(AppConstant.P_MESSAGE, notificationMessage);
+                pulseMap.put(AppConstant.P_BANNER_IMAGE, notificationBannerImage);
+                pulseMap.put(AppConstant.P_LANDING_URL, landingURL);
+                JSONObject pulseObject = new JSONObject(pulseMap);
+
                 JSONObject jsonObject = new JSONObject(hashMap);
                 if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                    iZooto.notificationActionHandler(jsonObject.toString());
+                    iZooto.notificationActionHandler(jsonObject.toString(), pulseObject.toString(), Util.isPulseDeepLink(cfg));
                     this.finish();
                 } else {
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
 
                         if (preferenceUtil.getBoolean(AppConstant.DEEPLINK_STATE)) {
-                            iZooto.notificationActionHandler(jsonObject.toString());
+                            iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                             isDeepLinkCheck = true;
                             this.finish();
                         }
@@ -180,7 +187,7 @@ public class TargetActivity extends Activity {
                                 this.finish();
 
                             } else if (Util.isAppInForeground(context)) {
-                                iZooto.notificationActionHandler(jsonObject.toString());
+                                iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                                 this.finish();
 
                             } else {
@@ -292,6 +299,8 @@ public class TargetActivity extends Activity {
                     }
                 }
             }
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "onCreate");
         }
     }
 
@@ -323,53 +332,60 @@ public class TargetActivity extends Activity {
 
     private void getBundleData(Context context, Intent intent) {
         Bundle tempBundle = intent.getExtras();
-        if (tempBundle != null) {
-            if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
-                mUrl = tempBundle.getString(AppConstant.KEY_WEB_URL);
-            if (tempBundle.containsKey(AppConstant.KEY_IN_APP))
-                inApp = tempBundle.getInt(AppConstant.KEY_IN_APP);
-            if (tempBundle.containsKey(AppConstant.KEY_IN_RID))
-                rid = tempBundle.getString(AppConstant.KEY_IN_RID);
-            if (tempBundle.containsKey(AppConstant.KEY_IN_CID))
-                cid = tempBundle.getString(AppConstant.KEY_IN_CID);
-            if (tempBundle.containsKey(AppConstant.KEY_IN_BUTOON))
-                btnCount = tempBundle.getInt(AppConstant.KEY_IN_BUTOON);
-            if (tempBundle.containsKey(AppConstant.KEY_IN_ADDITIONALDATA))
-                additionalData = tempBundle.getString(AppConstant.KEY_IN_ADDITIONALDATA);
-            if (tempBundle.containsKey(AppConstant.KEY_IN_PHONE))
-                phoneNumber = tempBundle.getString(AppConstant.KEY_IN_PHONE);
-            if (tempBundle.containsKey(AppConstant.KEY_IN_ACT1ID))
-                act1ID = tempBundle.getString(AppConstant.KEY_IN_ACT1ID);
-            if (tempBundle.containsKey(AppConstant.KEY_IN_ACT2ID))
-                act2ID = tempBundle.getString(AppConstant.KEY_IN_ACT2ID);
-            if (tempBundle.containsKey(AppConstant.LANDINGURL))
-                landingURL = tempBundle.getString(AppConstant.LANDINGURL);
-            if (tempBundle.containsKey(AppConstant.ACT1URL))
-                act1URL = tempBundle.getString(AppConstant.ACT1URL);
-            if (tempBundle.containsKey(AppConstant.ACT2URL))
-                act2URL = tempBundle.getString(AppConstant.ACT2URL);
-            if (tempBundle.containsKey(AppConstant.ACT1TITLE))
-                btn1Title = tempBundle.getString(AppConstant.ACT1TITLE);
-            if (tempBundle.containsKey(AppConstant.ACT2TITLE))
-                btn2Title = tempBundle.getString(AppConstant.ACT2TITLE);
-            if (tempBundle.containsKey(AppConstant.CLICKINDEX))
-                clickIndex = tempBundle.getString(AppConstant.CLICKINDEX);
-            if (tempBundle.containsKey(AppConstant.LASTCLICKINDEX))
-                lastClickIndex = tempBundle.getString(AppConstant.LASTCLICKINDEX);
-            if (tempBundle.containsKey(AppConstant.PUSH))
-                pushType = tempBundle.getString(AppConstant.PUSH);
-            if (tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
-                cfg = tempBundle.getInt(AppConstant.CFGFORDOMAIN);
-            if (tempBundle.containsKey(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME))
-                notificationTitle = tempBundle.getString(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME);
-
-            if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
-                NotificationManager notificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
-                notificationID = tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID);
-            }
+        if (tempBundle == null || context == null) {
+            return;
         }
+        if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
+            mUrl = tempBundle.getString(AppConstant.KEY_WEB_URL);
+        if (tempBundle.containsKey(AppConstant.KEY_IN_APP))
+            inApp = tempBundle.getInt(AppConstant.KEY_IN_APP);
+        if (tempBundle.containsKey(AppConstant.KEY_IN_RID))
+            rid = tempBundle.getString(AppConstant.KEY_IN_RID);
+        if (tempBundle.containsKey(AppConstant.KEY_IN_CID))
+            cid = tempBundle.getString(AppConstant.KEY_IN_CID);
+        if (tempBundle.containsKey(AppConstant.KEY_IN_BUTOON))
+            btnCount = tempBundle.getInt(AppConstant.KEY_IN_BUTOON);
+        if (tempBundle.containsKey(AppConstant.KEY_IN_ADDITIONALDATA))
+            additionalData = tempBundle.getString(AppConstant.KEY_IN_ADDITIONALDATA);
+        if (tempBundle.containsKey(AppConstant.KEY_IN_PHONE))
+            phoneNumber = tempBundle.getString(AppConstant.KEY_IN_PHONE);
+        if (tempBundle.containsKey(AppConstant.KEY_IN_ACT1ID))
+            act1ID = tempBundle.getString(AppConstant.KEY_IN_ACT1ID);
+        if (tempBundle.containsKey(AppConstant.KEY_IN_ACT2ID))
+            act2ID = tempBundle.getString(AppConstant.KEY_IN_ACT2ID);
+        if (tempBundle.containsKey(AppConstant.LANDINGURL))
+            landingURL = tempBundle.getString(AppConstant.LANDINGURL);
+        if (tempBundle.containsKey(AppConstant.ACT1URL))
+            act1URL = tempBundle.getString(AppConstant.ACT1URL);
+        if (tempBundle.containsKey(AppConstant.ACT2URL))
+            act2URL = tempBundle.getString(AppConstant.ACT2URL);
+        if (tempBundle.containsKey(AppConstant.ACT1TITLE))
+            btn1Title = tempBundle.getString(AppConstant.ACT1TITLE);
+        if (tempBundle.containsKey(AppConstant.ACT2TITLE))
+            btn2Title = tempBundle.getString(AppConstant.ACT2TITLE);
+        if (tempBundle.containsKey(AppConstant.CLICKINDEX))
+            clickIndex = tempBundle.getString(AppConstant.CLICKINDEX);
+        if (tempBundle.containsKey(AppConstant.LASTCLICKINDEX))
+            lastClickIndex = tempBundle.getString(AppConstant.LASTCLICKINDEX);
+        if (tempBundle.containsKey(AppConstant.PUSH))
+            pushType = tempBundle.getString(AppConstant.PUSH);
+        if (tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
+            cfg = tempBundle.getInt(AppConstant.CFGFORDOMAIN);
+        if (tempBundle.containsKey(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME))
+            notificationTitle = tempBundle.getString(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME);
+        if (tempBundle.containsKey(AppConstant.P_MESSAGE))
+            notificationMessage = tempBundle.getString(AppConstant.P_MESSAGE);
+        if (tempBundle.containsKey(AppConstant.P_BANNER_IMAGE))
+            notificationBannerImage = tempBundle.getString(AppConstant.P_BANNER_IMAGE);
+
+
+        if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
+            notificationID = tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID);
+        }
+
     }
 
     static void notificationClickAPI(Context context, String clkURL, String cid, String rid, int btnCount, int i, String pushType) {
@@ -542,7 +558,9 @@ public class TargetActivity extends Activity {
     }
 
     private static void launchApp(Context context) {
-
+        if (context == null) {
+            return;
+        }
         PackageManager pm = context.getPackageManager();
         Intent launchIntent;
         String name;
@@ -552,9 +570,11 @@ public class TargetActivity extends Activity {
                 name = (String) pm.getApplicationLabel(app);
                 launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                 Intent intentAppLaunch = launchIntent; // new Intent();
-                intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intentAppLaunch);
-                Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                if (intentAppLaunch != null) {
+                    intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intentAppLaunch);
+                    Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                }
 
             } else {
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
@@ -563,17 +583,24 @@ public class TargetActivity extends Activity {
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                     Intent intentAppLaunch = launchIntent; // new Intent();
-                    intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intentAppLaunch);
-                    Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                    if (intentAppLaunch != null) {
+                        intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intentAppLaunch);
+                        Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                    }
                 } else {
+                    if (pm == null) {
+                        return;
+                    }
                     ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                     Intent intentAppLaunch = launchIntent; // new Intent();
-                    intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intentAppLaunch);
-                    Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                    if (intentAppLaunch != null) {
+                        intentAppLaunch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intentAppLaunch);
+                        Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                    }
                 }
             }
         } catch (Exception ex) {
@@ -583,6 +610,9 @@ public class TargetActivity extends Activity {
     }
 
     private static void launchAppHybrid(Context context) {
+        if (context == null) {
+            return;
+        }
         PackageManager pm = context.getPackageManager();
         Intent launchIntent;
         String name;

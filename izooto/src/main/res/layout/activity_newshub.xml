@@ -9,6 +9,15 @@
     tools:context="com.izooto.NewsHubActivity">
 
     <LinearLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/iz_news_hub_bg"
+        android:layout_gravity="start"
+        android:orientation="vertical">
+
+
+    <LinearLayout
         android:id="@+id/nh_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_45dp"
@@ -143,34 +152,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.4dp"
                 android:background="@color/dawn"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_35dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/iz_news_hub_view_color"
-            android:gravity="center"
-            android:layoutDirection="ltr"
-            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_35dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/iz_news_hub_view_color"
+                android:gravity="center"
+                android:layoutDirection="ltr"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_powered_by"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/news_hub_powered_by"
-                android:textColor="@color/iz_news_hub_branding_text_color"
-                android:textSize="13dp" />
+                <TextView
+                    android:id="@+id/tv_powered_by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/news_hub_powered_by"
+                    android:textColor="@color/iz_news_hub_branding_text_color"
+                    android:textSize="13dp" />
 
-            <TextView
-                android:id="@+id/tv_izooto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/izooto"
-                android:textColor="@color/iz_azure"
-                android:textSize="13dp" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_izooto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/izooto"
+                    android:textColor="@color/iz_azure"
+                    android:textSize="13dp" />
+            </LinearLayout>
 
         </LinearLayout>
 
     </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

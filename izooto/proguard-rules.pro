@@ -37,6 +37,7 @@
 -keep public interface com.izooto.OneTapCallback{*;}
 -repackageclasses 'com.izooto'
 -useuniqueclassmembernames
+-dontwarn java.lang.invoke.StringConcatFactory
 
 
 

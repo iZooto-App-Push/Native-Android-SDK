@@ -4,6 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.izooto.AppConstant;
+import com.izooto.GetTime;
+import com.izooto.Payload;
+import com.izooto.Util;
+
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -48,9 +53,9 @@ public class FirebaseAnalyticsTrack {
 
             Object firebaseAnalyticsInstance = getInstanceOfFirebaseAnalytics(mContext);
 
-            Method trackEventMethod = trackEvent(mContext,FirebaseAnalyticsClass);
+            Method trackEventMethod = trackEvent(mContext, FirebaseAnalyticsClass);
 
-            if (getDataFromPayload(receivedPayload) != null){
+            if (getDataFromPayload(receivedPayload) != null) {
                 Bundle bundle = getDataFromPayload(receivedPayload);
                 if (trackEventMethod != null) {
                     trackEventMethod.invoke(firebaseAnalyticsInstance, IZ_NOTIFICATION_RECEIVED_EVENT, bundle);
@@ -83,8 +88,8 @@ public class FirebaseAnalyticsTrack {
 
         try {
             Object firebaseAnalyticsInstance = getInstanceOfFirebaseAnalytics(mContext);
-            Method trackEventMethod = trackEvent(mContext,FirebaseAnalyticsClass);
-            if (getDataFromPayload(mPayload) != null){
+            Method trackEventMethod = trackEvent(mContext, FirebaseAnalyticsClass);
+            if (getDataFromPayload(mPayload) != null) {
                 Bundle bundle = getDataFromPayload(mPayload);
 
                 if (bundle != null) {
@@ -102,7 +107,7 @@ public class FirebaseAnalyticsTrack {
     }
 
     void openedEventTrack() {
-        if(openedTime == null)
+        if (openedTime == null)
             openedTime = new AtomicLong();
         openedTime.set(System.currentTimeMillis());
 
@@ -110,8 +115,8 @@ public class FirebaseAnalyticsTrack {
 
             Object firebaseAnalyticsInstance = getInstanceOfFirebaseAnalytics(mContext);
 
-            Method trackEventMethod = trackEvent(mContext,FirebaseAnalyticsClass);
-            if (getDataFromPayload(mPayload) != null){
+            Method trackEventMethod = trackEvent(mContext, FirebaseAnalyticsClass);
+            if (getDataFromPayload(mPayload) != null) {
                 Bundle bundle = getDataFromPayload(mPayload);
                 if (bundle != null) {
                     bundle.putString(AppConstant.TIME_OF_CLICK, getTimeOfClick(mContext));
@@ -126,51 +131,55 @@ public class FirebaseAnalyticsTrack {
     }
 
 
+    private Bundle getDataFromPayload(Payload mPayload) {
+        try {
+            String link = mPayload.getLink();
+            String sourceUTM, mediumUTM, campaignUTM, termUTM, contentUTM;
+            if (link != null) {
+                JSONObject jsonObject = new JSONObject(getQueryParams(link));
+                sourceUTM = jsonObject.optString(AppConstant.UTM_SOURCE);
+                mediumUTM = jsonObject.optString(AppConstant.UTM_MEDIUM);
+                campaignUTM = jsonObject.optString(AppConstant.UTM_CAMPAIGN);
+                termUTM = jsonObject.optString(AppConstant.UTM_TERM);
+                contentUTM = jsonObject.optString(AppConstant.UTM_CONTENT);
 
-    private Bundle getDataFromPayload(Payload mPayload){
-
-        String link = mPayload.getLink();
-        String sourceUTM, mediumUTM, campaignUTM, termUTM, contentUTM;
-        if (link != null) {
-            JSONObject jsonObject = new JSONObject(getQueryParams(link));
-            sourceUTM = jsonObject.optString(AppConstant.UTM_SOURCE);
-            mediumUTM = jsonObject.optString(AppConstant.UTM_MEDIUM);
-            campaignUTM = jsonObject.optString(AppConstant.UTM_CAMPAIGN);
-            termUTM = jsonObject.optString(AppConstant.UTM_TERM);
-            contentUTM = jsonObject.optString(AppConstant.UTM_CONTENT);
-
-            String source, medium, campaign, term, content;
-            source = sourceUTM.replaceAll("]", "").replaceAll("\\[", "");
-            medium = mediumUTM.replaceAll("]", "").replaceAll("\\[", "");
-            campaign = campaignUTM.replaceAll("]", "").replaceAll("\\[", "");
-            term = termUTM.replaceAll("]", "").replaceAll("\\[", "");
-            content = contentUTM.replaceAll("]", "").replaceAll("\\[", "");
+                String source, medium, campaign, term, content;
+                source = sourceUTM.replaceAll("]", "").replaceAll("\\[", "");
+                medium = mediumUTM.replaceAll("]", "").replaceAll("\\[", "");
+                campaign = campaignUTM.replaceAll("]", "").replaceAll("\\[", "");
+                term = termUTM.replaceAll("]", "").replaceAll("\\[", "");
+                content = contentUTM.replaceAll("]", "").replaceAll("\\[", "");
 
 
-            Bundle bundle = new Bundle();
-            if (source != null && !source.isEmpty())
-                bundle.putString(AppConstant.SOURCE, source);
-            if (medium != null && !medium.isEmpty())
-                bundle.putString(AppConstant.MEDIUM, medium);
-            bundle.putString(AppConstant.FIREBASE_NOTIFICATION_ID, mPayload.getId());
-            if (campaign != null && !campaign.isEmpty())
-                bundle.putString(AppConstant.FIREBASE_CAMPAIGN, campaign);
-            if (term != null && !term.isEmpty())
-                bundle.putString(AppConstant.TERM, term);
-            if (content != null && !content.isEmpty())
-                bundle.putString(AppConstant.CONTENT, content);
+                Bundle bundle = new Bundle();
+                if (source != null && !source.isEmpty())
+                    bundle.putString(AppConstant.SOURCE, source);
+                if (medium != null && !medium.isEmpty())
+                    bundle.putString(AppConstant.MEDIUM, medium);
+                bundle.putString(AppConstant.FIREBASE_NOTIFICATION_ID, mPayload.getId());
+                if (campaign != null && !campaign.isEmpty())
+                    bundle.putString(AppConstant.FIREBASE_CAMPAIGN, campaign);
+                if (term != null && !term.isEmpty())
+                    bundle.putString(AppConstant.TERM, term);
+                if (content != null && !content.isEmpty())
+                    bundle.putString(AppConstant.CONTENT, content);
 
-            return bundle;
-        }else
+                return bundle;
+            } else
+                return null;
+
+        } catch (Exception e) {
+            Util.handleExceptionOnce(mContext, e.toString(), "FirebaseAnalyticsTrack", "getDataFromPayload");
             return null;
+        }
     }
 
     private Object getInstanceOfFirebaseAnalytics(Context context) {
 
-        if(mFirebaseAnalyticsInstance == null) {
-            Method getInstanceMethod = getInstance(context,FirebaseAnalyticsClass);
+        if (mFirebaseAnalyticsInstance == null) {
+            Method getInstanceMethod = getInstance(context, FirebaseAnalyticsClass);
             try {
-                mFirebaseAnalyticsInstance = getInstanceMethod.invoke(null,context);
+                mFirebaseAnalyticsInstance = getInstanceMethod.invoke(null, context);
             } catch (Exception e) {
                 Util.handleExceptionOnce(context, e.toString(), "FirebaseAnalyticsTrack", "getInstanceOfFirebaseAnalytics");
 
@@ -181,7 +190,7 @@ public class FirebaseAnalyticsTrack {
         return mFirebaseAnalyticsInstance;
     }
 
-    private static Method trackEvent(Context context,Class mClass) {
+    private static Method trackEvent(Context context, Class mClass) {
         try {
             return mClass.getMethod(AppConstant.LOG_EVENT, String.class, Bundle.class);
         } catch (Exception e) {
@@ -191,7 +200,7 @@ public class FirebaseAnalyticsTrack {
         }
     }
 
-    private static Method getInstance(Context context,Class mClass) {
+    private static Method getInstance(Context context, Class mClass) {
         try {
             return mClass.getMethod(AppConstant.GET_FIREBASE_INSTANCE, Context.class);
         } catch (Exception e) {
@@ -230,54 +239,59 @@ public class FirebaseAnalyticsTrack {
         }
     }
 
-    private static String getTimeOfClick(Context context){
-        GetTime s_ntpClient = new GetTime();
-        Date currentTime = convertLongIntoDate(context,s_ntpClient.main());
+    private static String getTimeOfClick(Context context) {
+        try {
+            GetTime s_ntpClient = new GetTime();
+            Date currentTime = convertLongIntoDate(context, s_ntpClient.main());
 
-        Date first_round1 = convertStringIntoDate(AppConstant.FIREBASE_12PM);
-        Date first_round2 = convertStringIntoDate(AppConstant.FIREBASE_2PM);
-        Date second_round = convertStringIntoDate(AppConstant.FIREBASE_4PM);
-        Date third_round = convertStringIntoDate(AppConstant.FIREBASE_6PM);
-        Date fourth_round = convertStringIntoDate(AppConstant.FIREBASE_8PM);
-        Date fifth_round = convertStringIntoDate(AppConstant.FIREBASE_10PM);
-        Date sixth_round = convertStringIntoDate(AppConstant.FIREBASE_12AM);
-        Date seventh_round = convertStringIntoDate(AppConstant.FIREBASE_2AM);
-        Date eighth_round = convertStringIntoDate(AppConstant.FIREBASE_4AM);
-        Date ninth_round = convertStringIntoDate(AppConstant.FIREBASE_6AM);
-        Date tenth_round = convertStringIntoDate(AppConstant.FIREBASE_8AM);
-        Date eleventh_round = convertStringIntoDate(AppConstant.FIREBASE_10AM);
-        if (currentTime.after(first_round1) && currentTime.before(first_round2))
-            return AppConstant.FIREBASE_12to2PM;
-        else if (currentTime.after(first_round2) && currentTime.before(second_round))
-            return AppConstant.FIREBASE_2to4PM;
-        else if (currentTime.after(second_round) && currentTime.before(third_round))
-            return AppConstant.FIREBASE_4to6PM;
-        else if (currentTime.after(third_round) && currentTime.before(fourth_round))
-            return AppConstant.FIREBASE_6to8PM;
-        else if (currentTime.after(fourth_round) && currentTime.before(fifth_round))
-            return AppConstant.FIREBASE_8to10PM;
-        else if (currentTime.after(fifth_round) && currentTime.before(sixth_round))
-            return AppConstant.FIREBASE_10to12AM;
-        else if (currentTime.after(sixth_round) && currentTime.before(seventh_round))
-            return AppConstant.FIREBASE_12to2AM;
-        else if (currentTime.after(seventh_round) && currentTime.before(eighth_round))
-            return AppConstant.FIREBASE_2to4AM;
-        else if (currentTime.after(eighth_round) && currentTime.before(ninth_round))
-            return AppConstant.FIREBASE_4to6AM;
-        else if (currentTime.after(ninth_round) && currentTime.before(tenth_round))
-            return AppConstant.FIREBASE_6to8AM;
-        else if (currentTime.after(tenth_round) && currentTime.before(eleventh_round))
-            return AppConstant.FIREBASE_8to10AM;
-        else if (currentTime.after(eleventh_round) && currentTime.before(first_round1))
-            return AppConstant.FIREBASE_10to12PM;
-        return "";
+            Date first_round1 = convertStringIntoDate(AppConstant.FIREBASE_12PM);
+            Date first_round2 = convertStringIntoDate(AppConstant.FIREBASE_2PM);
+            Date second_round = convertStringIntoDate(AppConstant.FIREBASE_4PM);
+            Date third_round = convertStringIntoDate(AppConstant.FIREBASE_6PM);
+            Date fourth_round = convertStringIntoDate(AppConstant.FIREBASE_8PM);
+            Date fifth_round = convertStringIntoDate(AppConstant.FIREBASE_10PM);
+            Date sixth_round = convertStringIntoDate(AppConstant.FIREBASE_12AM);
+            Date seventh_round = convertStringIntoDate(AppConstant.FIREBASE_2AM);
+            Date eighth_round = convertStringIntoDate(AppConstant.FIREBASE_4AM);
+            Date ninth_round = convertStringIntoDate(AppConstant.FIREBASE_6AM);
+            Date tenth_round = convertStringIntoDate(AppConstant.FIREBASE_8AM);
+            Date eleventh_round = convertStringIntoDate(AppConstant.FIREBASE_10AM);
+            if (currentTime.after(first_round1) && currentTime.before(first_round2))
+                return AppConstant.FIREBASE_12to2PM;
+            else if (currentTime.after(first_round2) && currentTime.before(second_round))
+                return AppConstant.FIREBASE_2to4PM;
+            else if (currentTime.after(second_round) && currentTime.before(third_round))
+                return AppConstant.FIREBASE_4to6PM;
+            else if (currentTime.after(third_round) && currentTime.before(fourth_round))
+                return AppConstant.FIREBASE_6to8PM;
+            else if (currentTime.after(fourth_round) && currentTime.before(fifth_round))
+                return AppConstant.FIREBASE_8to10PM;
+            else if (currentTime.after(fifth_round) && currentTime.before(sixth_round))
+                return AppConstant.FIREBASE_10to12AM;
+            else if (currentTime.after(sixth_round) && currentTime.before(seventh_round))
+                return AppConstant.FIREBASE_12to2AM;
+            else if (currentTime.after(seventh_round) && currentTime.before(eighth_round))
+                return AppConstant.FIREBASE_2to4AM;
+            else if (currentTime.after(eighth_round) && currentTime.before(ninth_round))
+                return AppConstant.FIREBASE_4to6AM;
+            else if (currentTime.after(ninth_round) && currentTime.before(tenth_round))
+                return AppConstant.FIREBASE_6to8AM;
+            else if (currentTime.after(tenth_round) && currentTime.before(eleventh_round))
+                return AppConstant.FIREBASE_8to10AM;
+            else if (currentTime.after(eleventh_round) && currentTime.before(first_round1))
+                return AppConstant.FIREBASE_10to12PM;
+            return "";
+        } catch (Exception e) {
+            Util.handleExceptionOnce(context, e.toString(), "FirebaseAnalyticsTrack", "getTimeOfClick");
+            return "";
+        }
     }
+
     @SuppressLint("SimpleDateFormat")
-    private static Date convertLongIntoDate(Context context,long time) {
+    private static Date convertLongIntoDate(Context context, long time) {
         String currentTime;
         SimpleDateFormat format = new SimpleDateFormat(AppConstant.FCM_TIME_FORMAT);
         currentTime = format.format(new Date(time));
-
         Date convertedDate = new Date();
         try {
             convertedDate = format.parse(currentTime);
@@ -285,8 +299,9 @@ public class FirebaseAnalyticsTrack {
             Util.handleExceptionOnce(context, e.toString(), "FirebaseAnalyticsTrack", "getInstance");
 
         }
-        return convertedDate ;
+        return convertedDate;
     }
+
     @SuppressLint("SimpleDateFormat")
     private static Date convertStringIntoDate(String time) {
         String inputFormat = AppConstant.FCM_TIME_FORMAT;

@@ -53,14 +53,17 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     public static String medClick = "";
     private String pushType;
     private int cfg;
-
-
     private static String notificationTitle = "";
+    private static String notificationMessage = "";
+    private static String notificationBannerImage = "";
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (context != null) {
+        if (context == null) {
+            return;
+        }
+        try {
             String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
             context.sendBroadcast(it);
@@ -74,8 +77,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 if (clickIndex.equalsIgnoreCase("1")) {
                     String clkURL;
                     int dataCfg = Util.getBinaryToDecimal(cfg);
-
-
                     if (dataCfg > 0) {
                         clkURL = "https://clk" + dataCfg + ".izooto.com/clk" + dataCfg;
                     } else {
@@ -93,8 +94,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         lastTenthIndex = "0";
                     }
                     if (lastClickIndex.equalsIgnoreCase("1") || lastEighthIndex.equalsIgnoreCase("1")) {
-
-
                         String dayDiff1 = Util.dayDifference(Util.getTime(), preferenceUtil.getStringData(AppConstant.CURRENT_DATE_CLICK_WEEKLY));
                         String updateWeekly = preferenceUtil.getStringData(AppConstant.CURRENT_DATE_CLICK_WEEKLY);
                         String updateDaily = preferenceUtil.getStringData(AppConstant.CURRENT_DATE_CLICK_DAILY);
@@ -107,8 +106,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         } else
                             lciURL = RestClient.LAST_NOTIFICATION_CLICK_URL;
                         if (lastEighthIndex.equalsIgnoreCase("1")) {
-
-
                             if (lastTenthIndex.equalsIgnoreCase("1")) {
                                 if (!updateDaily.equalsIgnoreCase(Util.getTime())) {
                                     preferenceUtil.setStringData(AppConstant.CURRENT_DATE_CLICK_DAILY, Util.getTime());
@@ -127,48 +124,32 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                 lastClickAPI(context, lciURL, rid, -1);
                             }
                         }
-
-
                     }
-
-
                 }
             } catch (Exception e) {
                 Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
             }
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
-                if (!AdMediation.clicksData.isEmpty()) {
+                if (AdMediation.clicksData != null && !AdMediation.clicksData.isEmpty()) {
                     for (int i = 0; i < AdMediation.clicksData.size(); i++) {
                         AdMediation.clicksData.size();
                         try {
                             NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
                         } catch (Exception e) {
-                            Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
+                            Log.e("onReceive", e.toString());
                         }
-
                     }
-
                 }
             }
-
-
             if (preferenceUtil.getStringData("MEDIATIONCLICKDATA") != "") {
                 String medClickData = preferenceUtil.getStringData("MEDIATIONCLICKDATA");
                 callMediationClicks(context, medClickData, 0);
-
-
             }
-
-
             if (additionalData.equalsIgnoreCase("")) {
                 additionalData = "1";
             }
-
-
             if (!additionalData.equalsIgnoreCase("1") && inApp >= 0) {
-
-
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put(AppConstant.BUTTON_ID_1, act1ID);
                 hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
@@ -178,28 +159,30 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
                 hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
                 hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
+                hashMap.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
                 hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
                 JSONObject jsonObject = new JSONObject(hashMap);
 
-
+                HashMap<String, String> pulseMap = new HashMap<>();
+                pulseMap.put(AppConstant.P_TITLE, notificationTitle);
+                pulseMap.put(AppConstant.P_MESSAGE, notificationMessage);
+                pulseMap.put(AppConstant.P_BANNER_IMAGE, notificationBannerImage);
+                pulseMap.put(AppConstant.P_LANDING_URL, landingURL);
+                JSONObject pulseObject = new JSONObject(pulseMap);
                 if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
-                    iZooto.notificationActionHandler(jsonObject.toString());
-
-
+                    iZooto.notificationActionHandler(jsonObject.toString(), pulseObject.toString(), Util.isPulseDeepLink(cfg));
                 else {
                     if (Util.isAppInForeground(context)) {
-                        iZooto.notificationActionHandler(jsonObject.toString());
+                        iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                     } else if (isAppBackground(context)) {
-
-
                         if (preferenceUtil.getBoolean("Android8")) {
                             launchApp(context);
                             notificationClick = jsonObject.toString();
-                            iZooto.notificationActionHandler(jsonObject.toString());
+                            iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                         } else {
                             launchApp(context);
                             notificationClick = jsonObject.toString();
-                            iZooto.notificationActionHandler(jsonObject.toString());
+                            iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                         }
                     } else {
                         notificationClick = jsonObject.toString();
@@ -240,12 +223,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                 if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                                     Util.sleepTime(2000);
                                     launchApp(context);
-
-
                                 } else {
                                     launchApp(context);
-
-
                                 }
                             }
                         } else {
@@ -260,35 +239,42 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     }
                 }
             }
-        }
 
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(context, ex.toString(), "NotificationActionReceiver", "onReceive");
+        }
 
     }
 
     public static boolean isAppBackground(Context context) {
         boolean isBackground = true;
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            List<ActivityManager.RunningAppProcessInfo> runningProcesses = activityManager.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    for (String activeProcess : processInfo.pkgList) {
-                        if (activeProcess.equals(context.getPackageName())) {
-                            isBackground = false;
+
+        try {
+            ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+                List<ActivityManager.RunningAppProcessInfo> runningProcesses = activityManager.getRunningAppProcesses();
+                for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                    if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                        for (String activeProcess : processInfo.pkgList) {
+                            if (activeProcess.equals(context.getPackageName())) {
+                                isBackground = false;
+                            }
                         }
                     }
                 }
-            }
-        } else {
-            List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
-            if (taskInfo.size() > 0) {
-                ComponentName componentName = taskInfo.get(0).topActivity;
-                if (componentName.getPackageName().equals(context.getPackageName())) {
-                    isBackground = false;
+            } else {
+                List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
+                if (taskInfo.size() > 0) {
+                    ComponentName componentName = taskInfo.get(0).topActivity;
+                    if (componentName.getPackageName().equals(context.getPackageName())) {
+                        isBackground = false;
+                    }
                 }
             }
+            return isBackground;
+        } catch (Exception ex) {
+            return isBackground;
         }
-        return isBackground;
     }
 
 
@@ -297,8 +283,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
     private static void openURLInBrowser(Context context, @NonNull Uri uri) {
-        Intent intent = openURLInBrowserIntent(uri);
-        context.startActivity(intent);
+        try {
+            Intent intent = openURLInBrowserIntent(uri);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "openURLInBrowser");
+        }
     }
 
 
@@ -350,20 +340,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     } catch (Exception e) {
                         DebugFileManager.createExternalStoragePublic(context, "LastClick" + e, "[Log.V]->");
                         Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "lastClickAPI");
-
-
                     }
-
-
                 }
             });
         } catch (Exception e) {
             DebugFileManager.createExternalStoragePublic(context, "LastClick" + e, "[Log.V]->");
             Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "lastClickAPI");
-
-
         }
-
 
     }
 
@@ -386,13 +369,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                                 preferenceUtil.setStringData(AppConstant.STORE_MEDIATION_RECORDS, null);
                             } catch (Exception ex) {
                                 DebugFileManager.createExternalStoragePublic(context, "MediationCLick" + ex, "[Log.V]->");
-
-
                             }
                         } else {
                             preferenceUtil.setStringData("MEDIATIONCLICKDATA", "");
-
-
                         }
                     }
 
@@ -400,8 +379,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     void onFailure(int statusCode, String response, Throwable throwable) {
                         super.onFailure(statusCode, response, throwable);
                         Util.trackMediation_Impression_Click(context, AppConstant.MED_CLICK, medClick);
-
-
                     }
                 });
             }
@@ -415,8 +392,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
 
     private void getBundleData(Context context, Intent intent) {
-        Bundle tempBundle = intent.getExtras();
-        if (tempBundle != null) {
+        try {
+            Bundle tempBundle = intent.getExtras();
+            if (tempBundle == null) {
+                return;
+            }
             if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
                 mUrl = tempBundle.getString(AppConstant.KEY_WEB_URL);
             if (tempBundle.containsKey(AppConstant.KEY_IN_APP))
@@ -455,13 +435,18 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 cfg = tempBundle.getInt(AppConstant.CFGFORDOMAIN);
             if (tempBundle.containsKey(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME))
                 notificationTitle = tempBundle.getString(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME);
-
+            if (tempBundle.containsKey(AppConstant.P_MESSAGE))
+                notificationMessage = tempBundle.getString(AppConstant.P_MESSAGE);
+            if (tempBundle.containsKey(AppConstant.P_BANNER_IMAGE))
+                notificationBannerImage = tempBundle.getString(AppConstant.P_BANNER_IMAGE);
 
             if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
             }
+        } catch (Exception e) {
+            Util.handleExceptionOnce(context, e.toString(), "notificationClickAPI", "getBundleData");
         }
     }
 
@@ -522,16 +507,16 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 }
             });
 
-
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
-
-
         }
     }
 
 
     private static void launchApp(Context context) {
+        if (context == null) {
+            return;
+        }
         PackageManager pm = context.getPackageManager();
         Intent launchIntent = null;
         String name = "";
@@ -541,8 +526,12 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 name = (String) pm.getApplicationLabel(app);
                 launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                 Intent intentAppLaunch = launchIntent; // new Intent();
-                intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intentAppLaunch);
+                if (intentAppLaunch != null) {
+                    intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intentAppLaunch);
+                    Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                }
+
 
 
             } else {
@@ -552,16 +541,25 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                     Intent intentAppLaunch = launchIntent; // new Intent();
-                    intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(intentAppLaunch);
+                    if (intentAppLaunch != null) {
+                        intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(intentAppLaunch);
+                        Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                    }
+
                 } else {
+                    if (pm == null){return;}
                     ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
                     Intent intentAppLaunch = launchIntent; // new Intent();
-                    intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intentAppLaunch);
+                    if (intentAppLaunch != null) {
+                        intentAppLaunch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intentAppLaunch);
+                        Log.d(AppConstant.APP_NAME_TAG + "Found it:", name);
+                    }
+
                 }
             }
         } catch (Exception e) {

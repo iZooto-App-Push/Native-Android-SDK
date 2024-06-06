@@ -3,25 +3,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class iZootoWebViewActivity extends AppCompatActivity {
 
     private WebView mWebView;
-    private ProgressBar mProgressBar;
     private String mUrl;
 
     public static void startActivity(Context context, String url) {
         context.startActivity(createIntent(context, url));
-
     }
 
     public static Intent createIntent(Context context, String url) {
@@ -46,32 +42,29 @@ public class iZootoWebViewActivity extends AppCompatActivity {
 
 
     private void initUI() {
-        try{
+        try {
             getBundleData();
             mWebView = findViewById(R.id.webView);
-            mProgressBar = findViewById(R.id.circular_progress_bar);
-            mProgressBar.setVisibility(View.INVISIBLE);
+            // mProgressBar = findViewById(R.id.circular_progress_bar);
             WebSettings settings = mWebView.getSettings();
             settings.setLoadWithOverviewMode(true);
             settings.setJavaScriptEnabled(false);
             settings.setDomStorageEnabled(false);
-            //  settings.setAppCacheEnabled(false);
+            // settings.setAppCacheEnabled(false);
             settings.setAllowFileAccess(false);
             settings.setAllowFileAccessFromFileURLs(false);
             settings.setAllowUniversalAccessFromFileURLs(false);
-
             settings.setLoadsImagesAutomatically(true);
             mWebView.setWebChromeClient(new WebChromeClient());
             mWebView.setVerticalScrollBarEnabled(false);
             mWebView.setHorizontalScrollBarEnabled(false);
-            mWebView.setWebViewClient(new CustWebViewClient());
+            mWebView.setWebViewClient(new CustomWebViewClient());
             mWebView.loadUrl(mUrl);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex){
+            Util.handleExceptionOnce(iZooto.appContext, ex.toString(), "iZootoWebViewActivity", "initUI");
 
         }
-
     }
 
     private void getBundleData() {
@@ -84,7 +77,7 @@ public class iZootoWebViewActivity extends AppCompatActivity {
 
 
 
-    class CustWebViewClient extends WebViewClient {
+    class CustomWebViewClient extends WebViewClient {
         public static final String TAG = AppConstant.APP_NAME_TAG;
 //        boolean getSuccess;
 
@@ -97,20 +90,16 @@ public class iZootoWebViewActivity extends AppCompatActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            mProgressBar.setVisibility(View.VISIBLE);
+            //  mProgressBar.setVisibility(View.VISIBLE);
 
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            mProgressBar.setVisibility(View.GONE);
+            //  mProgressBar.setVisibility(View.GONE);
             super.onPageFinished(view, url);
-
-
         }
-
     }
-
     @Override
     public void onBackPressed() {
         if (mWebView.canGoBack()) {

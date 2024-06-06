@@ -1,12 +1,12 @@
 package com.izooto;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,31 +14,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private final ArrayList<Payload> payloadModalArrayList;
     @SuppressLint("StaticFieldLeak")
     private static Context context;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
     private final String className = this.getClass().getName();
-    private AlertDialog alertView;
+    private final AlertDialog alertView;
+    private final DrawerLayout navigationDrawer;
 
-    protected NewsHubAdapter(Context context,ArrayList<Payload> payloadModalArrayList, AlertDialog alertDialog) {
+
+    public NewsHubAdapter(Context context, ArrayList<Payload> payloadModalArrayList, AlertDialog alertDialog, DrawerLayout mainDrawer) {
         this.payloadModalArrayList = payloadModalArrayList;
         NewsHubAdapter.context = context;
         this.alertView = alertDialog;
+        this.navigationDrawer = mainDrawer;
     }
 
     @NonNull
@@ -54,35 +56,89 @@ class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         try {
             Payload userModal = payloadModalArrayList.get(position);
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             int viewType = getItemViewType(position);
             switch (viewType) {
                 case TYPE_ITEM: {
-                    MyViewHolder myViewHolder = (MyViewHolder) holder;
-                    myViewHolder.newsHubTitle.setText(userModal.getTitle());
-                    long longTime = Long.parseLong(userModal.getCreated_Time());
-                    myViewHolder.newsHubTime.setText(IZTimeAgo.getTimeAgo(longTime));
-                    if (userModal.getBanner() != null && !userModal.getBanner().isEmpty()) {
-                        Glide.with(context)
-                                .load(userModal.getBanner())
-                                .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
-                                .into(myViewHolder.newsHubBanner);
+                    MyViewHolder viewHolder = (MyViewHolder) holder;
+                    viewHolder.newsHubTitle.setText(userModal.getTitle());
+                    String pubName = preferenceUtil.getStringData("pubName");
+                    if (pubName != null && !pubName.isEmpty()) {
+                        if (Util.notificationMode()){
+                            viewHolder.publisherName.setText(pubName);
+                        }else {
+                            viewHolder.publisherName.setText(pubName+",");
+                        }
 
-                    } else {
-                        myViewHolder.newsHubBanner.setImageResource(context.getApplicationInfo().icon);
+                    }else {
+                         if (Util.notificationMode()){
+                             viewHolder.publisherName.setText(AppConstant.APP_NAME_TAG);
+                         }else {
+                             viewHolder.publisherName.setText(AppConstant.APP_NAME_TAG+",");
+                         }
+
                     }
-                    myViewHolder.itemView.setOnClickListener(v -> {
+                     try{
+                         if (iZooto.isXmlParse){
+                             if (Util.notificationMode()) {
+                                 viewHolder.newsHubTime.setText(Util.getTimeAgo(userModal.getCreated_Time())+",");
+                             }else {
+                                 viewHolder.newsHubTime.setText(Util.getTimeAgo(userModal.getCreated_Time()));
+                             }
+                         }else {
+                             long longTime = Long.parseLong(userModal.getCreated_Time());
+                             if (Util.notificationMode()){
+                                 viewHolder.newsHubTime.setText(IZTimeAgo.getTimeAgo(longTime)+",");
+                             }else {
+                                 viewHolder.newsHubTime.setText(IZTimeAgo.getTimeAgo(longTime));
+                             }
+
+                         }
+
+                     }catch (Exception e){
+                         Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NewsHubAdapter", "XMLParsing");
+                     }
+
+
+
+                    try{
+                        if (userModal.getBanner() != null && !userModal.getBanner().isEmpty()) {
+
+                            Glide.with(context)
+                                    .load(userModal.getBanner())
+                                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
+                                    .into(viewHolder.newsHubBanner);
+                            Glide.with(context)
+                                    .load(userModal.getBanner())
+                                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
+                                    .into(viewHolder.circleImage);
+
+                        } else {
+                            viewHolder.newsHubBanner.setImageResource(context.getApplicationInfo().icon);
+                        }
+                    }catch (Exception e){
+                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NewsHubAdapter", "Glide");
+                    }
+
+                    viewHolder.itemView.setOnClickListener(v -> {
+                        iZooto.isEDGestureUiMode = true;
                         newsHubCheckIaKey(v, userModal);
                         Util.newsHubClickApi(context, userModal);
+                        if (navigationDrawer != null){
+                            //iZootoNavigationDrawer.closeDrawer();
+                        }
                     });
-                    myViewHolder.newsHubShare.setOnClickListener(v -> {
+                    viewHolder.newsHubShare.setOnClickListener(v -> {
+                        iZooto.isEDGestureUiMode = true;
                         String url = newsHubUpdatedURL(userModal.getLink(), "Share");
-                        newsHubGetShare(userModal, url);
+                        shareData(userModal, url);
                     });
+
                 }
                 case TYPE_FOOTER: {
                     try {
@@ -92,17 +148,15 @@ class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         }
 
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NewsHubAdapter", "onBindView");
                     }
 
                 }
             }
+
+
         } catch (Exception e) {
-            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(holder.itemView.getContext());
-            if (!preferenceUtil.getBoolean("onBindViewHolder")) {
-                preferenceUtil.setBooleanData("onBindViewHolder", true);
-                Util.setException(context, e.toString(), className, "onBindViewHolder");
-            }
+            Util.handleExceptionOnce(context, e.toString(), className, "onBindViewHolder");
         }
 
     }
@@ -220,62 +274,24 @@ class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    private void newsHubGetShare(Payload userModal, String replacedUtm) {
-        Intent myIntent = new Intent(Intent.ACTION_SEND);
-        myIntent.setType("text/plain");
+    private void shareData(Payload userModal, String utm) {
+        Intent action = new Intent(Intent.ACTION_SEND);
+        action.setType("text/plain");
         String subject = userModal.getTitle();
-        myIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        myIntent.putExtra(Intent.EXTRA_TEXT, replacedUtm);
-        context.startActivity(Intent.createChooser(myIntent, "Share"));
+        action.putExtra(Intent.EXTRA_SUBJECT, subject);
+        action.putExtra(Intent.EXTRA_TEXT, utm);
+        context.startActivity(Intent.createChooser(action, "Share"));
 
     }
+
     private void newsHubCheckIaKey(View v, Payload userModal) {
         if (v.getContext() != null) {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(v.getContext());
             try {
                 if (userModal != null) {
-                    if (!userModal.getAp().isEmpty()) {
-                        HashMap<String, String> hashMap = new HashMap<>();
-                        hashMap.put(AppConstant.BUTTON_ID_1, userModal.getAct1ID());
-                        hashMap.put(AppConstant.BUTTON_TITLE_1, userModal.getAct1name());
-                        hashMap.put(AppConstant.BUTTON_URL_1, userModal.getAct1link());
-                        hashMap.put(AppConstant.ADDITIONAL_DATA, userModal.getAp());
-                        hashMap.put(AppConstant.LANDING_URL, newsHubUpdatedURL(userModal.getLink(), "notShare"));
-                        hashMap.put(AppConstant.BUTTON_ID_2, userModal.getAct2ID());
-                        hashMap.put(AppConstant.BUTTON_TITLE_2, userModal.getAct2name());
-                        hashMap.put(AppConstant.BUTTON_URL_2, userModal.getAct2link());
-                        hashMap.put(AppConstant.ACTION_TYPE, "0");
-                        JSONObject jsonObject = new JSONObject(hashMap);
-                        iZooto.notificationActionHandler(jsonObject.toString());
-                        if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                            if (alertView != null) {
-                                alertView.dismiss();
-                                alertView = null;
-                            } else {
-                                ((Activity) context).finish();
-                            }
-                        }
-
-                    } else {
-                        if (userModal.getInapp() == 1) {
-                            if (iZooto.mBuilder != null && iZooto.mBuilder.mWebViewListener != null) {
-                                iZooto.mBuilder.mWebViewListener.onWebView(userModal.getLink());
-                                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                                    if (alertView != null) {
-                                        alertView.dismiss();
-                                        alertView = null;
-                                    } else {
-                                        ((Activity) context).finish();
-                                    }
-                                }
-                            } else {
-                                iZootoWebViewActivity.startActivity(v.getContext(), newsHubUpdatedURL(userModal.getLink(), "notShare"));
-                            }
-                        } else {
-                            NotificationActionReceiver.openURLInBrowser(v.getContext(), newsHubUpdatedURL(userModal.getLink(), "notShare"));
-                        }
-
-                    }
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(context, Uri.parse(userModal.getLink()));
                 }
             } catch (Exception e) {
                 if (!preferenceUtil.getBoolean("newsHubCheckIaKey")) {
@@ -284,6 +300,7 @@ class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             }
         }
+
     }
 
     @Override
@@ -299,11 +316,13 @@ class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return payloadModalArrayList.size() + 1;
     }
 
-    protected static class MyViewHolder extends RecyclerView.ViewHolder {
+     static class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView newsHubTitle;
         private final TextView newsHubTime;
         private final ImageView newsHubBanner;
         private final ImageView newsHubShare;
+        TextView title,description,time,publisherName;
+        ImageView imageView, share, likeIcon, circleImage, moreIcon;
 
         private MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -311,8 +330,19 @@ class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             newsHubBanner = itemView.findViewById(R.id.nt_banner_image);
             newsHubShare = itemView.findViewById(R.id.news_hub_share_icon);
             newsHubTime = itemView.findViewById(R.id.news_hub_time);
+            publisherName = itemView.findViewById(R.id.publisher_);
+            circleImage = itemView.findViewById(R.id.circle_icon);
         }
     }
+
+     private void newsHubShareHolder(ImageView imageButton) {
+         ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageButton, "scaleX", 1f, 1.5f, 1f);
+         ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageButton, "scaleY", 1f, 1.5f, 1f);
+         AnimatorSet animatorSet = new AnimatorSet();
+         animatorSet.playTogether(scaleX, scaleY);
+         animatorSet.setDuration(500);
+         animatorSet.start();
+     }
 
     private static class FooterViewHolder extends RecyclerView.ViewHolder {
         TextView footerText;
@@ -324,24 +354,5 @@ class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             footerImage = view.findViewById(R.id.footer_image);
         }
     }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

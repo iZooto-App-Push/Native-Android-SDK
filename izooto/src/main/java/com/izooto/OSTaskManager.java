@@ -1,16 +1,11 @@
 package com.izooto;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadFactory;
+import java.util.List;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class OSTaskManager {
@@ -21,23 +16,9 @@ public class OSTaskManager {
     private final ConcurrentLinkedQueue<Runnable> taskQueueWaitingForInit = new ConcurrentLinkedQueue<>();
     private final AtomicLong lastTaskId = new AtomicLong();
     private ExecutorService pendingTaskExecutor;
-    static final String ADD_USER_PROPERTY = "addUserProperty()";
-    static final String ADD_EVENT = "addEvent()";
-    static final String SET_SUBSCRIPTION = "setSubscription()";
-    static final String SET_FIREBASE_ANALYTICS = "setFirebaseAnalytics()";
-    static final String ADD_TAG = "addTag()";
-    static final String REMOVE_TAG = "removeTag()";
-    static final String SET_CUSTOM_TEMPLATE = "setCustomTemplate()";
-    static final String SET_SUBSCRIBER_ID="setSubscriberID()";
-    static final HashSet<String> METHODS_ADD_IN_QUEUE_FOR = new HashSet<>(Arrays.asList(
-            ADD_USER_PROPERTY,
-            ADD_EVENT,
-            SET_SUBSCRIPTION,
-            SET_FIREBASE_ANALYTICS,
-            ADD_TAG,
-            REMOVE_TAG,
-            SET_CUSTOM_TEMPLATE,
-            SET_SUBSCRIBER_ID
+    static final String ADD_USERPROPERTY = "addUserProperty()";
+    static final HashSet<String> METHODS_ADD_IN_QUEUE_FOR = new HashSet<>(List.of(
+            ADD_USERPROPERTY
     ));
 
     boolean shouldQueueTaskForInit(String task) {
@@ -62,8 +43,6 @@ public class OSTaskManager {
         return !pendingTaskExecutor.isShutdown();
     }
 
-
-
     void addTaskToQueue(Runnable runnable) {
         addTaskToQueue(new PendingTaskRunnable(this, runnable));
     }
@@ -81,9 +60,8 @@ public class OSTaskManager {
                 // If the executor isn't done with tasks, submit the task to the executor
                 pendingTaskExecutor.submit(task);
             } catch (RejectedExecutionException e) {
-                Log.d(AppConstant.APP_NAME_TAG,"Executor is shutdown, running task manually with ID: " + task.taskId);
+                Log.d(AppConstant.APP_NAME_TAG, "Executor is shutdown, running task manually with ID: " + task.taskId);
                 task.run();
-                e.printStackTrace();
             }
         }
     }
@@ -93,7 +71,6 @@ public class OSTaskManager {
      * Run available pending tasks on an Executor
      */
     void startPendingTasks() {
-
         if (!taskQueueWaitingForInit.isEmpty()) {
             pendingTaskExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
                 @Override
@@ -105,7 +82,11 @@ public class OSTaskManager {
             });
 
             while (!taskQueueWaitingForInit.isEmpty()) {
-                pendingTaskExecutor.submit(taskQueueWaitingForInit.poll());
+                try {
+                    pendingTaskExecutor.submit(taskQueueWaitingForInit.poll()).get(2, TimeUnit.SECONDS);  // Set a timeout for each task
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    Log.e(AppConstant.APP_NAME_TAG, "Task execution interrupted or timed out", e);
+                }
             }
         }
     }
@@ -120,7 +101,6 @@ public class OSTaskManager {
     private static class PendingTaskRunnable implements Runnable {
         private final OSTaskManager osTaskManager;
         private final Runnable innerTask;
-
         private long taskId;
 
         PendingTaskRunnable(OSTaskManager controller, Runnable innerTask) {
@@ -142,5 +122,6 @@ public class OSTaskManager {
                     '}';
         }
     }
+
 
 }

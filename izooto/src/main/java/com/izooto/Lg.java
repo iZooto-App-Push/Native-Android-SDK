@@ -25,7 +25,6 @@ package com.izooto;
  */
 public class Lg {
     // Grabbing the native values from Android's native logging facilities,
-    // to make for easy migration and interop.
     public static final int NONE = -1;
     public static final int VERBOSE = android.util.Log.VERBOSE;
     public static final int DEBUG = android.util.Log.DEBUG;
@@ -34,7 +33,7 @@ public class Lg {
     public static final int ERROR = android.util.Log.ERROR;
     public static final int ASSERT = android.util.Log.ASSERT;
 
-    public static boolean ISDEBUG = true;
+    public static boolean IS_DEBUG = true;
 
     /**
      * Instructs the LogNode to print the log data provided. Other LogNodes can
@@ -48,7 +47,7 @@ public class Lg {
      */
     public static void println(int priority, String tag, String msg, Throwable tr) {
         try {
-            if (ISDEBUG) {
+            if (IS_DEBUG) {
                 switch (priority) {
                     case VERBOSE:
                         android.util.Log.v(tag, msg);

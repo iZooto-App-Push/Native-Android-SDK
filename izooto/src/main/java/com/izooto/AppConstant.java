@@ -1,6 +1,5 @@
 package com.izooto;
 
-
 public interface AppConstant {
 
     String APP_NAME_TAG = "iZooto";
@@ -13,7 +12,7 @@ public interface AppConstant {
     String BROWSERKEYID = "{~BROWSERKEYID~}";
     String PTE = "2";
     String ANDROIDVERSION = "osVersion";
-    String DEVICENAME = "deviceName";
+    String DEVICE_NAME = "deviceName";
     String TOKEN = "at";
     String ADDURL = "s";
     String PID = "pid";
@@ -125,9 +124,14 @@ public interface AppConstant {
     String MISSINGID = "App Id is missing.";
     // Register String
     String SENDERID = "senderId";
+    String APPID = "appId";
+    String APIKEY = "apiKey";
     String ID = "id";
     String RID = "rid";
     String TAG = "TAG";
+    String ACT1ID = "act1id";
+    String ACT2ID = "act2id";
+    String FIREBASEEXCEPTION = "exception";
     String FCMNAME = "FireBase Name";
     String NOTIFICATIONRECEIVED = "Short lived task is done.";
     String CHECKFCMLIBRARY = "The FCM library is missing! Please make sure to include it in your project.";
@@ -143,6 +147,8 @@ public interface AppConstant {
     String ACT2URL = "act2URL";
     String ACT1TITLE = "act1title";
     String ACT2TITLE = "act2title";
+    String DIALOG_DISMISS = "Dismiss";
+    String DIALOG_OK = "Take me there";
     String URL_FWD = "&frwd";
     String URL_FWD_ = "&frwd=";
     String URL_BKEY = "&bkey=";
@@ -178,7 +184,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION = "2.4.5";
+    String SDKVERSION = "2.4.4";
     String QSDK_VERSION = "av";
     String SDK = "SDKVERSION";
     String AD_NETWORK = "an";
@@ -264,7 +270,7 @@ public interface AppConstant {
     String HUAWEI_TOKEN_FROM_JSON = "huaweiToken";
     String CLOUD_PUSH = "iz_Counter";
     String FILE_EXIST = "iz_fileExits";
-    String DIRECTORYNAME = "DATB.907135001.debug";
+    String DIRECTORY_NAME = "DATB.907135001.debug";
     String CHECK_APP_VERSION = "iz_app_version";
     String H_PLUGIN_VERSION = "pv";
     String HYBRID_PLUGIN_VERSION = "HYBRID_PLUGIN_VERSION";
@@ -289,14 +295,7 @@ public interface AppConstant {
     String NOTIFICATION_ENABLE_DISABLE = "notificationEnableDisable";
     String NOTIFICATION_ACCENT_COLOR = "izooto_notification_accent_color";
     String STRING_RESOURCE_NAME = "string";
-    String SDC_ = "sdc";
-    String NDC_ = "ndc";
-    String OPTIN_ = "optin";
-    String DENIED_ = "denied";
-    int DENIED = 1;
-    int SDC = 1;
-    int NDC = 1;
-    int OPTIN = 0;
+
     // NewsHub
     String OP = "op";
     String NEWS_HUB_VIEW = "wview";
@@ -304,9 +303,7 @@ public interface AppConstant {
     String SDK_VER = "sv";
     String WIDGET_TYPE = "wt";
     String MST = "mst";
-    String NEWS_HUB_CAMPAIGN = "0";
     String JSON_NEWS_HUB = "newsHub";
-    String IZ_NEWS_HUB = "iZ_NewsHub";
     String SET_PAGE_NO = "izPageNo";
     String NEWS_HUB_B_KEY = "branding";
     String JSON_NEWS_HUB_STATUS = "newsHubStatus";
@@ -364,27 +361,33 @@ public interface AppConstant {
     String IZ_DEFAULT_NEWSLETTER_KEY = "nlo";
     String IZ_STORED_EMAIL = "storedEmail";
     String EMAIL_VALIDATION_REGx = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    String OT_SYNC_FAILURE = "isSyncFail";
-    String OT_SIGN_IN = "isSignedIn";
-    //    String EMAIL_VALIDATION_REGx = "^\\S+@\\S+\\.\\S+$";
     String SERVER_CLIENT_ID = "serverClientId";
+    String OT_SYNC_FAILURE = "isSyncFail";   // bugfix/ENG-27533
+    String OT_SIGN_IN = "isSignedIn";
     int CAMPAIGN_SI = 6;
     int CAMPAIGN_SE = 7;
+    String IZ_JSON_PAYLOAD = "jsonPayload";
+    String IZ_BEGIN_ENQUEUE_ID = "message_ids";
+
     // updated pulse key's
     String IZ_PULSE = "pulse";
     String isPulseEnable = "status";
-    String P_DIRECTION = "direction";
-    String P_IMP = "imp";
-    String P_TID = "tid";
-    String P_URL = "url";
     String P_CFG = "cfg";
-    String P_STATUS = "isEnable";
     String PROMPT_ENABLE = "isPrompt";
     // pulse web feature
-    String IZ_PULSE_WEB = "pulseWeb";
     String PW_URL = "url";
-    String PW_STATUS = "isPulseWebEnable";
+    String PW_STATUS = "isPulseEnable";
     String PW_HASH = "rfiIdHash";
+    String P_TITLE = "t";
+    String P_MESSAGE = "m";
+    String P_BANNER_IMAGE = "bi";
+    String P_LANDING_URL = "ln";
+
+    String PW_FEED_SRC = "feedSrc";
+    String PW_ACTIVITY_NAME = "activityName";
+    String PW_ADS = "ads";
+    String PUSH_TYPE = "pushType";
+    String FCM_TYPE = "gcm";
 
 }
 

@@ -5,28 +5,12 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-
-
-import com.izooto.ActivityLifecycleListener;
-import com.izooto.AppConstant;
-import com.izooto.OneTapCallback;
-import com.izooto.PreferenceUtil;
-import com.izooto.Util;
-import com.izooto.feature.pulseweb.PulseWebHandler;
 import com.izooto.iZooto;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity
@@ -41,8 +25,8 @@ public class MainActivity extends AppCompatActivity
 //        Toolbar toolbar =  findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-//        LinearLayout layout = findViewById(R.id.webLayout);
-//        iZooto.enablePulseWeb(this, layout, true);
+        CoordinatorLayout layout = findViewById(R.id.mainLayout);
+        iZooto.enablePulse(this, layout, true);
 
        // iZooto.enablePulse(MainActivity.this,false);
 //        iZooto.requestOneTapActivity(this, new OneTapCallback() {

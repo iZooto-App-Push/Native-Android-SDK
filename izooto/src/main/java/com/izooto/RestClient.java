@@ -1,6 +1,7 @@
 package com.izooto;
 
 import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -12,28 +13,27 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 public class RestClient {
     //    production url
     static final String BASE_URL = "https://aevents.izooto.com/app";
     static String P_GOOGLE_JSON_URL = "https://cdn.izooto.com/app/app_";  //old
     static final int GET_TIMEOUT = 60000;
-    static final String EVENT_URL="https://et.izooto.com/evt";
-    static final String PROPERTIES_URL="https://prp.izooto.com/prp";
-    static final String IMPRESSION_URL="https://impr.izooto.com/imp";
-    static final String NOTIFICATION_CLICK="https://clk.izooto.com/clk";
-    static final String SUBSCRIPTION_API="https://usub.izooto.com/sunsub";
-    static final String LAST_NOTIFICATION_CLICK_URL="https://lci.izooto.com/lci";
-    static final String LAST_NOTIFICATION_VIEW_URL="https://lim.izooto.com/lim";
-    static final String LAST_VISIT_URL="https://lvi.izooto.com/lvi";
-    static final String MEDIATION_IMPRESSION="https://med.dtblt.com/medi";
-    static final String MEDIATION_CLICKS="https://med.dtblt.com/medc";
-    static final String APP_EXCEPTION_URL="https://aerr.izooto.com/aerr";
+    static final String EVENT_URL = "https://et.izooto.com/evt";
+    static final String PROPERTIES_URL = "https://prp.izooto.com/prp";
+    public static final String IMPRESSION_URL = "https://impr.izooto.com/imp";
+    static final String NOTIFICATION_CLICK = "https://clk.izooto.com/clk";
+    static final String SUBSCRIPTION_API = "https://usub.izooto.com/sunsub";
+    static final String LAST_NOTIFICATION_CLICK_URL = "https://lci.izooto.com/lci";
+    static final String LAST_NOTIFICATION_VIEW_URL = "https://lim.izooto.com/lim";
+    static final String LAST_VISIT_URL = "https://lvi.izooto.com/lvi";
+    static final String MEDIATION_IMPRESSION = "https://med.dtblt.com/medi";
+    static final String MEDIATION_CLICKS = "https://med.dtblt.com/medc";
+    static final String APP_EXCEPTION_URL = "https://aerr.izooto.com/aerr";
     static final String PERSISTENT_NOTIFICATION_DISMISS_URL = "https://dsp.izooto.com/dsp";
-    static final String NEWS_HUB_IMPRESSION_URL="https://nhwimp.izooto.com/nhwimp";
-    static final String NEWS_HUB_OPEN_URL="https://nhwopn.izooto.com/nhwopn";
-    static final String NEWS_HUB_URL="https://nh.iz.do/nh/";
-    static final String ONE_TAP_SUBSCRIPTION="https://eenp.izooto.com/eenp";
+    static final String NEWS_HUB_IMPRESSION_URL = "https://nhwimp.izooto.com/nhwimp";
+    static final String NEWS_HUB_OPEN_URL = "https://nhwopn.izooto.com/nhwopn";
+    static final String NEWS_HUB_URL = "https://nh.iz.do/nh/";
+    static final String ONE_TAP_SUBSCRIPTION = "https://eenp.izooto.com/eenp";
     static final String iZ_PULSE_FEATURE_CLICK = "https://osclk.izooto.com/osclk";
     static final String iZ_PULSE_FEATURE_IMPRESSION = "https://osimp.izooto.com/osimp";
 
@@ -41,31 +41,34 @@ public class RestClient {
     private static int getThreadTimeout(int timeout) {
         return timeout + 5000;
     }
+
     static void get(final String url, final ResponseHandler responseHandler) {
-        new Thread(() -> makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT)).start();
+        new Thread(() -> makeApiCall(url, null, null, null, responseHandler, GET_TIMEOUT)).start();
     }
-    static void getRequest(final String url, final int timeOut,final ResponseHandler responseHandler) {
+
+    static void getRequest(final String url, final int timeOut, final ResponseHandler responseHandler) {
         new Thread(() -> {
-            if(timeOut==0)
-                makeApiCall(url, null, null,null, responseHandler, GET_TIMEOUT);
+            if (timeOut == 0)
+                makeApiCall(url, null, null, null, responseHandler, GET_TIMEOUT);
             else
-                makeApiCall(url, null, null,null, responseHandler,timeOut);
+                makeApiCall(url, null, null, null, responseHandler, timeOut);
         }).start();
     }
 
-    static void postRequest(final String url, final Map<String,String> data,JSONObject jsonObject, final ResponseHandler responseHandler) {
-        new Thread(() -> makeApiCall(url, AppConstant.POST, data,jsonObject, responseHandler, GET_TIMEOUT)).start();
-    }
-    public static void makeApiCall(final String url, final String method, final Map<String,String> data,JSONObject jsonObject, final ResponseHandler responseHandler, final int timeout) {
-        ExecutorService es = Executors.newSingleThreadExecutor();
-        es.submit(() -> startHTTPConnection(url, method, data, jsonObject ,responseHandler, timeout));
+    static void postRequest(final String url, final Map<String, String> data, JSONObject jsonObject, final ResponseHandler responseHandler) {
+        new Thread(() -> makeApiCall(url, AppConstant.POST, data, jsonObject, responseHandler, GET_TIMEOUT)).start();
     }
 
-    private static void startHTTPConnection(String url, String method, final Map<String,String> data,JSONObject jsonBody, ResponseHandler responseHandler, int timeout) {
+     private static void makeApiCall(final String url, final String method, final Map<String, String> data, JSONObject jsonObject, final ResponseHandler responseHandler, final int timeout) {
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        es.submit(() -> startHTTPConnection(url, method, data, jsonObject, responseHandler, timeout));
+    }
+
+    private static void startHTTPConnection(String url, String method, final Map<String, String> data, JSONObject jsonBody, ResponseHandler responseHandler, int timeout) {
         HttpURLConnection con = null;
         int httpResponse = -1;
         String json = null;
-        StringBuilder postData=null;
+        StringBuilder postData = null;
         int retry = 0;
         boolean delay = false;
         do {
@@ -132,11 +135,11 @@ public class RestClient {
                 InputStream inputStream;
                 Scanner scanner;
                 if (httpResponse == HttpURLConnection.HTTP_OK) {
-                    DebugFileManager.createExternalStoragePublic(iZooto.appContext,"->"+url,"[Log.V]->URL");
-                    if(data!=null) {
+                    DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + url, "[Log.V]->URL");
+                    if (data != null) {
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + data, "[Log.V]->URL");
                     }
-                    if(jsonBody!=null) {
+                    if (jsonBody != null) {
                         DebugFileManager.createExternalStoragePublic(iZooto.appContext, "->" + jsonBody, "[Log.V]->URL");
                     }
                     if (url.equals(AppConstant.CDN + iZooto.iZootoAppId + AppConstant.DAT))
@@ -190,24 +193,29 @@ public class RestClient {
                 if (con != null)
                     con.disconnect();
             }
-        }while (retry < 4 && httpResponse != 200);
+        } while (retry < 4 && httpResponse != 200);
     }
 
     private static void callResponseHandlerOnSuccess(final ResponseHandler handler, final String response) {
-        new AppExecutors().networkIO().execute(() -> handler.onSuccess(response));
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            handler.onSuccess(response);
+        });
 
     }
 
     private static void callResponseHandlerOnFailure(final ResponseHandler handler, final int statusCode, final String response, final Throwable throwable) {
-        new AppExecutors().networkIO().execute(() -> handler.onFailure(statusCode, response, throwable));
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            handler.onFailure(statusCode, response, throwable);
+        });
     }
 
     static class ResponseHandler {
         void onSuccess(String response) {
-            Lg.d(AppConstant.APP_NAME_TAG,  AppConstant.APISUCESS);
+            Lg.d(AppConstant.APP_NAME_TAG, AppConstant.APISUCESS);
         }
+
         void onFailure(int statusCode, String response, Throwable throwable) {
-            Lg.v(AppConstant.APP_NAME_TAG, AppConstant.APIFAILURE  + response);
+            Lg.v(AppConstant.APP_NAME_TAG, AppConstant.APIFAILURE + response);
         }
     }
 

@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="iz_colorPrimary">#969696</color>
-    <color name="iz_colorPrimaryDark">#969696</color>
-    <color name="iz_colorAccent">#969696</color>
+<!--    <color name="colorPrimary">#969696</color>-->
+<!--    <color name="colorPrimaryDark">#969696</color>-->
+<!--    <color name="colorAccent">#969696</color>-->
     <color name="iz_gray">#E69E9C9C</color>
     <color name="iz_black">#000000</color>
     <color name="iz_white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
     <color name="iz_notificationBg">#000000</color>
     <color name="iz_notificationMBg">#ffffff</color>
     <color name="iz_nh_brand_name_color">#1155CC</color>
-    <color name="iz_azure">#1E90FF</color>
+    <color name="iz_azure_bg">#1E90FF</color>
     <color name="iz_dawn">#B7A69F9F</color>
     <color name="iz_granite">#867F7F</color>
-    <color name="black">#000000</color>
-    <color name="white">#ffffff</color>
-    <color name="dawn">#B7A69F9F</color>
-    <color name="granite">#867F7F</color>
-    <color name="iz_chronometer">#99FFFFFF</color>
-    <color name="iz_button">#B3FFFFFF</color>
-    <color name="iz_timer_persistent">#1F000000</color>
-
-
-
     <color name="iZ_brandingColor">#1155CC</color>
     <color name="inAppTransparent">#CCFFFFFF</color>
     <color name="iamCrossIconColor">#FFFFFF</color>
 
-    <color name="iz_news_hub_bg">#121212</color>
+    <color name="iz_news_hub_bg">#212121</color>
+    <color name="iz_azure">#1155CC</color>
     <color name="iz_news_hub_no_new_updates">#ffffff</color>
     <color name="iz_news_nub_no_data_found_text">#60ffffff</color>
     <color name="iz_news_hub_branding_text_color">#60ffffff</color>
     <color name="iz_news_hub_view_color">#1F1F1F</color>
     <color name="iz_news_hub_text_color">#ffffff</color>
     <color name="iz_news_hub_time_color">#60ffffff</color>
+    <color name="dawn">#B7A69F9F</color>
+    <color name="granite">#867F7F</color>
+    <color name="iz_chronometer">#99FFFFFF</color>
+    <color name="iz_button">#B3FFFFFF</color>
+    <color name="iz_timer_persistent">#1F000000</color>
+
+    <color name="temp_white">#FFFFFF</color>
+    <color name="light_black">#80000000</color>
+
 </resources>
