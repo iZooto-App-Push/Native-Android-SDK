@@ -24,8 +24,10 @@ android {
 ```
 ```groovy
     dependencies {
-    implementation 'com.izooto:android-sdk:2.4.4'
-    }
+    implementation 'com.izooto:android-sdk:2.5.0'
+    implementation("androidx.work:work-runtime:2.9.0")
+
+}
 ```
 
 Alternatively, you can download and add the AAR file included in this repo in your Module libs directory and tell gradle to install it like this:
@@ -36,7 +38,8 @@ Add the Firebase Messaging library and Android Support Library v4 as dependencie
 
 ```groovy
      dependencies {
-         implementation 'com.izooto:android-sdk:2.4.4'        
+         implementation 'com.izooto:android-sdk:2.5.0'
+         implementation("androidx.work:work-runtime:2.9.0")
          implementation "com.google.firebase:firebase-messaging:23.0.6"
      }
 ```

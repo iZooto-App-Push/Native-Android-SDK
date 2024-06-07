@@ -42,12 +42,20 @@
     <output-test url="file://$MODULE_DIR$/../../../izooto/build/intermediates/javac/debugAndroidTest/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/aidl_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/aidl_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/ap_generated_sources/debugAndroidTest/out" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/ap_generated_sources/debugAndroidTest/out" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/renderscript_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/renderscript_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/res/resValues/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/res/resValues/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/res/rs/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/res/rs/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/source/buildConfig/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/source/buildConfig/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../izooto/src/androidTest" />
+    <content url="file://$MODULE_DIR$/../../../izooto/src/androidTest" />
+    <content url="file://$MODULE_DIR$/../../../izooto/src/androidTestDebug" />
     <content url="file://$MODULE_DIR$/../../../izooto/src/androidTestDebug" />
     <orderEntry type="jdk" jdkName="Android API 34, extension level 7 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

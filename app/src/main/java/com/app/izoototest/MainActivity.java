@@ -13,9 +13,7 @@ import com.izooto.iZooto;
 
 
 
-public class MainActivity extends AppCompatActivity
-{
-    boolean backPressedOnce;
+public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -28,13 +26,6 @@ public class MainActivity extends AppCompatActivity
         CoordinatorLayout layout = findViewById(R.id.mainLayout);
         iZooto.enablePulse(this, layout, true);
 
-       // iZooto.enablePulse(MainActivity.this,false);
-//        iZooto.requestOneTapActivity(this, new OneTapCallback() {
-//            @Override
-//            public void syncOneTapResponse(String email, String firstName, String lastName) {
-//                Log.e("abc","email is: -> "+email);
-//            }
-//        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,18 +43,5 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onBackPressed() {
-        if (backPressedOnce) {
-            super.onBackPressed();
-            backPressedOnce = false;
-        } else {
-            backPressedOnce = true;
-           // iZooto.enablePulse(MainActivity.this, true);
-        }
-    }
-
-  
 
 }

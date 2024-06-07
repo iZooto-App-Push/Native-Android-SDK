@@ -527,7 +527,9 @@ public class NotificationEventManager {
     //handle ads notifications
     private static void receiveAds(final Payload payload) {
         try {
-            if(payload == null){return;}
+            if (payload == null) {
+                return;
+            }
             final Handler handler = new Handler(Looper.getMainLooper());
             final Runnable notificationRunnable = new Runnable() {
                 @SuppressLint("LaunchActivityFromNotification")
@@ -1276,8 +1278,8 @@ public class NotificationEventManager {
             intent.putExtra(AppConstant.PUSH, payload.getPush_type());
             intent.putExtra(AppConstant.CFGFORDOMAIN, payload.getCfg());
             intent.putExtra(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, payload.getTitle());
-            intent.putExtra(AppConstant.P_MESSAGE,payload.getMessage());
-            intent.putExtra(AppConstant.P_BANNER_IMAGE,payload.getBanner());
+            intent.putExtra(AppConstant.P_MESSAGE, payload.getMessage());
+            intent.putExtra(AppConstant.P_BANNER_IMAGE, payload.getBanner());
             return intent;
 
         } catch (Exception e) {
@@ -1481,7 +1483,7 @@ public class NotificationEventManager {
 
 
     public static void handleImpressionAPI(Payload payload, String pushName) {
-        if (payload != null && iZooto.appContext != null) {
+        if (payload == null || iZooto.appContext == null) {return;}
             try {
                 String impressionIndex = "0";
                 String data = Util.getIntegerToBinary(payload.getCfg());
@@ -1495,12 +1497,12 @@ public class NotificationEventManager {
                 DebugFileManager.createExternalStoragePublic(iZooto.appContext, "handleImpressionAPI" + ex, "[Log.V]->NotificationEventManager->");
                 Util.handleExceptionOnce(iZooto.appContext, ex + "RID" + payload.getRid() + "CID" + payload.getId(), AppConstant.APPName_2, "handleImpressionAPI");
             }
-        }
+
     }
 
 
     static void viewNotificationApi(final Payload payload, String pushName) {
-        if (iZooto.appContext == null) {
+        if (iZooto.appContext == null || payload == null) {
             return;
         }
         String impURL;
