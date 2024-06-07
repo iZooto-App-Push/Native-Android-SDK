@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -118,6 +119,7 @@ public class iZooto {
     public static iZooto.Builder initialize(Context context) {
         return new iZooto.Builder(context);
     }
+
     private static void init(Builder builder) {
         final Context context = builder.mContext;
         appContext = context.getApplicationContext();
@@ -169,6 +171,7 @@ public class iZooto {
             Util.handleExceptionOnce(appContext, t.toString(), AppConstant.APP_NAME_TAG, "initBuilder");
         }
     }
+
     private static void processResponse(Context context, String response, PreferenceUtil preferenceUtil) {
         if (context == null || preferenceUtil == null) {
             return;
@@ -176,7 +179,6 @@ public class iZooto {
 
         try {
             JSONObject jsonObject = new JSONObject(Objects.requireNonNull(Util.decrypt(context, AppConstant.SECRETKEY, response)));
-
             if (jsonObject.has(AppConstant.SENDERID)) {
                 senderId = jsonObject.optString(AppConstant.SENDERID);
             } else {
@@ -1469,6 +1471,7 @@ public class iZooto {
             Util.handleExceptionOnce(context, e.toString(), AppConstant.APP_NAME_TAG, "handleNotification");
         }
     }
+
     public static void addTag(final List<String> topicName) {
         try {
 

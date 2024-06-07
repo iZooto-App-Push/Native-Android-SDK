@@ -1,5 +1,6 @@
 <component name="libraryTable">
-  <library name="Gradle: com.beust:jcommander:1.78" external-system-id="GRADLE">
+  <library name="Gradle: com.beust:jcommander:1.78" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.beust" artifactId="jcommander" version="1.78" />
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.beust/jcommander/1.78/a3927de9bd6f351429bcf763712c9890629d8f51/jcommander-1.78.jar!/" />
     </CLASSES>

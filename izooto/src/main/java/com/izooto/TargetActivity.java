@@ -130,13 +130,21 @@ public class TargetActivity extends Activity {
             }
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
-                if (AdMediation.clicksData.size() > 0) {
-                    for (int i = 0; i < AdMediation.clicksData.size(); i++) {
-                        if (i == AdMediation.clicksData.size()) {
+                try {
+                    if (AdMediation.clicksData != null && !AdMediation.clicksData.isEmpty()) {
+                        for (int i = 0; i < AdMediation.clicksData.size(); i++) {
+                            try {
+                                NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
+                            } catch (Exception e) {
+                                Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "onCreate");
+                            }
+
                         }
-                        NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
                     }
+                } catch (Exception e) {
+                    Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "onCreate");
                 }
+
             }
             if (preferenceUtil.getStringData(AppConstant.IZ_MEDIATION_CLICK_DATA) != "") {
                 String medClickData = preferenceUtil.getStringData(AppConstant.IZ_MEDIATION_CLICK_DATA);

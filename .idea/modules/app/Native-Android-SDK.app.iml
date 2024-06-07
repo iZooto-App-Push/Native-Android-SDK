@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$/../../../app" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="Native-Android-SDK" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$/../../../app">
+      <excludeFolder url="file://$MODULE_DIR$/../../../app/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../app/build" />
+    </content>
+  </component>
   <component name="FacetManager">
     <facet external-system-id="GRADLE" type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -25,6 +31,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../app/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build" />
     </content>
+    <content url="file://$MODULE_DIR$/../../../app" />
     <orderEntry type="jdk" jdkName="Android API 34, extension level 7 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

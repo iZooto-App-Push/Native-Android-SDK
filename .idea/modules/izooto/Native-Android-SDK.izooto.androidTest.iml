@@ -15,7 +15,7 @@
             <stringArg name="destination" arg="$MODULE_DIR$/../../../izooto/build/tmp/kotlin-classes/debugAndroidTest" />
             <stringArg name="jvmTarget" arg="1.8" />
             <stringArg name="moduleName" arg="izooto_debugAndroidTest" />
-            <stringArg name="apiVersion" arg="2.0" />
+            <stringArg name="apiVersion" arg="1.9" />
             <stringArg name="languageVersion" arg="2.0" />
           </stringArguments>
           <arrayArguments>
@@ -42,12 +42,20 @@
     <output-test url="file://$MODULE_DIR$/../../../izooto/build/intermediates/javac/debugAndroidTest/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/aidl_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/aidl_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/ap_generated_sources/debugAndroidTest/out" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/ap_generated_sources/debugAndroidTest/out" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/renderscript_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/renderscript_source_output_dir/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/res/resValues/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/res/resValues/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/res/rs/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/res/rs/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../izooto/build/generated/source/buildConfig/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../izooto/build/generated/source/buildConfig/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../izooto/src/androidTest" />
+    <content url="file://$MODULE_DIR$/../../../izooto/src/androidTest" />
+    <content url="file://$MODULE_DIR$/../../../izooto/src/androidTestDebug" />
     <content url="file://$MODULE_DIR$/../../../izooto/src/androidTestDebug" />
     <orderEntry type="jdk" jdkName="Android API 34, extension level 7 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -110,6 +118,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.resourceinspection:resourceinspection-annotation:1.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:listenablefuture:1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ./izooto/libs/MiPush_SDK_Client_5_1_1-G.jar" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="Native-Android-SDK.izooto.main" />
 </module>

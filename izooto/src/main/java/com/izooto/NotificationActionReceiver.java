@@ -131,15 +131,19 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             }
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
-                if (AdMediation.clicksData != null && !AdMediation.clicksData.isEmpty()) {
-                    for (int i = 0; i < AdMediation.clicksData.size(); i++) {
-                        AdMediation.clicksData.size();
-                        try {
-                            NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
-                        } catch (Exception e) {
-                            Log.e("onReceive", e.toString());
+                try {
+                    if (AdMediation.clicksData != null && !AdMediation.clicksData.isEmpty()) {
+                        for (int i = 0; i < AdMediation.clicksData.size(); i++) {
+                            AdMediation.clicksData.size();
+                            try {
+                                NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
+                            } catch (Exception e) {
+                                Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
                 }
             }
             if (preferenceUtil.getStringData("MEDIATIONCLICKDATA") != "") {
@@ -394,7 +398,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private void getBundleData(Context context, Intent intent) {
         try {
             Bundle tempBundle = intent.getExtras();
-            if (tempBundle == null) {
+            if (tempBundle == null || context == null) {
                 return;
             }
             if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
@@ -533,7 +537,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 }
 
 
-
             } else {
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                 if (pm != null && preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
@@ -549,7 +552,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     }
 
                 } else {
-                    if (pm == null){return;}
+                    if (pm == null) {
+                        return;
+                    }
                     ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);
                     name = (String) pm.getApplicationLabel(app);
                     launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
