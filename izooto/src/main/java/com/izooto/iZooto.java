@@ -119,54 +119,58 @@ public class iZooto {
         return new iZooto.Builder(context);
     }
     private static void init(Builder builder) {
-        final Context context = builder.mContext;
-        appContext = context.getApplicationContext();
-        ActivityLifecycleListener.registerActivity((Application) context);
-        mBuilder = builder;
-        builder.mContext = null;
-        final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-
         try {
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-            Bundle bundle = appInfo.metaData;
+            final Context context = builder.mContext;
+            appContext = context.getApplicationContext();
+            ActivityLifecycleListener.registerActivity((Application) context);
+            mBuilder = builder;
+            builder.mContext = null;
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
 
-            if (bundle != null) {
-                if (bundle.containsKey(AppConstant.IZOOTO_APP_ID)) {
-                    iZootoAppId = bundle.getString(AppConstant.IZOOTO_APP_ID);
-                    preferenceUtil.setStringData(AppConstant.ENCRYPTED_PID, iZootoAppId);
-                }
+            try {
+                ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+                Bundle bundle = appInfo.metaData;
 
-                if (iZootoAppId == null || iZootoAppId.isEmpty()) {
-                    Lg.e(AppConstant.APP_NAME_TAG, AppConstant.MISSINGID);
-                } else {
-                    Lg.i(AppConstant.APP_NAME_TAG, iZootoAppId);
-                    RestClient.get(RestClient.P_GOOGLE_JSON_URL + iZootoAppId + ".dat", new RestClient.ResponseHandler() {
-                        @Override
-                        void onFailure(int statusCode, String response, Throwable throwable) {
-                            super.onFailure(statusCode, response, throwable);
-                        }
+                if (bundle != null) {
+                    if (bundle.containsKey(AppConstant.IZOOTO_APP_ID)) {
+                        iZootoAppId = bundle.getString(AppConstant.IZOOTO_APP_ID);
+                        preferenceUtil.setStringData(AppConstant.ENCRYPTED_PID, iZootoAppId);
+                    }
 
-                        @Override
-                        void onSuccess(String response) {
-                            super.onSuccess(response);
-                            try {
-                                if (!Utilities.isNullOrEmpty(response) && response.length() > 20) {
-                                    processResponse(context, response, preferenceUtil);
-                                } else {
-                                    Util.handleExceptionOnce(appContext, AppConstant.ACCOUNT_ID_EXCEPTION, AppConstant.APP_NAME_TAG, "init_onSuccess");
-                                }
-                            } catch (Exception ex) {
-                                Util.handleExceptionOnce(appContext, ex.toString(), AppConstant.APP_NAME_TAG, "init_onSuccess");
+                    if (iZootoAppId == null || iZootoAppId.isEmpty()) {
+                        Lg.e(AppConstant.APP_NAME_TAG, AppConstant.MISSINGID);
+                    } else {
+                        Lg.i(AppConstant.APP_NAME_TAG, iZootoAppId);
+                        RestClient.get(RestClient.P_GOOGLE_JSON_URL + iZootoAppId + ".dat", new RestClient.ResponseHandler() {
+                            @Override
+                            void onFailure(int statusCode, String response, Throwable throwable) {
+                                super.onFailure(statusCode, response, throwable);
                             }
-                        }
-                    });
-                }
-            } else {
-                DebugFileManager.createExternalStoragePublic(context, AppConstant.MESSAGE, "[Log.e]-->");
-            }
 
-        } catch (Throwable t) {
-            Util.handleExceptionOnce(appContext, t.toString(), AppConstant.APP_NAME_TAG, "initBuilder");
+                            @Override
+                            void onSuccess(String response) {
+                                super.onSuccess(response);
+                                try {
+                                    if (!Utilities.isNullOrEmpty(response) && response.length() > 20) {
+                                        processResponse(context, response, preferenceUtil);
+                                    } else {
+                                        Util.handleExceptionOnce(appContext, AppConstant.ACCOUNT_ID_EXCEPTION, AppConstant.APP_NAME_TAG, "init_onSuccess");
+                                    }
+                                } catch (Exception ex) {
+                                    Util.handleExceptionOnce(appContext, ex.toString(), AppConstant.APP_NAME_TAG, "init_onSuccess");
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    DebugFileManager.createExternalStoragePublic(context, AppConstant.MESSAGE, "[Log.e]-->");
+                }
+
+            } catch (Throwable t) {
+                Util.handleExceptionOnce(appContext, t.toString(), AppConstant.APP_NAME_TAG, "initBuilder");
+            }
+        } catch (Exception ex){
+            Util.handleExceptionOnce(appContext, ex.toString(), AppConstant.APP_NAME_TAG, "initBuilder");
         }
     }
     private static void processResponse(Context context, String response, PreferenceUtil preferenceUtil) {
