@@ -226,6 +226,7 @@ public class iZooto {
             if (iZooto.isHybrid) {
                 preferenceUtil.setBooleanData(AppConstant.IS_HYBRID_SDK, true);
             }
+            Log.v(APP_NAME_TAG, "android_id --> " + Util.getAndroidId(context));
         } catch (Exception ex) {
             Util.handleExceptionOnce(context, ex.toString(), AppConstant.APP_NAME_TAG, "processResponse");
         }

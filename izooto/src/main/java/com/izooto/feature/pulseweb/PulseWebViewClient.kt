@@ -13,6 +13,8 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.browser.customtabs.CustomTabsIntent
+import com.izooto.AppConstant
+import com.izooto.PreferenceUtil
 import com.izooto.Util
 
 internal class PulseWebViewClient(private val context: Context?) : WebViewClient() {
@@ -29,12 +31,14 @@ internal class PulseWebViewClient(private val context: Context?) : WebViewClient
         try {
             val url = request?.url.toString()
             if (url.startsWith("http://") || url.startsWith("https://")) {
-                view!!.post {
+                view?.post {
                     val layoutParams = view.layoutParams as LinearLayout.LayoutParams
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
                     view.layoutParams = layoutParams
                 }
                 try {
+                    val preferenceUtil = PreferenceUtil.getInstance(context)
+                    preferenceUtil.setBooleanData(AppConstant.PW_EVENTS, true)
                     val intent = CustomTabsIntent.Builder().build()
                     intent.launchUrl(context, request!!.url)
                     return true

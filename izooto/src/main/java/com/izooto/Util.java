@@ -165,8 +165,12 @@ public class Util {
 
 
     static String getAndroidId(Context mContext) {
-        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
-        return android_id;
+        try {
+            @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+            return android_id;
+        } catch (Exception ex){
+            return "";
+        }
     }
 
     static String getDeviceName() {

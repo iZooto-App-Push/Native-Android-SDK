@@ -388,6 +388,7 @@ public interface AppConstant {
     String PW_ADS = "ads";
     String PUSH_TYPE = "pushType";
     String FCM_TYPE = "gcm";
+    String PW_EVENTS = "pw_events";
 
 }
 

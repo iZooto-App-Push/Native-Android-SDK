@@ -5,6 +5,8 @@ import android.content.res.Resources
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.widget.LinearLayout
+import com.izooto.AppConstant
+import com.izooto.PreferenceUtil
 import com.izooto.Util
 
 
@@ -17,6 +19,8 @@ internal class PulseJsInterface(private val context: Context?, val webView: WebV
         try {
             val displayMetrics = Resources.getSystem().displayMetrics
             val heightPixels = displayMetrics.heightPixels
+            val preferenceUtil = PreferenceUtil.getInstance(context)
+            preferenceUtil.setBooleanData(AppConstant.PW_EVENTS, false)
             webView.post {
                 val layoutParams = webView.layoutParams as LinearLayout.LayoutParams
                 layoutParams.height =
