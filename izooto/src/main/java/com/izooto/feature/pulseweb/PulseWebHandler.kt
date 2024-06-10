@@ -99,6 +99,7 @@ internal class PulseWebHandler : PWInterface {
             webSettings.domStorageEnabled = true
             webSettings.loadsImagesAutomatically = true
             webSettings.mediaPlaybackRequiresUserGesture = false
+            webView.overScrollMode = View.OVER_SCROLL_ALWAYS
         } catch (e: Exception) {
             Util.handleExceptionOnce(context, e.toString(), "PulseWebHandler", "handleWebSettings")
         }

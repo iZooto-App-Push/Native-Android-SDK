@@ -31,12 +31,17 @@ internal class PulseWebViewClient(private val context: Context?) : WebViewClient
         try {
             val url = request?.url.toString()
             if (url.startsWith("http://") || url.startsWith("https://")) {
-                view?.post {
-                    val layoutParams = view.layoutParams as LinearLayout.LayoutParams
-                    layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-                    view.layoutParams = layoutParams
-                }
                 try {
+                    view?.evaluateJavascript(
+                        "document.location.hash = '';",
+                        null)
+
+                    view?.post {
+                        val layoutParams = view.layoutParams as LinearLayout.LayoutParams
+                        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                        view.layoutParams = layoutParams
+                    }
+
                     val preferenceUtil = PreferenceUtil.getInstance(context)
                     preferenceUtil.setBooleanData(AppConstant.PW_EVENTS, true)
                     val intent = CustomTabsIntent.Builder().build()

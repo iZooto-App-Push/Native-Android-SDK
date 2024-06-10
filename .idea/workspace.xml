@@ -16,14 +16,18 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_agconnect_agconnect_core_1_7_3_302_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_huawei_hms_network_common_6_0_2_300_aar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseJsInterface.kt" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseJsInterface.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.androidTest.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Native-Android-SDK.app.unitTest.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.androidTest.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/izooto/Native-Android-SDK.izooto.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseWebHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseWebHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseWebViewClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/feature/pulseweb/PulseWebViewClient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +48,12 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Native-Android-SDK" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -57,10 +66,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2hftV0K90yp92soCtyWn9OZDEsJ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -78,6 +87,7 @@
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/shashank/Documents/iZooto-SDK/release-sdk/Native-Android-SDK",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
