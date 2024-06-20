@@ -458,6 +458,8 @@ public class Util {
                 mapData.put(AppConstant.SDK, AppConstant.SDKVERSION);
                 mapData.put(AppConstant.ANDROIDVERSION, Build.VERSION.RELEASE);
                 mapData.put(AppConstant.DEVICE_NAME, Util.getDeviceName());
+                mapData.put(AppConstant.IZOOTO_APP_ID,preferenceUtil.getStringData(AppConstant.ENCRYPTED_PID));
+
                 RestClient.postRequest(RestClient.APP_EXCEPTION_URL, mapData,null, new RestClient.ResponseHandler() {
                     @Override
                     void onSuccess(final String response) {
@@ -1028,6 +1030,17 @@ public class Util {
             return eleventhDigit.equals("1");
         } catch (Exception ex) {
             return false;
+        }
+    }
+    static  String getPid(Context context)
+    {
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            return preferenceUtil.getStringData(AppConstant.APPPID);
+        }
+        catch (Exception ex)
+        {
+            return  "";
         }
     }
 

@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -93,6 +92,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         lastEighthIndex = "0";
                         lastTenthIndex = "0";
                     }
+
                     if (lastClickIndex.equalsIgnoreCase("1") || lastEighthIndex.equalsIgnoreCase("1")) {
                         String dayDiff1 = Util.dayDifference(Util.getTime(), preferenceUtil.getStringData(AppConstant.CURRENT_DATE_CLICK_WEEKLY));
                         String updateWeekly = preferenceUtil.getStringData(AppConstant.CURRENT_DATE_CLICK_WEEKLY);
@@ -131,116 +131,121 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             }
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (preferenceUtil.getBoolean(AppConstant.MEDIATION)) {
-                try {
-                    if (AdMediation.clicksData != null && !AdMediation.clicksData.isEmpty()) {
-                        for (int i = 0; i < AdMediation.clicksData.size(); i++) {
-                            AdMediation.clicksData.size();
-                            try {
-                                NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
-                            } catch (Exception e) {
-                                Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
-                            }
+                if (AdMediation.clicksData != null && !AdMediation.clicksData.isEmpty()) {
+                    for (int i = 0; i < AdMediation.clicksData.size(); i++) {
+                        AdMediation.clicksData.size();
+                        try {
+                            NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
+                        } catch (Exception e) {
+                            Log.e("onReceive", e.toString());
                         }
                     }
-                } catch (Exception e) {
-                    Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
                 }
             }
             if (preferenceUtil.getStringData("MEDIATIONCLICKDATA") != "") {
                 String medClickData = preferenceUtil.getStringData("MEDIATIONCLICKDATA");
                 callMediationClicks(context, medClickData, 0);
             }
-            if (additionalData.equalsIgnoreCase("")) {
-                additionalData = "1";
+            try {
+                if (additionalData.equalsIgnoreCase("")) {
+                    additionalData = "1";
+                }
+            } catch (Exception e) {
+                Log.e("onReceive", e.toString());
             }
             if (!additionalData.equalsIgnoreCase("1") && inApp >= 0) {
-                HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put(AppConstant.BUTTON_ID_1, act1ID);
-                hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
-                hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
-                hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
-                hashMap.put(AppConstant.LANDING_URL, landingURL);
-                hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
-                hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
-                hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
-                hashMap.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
-                hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
-                JSONObject jsonObject = new JSONObject(hashMap);
+                try {
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    hashMap.put(AppConstant.BUTTON_ID_1, act1ID);
+                    hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
+                    hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
+                    hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
+                    hashMap.put(AppConstant.LANDING_URL, landingURL);
+                    hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
+                    hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
+                    hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
+                    hashMap.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
+                    hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
+                    JSONObject jsonObject = new JSONObject(hashMap);
 
-                HashMap<String, String> pulseMap = new HashMap<>();
-                pulseMap.put(AppConstant.P_TITLE, notificationTitle);
-                pulseMap.put(AppConstant.P_MESSAGE, notificationMessage);
-                pulseMap.put(AppConstant.P_BANNER_IMAGE, notificationBannerImage);
-                pulseMap.put(AppConstant.P_LANDING_URL, landingURL);
-                JSONObject pulseObject = new JSONObject(pulseMap);
-                if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
-                    iZooto.notificationActionHandler(jsonObject.toString(), pulseObject.toString(), Util.isPulseDeepLink(cfg));
-                else {
-                    if (Util.isAppInForeground(context)) {
-                        iZooto.notificationActionHandler(jsonObject.toString(), "", false);
-                    } else if (isAppBackground(context)) {
-                        if (preferenceUtil.getBoolean("Android8")) {
-                            launchApp(context);
-                            notificationClick = jsonObject.toString();
-                            iZooto.notificationActionHandler(jsonObject.toString(), "", false);
-                        } else {
-                            launchApp(context);
-                            notificationClick = jsonObject.toString();
-                            iZooto.notificationActionHandler(jsonObject.toString(), "", false);
-                        }
-                    } else {
-                        notificationClick = jsonObject.toString();
-                        launchApp(context);
-                    }
-
-                }
-
-
-            } else {
-                if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL != "" && !landingURL.isEmpty()) {
-                    if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                        iZooto.notificationInAppAction(context, mUrl);
-                    } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                    HashMap<String, String> pulseMap = new HashMap<>();
+                    pulseMap.put(AppConstant.P_TITLE, notificationTitle);
+                    pulseMap.put(AppConstant.P_MESSAGE, notificationMessage);
+                    pulseMap.put(AppConstant.P_BANNER_IMAGE, notificationBannerImage);
+                    pulseMap.put(AppConstant.P_LANDING_URL, landingURL);
+                    JSONObject pulseObject = new JSONObject(pulseMap);
+                    if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK))
+                        iZooto.notificationActionHandler(jsonObject.toString(), pulseObject.toString(), Util.isPulseDeepLink(cfg));
+                    else {
                         if (Util.isAppInForeground(context)) {
-                            iZooto.notificationInAppAction(context, mUrl);
+                            iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                         } else if (isAppBackground(context)) {
-                            launchApp(context);
-                            WebViewClick = mUrl;
-                            iZooto.notificationInAppAction(context, WebViewClick);
-                        } else {
-                            launchApp(context);
-                            WebViewClick = mUrl;
-                            iZooto.notificationInAppAction(context, WebViewClick);
-                        }
-                    } else {
-                        iZootoWebViewActivity.startActivity(context, mUrl);
-
-
-                    }
-                    // launchApp(context); // new  line added
-                } else {
-                    try {
-                        if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
-                            if (mUrl != null && !mUrl.isEmpty()) {
-                                openURLInBrowser(context, mUrl);
+                            if (preferenceUtil.getBoolean("Android8")) {
+                                launchApp(context);
+                                notificationClick = jsonObject.toString();
+                                iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                             } else {
-                                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                                    Util.sleepTime(2000);
-                                    launchApp(context);
-                                } else {
-                                    launchApp(context);
-                                }
+                                launchApp(context);
+                                notificationClick = jsonObject.toString();
+                                iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                             }
                         } else {
-                            Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
-                            browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            context.startActivity(browserIntent);
+                            notificationClick = jsonObject.toString();
+                            launchApp(context);
                         }
 
-
-                    } catch (Exception ex) {
-                        Util.handleExceptionOnce(context, ex.toString(), "notification action", "landing url issues" + mUrl);
                     }
+                } catch (Exception e) {
+                    Log.e("onReceive", e.toString());
+                }
+
+            } else {
+                try {
+                    if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL != "" && !landingURL.isEmpty()) {
+                        if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                            iZooto.notificationInAppAction(context, mUrl);
+                        } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                            if (Util.isAppInForeground(context)) {
+                                iZooto.notificationInAppAction(context, mUrl);
+                            } else if (isAppBackground(context)) {
+                                launchApp(context);
+                                WebViewClick = mUrl;
+                                iZooto.notificationInAppAction(context, WebViewClick);
+                            } else {
+                                launchApp(context);
+                                WebViewClick = mUrl;
+                                iZooto.notificationInAppAction(context, WebViewClick);
+                            }
+                        } else {
+                            iZootoWebViewActivity.startActivity(context, mUrl);
+                        }
+
+                    } else {
+                        try {
+                            if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+                                if (mUrl != null && !mUrl.isEmpty()) {
+                                    openURLInBrowser(context, mUrl);
+                                } else {
+                                    if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                                        Util.sleepTime(2000);
+                                        launchApp(context);
+                                    } else {
+                                        launchApp(context);
+                                    }
+                                }
+                            } else {
+                                Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
+                                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.startActivity(browserIntent);
+                            }
+
+
+                        } catch (Exception ex) {
+                            Util.handleExceptionOnce(context, ex.toString(), "notification action", "landing url issues" + mUrl);
+                        }
+                    }
+                } catch (Exception e) {
+                    Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
                 }
             }
 
@@ -326,7 +331,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, null);
                         }
                     } catch (Exception e) {
-                        DebugFileManager.createExternalStoragePublic(context, "LastClick" + e, "[Log.V]->");
+                        Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "lastClickAPI");
                     }
                 }
 
@@ -342,13 +347,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         } else
                             Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
                     } catch (Exception e) {
-                        DebugFileManager.createExternalStoragePublic(context, "LastClick" + e, "[Log.V]->");
                         Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "lastClickAPI");
                     }
                 }
             });
         } catch (Exception e) {
-            DebugFileManager.createExternalStoragePublic(context, "LastClick" + e, "[Log.V]->");
             Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "lastClickAPI");
         }
 
@@ -387,9 +390,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 });
             }
         } catch (Exception ex) {
-            DebugFileManager.createExternalStoragePublic(context, "MediationCLick" + ex, "[Log.V]->");
             Util.handleExceptionOnce(context, ex.toString(), "NotificationActionReceiver", "callMediationClicks");
-
 
         }
     }
@@ -398,7 +399,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private void getBundleData(Context context, Intent intent) {
         try {
             Bundle tempBundle = intent.getExtras();
-            if (tempBundle == null || context == null) {
+            if (tempBundle == null) {
                 return;
             }
             if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
@@ -482,7 +483,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty() && i >= 0) {
                             jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
                             jsonArrayOffline.remove(i);
-                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
+                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, "");
                         }
                     } catch (Exception e) {
                         DebugFileManager.createExternalStoragePublic(context, mapData.toString(), "clickData");
@@ -502,11 +503,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                             Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
                         }
                     } catch (Exception e) {
-                        DebugFileManager.createExternalStoragePublic(context, mapData.toString(), "clickData");
-                        if (!PreferenceUtil.getInstance(context).getBoolean("notificationClickAPI")) {
-                            PreferenceUtil.getInstance(context).setBooleanData("notificationClickAPI", true);
-                            Util.setException(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
-                        }
+                        Util.handleExceptionOnce(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
+
                     }
                 }
             });

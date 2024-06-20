@@ -133,12 +133,7 @@ public class TargetActivity extends Activity {
                 try {
                     if (AdMediation.clicksData != null && !AdMediation.clicksData.isEmpty()) {
                         for (int i = 0; i < AdMediation.clicksData.size(); i++) {
-                            try {
-                                NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
-                            } catch (Exception e) {
-                                Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "onCreate");
-                            }
-
+                            NotificationEventManager.callRandomClick(AdMediation.clicksData.get(i));
                         }
                     }
                 } catch (Exception e) {
@@ -151,160 +146,172 @@ public class TargetActivity extends Activity {
                 callMediationClicks(medClickData, 0);
             }
 
-            if (additionalData.equalsIgnoreCase("")) {
-                additionalData = "1";
+            try {
+                if (additionalData.equalsIgnoreCase("")) {
+                    additionalData = "1";
+                }
+            } catch (Exception e) {
+                Log.e("onCreate", e.toString());
             }
             if (!additionalData.equalsIgnoreCase("1") && inApp >= 0) {
-                HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put(AppConstant.BUTTON_ID_1, act1ID);
-                hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
-                hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
-                hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
-                hashMap.put(AppConstant.LANDING_URL, landingURL);
-                hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
-                hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
-                hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
-                hashMap.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
-                hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
+                try {
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    hashMap.put(AppConstant.BUTTON_ID_1, act1ID);
+                    hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
+                    hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
+                    hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
+                    hashMap.put(AppConstant.LANDING_URL, landingURL);
+                    hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
+                    hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
+                    hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
+                    hashMap.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
+                    hashMap.put(AppConstant.ACTION_TYPE, String.valueOf(btnCount));
 
-                HashMap<String, String> pulseMap = new HashMap<>();
-                pulseMap.put(AppConstant.P_TITLE, notificationTitle);
-                pulseMap.put(AppConstant.P_MESSAGE, notificationMessage);
-                pulseMap.put(AppConstant.P_BANNER_IMAGE, notificationBannerImage);
-                pulseMap.put(AppConstant.P_LANDING_URL, landingURL);
-                JSONObject pulseObject = new JSONObject(pulseMap);
+                    HashMap<String, String> pulseMap = new HashMap<>();
+                    pulseMap.put(AppConstant.P_TITLE, notificationTitle);
+                    pulseMap.put(AppConstant.P_MESSAGE, notificationMessage);
+                    pulseMap.put(AppConstant.P_BANNER_IMAGE, notificationBannerImage);
+                    pulseMap.put(AppConstant.P_LANDING_URL, landingURL);
+                    JSONObject pulseObject = new JSONObject(pulseMap);
 
-                JSONObject jsonObject = new JSONObject(hashMap);
-                if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                    iZooto.notificationActionHandler(jsonObject.toString(), pulseObject.toString(), Util.isPulseDeepLink(cfg));
-                    this.finish();
-                } else {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-
-                        if (preferenceUtil.getBoolean(AppConstant.DEEPLINK_STATE)) {
-                            iZooto.notificationActionHandler(jsonObject.toString(), "", false);
-                            isDeepLinkCheck = true;
-                            this.finish();
-                        }
-                        if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isDeepLinkCheck) {
-
-                            if (isAppBackground(context) && Util.isAppInForeground(context)) {
-                                NotificationActionReceiver.notificationClick = jsonObject.toString();
-                                launchApp(this.context);
-                                this.finish();
-
-                            } else if (Util.isAppInForeground(context)) {
-                                iZooto.notificationActionHandler(jsonObject.toString(), "", false);
-                                this.finish();
-
-                            } else {
-                                NotificationActionReceiver.notificationClick = jsonObject.toString();
-                                launchApp(this.context);
-                                this.finish();
-                            }
-
-                        }
-                    }, 2000L);
-                    this.finish();
-                }
-            } else {
-                if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL != "" && !landingURL.isEmpty()) {
+                    JSONObject jsonObject = new JSONObject(hashMap);
                     if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                        iZooto.notificationInAppAction(context, mUrl);
+                        iZooto.notificationActionHandler(jsonObject.toString(), pulseObject.toString(), Util.isPulseDeepLink(cfg));
                         this.finish();
-                    } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                    } else {
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.postDelayed(() -> {
+
                             if (preferenceUtil.getBoolean(AppConstant.DEEPLINK_STATE)) {
-                                iZooto.notificationInAppAction(context, this.mUrl);
+                                iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                                 isDeepLinkCheck = true;
                                 this.finish();
                             }
                             if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isDeepLinkCheck) {
+
                                 if (isAppBackground(context) && Util.isAppInForeground(context)) {
+                                    NotificationActionReceiver.notificationClick = jsonObject.toString();
                                     launchApp(this.context);
-                                    mWebViewClick = this.mUrl;
-                                    iZooto.notificationInAppAction(context, this.mUrl);
-
                                     this.finish();
+
                                 } else if (Util.isAppInForeground(context)) {
-                                    iZooto.notificationInAppAction(context, this.mUrl);
+                                    iZooto.notificationActionHandler(jsonObject.toString(), "", false);
                                     this.finish();
-                                } else {
-                                    launchApp(this.context);
-                                    mWebViewClick = this.mUrl;
-                                    iZooto.notificationInAppAction(context, this.mUrl);
 
+                                } else {
+                                    NotificationActionReceiver.notificationClick = jsonObject.toString();
+                                    launchApp(this.context);
                                     this.finish();
                                 }
-                            }
 
+                            }
                         }, 2000L);
                         this.finish();
-                    } else {
-                        iZootoWebViewActivity.startActivity(context, mUrl);
-                        this.finish();
                     }
-                } else {
-                    try {
-                        if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
-                            if (mUrl != null && !mUrl.isEmpty()) {
+                } catch (Exception e) {
+                    Log.e("onCreate", e.toString());
+                }
+            } else {
+                try {
+                    if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL != "" && !landingURL.isEmpty()) {
+                        if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                            iZooto.notificationInAppAction(context, mUrl);
+                            this.finish();
+                        } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(() -> {
+                                if (preferenceUtil.getBoolean(AppConstant.DEEPLINK_STATE)) {
+                                    iZooto.notificationInAppAction(context, this.mUrl);
+                                    isDeepLinkCheck = true;
+                                    this.finish();
+                                }
+                                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK) && !isDeepLinkCheck) {
+                                    if (isAppBackground(context) && Util.isAppInForeground(context)) {
+                                        launchApp(this.context);
+                                        mWebViewClick = this.mUrl;
+                                        iZooto.notificationInAppAction(context, this.mUrl);
 
-                                if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
-                                    String url = "https://" + mUrl;
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                    browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    context.startActivity(browserIntent);
-                                    finish();
+                                        this.finish();
+                                    } else if (Util.isAppInForeground(context)) {
+                                        iZooto.notificationInAppAction(context, this.mUrl);
+                                        this.finish();
+                                    } else {
+                                        launchApp(this.context);
+                                        mWebViewClick = this.mUrl;
+                                        iZooto.notificationInAppAction(context, this.mUrl);
 
-
-                                } else {
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                                    browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                    browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    context.startActivity(browserIntent);
-                                    finish();
+                                        this.finish();
+                                    }
                                 }
 
-                            } else {
-                                if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
-                                    if (Util.isAppInForeground(this) && preferenceUtil.getBoolean(AppConstant.DEVICE_STATE_CHECK)) {
-                                        this.finish();
-                                        if (preferenceUtil.getBoolean(AppConstant.DEVICE_BACKGROUND_STATE) && !Util.isAppInForeground(this)) {
-                                            preferenceUtil.setBooleanData(AppConstant.DEVICE_BACKGROUND_STATE, false);
-                                            launchAppHybrid(context);
-                                            this.finish();
-                                        } else {
-                                            if (preferenceUtil.getBoolean(AppConstant.DEVICE_ONPAUSE_STATE) && preferenceUtil.getBoolean(AppConstant.DEVICE_ONCREATE_STATE)) {
-                                                preferenceUtil.setBooleanData(AppConstant.DEVICE_ONPAUSE_STATE, false);
-                                                preferenceUtil.setBooleanData(AppConstant.DEVICE_ONCREATE_STATE, false);
-                                                launchAppHybrid(context);
-                                                this.finish();
-                                            }
-                                        }
+                            }, 2000L);
+                            this.finish();
+                        } else {
+                            iZootoWebViewActivity.startActivity(context, mUrl);
+                            this.finish();
+                        }
+                    } else {
+                        try {
+                            if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
+                                if (mUrl != null && !mUrl.isEmpty()) {
+
+                                    if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
+                                        String url = "https://" + mUrl;
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                        browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        context.startActivity(browserIntent);
+                                        finish();
+
+
                                     } else {
-                                        launchAppHybrid(context);
-                                        this.finish();
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                                        browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        context.startActivity(browserIntent);
+                                        finish();
                                     }
 
                                 } else {
-                                    launchApp(context);
-                                    this.finish();
+                                    if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
+                                        if (Util.isAppInForeground(this) && preferenceUtil.getBoolean(AppConstant.DEVICE_STATE_CHECK)) {
+                                            this.finish();
+                                            if (preferenceUtil.getBoolean(AppConstant.DEVICE_BACKGROUND_STATE) && !Util.isAppInForeground(this)) {
+                                                preferenceUtil.setBooleanData(AppConstant.DEVICE_BACKGROUND_STATE, false);
+                                                launchAppHybrid(context);
+                                                this.finish();
+                                            } else {
+                                                if (preferenceUtil.getBoolean(AppConstant.DEVICE_ONPAUSE_STATE) && preferenceUtil.getBoolean(AppConstant.DEVICE_ONCREATE_STATE)) {
+                                                    preferenceUtil.setBooleanData(AppConstant.DEVICE_ONPAUSE_STATE, false);
+                                                    preferenceUtil.setBooleanData(AppConstant.DEVICE_ONCREATE_STATE, false);
+                                                    launchAppHybrid(context);
+                                                    this.finish();
+                                                }
+                                            }
+                                        } else {
+                                            launchAppHybrid(context);
+                                            this.finish();
+                                        }
+
+                                    } else {
+                                        launchApp(context);
+                                        this.finish();
+                                    }
                                 }
+                            } else {
+                                Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
+                                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.startActivity(browserIntent);
+                                finish();
                             }
-                        } else {
-                            Intent browserIntent = new Intent(Intent.ACTION_DIAL, Uri.parse(phoneNumber));
-                            browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            context.startActivity(browserIntent);
-                            finish();
+
+                        } catch (Exception ex) {
+                            Util.handleExceptionOnce(context, ex.toString(), AppConstant.APPName_3, "notificationClickAPI->onFailure" + mUrl);
+
                         }
-
-                    } catch (Exception ex) {
-                        Util.handleExceptionOnce(context, ex.toString(), AppConstant.APPName_3, "notificationClickAPI->onFailure" + mUrl);
-
                     }
+                } catch (Exception e) {
+                    Log.e("onCreate", e.toString());
                 }
             }
         } catch (Exception e) {
@@ -328,10 +335,12 @@ public class TargetActivity extends Activity {
             }
         } else {
             List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
-            if (taskInfo.size() > 0) {
+            if (!taskInfo.isEmpty()) {
                 ComponentName componentName = taskInfo.get(0).topActivity;
-                if (componentName.getPackageName().equals(context.getPackageName())) {
-                    isBackground = false;
+                if (componentName != null) {
+                    if (componentName.getPackageName().equals(context.getPackageName())) {
+                        isBackground = false;
+                    }
                 }
             }
         }
@@ -339,59 +348,65 @@ public class TargetActivity extends Activity {
     }
 
     private void getBundleData(Context context, Intent intent) {
-        Bundle tempBundle = intent.getExtras();
-        if (tempBundle == null || context == null) {
-            return;
-        }
-        if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
-            mUrl = tempBundle.getString(AppConstant.KEY_WEB_URL);
-        if (tempBundle.containsKey(AppConstant.KEY_IN_APP))
-            inApp = tempBundle.getInt(AppConstant.KEY_IN_APP);
-        if (tempBundle.containsKey(AppConstant.KEY_IN_RID))
-            rid = tempBundle.getString(AppConstant.KEY_IN_RID);
-        if (tempBundle.containsKey(AppConstant.KEY_IN_CID))
-            cid = tempBundle.getString(AppConstant.KEY_IN_CID);
-        if (tempBundle.containsKey(AppConstant.KEY_IN_BUTOON))
-            btnCount = tempBundle.getInt(AppConstant.KEY_IN_BUTOON);
-        if (tempBundle.containsKey(AppConstant.KEY_IN_ADDITIONALDATA))
-            additionalData = tempBundle.getString(AppConstant.KEY_IN_ADDITIONALDATA);
-        if (tempBundle.containsKey(AppConstant.KEY_IN_PHONE))
-            phoneNumber = tempBundle.getString(AppConstant.KEY_IN_PHONE);
-        if (tempBundle.containsKey(AppConstant.KEY_IN_ACT1ID))
-            act1ID = tempBundle.getString(AppConstant.KEY_IN_ACT1ID);
-        if (tempBundle.containsKey(AppConstant.KEY_IN_ACT2ID))
-            act2ID = tempBundle.getString(AppConstant.KEY_IN_ACT2ID);
-        if (tempBundle.containsKey(AppConstant.LANDINGURL))
-            landingURL = tempBundle.getString(AppConstant.LANDINGURL);
-        if (tempBundle.containsKey(AppConstant.ACT1URL))
-            act1URL = tempBundle.getString(AppConstant.ACT1URL);
-        if (tempBundle.containsKey(AppConstant.ACT2URL))
-            act2URL = tempBundle.getString(AppConstant.ACT2URL);
-        if (tempBundle.containsKey(AppConstant.ACT1TITLE))
-            btn1Title = tempBundle.getString(AppConstant.ACT1TITLE);
-        if (tempBundle.containsKey(AppConstant.ACT2TITLE))
-            btn2Title = tempBundle.getString(AppConstant.ACT2TITLE);
-        if (tempBundle.containsKey(AppConstant.CLICKINDEX))
-            clickIndex = tempBundle.getString(AppConstant.CLICKINDEX);
-        if (tempBundle.containsKey(AppConstant.LASTCLICKINDEX))
-            lastClickIndex = tempBundle.getString(AppConstant.LASTCLICKINDEX);
-        if (tempBundle.containsKey(AppConstant.PUSH))
-            pushType = tempBundle.getString(AppConstant.PUSH);
-        if (tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
-            cfg = tempBundle.getInt(AppConstant.CFGFORDOMAIN);
-        if (tempBundle.containsKey(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME))
-            notificationTitle = tempBundle.getString(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME);
-        if (tempBundle.containsKey(AppConstant.P_MESSAGE))
-            notificationMessage = tempBundle.getString(AppConstant.P_MESSAGE);
-        if (tempBundle.containsKey(AppConstant.P_BANNER_IMAGE))
-            notificationBannerImage = tempBundle.getString(AppConstant.P_BANNER_IMAGE);
+
+        try {
+            Bundle tempBundle = intent.getExtras();
+            if (tempBundle == null || context == null) {
+                return;
+            }
+            if (tempBundle.containsKey(AppConstant.KEY_WEB_URL))
+                mUrl = tempBundle.getString(AppConstant.KEY_WEB_URL);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_APP))
+                inApp = tempBundle.getInt(AppConstant.KEY_IN_APP);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_RID))
+                rid = tempBundle.getString(AppConstant.KEY_IN_RID);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_CID))
+                cid = tempBundle.getString(AppConstant.KEY_IN_CID);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_BUTOON))
+                btnCount = tempBundle.getInt(AppConstant.KEY_IN_BUTOON);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_ADDITIONALDATA))
+                additionalData = tempBundle.getString(AppConstant.KEY_IN_ADDITIONALDATA);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_PHONE))
+                phoneNumber = tempBundle.getString(AppConstant.KEY_IN_PHONE);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_ACT1ID))
+                act1ID = tempBundle.getString(AppConstant.KEY_IN_ACT1ID);
+            if (tempBundle.containsKey(AppConstant.KEY_IN_ACT2ID))
+                act2ID = tempBundle.getString(AppConstant.KEY_IN_ACT2ID);
+            if (tempBundle.containsKey(AppConstant.LANDINGURL))
+                landingURL = tempBundle.getString(AppConstant.LANDINGURL);
+            if (tempBundle.containsKey(AppConstant.ACT1URL))
+                act1URL = tempBundle.getString(AppConstant.ACT1URL);
+            if (tempBundle.containsKey(AppConstant.ACT2URL))
+                act2URL = tempBundle.getString(AppConstant.ACT2URL);
+            if (tempBundle.containsKey(AppConstant.ACT1TITLE))
+                btn1Title = tempBundle.getString(AppConstant.ACT1TITLE);
+            if (tempBundle.containsKey(AppConstant.ACT2TITLE))
+                btn2Title = tempBundle.getString(AppConstant.ACT2TITLE);
+            if (tempBundle.containsKey(AppConstant.CLICKINDEX))
+                clickIndex = tempBundle.getString(AppConstant.CLICKINDEX);
+            if (tempBundle.containsKey(AppConstant.LASTCLICKINDEX))
+                lastClickIndex = tempBundle.getString(AppConstant.LASTCLICKINDEX);
+            if (tempBundle.containsKey(AppConstant.PUSH))
+                pushType = tempBundle.getString(AppConstant.PUSH);
+            if (tempBundle.containsKey(AppConstant.CFGFORDOMAIN))
+                cfg = tempBundle.getInt(AppConstant.CFGFORDOMAIN);
+            if (tempBundle.containsKey(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME))
+                notificationTitle = tempBundle.getString(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME);
+            if (tempBundle.containsKey(AppConstant.P_MESSAGE))
+                notificationMessage = tempBundle.getString(AppConstant.P_MESSAGE);
+            if (tempBundle.containsKey(AppConstant.P_BANNER_IMAGE))
+                notificationBannerImage = tempBundle.getString(AppConstant.P_BANNER_IMAGE);
 
 
-        if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
-            NotificationManager notificationManager =
-                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
-            notificationID = tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID);
+            if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
+                NotificationManager notificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
+                notificationID = tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID);
+            }
+
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "getBundleData");
         }
 
     }
@@ -423,7 +438,6 @@ public class TargetActivity extends Activity {
                     super.onSuccess(response);
                     try {
                         JSONArray jsonArrayOffline;
-
                         if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty() && i >= 0) {
                             jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
                             jsonArrayOffline.remove(i);
@@ -487,7 +501,6 @@ public class TargetActivity extends Activity {
                         }
                     } catch (Exception e) {
                         Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "lastClickAPI");
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "LastClick" + e, "[Log.V]->");
                     }
                 }
 
@@ -504,8 +517,6 @@ public class TargetActivity extends Activity {
                             Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
                     } catch (Exception e) {
                         Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "lastClickAPI");
-                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "LastClick" + e, "[Log.V]->");
-
                     }
 
                 }
@@ -536,8 +547,6 @@ public class TargetActivity extends Activity {
                                 preferenceUtil.setStringData(AppConstant.STORE_MEDIATION_RECORDS, null);
                             } catch (Exception ex) {
                                 DebugFileManager.createExternalStoragePublic(iZooto.appContext, "MediationCLick" + ex, "[Log.V]->");
-
-
                             }
                             preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA, "");
                             TargetActivity.medClick = "";
@@ -558,9 +567,7 @@ public class TargetActivity extends Activity {
                 });
             }
         } catch (Exception ex) {
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext, "MediationCLick" + ex, "[Log.V]->");
             Util.handleExceptionOnce(iZooto.appContext, ex.toString(), "TargetActivity", "MediationCLick");
-
         }
 
     }

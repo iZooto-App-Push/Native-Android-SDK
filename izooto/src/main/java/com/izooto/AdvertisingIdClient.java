@@ -64,19 +64,25 @@ public class AdvertisingIdClient {
     }
 
     protected void start(final Context context, final Listener listener) {
-        if (listener == null) {
-            return;
-        }
+       try {
+           if (listener == null) {
+               return;
+           }
 
-        mHandler = new Handler(Looper.getMainLooper());
-        mListener = listener;
+           mHandler = new Handler(Looper.getMainLooper());
+           mListener = listener;
 
-        if (context == null) {
-            invokeFail(new Exception(TAG + " - Error: context null"));
-            return;
-        }
+           if (context == null) {
+               invokeFail(new Exception(TAG + " - Error: context null"));
+               return;
+           }
 
-        new Thread(() -> getAdvertisingIdInfo(context)).start();
+           new Thread(() -> getAdvertisingIdInfo(context)).start();
+       }
+       catch (Exception ex)
+       {
+           Log.w(AppConstant.APP_NAME_TAG,ex.toString());
+       }
     }
 
     private void getAdvertisingIdInfo(Context context) {
@@ -91,30 +97,29 @@ public class AdvertisingIdClient {
                     AdvertisingInterface adInterface = new AdvertisingInterface(connection.getBinder());
                     String id = adInterface.getId();
                     if (TextUtils.isEmpty(id)) {
-                        Log.w(TAG, "getAdvertisingIdInfo - Error: ID Not available");
                         invokeFail(new Exception("Advertising ID extraction Error: ID Not available"));
                     } else {
                         invokeFinish(new AdInfo(id, adInterface.isLimitAdTrackingEnabled(true)));
                     }
                 }
             } catch (Exception exception) {
-                Log.w(TAG, "getAdvertisingIdInfo - Error: " + exception);
                 invokeFail(exception);
             } finally {
                 context.unbindService(connection);
             }
         } catch (Exception exception) {
-            Log.w(TAG, "getAdvertisingIdInfo - Error: " + exception);
             invokeFail(exception);
         }
     }
 
     protected void invokeFinish(final AdInfo adInfo) {
-        mHandler.post(() -> {
-            if (mListener != null) {
-                mListener.onAdvertisingIdClientFinish(adInfo);
-            }
-        });
+            mHandler.post(() -> {
+                if (mListener != null) {
+                    mListener.onAdvertisingIdClientFinish(adInfo);
+                }
+            });
+
+
     }
 
     protected void invokeFail(final Exception exception) {

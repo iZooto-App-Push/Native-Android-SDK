@@ -112,9 +112,7 @@ public class iZooto {
         curActivity = activity;
     }
 
-    public static void setIZootoID(String iZooToAppId) {
-        iZootoAppId = iZooToAppId;
-    }
+
 
     public static iZooto.Builder initialize(Context context) {
         return new iZooto.Builder(context);
@@ -189,9 +187,8 @@ public class iZooto {
                 senderId = Util.getSenderId();
             }
 
-            iZootoAppId = jsonObject.optString(AppConstant.APPPID);
-            preferenceUtil.setIZootoID(AppConstant.IZOOTO_APP_ID, iZootoAppId);
-            preferenceUtil.setStringData(AppConstant.APPPID, iZootoAppId);
+            String pid = jsonObject.optString(AppConstant.APPPID);
+            preferenceUtil.setStringData(AppConstant.APPPID, pid);
             serverClientId = jsonObject.optString(AppConstant.SERVER_CLIENT_ID);
             hms_appId = jsonObject.optString(AppConstant.HMS_APP_ID);
             String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
@@ -219,7 +216,7 @@ public class iZooto {
                 Log.e(AppConstant.APP_NAME_TAG, ex.toString());
             }
 
-            if (iZootoAppId != null && preferenceUtil.getBoolean(AppConstant.IS_CONSENT_STORED)) {
+            if (Util.getPid(context) != null && preferenceUtil.getBoolean(AppConstant.IS_CONSENT_STORED)) {
                 preferenceUtil.setIntData(AppConstant.CAN_STORED_QUEUE, 1);
             }
 
@@ -277,9 +274,9 @@ public class iZooto {
                 return;
             }
             if (url.contains("?")) {
-                iZooto.pw_Url = url + "&pid=" + iZootoAppId + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" + iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" + iZooto.pw_Hash + "&feedSrc=" + iZooto.feedSrc + "&ads=" + ads;
+                iZooto.pw_Url = url + "&pid=" + Util.getPid(context) + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" + iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" + iZooto.pw_Hash + "&feedSrc=" + iZooto.feedSrc + "&ads=" + ads;
             } else {
-                iZooto.pw_Url = url + "?pid=" + iZootoAppId + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" + iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" + iZooto.pw_Hash + "&feedSrc=" + iZooto.feedSrc + "&ads=" + ads;
+                iZooto.pw_Url = url + "?pid=" + Util.getPid(context) + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" + iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" + iZooto.pw_Hash + "&feedSrc=" + iZooto.feedSrc + "&ads=" + ads;
             }
         } catch (Exception ex) {
             Util.handleExceptionOnce(context, ex.toString(), AppConstant.APP_NAME_TAG, "initializePulse");
@@ -508,7 +505,7 @@ public class iZooto {
 
                     Map<String, String> mapData = new HashMap<>();
                     mapData.put(AppConstant.ADDURL, "" + AppConstant.STYPE);
-                    mapData.put(AppConstant.PID, iZootoAppId);
+                    mapData.put(AppConstant.PID, Util.getPid(appContext));
                     mapData.put(AppConstant.BTYPE_, "" + AppConstant.BTYPE);
                     mapData.put(AppConstant.DTYPE_, "" + AppConstant.DTYPE);
                     mapData.put(AppConstant.TIMEZONE, "" + System.currentTimeMillis());
@@ -1789,15 +1786,6 @@ public class iZooto {
                     NotificationActionReceiver.notificationClickAPI(context, c.optString("apiURL"), c.optString("cid"), c.optString("rid"), c.optInt("click"), i, "fcm");
                 }
             }
-
-            if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE).isEmpty()) {
-                JSONArray lciJsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE));
-                for (int i = 0; i < lciJsonArrayOffline.length(); i++) {
-                    JSONObject c = lciJsonArrayOffline.getJSONObject(i);
-                    NotificationActionReceiver.lastClickAPI(context, c.optString("apiURL"), c.optString("rid"), i);
-                }
-            }
-
             if (!preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS).isEmpty()) {
                 JSONArray mediationRecords = new JSONArray(preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS));
                 for (int i = 0; i < mediationRecords.length(); i++) {
@@ -2589,7 +2577,7 @@ public class iZooto {
 
             if (context != null) {
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-                String pid = preferenceUtil.getStringData(PID);
+                String pid = preferenceUtil.getStringData(AppConstant.APPPID);
 
                 if (preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) != null && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
                     token = preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN);

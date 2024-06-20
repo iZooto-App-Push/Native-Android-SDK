@@ -115,19 +115,7 @@ public class PreferenceUtil {
             Log.e("PreferenceUtil","setBooleanData"+ ex);
         }
     }
-    public void setIZootoID(String key, String id)
-    {
-        try {
-            SharedPreferences.Editor appInstallInfoEditor = mSpref.edit();
-            appInstallInfoEditor.putString(key, id);
-            appInstallInfoEditor.apply();
-        }
-        catch (Exception ex)
-        {
-            Log.e("PreferenceUtil","setBooleanData"+ ex);
 
-        }
-    }
     public String getiZootoID(String key)
     {
         return mSpref.getString(key, "");

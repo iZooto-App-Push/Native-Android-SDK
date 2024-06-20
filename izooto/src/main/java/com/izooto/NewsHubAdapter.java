@@ -12,18 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
-
 import java.util.ArrayList;
-
 class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final ArrayList<Payload> payloadModalArrayList;
@@ -99,38 +92,14 @@ class NewsHubAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                              }
 
                          }
-
                      }catch (Exception e){
                          Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NewsHubAdapter", "XMLParsing");
                      }
-
-
-
-                    try{
-                        if (userModal.getBanner() != null && !userModal.getBanner().isEmpty()) {
-
-                            Glide.with(context)
-                                    .load(userModal.getBanner())
-                                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
-                                    .into(viewHolder.newsHubBanner);
-                            Glide.with(context)
-                                    .load(userModal.getBanner())
-                                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
-                                    .into(viewHolder.circleImage);
-
-                        } else {
-                            viewHolder.newsHubBanner.setImageResource(context.getApplicationInfo().icon);
-                        }
-                    }catch (Exception e){
-                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NewsHubAdapter", "Glide");
-                    }
-
                     viewHolder.itemView.setOnClickListener(v -> {
                         iZooto.isEDGestureUiMode = true;
                         newsHubCheckIaKey(v, userModal);
                         Util.newsHubClickApi(context, userModal);
                         if (navigationDrawer != null){
-                            //iZootoNavigationDrawer.closeDrawer();
                         }
                     });
                     viewHolder.newsHubShare.setOnClickListener(v -> {
