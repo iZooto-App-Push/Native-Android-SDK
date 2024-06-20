@@ -41,7 +41,7 @@ dependencies {
     compileOnly 'com.google.firebase:firebase-messaging:23.1.2'
     compileOnly "com.huawei.hms:push:6.11.0.300"
     testImplementation 'org.testng:testng:7.4.0'
-    implementation 'androidx.work:work-runtime:2.9.0'
+    implementation 'androidx.work:work-runtime:2.8.1'
     // Credential Manager API
     compileOnly("androidx.credentials:credentials:1.2.2")
     compileOnly("androidx.credentials:credentials-play-services-auth:1.2.2")
@@ -52,4 +52,4 @@ dependencies {
 //apply from: 'publish-remote.gradle'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-//apply from: 'maven-push.gradle'
+apply from: 'maven-push.gradle'
