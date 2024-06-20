@@ -1305,7 +1305,17 @@ public class iZooto {
     }
 
     public static void setSubscription(Boolean enable) {
+        if(iZooto.appContext==null)
+            return;
+        try {
+            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
+            preferenceUtil.setBooleanData(AppConstant.NOTIFICATION_ENABLE_DISABLE, enable);
+        }
+        catch (Exception ex)
+        {
+            Util.handleExceptionOnce(appContext, ex.toString(), AppConstant.APP_NAME_TAG, "setSubscription");
 
+        }
     }
 
     public static void setFirebaseAnalytics(boolean isSet) {
