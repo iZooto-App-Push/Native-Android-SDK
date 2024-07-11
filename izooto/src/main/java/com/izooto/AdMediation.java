@@ -1153,6 +1153,7 @@ public class AdMediation {
                     payload.setIcon(jsonObject.optString(ShortPayloadConstant.ICON));
                     payload.setBanner(jsonObject.optString(ShortPayloadConstant.BANNER));
                     payload.setAct1link(jsonObject.optString(ShortPayloadConstant.ACT1LINK));
+                    payload.setAct1name(jsonObject.optString(ShortPayloadConstant.ACT1NAME));
                     payload.setRid(payload.getRid());
                     NotificationEventManager.notificationPreview(iZooto.appContext, payload);
                     showClickAndImpressionData(payload);

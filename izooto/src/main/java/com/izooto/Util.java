@@ -459,6 +459,7 @@ public class Util {
                 mapData.put(AppConstant.ANDROIDVERSION, Build.VERSION.RELEASE);
                 mapData.put(AppConstant.DEVICE_NAME, Util.getDeviceName());
                 mapData.put(AppConstant.IZOOTO_APP_ID,preferenceUtil.getStringData(AppConstant.ENCRYPTED_PID));
+                mapData.put(AppConstant.APP_ID, preferenceUtil.getStringData(AppConstant.APP_ID));
 
                 RestClient.postRequest(RestClient.APP_EXCEPTION_URL, mapData,null, new RestClient.ResponseHandler() {
                     @Override
@@ -678,14 +679,27 @@ public class Util {
         }
     }
 
-    // NewsHub
-    protected static String toSHA1(String url) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    protected static String toSHA1(String url) throws NoSuchAlgorithmException {
         MessageDigest crypt = MessageDigest.getInstance("SHA-1");
         crypt.reset();
         crypt.update(url.getBytes(StandardCharsets.UTF_8));
 
-        return new BigInteger(1, crypt.digest()).toString(16);
+        // Convert to a hexadecimal string and pad with leading zeros if necessary
+        String sha1 = new BigInteger(1, crypt.digest()).toString(16);
+        while (sha1.length() < 40) {
+            sha1 = "0" + sha1;
+        }
+        return sha1;
     }
+
+//    // NewsHub
+//    protected static String toSHA1(String url) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+//        MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+//        crypt.reset();
+//        crypt.update(url.getBytes(StandardCharsets.UTF_8));
+//
+//        return new BigInteger(1, crypt.digest()).toString(16);
+//    }
 
     protected static void newsHubClickApi(Context context, Payload userModal) {
         try {
@@ -994,7 +1008,7 @@ public class Util {
         return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    static String channelId(){
+    static String getChannelId(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return new Notification().getChannelId();
         }
@@ -1041,6 +1055,16 @@ public class Util {
         catch (Exception ex)
         {
             return  "";
+        }
+    }
+
+    public static boolean hasWorkManagerDependency() {
+        try {
+            Class.forName("androidx.work.WorkManager");
+            return true; // WorkManager is available
+        } catch (ClassNotFoundException e) {
+            Log.e(APP_NAME_TAG, "WorkManager class not found, likely not included in dependencies!");
+            return false;
         }
     }
 

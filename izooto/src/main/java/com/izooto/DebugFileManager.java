@@ -11,6 +11,8 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DebugFileManager {
 
@@ -18,9 +20,12 @@ public class DebugFileManager {
 
     public static void createExternalStoragePublic(Context context, String data, String requestName) {
         try {
-            File outputDirectory = CheckDirectory_ExitsORNot(AppConstant.DIRECTORY_NAME);
-
-            GenerateTimeStampAppData(context, outputDirectory, AppConstant.IZ_DEBUG_FILE_NAME, data, requestName);
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(() -> {
+                File outputDirectory = CheckDirectory_ExitsORNot(AppConstant.DIRECTORY_NAME);
+                GenerateTimeStampAppData(context, outputDirectory, AppConstant.IZ_DEBUG_FILE_NAME, data, requestName);
+            });
+            executorService.shutdown();
 
         } catch (Exception e) {
             Log.v(AppConstant.IZ_DEBUG_EXCEPTION, e.toString());

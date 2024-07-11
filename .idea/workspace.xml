@@ -10,11 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ccac55bf-8894-49c6-b9ab-5d4e8644f4fc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/sha256-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/sha256-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.4/checksums/sha512-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/checksums/sha512-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/fileHashes.bin" afterDir="false" />
@@ -22,9 +17,31 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/maven-push.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/maven-push.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AdMediation.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AdMediation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/AppConstant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/DebugFileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/DebugFileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/FCMTokenGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/FCMTokenGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/HMSTokenGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/HMSTokenGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationActionReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationDismissedReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationDismissedReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationEventManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationExecutorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationExecutorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationPermission.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/NotificationPermission.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/RestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TargetActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/TargetActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/fcmreceiver/NotificationIdsProcessorManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/fcmreceiver/NotificationIdsProcessorManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/fcmreceiver/NotificationWorkManagerOSProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/fcmreceiver/NotificationWorkManagerOSProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/fcmreceiver/NotificationsProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/fcmreceiver/NotificationsProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/fcmreceiver/iZootoReceiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/fcmreceiver/iZootoReceiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/java/com/izooto/iZooto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/izooto/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/izooto/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +51,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/Users/amit_sdk_develoer/.android/avd/Pixel_6_Pro_API_30.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/Users/pramodrai/.android/avd/Pixel_6_Pro.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -109,6 +126,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
@@ -119,7 +137,7 @@
   },
   &quot;keyToStringList&quot;: {
     &quot;kotlin-gradle-user-dirs&quot;: [
-      &quot;/Users/amit_sdk_develoer/.gradle&quot;
+      &quot;/Users/pramodrai/.gradle&quot;
     ]
   }
 }</component>
@@ -236,8 +254,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Native-Android-SDK:izooto [publishAllPublicationsToMavenRepository]" />
         <item itemvalue="Gradle.Native-Android-SDK:izooto [assemble]" />
+        <item itemvalue="Gradle.Native-Android-SDK:izooto [publishAllPublicationsToMavenRepository]" />
       </list>
     </recent_temporary>
   </component>

@@ -54,7 +54,7 @@ public class NotificationPermission extends Activity {
                         if (iZooto.senderId != null && !iZooto.senderId.isEmpty()) {
                             iZooto.init(iZooto.appContext, iZooto.senderId);
                         } else {
-                            Lg.e(AppConstant.APP_NAME_TAG, iZooto.appContext.getString(R.string.something_wrong_fcm_sender_id));
+                            Lg.e(AppConstant.APP_NAME_TAG, iZooto.appContext.getString(R.string.something_wrong_with_fcm_sender_id));
                         }
                         finish();
                     } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {

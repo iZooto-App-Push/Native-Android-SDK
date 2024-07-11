@@ -3,12 +3,9 @@ package com.izooto;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
-import android.util.Log;
 
-import com.izooto.AppExecutors;
-import com.izooto.Payload;
-import com.izooto.Util;
-import com.izooto.iZooto;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NotificationExecutorService {
     private final Context mContext;
@@ -19,7 +16,8 @@ public class NotificationExecutorService {
     public void executeNotification(final Handler handler, final Runnable runnable, final Payload payload) {
         if (mContext != null) {
             try {
-                AppExecutors.getInstance().diskIO().execute(() -> {
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.submit(() -> {
                     try {
                         Bitmap notificationIcon = null;
                         Bitmap notificationBanner = null;
@@ -38,6 +36,7 @@ public class NotificationExecutorService {
                         Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationExecutorService", "executeNotification");
                     }
                 });
+                executorService.shutdown();
             } catch (Exception e) {
                 Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationExecutorService", "executeNotification");
             }

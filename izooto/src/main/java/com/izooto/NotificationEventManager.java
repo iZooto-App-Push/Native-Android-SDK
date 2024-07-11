@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class NotificationEventManager {
@@ -1508,6 +1510,10 @@ public class NotificationEventManager {
         }
 
         try {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
             Map<String, String> mapData = new HashMap<>();
             mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
@@ -1530,6 +1536,10 @@ public class NotificationEventManager {
                     Util.handleExceptionOnce(iZooto.appContext, mapData + "Failure", AppConstant.APPName_2, "impressionNotification");
                 }
             });
+
+                }
+            });
+            executorService.shutdown();
         } catch (Exception e) {
             Util.handleExceptionOnce(iZooto.appContext, e + "RID" + rid + "CID" + cid, AppConstant.APPName_2, "impressionNotification");
         }

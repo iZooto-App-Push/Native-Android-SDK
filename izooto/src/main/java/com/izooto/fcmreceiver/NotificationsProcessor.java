@@ -5,11 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -20,7 +19,6 @@ import com.izooto.AppConstant;
 import com.izooto.DebugFileManager;
 import com.izooto.NewsHubDBHelper;
 import com.izooto.NotificationEventManager;
-import com.izooto.NotificationExecutorService;
 import com.izooto.Payload;
 import com.izooto.PreferenceUtil;
 import com.izooto.PushType;
@@ -234,18 +232,24 @@ class NotificationsProcessor {
                             Util.handleExceptionOnce(context, e.toString(), TagName, IZ_METHOD_NAME);
                         }
 
-                        final Handler mainHandler = new Handler(Looper.getMainLooper());
-                        final Runnable myRunnable = () -> {
-                            NotificationEventManager.handleImpressionAPI(payload, AppConstant.PUSH_FCM);
-                            iZooto.processNotificationReceived(context, payload);
-                        };
 
                         try {
-                            NotificationExecutorService notificationExecutorService = new NotificationExecutorService(context);
-                            notificationExecutorService.executeNotification(mainHandler, myRunnable, payload);
-
+                            Bitmap notificationIcon;
+                            Bitmap notificationBanner;
+                            String smallIcon = payload.getIcon();
+                            String banner = payload.getBanner();
+                            if (smallIcon != null && !smallIcon.isEmpty()) {
+                                notificationIcon = Util.getBitmapFromURL(smallIcon);
+                                payload.setIconBitmap(notificationIcon);
+                            }
+                            if (banner != null && !banner.isEmpty()) {
+                                notificationBanner = Util.getBitmapFromURL(banner);
+                                payload.setBannerBitmap(notificationBanner);
+                            }
+                            NotificationEventManager.handleImpressionAPI(payload, AppConstant.PUSH_FCM);
+                            iZooto.processNotificationReceived(context, payload);
                         } catch (Exception e) {
-                            Util.handleExceptionOnce(context, e.toString(), TagName, IZ_METHOD_NAME);
+                            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationExecutorService", "executeNotification");
                         }
                         DebugFileManager.createExternalStoragePublic(context, data.toString(), " Log-> ");
                     } else {

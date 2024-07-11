@@ -15,6 +15,8 @@ import com.izooto.Util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NotificationDismissedReceiver extends BroadcastReceiver {
 
@@ -35,7 +37,9 @@ public class NotificationDismissedReceiver extends BroadcastReceiver {
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(notificationID);
-                notificationDestroyApi(context, extras);
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.submit(() -> notificationDestroyApi(context, extras));
+                executorService.shutdown();
             }
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), TAG, AppConstant.IZ_LISTENER_ERROR);

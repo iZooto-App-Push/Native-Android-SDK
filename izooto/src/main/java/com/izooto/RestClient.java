@@ -1,5 +1,4 @@
 package com.izooto;
-import android.util.Log;
 
 import org.json.JSONObject;
 import java.io.InputStream;
@@ -23,7 +22,6 @@ public class RestClient {
     static final String PROPERTIES_URL = "https://prp.izooto.com/prp";
     public static final String IMPRESSION_URL = "https://impr.izooto.com/imp";
     static final String NOTIFICATION_CLICK = "https://clk.izooto.com/clk";
-    static final String SUBSCRIPTION_API = "https://usub.izooto.com/sunsub";
     static final String LAST_NOTIFICATION_CLICK_URL = "https://lci.izooto.com/lci";
     static final String LAST_NOTIFICATION_VIEW_URL = "https://lim.izooto.com/lim";
     static final String LAST_VISIT_URL = "https://lvi.izooto.com/lvi";
@@ -36,6 +34,9 @@ public class RestClient {
     static final String NEWS_HUB_URL = "https://nh.iz.do/nh/";
     static final String ONE_TAP_SUBSCRIPTION = "https://eenp.izooto.com/eenp";
     static final String iZ_PULSE_FEATURE_CLICK = "https://osclk.izooto.com/osclk";
+
+
+
     static void get(final String url, final ResponseHandler responseHandler) {
         new Thread(() -> makeApiCall(url, null, null, null, responseHandler, GET_TIMEOUT)).start();
     }
@@ -196,10 +197,14 @@ public class RestClient {
         } while (retry < 4 && httpResponse != 200);
     }
     private static void callResponseHandlerOnSuccess(final ResponseHandler handler, final String response) {
-        AppExecutors.getInstance().networkIO().execute(() -> handler.onSuccess(response));
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> handler.onSuccess(response));
+        executorService.shutdown();
     }
     private static void callResponseHandlerOnFailure(final ResponseHandler handler, final int statusCode, final String response, final Throwable throwable) {
-        AppExecutors.getInstance().networkIO().execute(() -> handler.onFailure(statusCode, response, throwable));
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> handler.onFailure(statusCode, response, throwable));
+        executorService.shutdown();
     }
     static class ResponseHandler {
         void onSuccess(String response) {

@@ -7,13 +7,11 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,17 +23,18 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class NotificationActionReceiver extends BroadcastReceiver {
-
 
     private String mUrl = "";
     private int inApp;
     private String rid;
     private String cid;
     private int btnCount;
-    private String api_url;
     private static String additionalData;
     private String phoneNumber;
     private String act1ID;
@@ -82,10 +81,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         clkURL = RestClient.NOTIFICATION_CLICK;
                     }
                     notificationClickAPI(context, clkURL, cid, rid, btnCount, -1, pushType);
-                    String lastEighthIndex = "0";
-                    String lastTenthIndex = "0";
+                    String lastEighthIndex;
+                    String lastTenthIndex;
                     String dataInBinary = Util.getIntegerToBinary(cfg);
-                    if (dataInBinary != null && !dataInBinary.isEmpty()) {
+                    if (!dataInBinary.isEmpty()) {
                         lastEighthIndex = String.valueOf(dataInBinary.charAt(dataInBinary.length() - 8));
                         lastTenthIndex = String.valueOf(dataInBinary.charAt(dataInBinary.length() - 10));
                     } else {
@@ -142,7 +141,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     }
                 }
             }
-            if (preferenceUtil.getStringData("MEDIATIONCLICKDATA") != "") {
+            if (!Objects.equals(preferenceUtil.getStringData("MEDIATIONCLICKDATA"), "")) {
                 String medClickData = preferenceUtil.getStringData("MEDIATIONCLICKDATA");
                 callMediationClicks(context, medClickData, 0);
             }
@@ -201,7 +200,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
             } else {
                 try {
-                    if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && landingURL != "" && !landingURL.isEmpty()) {
+                    if (inApp == 1 && phoneNumber.equalsIgnoreCase(AppConstant.NO) && !Objects.equals(landingURL, "") && !landingURL.isEmpty()) {
                         if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                             iZooto.notificationInAppAction(context, mUrl);
                         } else if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
@@ -245,7 +244,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         }
                     }
                 } catch (Exception e) {
-                    Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "onReceive");
+                    Log.e("onReceive", e.toString());
                 }
             }
 
@@ -260,23 +259,13 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
         try {
             ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-                List<ActivityManager.RunningAppProcessInfo> runningProcesses = activityManager.getRunningAppProcesses();
-                for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                    if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                        for (String activeProcess : processInfo.pkgList) {
-                            if (activeProcess.equals(context.getPackageName())) {
-                                isBackground = false;
-                            }
+            List<ActivityManager.RunningAppProcessInfo> runningProcesses = activityManager.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    for (String activeProcess : processInfo.pkgList) {
+                        if (activeProcess.equals(context.getPackageName())) {
+                            isBackground = false;
                         }
-                    }
-                }
-            } else {
-                List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
-                if (taskInfo.size() > 0) {
-                    ComponentName componentName = taskInfo.get(0).topActivity;
-                    if (componentName.getPackageName().equals(context.getPackageName())) {
-                        isBackground = false;
                     }
                 }
             }
@@ -459,6 +448,10 @@ public class NotificationActionReceiver extends BroadcastReceiver {
         if (context == null)
             return;
         try {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             Map<String, String> mapData = new HashMap<>();
             mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
@@ -483,7 +476,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty() && i >= 0) {
                             jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
                             jsonArrayOffline.remove(i);
-                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, "");
+                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
                         }
                     } catch (Exception e) {
                         DebugFileManager.createExternalStoragePublic(context, mapData.toString(), "clickData");
@@ -508,6 +501,9 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     }
                 }
             });
+                }
+            });
+            executorService.shutdown();
 
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
@@ -520,8 +516,8 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             return;
         }
         PackageManager pm = context.getPackageManager();
-        Intent launchIntent = null;
-        String name = "";
+        Intent launchIntent;
+        String name;
         try {
             if (pm != null && !Util.isAppInForeground(context)) {
                 ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), 0);

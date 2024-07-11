@@ -21,18 +21,15 @@ public class HMSTokenGenerator implements HMSTokenListener {
     public void getHMSToken(final Context context, final HMSTokenGeneratorHandler hmsTokenGeneratorHandler) {
         mContext = context;
         mHCMTokenGeneratorHandler = hmsTokenGeneratorHandler;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    generateToken(context, hmsTokenGeneratorHandler);
-                } catch (com.huawei.hms.common.ApiException e) {
-                    Log.v(AppConstant.APP_NAME_TAG, "ApiException - " + e);
-                    hmsTokenGeneratorHandler.complete(null);
-                    hmsTokenGeneratorHandler.failure(e.getMessage());
-                }
-
+        new Thread(() -> {
+            try {
+                generateToken(context, hmsTokenGeneratorHandler);
+            } catch (com.huawei.hms.common.ApiException e) {
+                Log.v(AppConstant.APP_NAME_TAG, "ApiException - " + e);
+                hmsTokenGeneratorHandler.complete(null);
+                hmsTokenGeneratorHandler.failure(e.getMessage());
             }
+
         }).start();
 
     }

@@ -62,7 +62,7 @@ public class NotificationWorkManagerOSProcessor extends Worker {
                 if (isNotificationRestored) {
                     NotificationsProcessor.processNotificationService(context, jsonObject);
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 Util.handleExceptionOnce(context, e.toString(), tagName, "doWork");
                 return Result.failure();
             } finally {
@@ -116,16 +116,7 @@ public class NotificationWorkManagerOSProcessor extends Worker {
                             androidNotificationId,
                             ExistingWorkPolicy.KEEP,
                             workRequest);
-            WorkManager.getInstance(context)
-                    .getWorkInfoByIdLiveData(workRequest.getId())
-                    .observeForever(workInfo -> {
-                        if (workInfo != null && workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-                            Log.d("Tracker", "COMPLETED");
-                        }
-                        if (workInfo != null && workInfo.getState() == WorkInfo.State.RUNNING) {
-                            Log.d("Tracker", "RUNNING");
-                        }
-                    });
+
             return true;
 
         } catch (Exception e) {

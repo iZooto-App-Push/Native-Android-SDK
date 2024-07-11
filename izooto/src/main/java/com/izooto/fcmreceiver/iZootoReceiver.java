@@ -7,14 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.izooto.AppConstant;
 import com.izooto.PreferenceUtil;
 import com.izooto.ShortPayloadConstant;
 import com.izooto.Util;
 import com.izooto.iZooto;
-
 import org.json.JSONObject;
+import java.util.concurrent.Executors;
 
 public class iZootoReceiver extends BroadcastReceiver {
     private static final String FCM_RECEIVE_ACTION = "com.google.android.c2dm.intent.RECEIVE";
@@ -22,13 +21,31 @@ public class iZootoReceiver extends BroadcastReceiver {
     private static final String MESSAGE_TYPE_EXTRA_KEY = "msg_type";
     String tagName = "FCMReceiver";
     public static final String SHARED_PREFS_NAME = "processed_notifications";
-    private static final long PROCESSED_NOTIFICATION_OUT = 24L * 60L * 60L * 1000L;
+    private static final long PROCESSED_NOTIFICATION_OUT = 5L * 60L * 60L * 1000L;
     String notificationId;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        final PendingResult pendingResult = goAsync();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                processIntent(context, intent);
+            } catch (Exception e) {
+                Util.handleExceptionOnce(context, e.toString(), "iZootoReceiver", "onReceive");
+            } finally {
+                pendingResult.finish();
+            }
+        });
+    }
+
+    private void processIntent(Context context, Intent intent) {
+
         try {
             if (context == null || intent.getExtras() == null) {
+                return;
+            }
+            if (!Util.hasWorkManagerDependency()) {
                 return;
             }
             iZooto.appContext = context;
@@ -42,11 +59,11 @@ public class iZootoReceiver extends BroadcastReceiver {
                     JSONObject jsonObject = new JSONObject(Util.setExtrasAsJson(context, bundle));
                     String globalKey = jsonObject.optString(AppConstant.GLOBAL);
                     JSONObject payload = new JSONObject(globalKey);
-                    if (payload.has(ShortPayloadConstant.RID)) {
-                        notificationId = payload.optString(ShortPayloadConstant.RID);
+                    if (payload.has(ShortPayloadConstant.CREATEDON)) {
+                        notificationId = payload.optString(ShortPayloadConstant.CREATEDON);
                     }
                 } else {
-                    notificationId = bundle.getString(ShortPayloadConstant.RID);
+                    notificationId = bundle.getString(ShortPayloadConstant.CREATEDON);
                 }
 
             } catch (Exception e) {
@@ -55,9 +72,9 @@ public class iZootoReceiver extends BroadcastReceiver {
 
             if (Util.getDataKey(bundle) || Util.getNotificationKey(bundle)) {
                 if (notificationId == null || checkProcessedNotification(context, notificationId)) {
-                    if (!preferenceUtil.getBoolean("timeOut")) {
+                    if (!preferenceUtil.getBoolean(AppConstant.IZ_TIME_OUT)) {
                         NotificationProcessingListener.processedNotificationId(context, PROCESSED_NOTIFICATION_OUT);
-                        preferenceUtil.setBooleanData("timeOut", true);
+                        preferenceUtil.setBooleanData(AppConstant.IZ_TIME_OUT, true);
                     }
                     setAbort();
                     return;
@@ -84,7 +101,6 @@ public class iZootoReceiver extends BroadcastReceiver {
         if (!isFCMMessage(intent)) {
             setSuccessfulResultCode();
         }
-
     }
 
     private void setSuccessfulResultCode() {

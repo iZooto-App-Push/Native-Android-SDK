@@ -17,12 +17,15 @@ import android.os.Looper;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TargetActivity extends Activity {
     private String mUrl = "";
@@ -78,7 +81,9 @@ public class TargetActivity extends Activity {
                     } else {
                         clkURL = RestClient.NOTIFICATION_CLICK;
                     }
+
                     notificationClickAPI(context, clkURL, cid, rid, btnCount, -1, pushType);
+
                     String lastEighthIndex;
                     String lastTenthIndex;
                     String dataInBinary = Util.getIntegerToBinary(cfg);
@@ -415,56 +420,63 @@ public class TargetActivity extends Activity {
         if (context == null)
             return;
         try {
-            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            Map<String, String> mapData = new HashMap<>();
-            mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-            mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
-            mapData.put(AppConstant.CID_, cid);
-            mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
-            mapData.put(AppConstant.RID_, rid);
-            mapData.put(AppConstant.PUSH, pushType);
-            mapData.put("op", "click");
-            mapData.put(AppConstant.IZ_LANDING_URL, landingURL);
-            mapData.put(AppConstant.IZ_DEEPLINK_URL, additionalData);
-            mapData.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
-
-            if (btnCount != 0)
-                mapData.put("btn", "" + btnCount);
-
-            DebugFileManager.createExternalStoragePublic(iZooto.appContext, mapData.toString(), "clickData");
-            RestClient.postRequest(clkURL, mapData, null, new RestClient.ResponseHandler() {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(new Runnable() {
                 @Override
-                void onSuccess(final String response) {
-                    super.onSuccess(response);
-                    try {
-                        JSONArray jsonArrayOffline;
-                        if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty() && i >= 0) {
-                            jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
-                            jsonArrayOffline.remove(i);
-                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
-                        }
-                    } catch (Exception e) {
-                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.APPName_3, "notificationClickAPI");
-                    }
-                }
+                public void run() {
+                    final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                    Map<String, String> mapData = new HashMap<>();
+                    mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                    mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
+                    mapData.put(AppConstant.CID_, cid);
+                    mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                    mapData.put(AppConstant.RID_, rid);
+                    mapData.put(AppConstant.PUSH, pushType);
+                    mapData.put("op", "click");
+                    mapData.put(AppConstant.IZ_LANDING_URL, landingURL);
+                    mapData.put(AppConstant.IZ_DEEPLINK_URL, additionalData);
+                    mapData.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
 
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                    try {
-                        if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty()) {
-                            JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
-                            if (!Util.ridExists(jsonArrayOffline, rid)) {
-                                Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
+                    if (btnCount != 0)
+                        mapData.put("btn", "" + btnCount);
+
+                    DebugFileManager.createExternalStoragePublic(iZooto.appContext, mapData.toString(), "clickData");
+                    RestClient.postRequest(clkURL, mapData, null, new RestClient.ResponseHandler() {
+                        @Override
+                        void onSuccess(final String response) {
+                            super.onSuccess(response);
+                            try {
+                                JSONArray jsonArrayOffline;
+                                if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty() && i >= 0) {
+                                    jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
+                                    jsonArrayOffline.remove(i);
+                                    preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
+                                }
+                            } catch (Exception e) {
+                                Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.APPName_3, "notificationClickAPI");
                             }
-                        } else {
-                            Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
                         }
-                    } catch (Exception e) {
-                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.APPName_3, "notificationClickAPI->onFailure");
-                    }
+
+                        @Override
+                        void onFailure(int statusCode, String response, Throwable throwable) {
+                            super.onFailure(statusCode, response, throwable);
+                            try {
+                                if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty()) {
+                                    JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
+                                    if (!Util.ridExists(jsonArrayOffline, rid)) {
+                                        Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
+                                    }
+                                } else {
+                                    Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
+                                }
+                            } catch (Exception e) {
+                                Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.APPName_3, "notificationClickAPI->onFailure");
+                            }
+                        }
+                    });
                 }
             });
+            executorService.shutdown();
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
         }
@@ -475,52 +487,62 @@ public class TargetActivity extends Activity {
             return;
 
         try {
-            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            preferenceUtil.setStringData(AppConstant.CURRENT_DATE_CLICK, Util.getTime());
-            HashMap<String, Object> data = new HashMap<>();
-            data.put(AppConstant.LAST_NOTIFICAION_CLICKED, true);
-            JSONObject jsonObject = new JSONObject(data);
-            Map<String, String> mapData = new HashMap<>();
-            mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-            mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
-            mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
-            mapData.put(AppConstant.VAL, "" + jsonObject);
-            mapData.put(AppConstant.ACT, "add");
-            mapData.put(AppConstant.ISID_, "1");
-            mapData.put(AppConstant.ET_, AppConstant.USERP_);
-
-            RestClient.postRequest(lciURL, mapData, null, new RestClient.ResponseHandler() {
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(new Runnable() {
                 @Override
-                void onSuccess(final String response) {
-                    super.onSuccess(response);
-                    try {
-                        if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE).isEmpty() && i >= 0) {
-                            JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE));
-                            jsonArrayOffline.remove(i);
-                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, null);
-                        }
-                    } catch (Exception e) {
-                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "lastClickAPI");
-                    }
-                }
+                public void run() {
 
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                    try {
-                        if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE).isEmpty()) {
-                            JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE));
-                            if (!Util.ridExists(jsonArrayOffline, rid)) {
-                                Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
+                    final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                    preferenceUtil.setStringData(AppConstant.CURRENT_DATE_CLICK, Util.getTime());
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put(AppConstant.LAST_NOTIFICAION_CLICKED, true);
+                    JSONObject jsonObject = new JSONObject(data);
+                    Map<String, String> mapData = new HashMap<>();
+                    mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                    mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
+                    mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                    mapData.put(AppConstant.VAL, "" + jsonObject);
+                    mapData.put(AppConstant.ACT, "add");
+                    mapData.put(AppConstant.ISID_, "1");
+                    mapData.put(AppConstant.ET_, AppConstant.USERP_);
+
+                    RestClient.postRequest(lciURL, mapData, null, new RestClient.ResponseHandler() {
+                        @Override
+                        void onSuccess(final String response) {
+                            super.onSuccess(response);
+                            try {
+                                if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE).isEmpty() && i >= 0) {
+                                    JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE));
+                                    jsonArrayOffline.remove(i);
+                                    preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, null);
+                                }
+                            } catch (Exception e) {
+                                Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "lastClickAPI");
                             }
-                        } else
-                            Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
-                    } catch (Exception e) {
-                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "lastClickAPI");
-                    }
+                        }
+
+                        @Override
+                        void onFailure(int statusCode, String response, Throwable throwable) {
+                            super.onFailure(statusCode, response, throwable);
+                            try {
+                                if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE).isEmpty()) {
+                                    JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE));
+                                    if (!Util.ridExists(jsonArrayOffline, rid)) {
+                                        Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
+                                    }
+                                } else
+                                    Util.trackClickOffline(context, lciURL, AppConstant.IZ_NOTIFICATION_LAST_CLICK_OFFLINE, rid, "0", 0);
+                            } catch (Exception e) {
+                                Util.handleExceptionOnce(iZooto.appContext, e.toString(), "TargetActivity", "lastClickAPI");
+                            }
+
+                        }
+                    });
 
                 }
             });
+
+            executorService.shutdown();
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "TargetActivity", "lastClickAPI");
         }
@@ -530,42 +552,54 @@ public class TargetActivity extends Activity {
 
     static void callMediationClicks(final String medClick, int cNUmber) {
         try {
-            if (medClick != null && !medClick.isEmpty()) {
-                DebugFileManager.createExternalStoragePublic(iZooto.appContext, medClick, "mediationClick");
-                JSONObject jsonObject = new JSONObject(medClick);
-                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-
-                RestClient.postRequest(RestClient.MEDIATION_CLICKS, null, jsonObject, new RestClient.ResponseHandler() {
-                    @SuppressLint("NewApi")
-                    @Override
-                    void onSuccess(String response) {
-                        super.onSuccess(response);
-                        if (!preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS).isEmpty() && cNUmber >= 0) {
-                            try {
-                                JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS));
-                                jsonArrayOffline.remove(cNUmber);
-                                preferenceUtil.setStringData(AppConstant.STORE_MEDIATION_RECORDS, null);
-                            } catch (Exception ex) {
-                                DebugFileManager.createExternalStoragePublic(iZooto.appContext, "MediationCLick" + ex, "[Log.V]->");
-                            }
-                            preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA, "");
-                            TargetActivity.medClick = "";
-
-                        } else {
-                            preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA, "");
-                            TargetActivity.medClick = "";
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    if (medClick != null && !medClick.isEmpty()) {
+                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, medClick, "mediationClick");
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(medClick);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
                         }
+                        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+
+                        RestClient.postRequest(RestClient.MEDIATION_CLICKS, null, jsonObject, new RestClient.ResponseHandler() {
+                            @SuppressLint("NewApi")
+                            @Override
+                            void onSuccess(String response) {
+                                super.onSuccess(response);
+                                if (!preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS).isEmpty() && cNUmber >= 0) {
+                                    try {
+                                        JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.STORE_MEDIATION_RECORDS));
+                                        jsonArrayOffline.remove(cNUmber);
+                                        preferenceUtil.setStringData(AppConstant.STORE_MEDIATION_RECORDS, null);
+                                    } catch (Exception ex) {
+                                        DebugFileManager.createExternalStoragePublic(iZooto.appContext, "MediationCLick" + ex, "[Log.V]->");
+                                    }
+                                    preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA, "");
+                                    TargetActivity.medClick = "";
+
+                                } else {
+                                    preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA, "");
+                                    TargetActivity.medClick = "";
+                                }
+                            }
+
+                            @Override
+                            void onFailure(int statusCode, String response, Throwable throwable) {
+                                super.onFailure(statusCode, response, throwable);
+                                Util.trackMediation_Impression_Click(iZooto.appContext, AppConstant.MED_CLICK, medClick);
+
+
+                            }
+                        });
                     }
-
-                    @Override
-                    void onFailure(int statusCode, String response, Throwable throwable) {
-                        super.onFailure(statusCode, response, throwable);
-                        Util.trackMediation_Impression_Click(iZooto.appContext, AppConstant.MED_CLICK, medClick);
-
-
-                    }
-                });
-            }
+                }
+            });
+            executorService.shutdown();
         } catch (Exception ex) {
             Util.handleExceptionOnce(iZooto.appContext, ex.toString(), "TargetActivity", "MediationCLick");
         }

@@ -28,8 +28,6 @@ public interface AppConstant {
     String APPPID = "pid";
     String ENCRYPTED_PID = "encryptedPid";
     String ADVERTISING_ID = "add";
-    String GET_NOTIFICATION_ENABLED = "enable";
-    String GET_NOTIFICATION_DISABLED = "disable";
     String FIREBASE_ANALYTICS_TRACK = "isCheck";
     String TRACK_NOTIFICATION_ID = "notificationId";
     String IS_NOTIFICATION_ID_UPDATED = "notificationIdUpdated";
@@ -183,7 +181,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION = "2.5.2";
+    String SDKVERSION = "2.5.3";
     String QSDK_VERSION = "av";
     String SDK = "SDKVERSION";
     String AD_NETWORK = "an";
@@ -388,6 +386,10 @@ public interface AppConstant {
     String PUSH_TYPE = "pushType";
     String FCM_TYPE = "gcm";
     String PW_EVENTS = "pw_events";
+    String APP_ID = "app_id";
+    String CHECK_SUBSCRIPTION = "isSubscription";
+    String IZ_TIME_OUT = "isTimeOut";
+
 
 }
 

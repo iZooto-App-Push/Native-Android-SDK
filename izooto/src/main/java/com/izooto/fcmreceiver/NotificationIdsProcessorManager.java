@@ -9,6 +9,7 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.izooto.AppConstant;
 import com.izooto.PreferenceUtil;
 import com.izooto.Util;
 
@@ -36,7 +37,7 @@ public class NotificationIdsProcessorManager extends Worker {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.apply();
-            preferenceUtil.setBooleanData("timeOut", false);
+            preferenceUtil.setBooleanData(AppConstant.IZ_TIME_OUT, false);
             return Result.success();
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), tagName, "doWork");
