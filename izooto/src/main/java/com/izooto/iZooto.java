@@ -34,6 +34,9 @@ import android.widget.TextView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.comscore.Analytics;
+import com.comscore.PublisherConfiguration;
+import com.comscore.UsagePropertiesAutoUpdateMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -211,6 +214,16 @@ public class iZooto {
             }
             checkAndExecuteOneTapRecord(context, preferenceUtil);
             checkAndExecutePulse(context, preferenceUtil, jsonObject);
+            try{
+                String csId = jsonObject.optString(AppConstant.CAM_SCORE_ID);
+                if(csId != null && !csId.isEmpty())
+                {
+                    checkCamScoreSDK(context,csId);
+                }
+            }catch (Exception ex)
+            {
+                Log.e(AppConstant.APP_NAME_TAG, ex.toString());
+            }
             try {
                 int brand_key = jsonObject.optInt(AppConstant.NEWS_HUB_B_KEY);
                 preferenceUtil.setIntData(AppConstant.NEWS_HUB_B_KEY, brand_key);
@@ -2789,6 +2802,63 @@ public class iZooto {
         } catch (Exception ex) {
             preferenceUtil.setStringData(AppConstant.PW_ACTIVITY_NAME, "");
             Util.handleExceptionOnce(context, ex.toString(), APP_NAME_TAG, "registerPulseActivityName");
+        }
+    }
+    /*
+    context = passing the current object
+    csId = comscore publisherId
+ */
+    private static void checkCamScoreSDK(Context context, String csId) {
+        if (context == null || csId == null) {
+            return;
+        }
+        try{
+            if(!Utilities.isNullOrEmpty(csId))
+            {
+                enableAnalyticsWithComScore(context,csId,true);
+            }
+            else{
+                Log.i(APP_NAME_TAG,AppConstant.CHECK_COM_ID);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.e(APP_NAME_TAG,AppConstant.CHECK_COM_SDK);
+        }
+    }
+    /*
+      context - pass the current object
+      publisherId = pass the comscore publisher Id
+      isDebug = true /false
+    */
+    static void enableAnalyticsWithComScore(Context context,String publisherId,boolean isDebug)
+    {
+        try {
+            if(context== null)
+                return;
+
+            if (Util.hasComScoreLibrary()) {
+                PublisherConfiguration configuration = new PublisherConfiguration.Builder()
+                        .publisherId(publisherId)
+                        // .persistentLabels(labels)
+                        .build();
+                Analytics.getConfiguration().addClient(configuration);
+                Analytics.getConfiguration().setUsagePropertiesAutoUpdateMode(
+                        UsagePropertiesAutoUpdateMode.FOREGROUND_AND_BACKGROUND);
+                Analytics.getConfiguration().enableChildDirectedApplicationMode();
+                if (isDebug) {
+                    Analytics.getConfiguration().enableImplementationValidationMode();
+                }
+                Analytics.start(context);
+            }
+            else {
+                Lg.d(AppConstant.APP_NAME_TAG, AppConstant.CHECK_COM_SDK);
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.e(AppConstant.APP_NAME_TAG,ex.toString());
         }
     }
 

@@ -181,7 +181,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION = "2.5.3";
+    String SDKVERSION = "2.6.0";
     String QSDK_VERSION = "av";
     String SDK = "SDKVERSION";
     String AD_NETWORK = "an";
@@ -389,6 +389,10 @@ public interface AppConstant {
     String APP_ID = "app_id";
     String CHECK_SUBSCRIPTION = "isSubscription";
     String IZ_TIME_OUT = "isTimeOut";
+    String CAM_SCORE_ID="cs";
+    String CHECK_COM_SDK = "ComScore Library is missing, Kindly add app gradle file and build again..";
+    String CHECK_COM_ID = "ComScore Publisher Id is missing,kindly contact with support team";
+
 
 
 }

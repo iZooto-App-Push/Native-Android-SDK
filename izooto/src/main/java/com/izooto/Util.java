@@ -1067,6 +1067,16 @@ public class Util {
             return false;
         }
     }
+    static boolean hasComScoreLibrary() {
+        try {
+            Class.forName("com.comscore.PartnerConfiguration");
+            return true;
+        } catch (ClassNotFoundException e) {
+
+            return false;
+        }
+    }
+
 
 }
 

@@ -47,6 +47,8 @@ dependencies {
     compileOnly("androidx.credentials:credentials-play-services-auth:1.2.2")
     compileOnly("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     compileOnly 'androidx.browser:browser:1.7.0'
+    compileOnly ('com.comscore:android-analytics:6.11.1')
+    compileOnly ('com.google.android.gms:play-services-appset:16.1.0')
 
 }
 //apply from: 'publish-remote.gradle'
