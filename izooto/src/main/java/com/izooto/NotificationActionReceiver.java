@@ -5,6 +5,7 @@ import static com.izooto.Util.openURLInBrowserIntent;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;

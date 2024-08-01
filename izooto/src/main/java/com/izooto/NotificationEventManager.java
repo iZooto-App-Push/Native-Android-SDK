@@ -306,7 +306,10 @@ public class NotificationEventManager {
     static String fetchURL(String url) {
         if (url != null && !url.isEmpty()) {
             if (url.contains(AppConstant.ACCOUNT_ID) || url.contains(AppConstant.ADID) || url.contains(AppConstant.DEVICE_ID) || url.contains(AppConstant.ANDROID_UUID))
-                url = url.replace(AppConstant.ACCOUNT_ID, PreferenceUtil.getInstance(iZooto.appContext).getiZootoID(AppConstant.APPPID)).replace(AppConstant.ADID, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.ADVERTISING_ID)).replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext).replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext)));
+                url = url.replace(AppConstant.ACCOUNT_ID, PreferenceUtil.getInstance(iZooto.appContext).getiZootoID(AppConstant.APPPID))
+                        .replace(AppConstant.ADID, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.ADVERTISING_ID))
+                        .replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext))
+                        .replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext));
         }
         return url;
     }

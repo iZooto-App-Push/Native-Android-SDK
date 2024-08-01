@@ -9,6 +9,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+
 import com.izooto.iZooto;
 
 
@@ -19,11 +21,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_pulse);
+        setContentView(R.layout.bank_item);
 //        Toolbar toolbar =  findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        CoordinatorLayout layout = findViewById(R.id.mainLayout);
+        LinearLayout layout = findViewById(R.id.mainView);
         iZooto.enablePulse(this, layout, true);
 
     }

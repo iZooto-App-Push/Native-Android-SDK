@@ -27,8 +27,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -78,7 +80,6 @@ public class iZooto {
     private static FirebaseAnalyticsTrack firebaseAnalyticsTrack;
     @SuppressLint("StaticFieldLeak")
     static Activity curActivity, newsHubContext;
-    private static String advertisementID;
     public static boolean isHybrid = false;//check for SDK(Flutter,React native)
     public static String SDK_DEF = "native";
     public static int bannerImage;
@@ -100,12 +101,7 @@ public class iZooto {
     private static final OSTaskManager osTaskManager = new OSTaskManager();
     private static int pageNumber;   // index handling for notification center data
     private static String notificationData;  // notification data
-    public static String soundID;
     private static boolean iZootoInitialized = false;
-
-    static String appId;
-    static String apiKey;
-
     static String hms_appId;
 
 
@@ -131,7 +127,6 @@ public class iZooto {
             mBuilder = builder;
             builder.mContext = null;
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
-
             try {
                 ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
                 Bundle bundle = appInfo.metaData;
@@ -251,6 +246,7 @@ public class iZooto {
             }
             Log.d(APP_NAME_TAG, "android_id --> " + Util.getAndroidId(context));
         } catch (Exception ex) {
+            Log.e(APP_NAME_TAG,"Kindly verify the izooto_app_id");
             Util.handleExceptionOnce(context, ex.toString(), AppConstant.APP_NAME_TAG, "processResponse");
         }
     }
@@ -371,17 +367,21 @@ public class iZooto {
             fcmTokenGenerator.getToken(context, senderId, new TokenGenerator.TokenGenerationHandler() {
                 @Override
                 public void complete(String id) {
-                    Util util = new Util();
-                    if (util.isInitializationValid()) {
-                        if (id != null && !id.isEmpty()) {
-                            registerToken();
-                            ActivityLifecycleListener.registerActivity((Application) appContext);
-                            setCurActivity(context);
-                            if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack())
-                                firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
-                            initCompleted = true;
-                            osTaskManager.startPendingTasks();
+                    try {
+                        Util util = new Util();
+                        if (util.isInitializationValid()) {
+                            if (id != null && !id.isEmpty()) {
+                                registerToken();
+                                ActivityLifecycleListener.registerActivity((Application) appContext.getApplicationContext());
+                                setCurActivity(context);
+                                if (FirebaseAnalyticsTrack.canFirebaseAnalyticsTrack())
+                                    firebaseAnalyticsTrack = new FirebaseAnalyticsTrack(appContext);
+                                initCompleted = true;
+                                osTaskManager.startPendingTasks();
+                            }
                         }
+                    } catch (Exception ex) {
+                        Util.handleExceptionOnce(iZooto.appContext, ex.toString(), APP_NAME_TAG, "initToken");
                     }
                 }
 
@@ -391,9 +391,8 @@ public class iZooto {
                 }
             });
         } catch (Exception e) {
-            Util.handleExceptionOnce(iZooto.appContext, e.toString(), APP_NAME_TAG, "initHmsService");
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), APP_NAME_TAG, "initToken");
         }
-
     }
 
     public static void trackAdvertisingId() {
@@ -763,6 +762,8 @@ public class iZooto {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(appContext);
             if (!Utilities.isNullOrEmpty(data)) {
                 if (mBuilder != null && mBuilder.mNotificationHelper != null) {
+                    Log.e("Data",""+isPulseEnable);
+
                     if (isPulseEnable) {
                         String activityName = preferenceUtil.getStringData(AppConstant.PW_ACTIVITY_NAME);
                         if (!Utilities.isNullOrEmpty(activityName)) {
@@ -774,9 +775,10 @@ public class iZooto {
                                 Intent intent = new Intent(iZooto.appContext, activityClass);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 iZooto.appContext.startActivity(intent);
+                                Log.e("Pulse",pulseData);
                                 PulseURLManager.updatePulseURL(pulseData);
                             } catch (Exception e) {
-                                Log.e(APP_NAME_TAG, "Activity class not found");
+                                Log.v(APP_NAME_TAG, "Activity class not found");
                             }
                         } else {
                             Log.i(APP_NAME_TAG, "Activity name is null or empty");
@@ -1020,7 +1022,6 @@ public class iZooto {
                 iZooto.init(this);
                 iZootoInitialized = true;
             } catch (Exception e) {
-                // Handle iZooto initialization failure!
                 iZootoInitialized = false;
             }
         }
@@ -2774,6 +2775,41 @@ public class iZooto {
                     }
 
                     PWInterface pwInterface = PulseManager.INSTANCE.getInstance();
+                    pwInterface.addConfiguration(context, iZooto.pw_Url+"&df=0");
+                    pwInterface.createWebView(layout, shouldShowProgressBar);
+                    registerPulseActivityName(context);
+
+                } catch (Exception e) {
+                    Util.handleExceptionOnce(context, e.toString(), APP_NAME_TAG, "enablePulse");
+                }
+            }, 1000);
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(context, ex.toString(), APP_NAME_TAG, "enablePulse");
+        }
+    }
+    // overloading the pulse feature
+    public static void enablePulse(Context context, LinearLayout layout, Boolean shouldShowProgressBar) {
+        if (context == null || layout == null) {
+            Log.i(APP_NAME_TAG, "Cannot proceed: Context or layout is null");
+            return;
+        }
+
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                try {
+                    String status = preferenceUtil.getStringData(AppConstant.PW_STATUS);
+                    if (!Utilities.hasUserPid(context) || Utilities.isNullOrEmpty(iZooto.pw_Url) || !status.equals("1")) {
+                        return;
+                    }
+
+                    if (!Utilities.isNullOrEmpty(PulseURLManager.encodedURL)) {
+                        iZooto.pw_Url = iZooto.pw_Url + "&article=" + PulseURLManager.encodedURL;
+                    }
+                    iZooto.pw_Url = iZooto.pw_Url+"&df=1";
+                    Log.e("URL",iZooto.pw_Url);
+                   // String url = "https://devsdk.izooto.com/amit/pulse.html?izcmd=applypulse&mp=100&pid=66461&bKey=cd35e7e3a7cc2e48&df=1&cid=12345678&rid=123456&rfiIdHash=2815f6b98b7a1fc00fc6bbb6d86583c410d86af7&feedSrc=https%3A%2F%2Fnprelease.indiatimes.com%2Fnp-syndicate%2Ffeed%2Flisting%2Fcombined%2Fizooto%3Fcp%3D%7B~index~%7D%26tag%3Dizooto%26lang%3Denglish&ads=3&article={%22ln%22:%22https://www.google.com%22,%22t%22:%22The%20Big%20Billion%20Days%202023,%20Coming%20Soon%20with%2024%20hrs%20Early%20Access%20for%20Plus%20Members.%22,%22bi%22:%22https:\\\\/\\\\/i.gadgets360cdn.com\\\\/large\\\\/flipkart_big_billion_days_sale_1695627321314.jpg%22,%22m%22:%22PulseWeb%22}";
+                    PWInterface pwInterface = PulseManager.INSTANCE.getInstance();
                     pwInterface.addConfiguration(context, iZooto.pw_Url);
                     pwInterface.createWebView(layout, shouldShowProgressBar);
                     registerPulseActivityName(context);
@@ -2853,7 +2889,6 @@ public class iZooto {
             }
             else {
                 Lg.d(AppConstant.APP_NAME_TAG, AppConstant.CHECK_COM_SDK);
-
             }
         }
         catch (Exception ex)
@@ -2861,5 +2896,4 @@ public class iZooto {
             Log.e(AppConstant.APP_NAME_TAG,ex.toString());
         }
     }
-
 }

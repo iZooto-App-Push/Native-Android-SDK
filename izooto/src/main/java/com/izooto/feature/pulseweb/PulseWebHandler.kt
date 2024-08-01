@@ -33,7 +33,10 @@ internal class PulseWebHandler : PWInterface {
         this.context = context
         this.url = pwUrl
     }
-
+/*
+     layout - CoordinateLayout
+     shouldShowProgressBar - boolean value true/false
+ */
     override fun createWebView(layout: CoordinatorLayout?, shouldShowProgressBar: Boolean) {
         if (context == null || url == null || layout == null) {
             return
@@ -62,6 +65,43 @@ internal class PulseWebHandler : PWInterface {
                 webView.webChromeClient = progressBar?.let { PulseWebChromeClient(context!!, it) }
             }
             applyConfigAndAddView(layout, webView, progressBar, shouldShowProgressBar)
+        } catch (e: Exception) {
+            Util.handleExceptionOnce(context, e.toString(), "PulseWebHandler", "createWebView")
+        }
+    }
+
+    /*
+         layout - Linear layout
+         shouldShowProgressBar - boolean value true/false
+     */
+    override fun createWebView(layout: LinearLayout?, shouldShowProgressBar: Boolean) {
+        if (context == null || url == null || layout == null) {
+            return
+        }
+        try {
+
+            val layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            val webView = WebView(context!!)
+            webView.layoutParams = layoutParams
+            handleWebSettings(webView)
+            clearWebViewSessionAndCookies(webView)
+            webView.webChromeClient = WebChromeClient()
+            webView.evaluateJavascript(
+                "(function() { localStorage.removeItem('__lsv__'); })();", null
+            )
+
+            webView.webViewClient = PulseWebViewClient(context)
+            webView.loadUrl(url.toString())
+            webView.addJavascriptInterface(PulseJsInterface(context, webView), "Android")
+            if (shouldShowProgressBar) {
+                progressBar = createAndReturnProgressBar(context)
+                webView.webChromeClient = progressBar?.let { PulseWebChromeClient(context!!, it) }
+            }
+            applyConfigAndAddView(layout, webView, progressBar, shouldShowProgressBar)
+            layout.addView(webView)
+
         } catch (e: Exception) {
             Util.handleExceptionOnce(context, e.toString(), "PulseWebHandler", "createWebView")
         }
@@ -127,6 +167,7 @@ internal class PulseWebHandler : PWInterface {
         }
     }
 
+    // add CoordinatorLayout and WebView to layout
     private fun applyConfigAndAddView(
         layout: CoordinatorLayout?,
         webView: WebView?,
@@ -153,6 +194,30 @@ internal class PulseWebHandler : PWInterface {
             if (nestedScrollView != null) {
                 layout.addView(nestedScrollView)
             }
+        } catch (e: Exception) {
+            Util.handleExceptionOnce(
+                context, e.toString(), "PulseWebHandler", "applyConfigAndAddView"
+            )
+        }
+    }
+
+    // add linear layout and WebView to layout
+    private fun applyConfigAndAddView(
+        layout: LinearLayout?,
+        webView: WebView?,
+        progressBar: ProgressBar?,
+        shouldShowProgressBar: Boolean
+    ) {
+        if (context == null || layout == null || webView == null) {
+            return
+        }
+        try {
+
+            if (shouldShowProgressBar && progressBar != null) {
+                layout.addView(progressBar)
+            }
+
+
         } catch (e: Exception) {
             Util.handleExceptionOnce(
                 context, e.toString(), "PulseWebHandler", "applyConfigAndAddView"

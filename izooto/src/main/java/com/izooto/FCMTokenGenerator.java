@@ -2,9 +2,11 @@ package com.izooto;
 
 import android.content.Context;
 import android.util.Log;
+
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.Objects;
 
 
@@ -64,7 +66,6 @@ public class FCMTokenGenerator implements TokenGenerator {
             }
         }).start();
     }
-
     void removeDeviceAddress(Context context, String senderId) {
         try {
             initFireBaseApp(senderId);
@@ -87,23 +88,22 @@ public class FCMTokenGenerator implements TokenGenerator {
     }
 
     private void initFireBaseApp(final String senderId) {
-            if (firebaseApp != null) {
-                return;
-            }
-            if (!get_Project_ID().isEmpty() && !getAPI_KEY().isEmpty() && !senderId.isEmpty()) {
-                FirebaseOptions firebaseOptions =
-                        new FirebaseOptions.Builder()
-                                .setGcmSenderId(senderId) //senderID
-                                .setApplicationId(get_App_ID()) //application ID
-                                .setApiKey(getAPI_KEY()) //Application Key
-                                .setProjectId(get_Project_ID()) //Project ID
-                                .build();
-                firebaseApp = FirebaseApp.initializeApp(iZooto.appContext, firebaseOptions, AppConstant.SDK_NAME);
-                Lg.d(AppConstant.FCMNAME, firebaseApp.getName());
-            } else {
-                Log.v(AppConstant.APP_NAME_TAG, AppConstant.IZ_MISSING_GOOGLE_JSON_SERVICES_FILE);
-            }
-
+        if (firebaseApp != null) {
+            return;
+        }
+        if (!get_Project_ID().isEmpty() && !getAPI_KEY().isEmpty() && !senderId.isEmpty()) {
+            FirebaseOptions firebaseOptions =
+                    new FirebaseOptions.Builder()
+                            .setGcmSenderId(senderId) //senderID
+                            .setApplicationId(get_App_ID()) //application ID
+                            .setApiKey(getAPI_KEY()) //Application Key
+                            .setProjectId(get_Project_ID()) //Project ID
+                            .build();
+            firebaseApp = FirebaseApp.initializeApp(iZooto.appContext, firebaseOptions, AppConstant.SDK_NAME);
+            Lg.d(AppConstant.FCMNAME, firebaseApp.getName());
+        } else {
+            Log.v(AppConstant.APP_NAME_TAG, AppConstant.IZ_MISSING_GOOGLE_JSON_SERVICES_FILE);
+        }
     }
 
     // To get default api_key
@@ -125,7 +125,7 @@ public class FCMTokenGenerator implements TokenGenerator {
     }
 
     // To get default project_id
-     static String get_Project_ID() {
+    static String get_Project_ID() {
         try {
             String project_id = Objects.requireNonNull(FirebaseOptions.fromResource(iZooto.appContext)).getProjectId();
             if (project_id != null)

@@ -3,6 +3,7 @@ package com.izooto.feature.pulseweb
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.http.SslError
+import android.util.Log
 import android.view.KeyEvent
 import android.view.ViewGroup
 import android.webkit.RenderProcessGoneDetail
@@ -21,6 +22,7 @@ internal class PulseWebViewClient(private val context: Context?) : WebViewClient
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
+        view.scrollTo(0,0)
     }
 
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -29,6 +31,7 @@ internal class PulseWebViewClient(private val context: Context?) : WebViewClient
         }
 
         try {
+
             val url = request?.url.toString()
             if (url.startsWith("http://") || url.startsWith("https://")) {
                 try {
