@@ -238,7 +238,7 @@ public class AdMediation {
         else
             calculateTime = payload.getTime_out();
         counterIndex++;
-        String fetchURL = NotificationEventManager.fetchURL(payload.getFetchURL());
+        String fetchURL = Util.updateUrlParameter(payload.getFetchURL());
         RestClient.getRequest(fetchURL, calculateTime * 1000, new RestClient.ResponseHandler() {
             @Override
             void onSuccess(String response) {
@@ -915,7 +915,7 @@ public class AdMediation {
         if (iZooto.appContext == null) {
             return;
         }
-        String fetchURL = NotificationEventManager.fetchURL(payloadData.getFetchURL());
+        String fetchURL = Util.updateUrlParameter(payloadData.getFetchURL());
         RestClient.get(fetchURL, new RestClient.ResponseHandler() {
             @Override
             void onSuccess(String response) {

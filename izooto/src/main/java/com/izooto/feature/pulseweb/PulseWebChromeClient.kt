@@ -1,7 +1,9 @@
 package com.izooto.feature.pulseweb
 
 import android.content.Context
+import android.util.Log
 import android.view.View
+import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.ProgressBar
@@ -19,5 +21,9 @@ internal class PulseWebChromeClient(
                 context, e.toString(), "PulseWebChromeClient", "onProgressChanged"
             )
         }
+    }
+
+    override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
+        return true
     }
 }

@@ -18,6 +18,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.izooto.core.Utilities;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -55,6 +57,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     private static String notificationTitle = "";
     private static String notificationMessage = "";
     private static String notificationBannerImage = "";
+    private static String lnKey = "";
 
 
     @Override
@@ -67,10 +70,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
             context.sendBroadcast(it);
             getBundleData(context, intent);
-            if (mUrl != null) {
-                mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-            }
-            getBundleData(context, intent);
+
             try {
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                 if (clickIndex.equalsIgnoreCase("1")) {
@@ -85,7 +85,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     String lastEighthIndex;
                     String lastTenthIndex;
                     String dataInBinary = Util.getIntegerToBinary(cfg);
-                    if (!dataInBinary.isEmpty()) {
+                    if (!Utilities.isNullOrEmpty(dataInBinary)) {
                         lastEighthIndex = String.valueOf(dataInBinary.charAt(dataInBinary.length() - 8));
                         lastTenthIndex = String.valueOf(dataInBinary.charAt(dataInBinary.length() - 10));
                     } else {
@@ -103,8 +103,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
                         if (dataCfg > 0) {
                             lciURL = "https://lci" + dataCfg + ".izooto.com/lci" + dataCfg;
-                        } else
-                            lciURL = RestClient.LAST_NOTIFICATION_CLICK_URL;
+                        } else lciURL = RestClient.LAST_NOTIFICATION_CLICK_URL;
                         if (lastEighthIndex.equalsIgnoreCase("1")) {
                             if (lastTenthIndex.equalsIgnoreCase("1")) {
                                 if (!updateDaily.equalsIgnoreCase(Util.getTime())) {
@@ -160,7 +159,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                     hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
                     hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
                     hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
-                    hashMap.put(AppConstant.LANDING_URL, landingURL);
+                    hashMap.put(AppConstant.LANDING_URL, lnKey);
                     hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
                     hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
                     hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
@@ -292,8 +291,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
 
 
     static void lastClickAPI(Context context, String lciURL, String rid, int i) {
-        if (context == null)
-            return;
+        if (context == null) return;
         try {
             final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             preferenceUtil.setStringData(AppConstant.CURRENT_DATE_CLICK, Util.getTime());
@@ -308,7 +306,6 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             mapData.put(AppConstant.ACT, "add");
             mapData.put(AppConstant.ISID_, "1");
             mapData.put(AppConstant.ET_, AppConstant.USERP_);
-
 
             RestClient.postRequest(lciURL, mapData, null, new RestClient.ResponseHandler() {
                 @Override
@@ -434,10 +431,11 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                 notificationMessage = tempBundle.getString(AppConstant.P_MESSAGE);
             if (tempBundle.containsKey(AppConstant.P_BANNER_IMAGE))
                 notificationBannerImage = tempBundle.getString(AppConstant.P_BANNER_IMAGE);
+            if (tempBundle.containsKey(AppConstant.KEY_LN))
+                lnKey = tempBundle.getString(AppConstant.KEY_LN);
 
             if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
-                NotificationManager notificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
             }
         } catch (Exception e) {
@@ -446,62 +444,60 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
     static void notificationClickAPI(Context context, String clkURL, String cid, String rid, int btnCount, int i, String pushType) {
-        if (context == null)
-            return;
+        if (context == null) return;
         try {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.submit(new Runnable() {
                 @Override
                 public void run() {
-            final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-            Map<String, String> mapData = new HashMap<>();
-            mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
-            mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
-            mapData.put(AppConstant.CID_, cid);
-            mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
-            mapData.put(AppConstant.RID_, rid);
-            mapData.put(AppConstant.PUSH, pushType);
-            mapData.put("op", "click");
-            mapData.put(AppConstant.IZ_LANDING_URL, landingURL);
-            mapData.put(AppConstant.IZ_DEEPLINK_URL, additionalData);
-            mapData.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
-            if (btnCount != 0)
-                mapData.put("btn", "" + btnCount);
-            DebugFileManager.createExternalStoragePublic(context, mapData.toString(), "clickData");
-            RestClient.postRequest(clkURL, mapData, null, new RestClient.ResponseHandler() {
-                @Override
-                void onSuccess(final String response) {
-                    super.onSuccess(response);
-                    try {
-                        JSONArray jsonArrayOffline;
-                        if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty() && i >= 0) {
-                            jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
-                            jsonArrayOffline.remove(i);
-                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
-                        }
-                    } catch (Exception e) {
-                        DebugFileManager.createExternalStoragePublic(context, mapData.toString(), "clickData");
-                    }
-                }
-
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                    try {
-                        if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty()) {
-                            JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
-                            if (!Util.ridExists(jsonArrayOffline, rid)) {
-                                Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
+                    final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+                    Map<String, String> mapData = new HashMap<>();
+                    mapData.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                    mapData.put(AppConstant.VER_, AppConstant.SDKVERSION);
+                    mapData.put(AppConstant.CID_, cid);
+                    mapData.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                    mapData.put(AppConstant.RID_, rid);
+                    mapData.put(AppConstant.PUSH, pushType);
+                    mapData.put("op", "click");
+                    mapData.put(AppConstant.IZ_LANDING_URL, landingURL);
+                    mapData.put(AppConstant.IZ_DEEPLINK_URL, additionalData);
+                    mapData.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
+                    if (btnCount != 0) mapData.put("btn", "" + btnCount);
+                    DebugFileManager.createExternalStoragePublic(context, mapData.toString(), "clickData");
+                    RestClient.postRequest(clkURL, mapData, null, new RestClient.ResponseHandler() {
+                        @Override
+                        void onSuccess(final String response) {
+                            super.onSuccess(response);
+                            try {
+                                JSONArray jsonArrayOffline;
+                                if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty() && i >= 0) {
+                                    jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
+                                    jsonArrayOffline.remove(i);
+                                    preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, null);
+                                }
+                            } catch (Exception e) {
+                                DebugFileManager.createExternalStoragePublic(context, mapData.toString(), "clickData");
                             }
-                        } else {
-                            Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
                         }
-                    } catch (Exception e) {
-                        Util.handleExceptionOnce(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
 
-                    }
-                }
-            });
+                        @Override
+                        void onFailure(int statusCode, String response, Throwable throwable) {
+                            super.onFailure(statusCode, response, throwable);
+                            try {
+                                if (!preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE).isEmpty()) {
+                                    JSONArray jsonArrayOffline = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE));
+                                    if (!Util.ridExists(jsonArrayOffline, rid)) {
+                                        Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
+                                    }
+                                } else {
+                                    Util.trackClickOffline(context, clkURL, AppConstant.IZ_NOTIFICATION_CLICK_OFFLINE, rid, cid, btnCount);
+                                }
+                            } catch (Exception e) {
+                                Util.handleExceptionOnce(context, e.toString(), "notificationClickAPI", "NotificationActionReceiver");
+
+                            }
+                        }
+                    });
                 }
             });
             executorService.shutdown();

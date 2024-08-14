@@ -1,6 +1,7 @@
 package com.izooto;
 
 import static com.izooto.AppConstant.APP_NAME_TAG;
+import static com.izooto.AppConstant.SUBS_DAYS;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -42,6 +43,7 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 
 import com.google.firebase.FirebaseOptions;
+import com.izooto.core.SubscriptionInterval;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,8 +57,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -70,6 +74,8 @@ import java.util.regex.Pattern;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import kotlin.jvm.Synchronized;
 
 public class Util {
     private static final String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
@@ -97,7 +103,7 @@ public class Util {
         }
     }
 
-    public static String decrypt(Context context,String key, String data) {
+    public static String decrypt(Context context, String key, String data) {
         try {
             if (key.length() < CIPHER_KEY_LEN) {
                 int numPad = CIPHER_KEY_LEN - key.length();
@@ -127,7 +133,7 @@ public class Util {
             return new String(original);
 
         } catch (Exception ex) {
-            Util.handleExceptionOnce(context,ex.toString(),"Utils","decrypt");
+            Util.handleExceptionOnce(context, ex.toString(), "Utils", "decrypt");
         }
         return null;
 
@@ -163,12 +169,11 @@ public class Util {
     }
 
 
-
     static String getAndroidId(Context mContext) {
         try {
             @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
             return android_id;
-        } catch (Exception ex){
+        } catch (Exception ex) {
             return "";
         }
     }
@@ -204,7 +209,7 @@ public class Util {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return pInfo.versionName;
         } catch (Exception ex) {
-            Util.handleExceptionOnce(context,ex.toString(),"Utils","getSDKVersion");
+            Util.handleExceptionOnce(context, ex.toString(), "Utils", "getSDKVersion");
         }
         return "";
 
@@ -232,7 +237,7 @@ public class Util {
 
     }
 
-     static String getDeviceLanguage() {
+    static String getDeviceLanguage() {
         Locale locale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             locale = iZooto.appContext.getResources().getConfiguration().getLocales().get(0);
@@ -243,17 +248,17 @@ public class Util {
 
     }
 
-     public static String getIntegerToBinary(int number) {
+    public static String getIntegerToBinary(int number) {
         return String.format("%16s", Integer.toBinaryString(number)).replace(' ', '0');
 
     }
 
-     static boolean checkNotificationEnable() {
+    static boolean checkNotificationEnable() {
         return NotificationManagerCompat.from(iZooto.appContext).areNotificationsEnabled();
 
     }
 
-     public static String getPackageName(Context context) {
+    public static String getPackageName(Context context) {
         ApplicationInfo ai;
         try {
             ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
@@ -264,7 +269,7 @@ public class Util {
         return context.getPackageName();
     }
 
-     static boolean isMatchedString(String s) {
+    static boolean isMatchedString(String s) {
         try {
             Pattern pattern = Pattern.compile("[a-zA-Z0-9-_.~%]{1,900}");
             Matcher matcher = pattern.matcher(s);
@@ -274,7 +279,7 @@ public class Util {
         }
     }
 
-     static int convertStringToDecimal(String number) {
+    static int convertStringToDecimal(String number) {
         char[] numChar = number.toCharArray();
         int intValue = 0;
         int decimal = 1;
@@ -292,7 +297,7 @@ public class Util {
         return intValue;
     }
 
-     static CharSequence makeBoldString(CharSequence title) {
+    static CharSequence makeBoldString(CharSequence title) {
         if (Build.VERSION.SDK_INT >= 24) {
             title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\"><b>" + title + "</b></font>", HtmlCompat.FROM_HTML_MODE_LEGACY);// for 24 api and more
         } else {
@@ -301,7 +306,7 @@ public class Util {
         return title;
     }
 
-     static CharSequence makeBlackString(CharSequence title) {
+    static CharSequence makeBlackString(CharSequence title) {
         if (Build.VERSION.SDK_INT >= 24) {
             title = Html.fromHtml("<font color=\"" + ContextCompat.getColor(iZooto.appContext, R.color.iz_black) + "\">" + title + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY); // for 24 api and more
         } else {
@@ -310,7 +315,7 @@ public class Util {
         return title;
     }
 
-     static Bitmap makeCornerRounded(Bitmap image) {
+    static Bitmap makeCornerRounded(Bitmap image) {
         try {
             Bitmap imageRounded = Bitmap.createBitmap(image.getWidth(), image.getHeight(), image.getConfig());
             Canvas canvas = new Canvas(imageRounded);
@@ -320,7 +325,7 @@ public class Util {
             canvas.drawRoundRect((new RectF(0.0f, 0.0f, image.getWidth(), image.getHeight())), 10, 10, mPaint);
             return imageRounded;
         } catch (Exception ex) {
-            Util.handleExceptionOnce(iZooto.appContext,ex.toString(),"Utils","makeCornerRounded");
+            Util.handleExceptionOnce(iZooto.appContext, ex.toString(), "Utils", "makeCornerRounded");
             return null;
         }
     }
@@ -352,7 +357,7 @@ public class Util {
 
     }
 
-   public static String getTime() {
+    public static String getTime() {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
         return sdf.format(new Date());
     }
@@ -378,12 +383,11 @@ public class Util {
     }
 
 
-
-     static void sleepTime(int time) {
+    static void sleepTime(int time) {
         try {
             Thread.sleep(time);
         } catch (Exception e) {
-            Log.d(APP_NAME_TAG,e.toString());
+            Log.d(APP_NAME_TAG, e.toString());
         }
     }
 
@@ -401,7 +405,7 @@ public class Util {
             long differenceDates = difference / (24 * 60 * 60 * 1000);
             dayDifference = Long.toString(differenceDates);
         } catch (Exception exception) {
-            Util.handleExceptionOnce(iZooto.appContext,exception.toString(),"Utils","dayDifference");
+            Util.handleExceptionOnce(iZooto.appContext, exception.toString(), "Utils", "dayDifference");
         }
         return dayDifference;
     }
@@ -458,10 +462,11 @@ public class Util {
                 mapData.put(AppConstant.SDK, AppConstant.SDKVERSION);
                 mapData.put(AppConstant.ANDROIDVERSION, Build.VERSION.RELEASE);
                 mapData.put(AppConstant.DEVICE_NAME, Util.getDeviceName());
-                mapData.put(AppConstant.IZOOTO_APP_ID,preferenceUtil.getStringData(AppConstant.ENCRYPTED_PID));
+                mapData.put(AppConstant.IZOOTO_APP_ID, preferenceUtil.getStringData(AppConstant.ENCRYPTED_PID));
                 mapData.put(AppConstant.APP_ID, preferenceUtil.getStringData(AppConstant.APP_ID));
+                mapData.put(AppConstant.H_PLUGIN_VERSION, preferenceUtil.getStringData(AppConstant.HYBRID_PLUGIN_VERSION));
 
-                RestClient.postRequest(RestClient.APP_EXCEPTION_URL, mapData,null, new RestClient.ResponseHandler() {
+                RestClient.postRequest(RestClient.APP_EXCEPTION_URL, mapData, null, new RestClient.ResponseHandler() {
                     @Override
                     void onSuccess(final String response) {
                         super.onSuccess(response);
@@ -709,7 +714,7 @@ public class Util {
                 hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
                 hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
                 hashMap.put(AppConstant.VER_, AppConstant.SDKVERSION);
-                hashMap.put("link",userModal.getLink());
+                hashMap.put("link", userModal.getLink());
 
             }
             RestClient.postRequest(RestClient.iZ_PULSE_FEATURE_CLICK, hashMap, null, new RestClient.ResponseHandler() {
@@ -814,29 +819,29 @@ public class Util {
                 !payload.getMakeStickyNotification().isEmpty() && payload.getMakeStickyNotification().equals("1");
     }
 
-     public static String getTimeAgo(String timestamp) {
+    public static String getTimeAgo(String timestamp) {
 
-         try {
-             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
-             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-             Date date = dateFormat.parse(timestamp);
-             if (date != null) {
-                 long timeInMillis = date.getTime();
-                 long now = System.currentTimeMillis();
-                 CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(timeInMillis, now, DateUtils.MINUTE_IN_MILLIS);
-                 return relativeTimeSpan.toString()
-                         .replace(" minutes", "m")
-                         .replace(" minute", "m")
-                         .replace(" hours", "h")
-                         .replace(" hour", "h")
-                         .replace(" seconds", "s")
-                         .replace(" second", "s");
-             }
-         } catch (Exception e) {
-             Util.handleExceptionOnce(iZooto.appContext,e.toString(),"Util","getValidIdForCampaigns");
-         }
-         return "";
-     }
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date date = dateFormat.parse(timestamp);
+            if (date != null) {
+                long timeInMillis = date.getTime();
+                long now = System.currentTimeMillis();
+                CharSequence relativeTimeSpan = DateUtils.getRelativeTimeSpanString(timeInMillis, now, DateUtils.MINUTE_IN_MILLIS);
+                return relativeTimeSpan.toString()
+                        .replace(" minutes", "m")
+                        .replace(" minute", "m")
+                        .replace(" hours", "h")
+                        .replace(" hour", "h")
+                        .replace(" seconds", "s")
+                        .replace(" second", "s");
+            }
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "getValidIdForCampaigns");
+        }
+        return "";
+    }
 
     // To PulseManager Exception once
     public static void handleExceptionOnce(Context context, String exception, String className, String methodName) {
@@ -909,34 +914,34 @@ public class Util {
                 }
             }
             return json.toString();
-        }catch (Exception e){
+        } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "Util", "setExtrasAsJson");
             return null;
         }
     }
 
 
-    public static Map<String, String> setJsonAsMap(Context context, JSONObject data){
+    public static Map<String, String> setJsonAsMap(Context context, JSONObject data) {
         Map<String, String> map = new HashMap<>();
-        try{
+        try {
             Iterator<?> keys = data.keys();
-            while (keys.hasNext()){
+            while (keys.hasNext()) {
                 String key = (String) keys.next();
                 String value = data.getString(key);
                 map.put(key, value);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "Util", "setJsonAsMap");
         }
         return map;
     }
 
 
-     public static String getOsNotificationId(Context context) {
+    public static String getOsNotificationId(Context context) {
         UUID uuid = null;
         try {
             uuid = UUID.randomUUID();
-        }catch (Exception e){
+        } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "Util", "getOsNotificationId");
         }
         if (uuid != null) {
@@ -950,11 +955,11 @@ public class Util {
         return !TextUtils.isEmpty(body);
     }
 
-   public static boolean getNotificationKey(Bundle extras){
+    public static boolean getNotificationKey(Bundle extras) {
         return extras.containsKey(ShortPayloadConstant.GCM_TITLE) && extras.containsKey(ShortPayloadConstant.GCM_MESSAGE) && extras.containsKey(ShortPayloadConstant.GCM_ID);
     }
 
-    public static boolean getDataKey(Bundle extras){
+    public static boolean getDataKey(Bundle extras) {
         return ((extras.containsKey(ShortPayloadConstant.TITLE) && extras.containsKey(AppConstant.P_CFG) && extras.containsKey(ShortPayloadConstant.RID)) || (extras.containsKey(AppConstant.AD_NETWORK) || extras.containsKey(AppConstant.GLOBAL_PUBLIC_KEY)));
     }
 
@@ -984,7 +989,7 @@ public class Util {
     }
 
 
-       static boolean areNotificationsEnabled(Context context, String channelId) {
+    static boolean areNotificationsEnabled(Context context, String channelId) {
         try {
             boolean notificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled();
             if (!notificationsEnabled) {
@@ -1004,11 +1009,11 @@ public class Util {
     }
 
 
-    private static NotificationManager getNotificationManager(Context context){
+    private static NotificationManager getNotificationManager(Context context) {
         return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    static String getChannelId(){
+    static String getChannelId() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return new Notification().getChannelId();
         }
@@ -1046,15 +1051,13 @@ public class Util {
             return false;
         }
     }
-    static  String getPid(Context context)
-    {
+
+    static String getPid(Context context) {
         try {
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             return preferenceUtil.getStringData(AppConstant.APPPID);
-        }
-        catch (Exception ex)
-        {
-            return  "";
+        } catch (Exception ex) {
+            return "";
         }
     }
 
@@ -1067,6 +1070,7 @@ public class Util {
             return false;
         }
     }
+
     static boolean hasComScoreLibrary() {
         try {
             Class.forName("com.comscore.PartnerConfiguration");
@@ -1077,6 +1081,55 @@ public class Util {
         }
     }
 
+    static String updateUrlParameter(String url) {
+        if (iZooto.appContext == null) {
+            return url;
+        }
+        try {
+            if (hasContainsKey(url)) {
+                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+                SubscriptionInterval subscriptionInterval = SubscriptionInterval.createInstance(iZooto.appContext);
+                url = url.replace(AppConstant.ACCOUNT_ID, preferenceUtil.getStringData(AppConstant.APPPID))
+                        .replace(AppConstant.ADID, preferenceUtil.getStringData(AppConstant.ADVERTISING_ID))
+                        .replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext))
+                        .replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext))
+                        .replace(AppConstant.SUBS_YEARS, String.valueOf(subscriptionInterval.inYears()))
+                        .replace(AppConstant.SUBS_MONTHS, String.valueOf(subscriptionInterval.inMonths()))
+                        .replace(AppConstant.SUBS_DAYS, String.valueOf(subscriptionInterval.inDays()))
+                        .replace(AppConstant.SUBS_TIMESTAMP, String.valueOf(subscriptionInterval.registrationTimestamp()));
+
+                if (preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) != null) {
+                    url = url.replace(AppConstant.ANDROID_TOKEN, preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN))
+                            .replace(AppConstant.R_FCM_TOKEN, preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN));
+                }
+
+                if (Build.MANUFACTURER.equalsIgnoreCase("Huawei")) {
+                    url = url.replace(AppConstant.ANDROID_TOKEN, preferenceUtil.getStringData(AppConstant.HMS_TOKEN))
+                            .replace(AppConstant.R_HMS_TOKEN, preferenceUtil.getStringData(AppConstant.HMS_TOKEN));
+                }
+            }
+            return url;
+        } catch (Exception ex) {
+            return url;
+        }
+    }
+
+    private static boolean hasContainsKey(String url) {
+        if (url == null || url.isEmpty()) {
+            return false;
+        }
+        Set<String> keys = new HashSet<>(Arrays.asList(AppConstant.ACCOUNT_ID, AppConstant.ANDROID_TOKEN, AppConstant.DEVICE_ID, AppConstant.ANDROID_UUID, AppConstant.R_HMS_TOKEN, AppConstant.R_FCM_TOKEN, AppConstant.ADID, AppConstant.SUBS_YEARS, AppConstant.SUBS_MONTHS, AppConstant.SUBS_DAYS, AppConstant.SUBS_TIMESTAMP));
+        try {
+            for (String key : keys) {
+                if (url.contains(key)) {
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+        return false;
+    }
 
 }
 

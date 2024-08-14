@@ -218,12 +218,12 @@ class NotificationsProcessor {
                             if (payload.getRid() != null && !payload.getRid().isEmpty()) {
                                 preferenceUtil.setIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN, Util.getValidIdForCampaigns(payload));
                             } else {
-                                Log.e("campaign", "rid null or empty!");
+                                Log.d(AppConstant.APP_NAME_TAG, "rid null or empty!");
                             }
                             if (payload.getLink() != null && !payload.getLink().isEmpty()) {
                                 int campaigns = preferenceUtil.getIntData(ShortPayloadConstant.OFFLINE_CAMPAIGN);
                                 if (campaigns == AppConstant.CAMPAIGN_SI || campaigns == AppConstant.CAMPAIGN_SE) {
-                                    Log.e("campaign", "...");
+                                    Log.d(AppConstant.APP_NAME_TAG, "Offline campaign");
                                 } else {
                                     newsHubDBHelper.addNewsHubPayload(payload);
                                 }

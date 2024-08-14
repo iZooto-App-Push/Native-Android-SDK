@@ -17,6 +17,8 @@ import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
+import com.izooto.core.Utilities;
+
 import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,8 +40,7 @@ public class NotificationPreview {
         try {
             final Handler handler = new Handler(Looper.getMainLooper());
             @SuppressLint("LaunchActivityFromNotification") final Runnable notificationRunnable = () -> {
-                if (payload.getTitle().isEmpty())
-                    return;
+                if (payload.getTitle().isEmpty()) return;
 
                 String clickIndex = "0";
                 String impressionIndex = "0";
@@ -50,7 +51,7 @@ public class NotificationPreview {
 
                 try {
                     String data = Util.getIntegerToBinary(payload.getCfg());
-                    if (data != null && !data.isEmpty()) {
+                    if (!Utilities.isNullOrEmpty(data)) {
                         clickIndex = String.valueOf(data.charAt(data.length() - 2));
                         lastclickIndex = String.valueOf(data.charAt(data.length() - 3));
                         lastViewIndex = lastclickIndex;
@@ -84,11 +85,9 @@ public class NotificationPreview {
                     }
                     PendingIntent pendingIntent = null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent,
-                                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                     } else {
-                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent,
-                                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+                        pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                     }
 
                     /*---------------------------collapsed view----------------------- */
@@ -161,16 +160,7 @@ public class NotificationPreview {
                         expandedView.setViewVisibility(R.id.ll_display_time, View.VISIBLE);
                     }
 
-                    notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId)
-                            .setSmallIcon(getDefaultSmallIconId())
-                            .setContentTitle(payload.getTitle())
-                            .setContentText(payload.getMessage())
-                            .setContentIntent(pendingIntent)
-                            .setCustomContentView(collapsedView)
-                            .setCustomBigContentView(expandedView)
-                            .setSubText(payload.getSubTitle())
-                            .setAutoCancel(true);
-
+                    notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId).setSmallIcon(getDefaultSmallIconId()).setContentTitle(payload.getTitle()).setContentText(payload.getMessage()).setContentIntent(pendingIntent).setCustomContentView(collapsedView).setCustomBigContentView(expandedView).setSubText(payload.getSubTitle()).setAutoCancel(true);
 
                     /* show the timer notification functionality */
                     if (payload.getExpiryTimerValue() != null && !payload.getExpiryTimerValue().isEmpty()) {
@@ -340,7 +330,7 @@ public class NotificationPreview {
                         }
                         expandedView.setTextViewText(R.id.tv_btn1, button1.replace("~", ""));
                         String phone = NotificationEventManager.getPhone(payload.getAct1link());
-                        Intent btn1 = cNotificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastclickIndex, notificationId, 1);
+                        Intent btn1 = NotificationEventManager.notificationClick(payload, payload.getAct1link(), payload.getLink(), payload.getAct2link(), phone, clickIndex, lastclickIndex, notificationId, 1);
                         if (btn1 == null) {
                             return;
                         }
@@ -413,9 +403,7 @@ public class NotificationPreview {
             } else {
                 handler.post(notificationRunnable);
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Util.handleExceptionOnce(iZooto.appContext, ex.toString(), "receiveCustomNotification", "NotificationCustomView");
 
         }
@@ -438,79 +426,6 @@ public class NotificationPreview {
             sendIntent.putExtra(Intent.EXTRA_TEXT, "no url found here");
             sendIntent.setType("text/plain");
             return PendingIntent.getActivity(iZooto.appContext, (int) System.currentTimeMillis(), sendIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-    }
-
-    // Notification click intent
-    static Intent cNotificationClick(Payload payload, String getLink, String getLink1, String getLink2, String phone, String finalClickIndex, String lastClick, int notificationId, int button) {
-        String link = getLink;
-        String link1 = getLink1;
-        String link2 = getLink2;
-        try {
-            if (payload.getFetchURL() == null || payload.getFetchURL().isEmpty()) {
-                if (link.contains(AppConstant.ANDROID_TOKEN) || link.contains(AppConstant.DEVICE_ID) || link.contains(AppConstant.ANDROID_UUID) || link.contains(AppConstant.R_HMS_TOKEN) || link.contains(AppConstant.R_FCM_TOKEN)) {
-                    if (Build.MANUFACTURER.equalsIgnoreCase("Huawei")) {
-                        link = link.replace(AppConstant.ANDROID_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.R_HMS_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.R_FCM_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-                    }
-                    if (PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) != null) {
-                        link = link.replace(AppConstant.ANDROID_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN)).replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.R_HMS_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.R_FCM_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-                    }
-                }
-
-                if (link1.contains(AppConstant.ANDROID_TOKEN) || link1.contains(AppConstant.DEVICE_ID) || link.contains(AppConstant.ANDROID_UUID) || link1.contains(AppConstant.R_HMS_TOKEN) || link1.contains(AppConstant.R_FCM_TOKEN)) {
-                    if (Build.MANUFACTURER.equalsIgnoreCase("Huawei")) {
-                        link1 = link1.replace(AppConstant.ANDROID_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.R_HMS_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.R_FCM_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-                    }
-                    if (PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) != null) {
-                        link1 = link1.replace(AppConstant.ANDROID_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN)).replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.R_HMS_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.R_FCM_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-                    }
-                }
-                if (link2.contains(AppConstant.ANDROID_TOKEN) || link2.contains(AppConstant.DEVICE_ID) || link.contains(AppConstant.ANDROID_UUID) || link2.contains(AppConstant.R_HMS_TOKEN) || link2.contains(AppConstant.R_FCM_TOKEN)) {
-                    if (Build.MANUFACTURER.equalsIgnoreCase("Huawei")) {
-                        link2 = link2.replace(AppConstant.ANDROID_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.R_HMS_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.R_FCM_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-                    }
-                    if (PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN) != null) {
-                        link2 = link2.replace(AppConstant.ANDROID_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN)).replace(AppConstant.DEVICE_ID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.ANDROID_UUID, Util.getAndroidId(iZooto.appContext)).replace(AppConstant.R_HMS_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.HMS_TOKEN)).replace(AppConstant.R_FCM_TOKEN, PreferenceUtil.getInstance(iZooto.appContext).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-                    }
-                }
-            }
-
-            Intent intent = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                intent = new Intent(iZooto.appContext, TargetActivity.class);
-            } else {
-                intent = new Intent(iZooto.appContext, NotificationActionReceiver.class);
-            }
-            if (link == null)
-                link = "";
-
-            intent.putExtra(AppConstant.KEY_WEB_URL, link);
-            intent.putExtra(AppConstant.KEY_NOTIFICITON_ID, notificationId);
-            intent.putExtra(AppConstant.KEY_IN_APP, payload.getInapp());
-            intent.putExtra(AppConstant.KEY_IN_CID, payload.getId());
-            intent.putExtra(AppConstant.KEY_IN_RID, payload.getRid());
-            intent.putExtra(AppConstant.KEY_IN_BUTOON, button);
-            intent.putExtra(AppConstant.KEY_IN_ADDITIONALDATA, payload.getAp());
-            intent.putExtra(AppConstant.KEY_IN_PHONE, phone);
-            intent.putExtra(AppConstant.KEY_IN_ACT1ID, payload.getAct1ID());
-            intent.putExtra(AppConstant.KEY_IN_ACT2ID, payload.getAct2ID());
-            intent.putExtra(AppConstant.LANDINGURL, link);
-            intent.putExtra(AppConstant.ACT1TITLE, payload.getAct1name());
-            intent.putExtra(AppConstant.ACT2TITLE, payload.getAct2name());
-            intent.putExtra(AppConstant.ACT1URL, link1);
-            intent.putExtra(AppConstant.ACT2URL, link2);
-            intent.putExtra(AppConstant.CLICKINDEX, finalClickIndex);
-            intent.putExtra(AppConstant.LASTCLICKINDEX, lastClick);
-            intent.putExtra(AppConstant.PUSH, payload.getPush_type());
-            intent.putExtra(AppConstant.CFGFORDOMAIN, payload.getCfg());
-            intent.putExtra(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, payload.getTitle());
-            intent.putExtra(AppConstant.P_MESSAGE, payload.getMessage());
-            intent.putExtra(AppConstant.P_BANNER_IMAGE, payload.getBanner());
-            return intent;
-
-        } catch (Exception e) {
-            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationClick", "notificationClick");
-            return null;
         }
     }
 

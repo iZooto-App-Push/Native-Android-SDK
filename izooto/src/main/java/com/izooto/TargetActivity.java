@@ -16,6 +16,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.izooto.core.Utilities;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +56,7 @@ public class TargetActivity extends Activity {
     private static String notificationTitle;
     private static String notificationMessage = "";
     private static String notificationBannerImage = "";
+    private static String lnKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +68,7 @@ public class TargetActivity extends Activity {
             String GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE = "15";
             Intent it = new Intent(GLOBAL_ACTION_DISMISS_NOTIFICATION_SHADE);
             context.sendBroadcast(it);
-            getBundleData(context, intent);
-            if (mUrl != null) {
-                mUrl.replace(AppConstant.BROWSERKEYID, PreferenceUtil.getInstance(context).getStringData(AppConstant.FCM_DEVICE_TOKEN));
-            }
-            getBundleData(context, intent);
+
             try {
                 final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                 if (clickIndex.equalsIgnoreCase("1")) {
@@ -87,7 +86,7 @@ public class TargetActivity extends Activity {
                     String lastEighthIndex;
                     String lastTenthIndex;
                     String dataInBinary = Util.getIntegerToBinary(cfg);
-                    if (dataInBinary != null && !dataInBinary.isEmpty()) {
+                    if (!Utilities.isNullOrEmpty(dataInBinary)) {
                         lastEighthIndex = String.valueOf(dataInBinary.charAt(dataInBinary.length() - 8));
                         lastTenthIndex = String.valueOf(dataInBinary.charAt(dataInBinary.length() - 10));
                     } else {
@@ -104,8 +103,7 @@ public class TargetActivity extends Activity {
 
                         if (dataCfg > 0) {
                             lciURL = "https://lci" + dataCfg + ".izooto.com/lci" + dataCfg;
-                        } else
-                            lciURL = RestClient.LAST_NOTIFICATION_CLICK_URL;
+                        } else lciURL = RestClient.LAST_NOTIFICATION_CLICK_URL;
                         if (lastEighthIndex.equalsIgnoreCase("1")) {
 
                             if (lastTenthIndex.equalsIgnoreCase("1")) {
@@ -165,7 +163,7 @@ public class TargetActivity extends Activity {
                     hashMap.put(AppConstant.BUTTON_TITLE_1, btn1Title);
                     hashMap.put(AppConstant.BUTTON_URL_1, act1URL);
                     hashMap.put(AppConstant.ADDITIONAL_DATA, additionalData);
-                    hashMap.put(AppConstant.LANDING_URL, landingURL);
+                    hashMap.put(AppConstant.LANDING_URL, lnKey);
                     hashMap.put(AppConstant.BUTTON_ID_2, act2ID);
                     hashMap.put(AppConstant.BUTTON_TITLE_2, btn2Title);
                     hashMap.put(AppConstant.BUTTON_URL_2, act2URL);
@@ -180,6 +178,7 @@ public class TargetActivity extends Activity {
                     JSONObject pulseObject = new JSONObject(pulseMap);
 
                     JSONObject jsonObject = new JSONObject(hashMap);
+
                     if (!preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                         iZooto.notificationActionHandler(jsonObject.toString(), pulseObject.toString(), Util.isPulseDeepLink(cfg));
                         this.finish();
@@ -401,11 +400,11 @@ public class TargetActivity extends Activity {
                 notificationMessage = tempBundle.getString(AppConstant.P_MESSAGE);
             if (tempBundle.containsKey(AppConstant.P_BANNER_IMAGE))
                 notificationBannerImage = tempBundle.getString(AppConstant.P_BANNER_IMAGE);
-
+            if (tempBundle.containsKey(AppConstant.KEY_LN))
+                lnKey = tempBundle.getString(AppConstant.KEY_LN);
 
             if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
-                NotificationManager notificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
                 notificationID = tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID);
             }
@@ -417,8 +416,7 @@ public class TargetActivity extends Activity {
     }
 
     static void notificationClickAPI(Context context, String clkURL, String cid, String rid, int btnCount, int i, String pushType) {
-        if (context == null)
-            return;
+        if (context == null) return;
         try {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.submit(new Runnable() {
@@ -437,8 +435,7 @@ public class TargetActivity extends Activity {
                     mapData.put(AppConstant.IZ_DEEPLINK_URL, additionalData);
                     mapData.put(AppConstant.IZ_NOTIFICATION_TITLE_KEY_NAME, notificationTitle);
 
-                    if (btnCount != 0)
-                        mapData.put("btn", "" + btnCount);
+                    if (btnCount != 0) mapData.put("btn", "" + btnCount);
 
                     DebugFileManager.createExternalStoragePublic(iZooto.appContext, mapData.toString(), "clickData");
                     RestClient.postRequest(clkURL, mapData, null, new RestClient.ResponseHandler() {
@@ -483,15 +480,13 @@ public class TargetActivity extends Activity {
     }
 
     static void lastClickAPI(Context context, String lciURL, String rid, int i) {
-        if (context == null)
-            return;
+        if (context == null) return;
 
         try {
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             executorService.submit(new Runnable() {
                 @Override
                 public void run() {
-
                     final PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
                     preferenceUtil.setStringData(AppConstant.CURRENT_DATE_CLICK, Util.getTime());
                     HashMap<String, Object> data = new HashMap<>();
