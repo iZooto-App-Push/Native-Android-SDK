@@ -1,27 +1,31 @@
-ext {
-    var = '3.4.1'
-}// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
     ext {
-        kotlin_version = '2.0.0'
+        buildVersions = [
+                compileSdk: 34,
+                targetSdkVersion: 33
+        ]
+        androidGradlePluginVersion = '7.3.0'
+        googleServicesGradlePluginVersion = '4.3.15'
+        huaweiAgconnectVersion = '1.6.3.300'
+        huaweiHMSPushVersion = '6.7.0.300'
+        googleAdVersion = '18.0.1'
+        ktlintVersion = '11.0.0'
+        detektVersion = '1.21.0'
     }
+
     repositories {
         google()
         mavenCentral()
         maven {url 'https://developer.huawei.com/repo/'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
-        classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'com.huawei.agconnect:agcp:1.6.3.300'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-
+        classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
+        classpath "com.google.gms:google-services:$googleServicesGradlePluginVersion"
+        classpath "com.huawei.agconnect:agcp:$huaweiAgconnectVersion"
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0'
     }
 }
-
 allprojects {
     repositories {
         google()
@@ -34,8 +38,7 @@ allprojects {
         maven { url "https://raw.github.com/synergian/wagon-git/releases"}
     }
 }
-
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
 

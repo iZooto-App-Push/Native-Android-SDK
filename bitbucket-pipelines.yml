@@ -1,0 +1,120 @@
+image: androidsdk/android-30
+
+
+###definitions:
+###    steps:    
+###    - step: &push-to-github-izooto
+###        name: Sync to target repository
+###        image: atlassian/default-image:4
+###        script:
+###          - |
+###              importPipelineModules(){
+###                      BITBUCKET_REPO_NAME=$(echo $BITBUCKET_REPO_FULL_NAME|awk -F '/' '{print $2}')
+###                      git clone --single-branch -b master --depth 1 --sparse "$PIPELINE_REPOSITORY_URL"
+###                      cd $PIPELINE_REPOSITORY_DIR
+###                      git sparse-checkout add pipeline/$BITBUCKET_REPO_NAME pipeline/common
+###                      chmod -R 755 pipeline && ls -lthr pipeline/
+###                      mkdir -p $BITBUCKET_CLONE_DIR/dist
+###                      cp -r pipeline $BITBUCKET_CLONE_DIR/dist/.
+###                      ./"$CHECK_VALIDATION"
+###                  }
+###                  importPipelineModules
+###          - echo "Setting up SSH keys"
+###          - mkdir -p ~/.ssh
+###          - echo $SSH_KEY | base64 --decode > ~/.ssh/id_rsa
+###          - chmod 400 ~/.ssh/id_rsa
+###          - echo "Cloning target repository"
+###          - git clone --single-branch -b master --depth 1 git@bitbucket.org:izooto/android-x.git target-repo
+###          - ls -lthra target-repo
+###          - pwd 
+###          - echo "Syncing changes"
+###          - apt update -y
+###          - apt install rsync -y
+###          - rsync -av --exclude='.git' target-repo/ final-repo
+###          - ls -lthra final-repo
+###          - git clone --single-branch -b master --depth 1 git@github.com:iZooto-App-Push/syncsdk.git
+###          - rsync -av --exclude='.git' final-repo/ syncsdk/
+###          - cd syncsdk/
+###          - pwd          
+###          - git config --global user.name github
+###          - git config --global user.email github@datability.co
+###          - git add .
+###          - git commit -m "sending code to github master branch build number - $BITBUCKET_BUILD_NUMBER"
+###          - git push origin master
+###
+
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: Android Debug Application
+            caches:
+              - gradle
+            script:
+              - ./gradlew assembleDebug
+            artifacts:
+              - app/build/outputs/**
+
+        - step:
+            name: App Unit Test
+            caches:
+              - gradle
+            script:
+              - ./gradlew :app:testDebugUnitTest
+        - step:
+            name: AAR File Creation
+            caches:
+              - gradle
+            script:
+              -  ./gradlew assemble
+            artifacts:
+              - izooto/build/outputs/aar/izooto-release.aar
+        - step: 
+            name: Sync to Github repository
+            image: atlassian/default-image:4
+            trigger: manual
+            script:
+              - |
+                  importPipelineModules(){
+                          BITBUCKET_REPO_NAME=$(echo $BITBUCKET_REPO_FULL_NAME|awk -F '/' '{print $2}')
+                          git clone --single-branch -b master --depth 1 --sparse "$PIPELINE_REPOSITORY_URL"
+                          cd $PIPELINE_REPOSITORY_DIR
+                          git sparse-checkout add pipeline/$BITBUCKET_REPO_NAME pipeline/common
+                          chmod -R 755 pipeline && ls -lthr pipeline/
+                          mkdir -p $BITBUCKET_CLONE_DIR/dist
+                          cp -r pipeline $BITBUCKET_CLONE_DIR/dist/.
+                          ./"$CHECK_VALIDATION"
+                      }
+                      importPipelineModules
+              - echo "Setting up SSH keys"
+              - mkdir -p ~/.ssh
+              - echo $SSH_KEY | base64 --decode > ~/.ssh/id_rsa
+              - chmod 400 ~/.ssh/id_rsa
+              - echo "Cloning target repository"
+              - git clone --single-branch -b master --depth 1 git@bitbucket.org:izooto/android-x.git target-repo
+              - ls -lthra target-repo
+              - pwd 
+              - echo "Syncing changes"
+              - apt update -y
+              - apt install rsync -y
+              - rsync -av --exclude='.git' target-repo/ final-repo
+              - ls -lthra final-repo
+              - git clone --single-branch -b master --depth 1 git@github.com:iZooto-App-Push/Native-Android-SDK.git
+              - rsync -av --exclude='.git' final-repo/ Native-Android-SDK/
+              - cd Native-Android-SDK/
+              - pwd          
+              - git config --global user.name github
+              - git config --global user.email github@datability.co
+              - |
+                    status_output=$(git status)
+
+                    if [[ "$status_output" == *"Your branch is up to date"* && "$status_output" == *"nothing to commit, working tree clean"* ]]; then
+                        echo "Skipping: No changes to commit."
+                    else
+                        git add .
+                        git commit -m "sending code to github master branch build number - $BITBUCKET_BUILD_NUMBER"
+                        git push origin master
+                    fi
+            
+           

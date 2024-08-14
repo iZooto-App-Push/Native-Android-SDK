@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/maiLayout">
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="@dimen/margin_10dp"
+        android:textOff="off"
+        android:textOn="on"
+        android:checked="true"
+        android:thumb="@drawable/thumb"
+        app:showText="true"
+        app:track="@drawable/track" />
 
-    <RelativeLayout
-        android:id="@+id/containers"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
     <Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:gravity="center"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:text="@string/app_name"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:textColor="@android:color/black"
         android:layout_height="wrap_content"
-        />
+        android:text="@string/secondActivity" />
+
 
 </RelativeLayout>

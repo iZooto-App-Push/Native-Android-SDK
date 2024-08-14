@@ -1,5 +1,17 @@
 <resources>
-    <string name="app_name">IZooToTest</string>
-    <string name="action_settings">Settings</string>
-    <string name="message">Push  Notification Services</string>
+    <string name="app_name" translatable="false">Android-X</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="message" translatable="false">iZooto Notification Services</string>
+
+    <string name="next" translatable="false">Next</string>
+    <string name="back" translatable="false">Previous</string>
+    <string name="izooto_notification_accent_color" translatable="false">#F8E32B</string>
+    <string name="secondActivity" translatable="false">iZooto Second Activity</string>
+    <string name="ThirdActivity" translatable="false">iZooto Third Activity</string>
+    <string name="FourthActivity" translatable="false">iZooto Fourth Activity</string>
+
+    <string name="navigation_drawer_open" translatable="false">Open drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close drawer</string>
+    <string name="barbados_" translatable="false">Several changes took place in our National Flag since its first inception. Through several vicissitudes, our National Flag evolution sailed to arrive at what it today is. We can say that it reflects the political developments in the nation.</string>
+    <string name="bangladesh_" translatable="false">Bangladesh, to the east of India on the Bay of Bengal, is a South Asian country marked by lush greenery and many waterways.</string>
 </resources>

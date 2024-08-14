@@ -1,25 +1,39 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdk 34
     namespace "com.app.izoototest"
+
+    compileSdk 34
+
     defaultConfig {
         minSdkVersion 21
+        //noinspection OldTargetApi
         targetSdkVersion 33
-        versionCode 14
-        versionName "1.4.3"
+        versionCode 13
+        versionName "1.2.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [
-                izooto_app_id: "aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"// "794f882d998a83f8afa26d96c8e254f74625e4af"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
-        ]
         multiDexEnabled true
+
+        manifestPlaceholders = [
+                izooto_app_id: "aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640"
+        ]
+
     }
+
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro',
-                    'proguard/public.txt', 'proguard/protected.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        //noinspection GradleCompatible
+        implementation 'com.android.support:appcompat-v7:28.0.0'
+        //noinspection GradleCompatible
+        implementation 'com.android.support:design:28.0.0'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -27,20 +41,17 @@ android {
     }
 }
 dependencies {
-    implementation project(path:':izooto')
+    implementation project(path: ':izooto')
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation  'com.google.firebase:firebase-messaging:23.1.2'
-    implementation 'com.google.android.material:material:1.6.0'
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation('com.github.bumptech.glide:glide:4.16.0')
-    implementation('androidx.browser:browser:1.2.0')
-   // implementation("androidx.credentials:credentials:1.2.2")
-   // implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
-   // implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
-    implementation("androidx.work:work-runtime:2.8.1")
+    implementation 'androidx.browser:browser:1.8.0'
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation("androidx.credentials:credentials:1.2.2")
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.0")
     implementation ('com.comscore:android-analytics:6.11.1')
     implementation ('com.google.android.gms:play-services-appset:16.1.0')
-
 }
-apply plugin: 'com.google.gms.google-services'
