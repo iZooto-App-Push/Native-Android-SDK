@@ -32,6 +32,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -93,6 +94,12 @@ public class iZooto {
     private static String pw_Cid = "";
     private static String pw_Hash = "";
     private static String feedSrc = "";
+    private static String pulseTitle = "";
+    private static String titleColor = "";
+    private static int titleSize;
+    private static String titlePosition = "left";
+    private static int titleMargin;
+    private static String titleEnable;
 
     static boolean isInitCompleted() {
         return initCompleted;
@@ -194,7 +201,6 @@ public class iZooto {
             String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
             boolean isPrompt = jsonObject.optBoolean(AppConstant.PROMPT_ENABLE);
             preferenceUtil.setBooleanData(AppConstant.PROMPT_ENABLE, isPrompt);
-
             try {
                 if (!preferenceUtil.getBoolean(AppConstant.CHECK_SUBSCRIPTION) && preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
                     setSubscription(true);
@@ -206,8 +212,10 @@ public class iZooto {
             } catch (Exception e) {
                 Log.e(APP_NAME_TAG, e.toString());
             }
+
             checkAndExecuteOneTapRecord(context, preferenceUtil);
             checkAndExecutePulse(context, preferenceUtil, jsonObject);
+
             try {
                 String csId = jsonObject.optString(AppConstant.CAM_SCORE_ID);
                 if (!Utilities.isNullOrEmpty(csId)) {
@@ -216,6 +224,7 @@ public class iZooto {
             } catch (Exception ex) {
                 Log.e(AppConstant.APP_NAME_TAG, ex.toString());
             }
+
             try {
                 int brand_key = jsonObject.optInt(AppConstant.NEWS_HUB_B_KEY);
                 preferenceUtil.setIntData(AppConstant.NEWS_HUB_B_KEY, brand_key);
@@ -226,6 +235,7 @@ public class iZooto {
             if (!preferenceUtil.getBoolean(AppConstant.SET_JSON_NEWS_HUB)) {
                 fetchNewsHubData(context, newsHub);
             }
+
             try {
                 if (preferenceUtil.getStringData(AppConstant.ADVERTISING_ID).isEmpty()) {
                     trackAdvertisingId();
@@ -288,6 +298,22 @@ public class iZooto {
             iZooto.feedSrc = PulseURLManager.encodeFeedSource(feedSrc);
             String ads = pulseObject.optString(AppConstant.PW_ADS);
             String url = pulseObject.optString(AppConstant.PW_URL);
+            JSONObject labelObject = pulseObject.optJSONObject("label");
+            if (labelObject != null && labelObject.length() > 0) {
+                iZooto.pulseTitle = labelObject.optString("title", "Latest News");  // !=null ? labelObject.optString("title") : "Latest News";
+                iZooto.titleSize = labelObject.optInt("size", 14); // Provide a default value of 0 if not present
+                iZooto.titlePosition = labelObject.optString("position", "left");
+                iZooto.titleMargin = labelObject.optInt("margin", 10);
+                iZooto.titleEnable = labelObject.optString("status", "0");
+                iZooto.titleColor = labelObject.optString("color", "#000000");// != null ? labelObject.optString("color") : "#000000";
+            } else {
+                iZooto.pulseTitle = "Latest News";
+                iZooto.titleSize = 14;
+                iZooto.titleColor = "#000000";
+                iZooto.titlePosition = "left";
+                iZooto.titleMargin = 10;
+                iZooto.titleEnable = "0";
+            }
             if (Utilities.isNullOrEmpty(url)) {
                 Log.d(APP_NAME_TAG, "Missing pulse URL");
                 return;
@@ -1369,6 +1395,7 @@ public class iZooto {
                     payload.setIcon(payloadObj.optString(ShortPayloadConstant.ICON).replace("['", "").replace("']", ""));
                     payload.setReqInt(payloadObj.optInt(ShortPayloadConstant.REQINT));
                     payload.setTag(payloadObj.optString(ShortPayloadConstant.TAG));
+                    payload.setTl(payloadObj.optString(ShortPayloadConstant.TIME_TO_LIVE));
                     payload.setBanner(payloadObj.optString(ShortPayloadConstant.BANNER).replace("['", "").replace("']", ""));
                     payload.setAct_num(payloadObj.optInt(ShortPayloadConstant.ACTNUM));
                     payload.setBadgeicon(payloadObj.optString(ShortPayloadConstant.BADGE_ICON).replace("['", "").replace("']", ""));
@@ -2762,17 +2789,19 @@ public class iZooto {
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 try {
                     String status = preferenceUtil.getStringData(AppConstant.PW_STATUS);
-                    if (!Utilities.hasUserPid(context) || Utilities.isNullOrEmpty(iZooto.pw_Url) || !status.equals("1")) {
+                    String pURL = iZooto.pw_Url;
+                    if (!Utilities.hasUserPid(context) || Utilities.isNullOrEmpty(pURL) || !status.equals("1")) {
                         return;
                     }
 
                     if (!Utilities.isNullOrEmpty(PulseURLManager.encodedURL)) {
-                        iZooto.pw_Url = iZooto.pw_Url + "&article=" + PulseURLManager.encodedURL;
+                        pURL = pURL + "&article=" + PulseURLManager.encodedURL;
                     }
 
+                    pURL = pURL + "&df=0";
                     PWInterface pwInterface = PulseManager.INSTANCE.getInstance();
-                    pwInterface.addConfiguration(context, iZooto.pw_Url + "&df=0");
-                    pwInterface.createWebView(layout, shouldShowProgressBar);
+                    pwInterface.addConfiguration(context, pURL);
+                    pwInterface.createWebView(layout, shouldShowProgressBar, iZooto.pulseTitle, iZooto.titleEnable, iZooto.titleColor, iZooto.titleMargin, iZooto.titleSize, iZooto.titlePosition, pURL);
                     registerPulseActivityName(context);
 
                 } catch (Exception e) {
@@ -2785,8 +2814,8 @@ public class iZooto {
     }
 
     // overloading the pulse feature
-    public static void enablePulse(Context context, LinearLayout layout, Boolean shouldShowProgressBar) {
-        if (context == null || layout == null) {
+    public static void enablePulse(Context context, ScrollView scrollViewId, LinearLayout layout, Boolean shouldShowProgressBar) {
+        if (context == null && layout == null && scrollViewId == null) {
             Log.i(APP_NAME_TAG, "Cannot proceed: Context or layout is null");
             return;
         }
@@ -2796,17 +2825,19 @@ public class iZooto {
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 try {
                     String status = preferenceUtil.getStringData(AppConstant.PW_STATUS);
-                    if (!Utilities.hasUserPid(context) || Utilities.isNullOrEmpty(iZooto.pw_Url) || !status.equals("1")) {
+                    String pURL = iZooto.pw_Url;
+                    if (!Utilities.hasUserPid(context) || Utilities.isNullOrEmpty(pURL) || !status.equals("1")) {
                         return;
                     }
 
                     if (!Utilities.isNullOrEmpty(PulseURLManager.encodedURL)) {
-                        iZooto.pw_Url = iZooto.pw_Url + "&article=" + PulseURLManager.encodedURL;
+                        pURL = pURL + "&article=" + PulseURLManager.encodedURL;
                     }
 
+                    pURL = pURL + "&df=1";
                     PWInterface pwInterface = PulseManager.INSTANCE.getInstance();
-                    pwInterface.addConfiguration(context, iZooto.pw_Url+"&df=1");
-                    pwInterface.createWebView(layout, shouldShowProgressBar);
+                    pwInterface.addConfiguration(context, pURL);
+                    pwInterface.createWebView(scrollViewId, layout, shouldShowProgressBar, iZooto.pulseTitle, iZooto.titleEnable, iZooto.titleColor, iZooto.titleMargin, iZooto.titleSize, iZooto.titlePosition, pURL);
                     registerPulseActivityName(context);
 
                 } catch (Exception e) {

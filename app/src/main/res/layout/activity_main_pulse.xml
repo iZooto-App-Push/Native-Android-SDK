@@ -34,29 +34,29 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/iz_scrollView"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:id="@+id/iz_scrollView"-->
+<!--        android:visibility="visible"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-        <LinearLayout
-            android:id="@+id/innerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/innerLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
 
-            <WebView
-                android:id="@+id/webLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+<!--            <WebView-->
+<!--                android:id="@+id/webLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
 
-            </WebView>
+<!--            </WebView>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
-    </androidx.core.widget.NestedScrollView>
+<!--    </androidx.core.widget.NestedScrollView>-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

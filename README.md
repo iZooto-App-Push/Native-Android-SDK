@@ -24,7 +24,7 @@ android {
 ```
 ```groovy
     dependencies {
-    implementation 'com.izooto:android-sdk:2.6.2'
+    implementation 'com.izooto:android-sdk:2.6.4'
     implementation("androidx.work:work-runtime:2.9.0")
     }
 ```
@@ -37,7 +37,7 @@ Add the Firebase Messaging library and Android Support Library v4 as dependencie
 
 ```groovy
      dependencies {
-         implementation 'com.izooto:android-sdk:2.6.2'
+         implementation 'com.izooto:android-sdk:2.6.4'
          implementation("androidx.work:work-runtime:2.9.0")
          implementation "com.google.firebase:firebase-messaging:23.0.6"
      }
@@ -75,11 +75,6 @@ Once you've updated your module `build.gradle` file, make sure you have specifie
 ## 📲  iZooto FCM Push SDK
 
 Please refer to iZooto's [Android Native SDK Setup](https://help.izooto.com/docs/android-sdk-setup-1) page for step-by-step instructions on how to install the plugin.
-
-
-##  📲  iZooto Xiaomi Push SDK
-
-iZooto Xiaomi Push SDK provides an out of the box service to use the Xiaomi Push SDK. Find the integration steps for the iZooto Xiaomi Push SDK [Xiaomi Push Integration](https://help.izooto.com/docs/power-push-setting-up-xiaomi-cloud-push)
 
 ##  📲 iZooto Huawei Push SDK
 

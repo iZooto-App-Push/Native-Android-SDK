@@ -2,34 +2,47 @@ package com.izooto.feature.pulseweb
 
 import android.content.Context
 import android.content.res.Resources
-import android.util.Log
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import android.widget.LinearLayout
+import android.widget.ScrollView
+import androidx.cardview.widget.CardView
 import com.izooto.AppConstant
 import com.izooto.PreferenceUtil
 import com.izooto.Util
-import kotlin.concurrent.thread
 
-
-internal class PulseJsInterface(private val context: Context?, val webView: WebView) {
+internal class PulseJsInterface(
+    private val context: Context?,
+    private val webView: WebView?,
+    private val cardLayout: CardView?,
+    private val scrollView: ScrollView?
+) {
     @JavascriptInterface
     fun onButtonClick(clickURL: String?, data: Int) {
-        if (context == null || clickURL.isNullOrEmpty()) {
+        if (context == null || webView == null || clickURL.isNullOrEmpty()) {
             return
         }
-        if(data == 0) {
+        if (data == 0) {
             try {
                 val displayMetrics = Resources.getSystem().displayMetrics
                 val heightPixels = displayMetrics.heightPixels
                 val preferenceUtil = PreferenceUtil.getInstance(context)
                 preferenceUtil.setBooleanData(AppConstant.PW_EVENTS, false)
+
                 webView.post {
-                    val layoutParams = webView.layoutParams as LinearLayout.LayoutParams
-                    layoutParams.height =
-                        heightPixels // or ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, etc.
-                    webView.layoutParams = layoutParams
+                    try {
+                        val layoutParams = webView.layoutParams as ViewGroup.LayoutParams
+                        layoutParams.height =
+                            heightPixels // or ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, etc.
+                        webView.layoutParams = layoutParams
+                    } catch (ex: Exception) {
+                        Util.handleExceptionOnce(
+                            context,
+                            ex.toString(),
+                            "PulseJsInterface",
+                            "onButtonClick-webView"
+                        )
+                    }
                 }
             } catch (ex: Exception) {
                 Util.handleExceptionOnce(
@@ -40,32 +53,39 @@ internal class PulseJsInterface(private val context: Context?, val webView: WebV
                 )
             }
         }
-
     }
+
     @JavascriptInterface
-    fun onClicked()
-    {
+    fun onClicked() {
+        if (context == null || webView == null || cardLayout == null || scrollView == null) {
+            return
+        }
+
         try {
-            thread {
-                webView.post {
-                    val layoutParams = webView.layoutParams as LinearLayout.LayoutParams
-                    layoutParams.height = 0
-                    webView.layoutParams = layoutParams
+            val preferenceUtil = PreferenceUtil.getInstance(context)
+            scrollView.scrollTo(0, preferenceUtil.getIntData("scrollEvents"))
+            cardLayout.post {
+                try {
+                    val layoutParams = cardLayout.layoutParams as ViewGroup.LayoutParams
+                    layoutParams.height =
+                        ViewGroup.LayoutParams.WRAP_CONTENT // or another valid size
+                    cardLayout.layoutParams = layoutParams
+                } catch (e: Exception) {
+                    Util.handleExceptionOnce(
+                        context,
+                        e.toString(),
+                        "PulseJsInterface",
+                        "onClicked-cardLayout"
+                    )
                 }
             }
-
-            Thread.sleep(50)
-            webView.post {
-                val layoutParams = webView.layoutParams as LinearLayout.LayoutParams
-                layoutParams.height =
-                    ViewGroup.LayoutParams.WRAP_CONTENT // or ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, etc.
-                webView.layoutParams = layoutParams
-            }
-
-        }
-        catch (ex: Exception) {
-            Util.handleExceptionOnce(context, ex.toString(), "PulseJsInterface", "onButtonClick")
-
+        } catch (e: Exception) {
+            Util.handleExceptionOnce(
+                context,
+                e.toString(),
+                "PulseJsInterface",
+                "onClicked"
+            )
         }
     }
 

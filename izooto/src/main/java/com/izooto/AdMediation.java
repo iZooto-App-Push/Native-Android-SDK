@@ -92,6 +92,7 @@ public class AdMediation {
                         payload.setIcon(payloadObj.optString(ShortPayloadConstant.ICON).replace("['", "").replace("']", ""));
                         payload.setReqInt(payloadObj.optInt(ShortPayloadConstant.REQINT));
                         payload.setTag(payloadObj.optString(ShortPayloadConstant.TAG));
+                        payload.setTl(payloadObj.optString(ShortPayloadConstant.TIME_TO_LIVE));
                         payload.setFloorPrice(payloadObj.optString(ShortPayloadConstant.FLOOR_PRICE).replace("~", ""));
                         payload.setBanner(payloadObj.optString(ShortPayloadConstant.BANNER).replace("['", "").replace("']", ""));
                         payload.setBadgeicon(payloadObj.optString(ShortPayloadConstant.BADGE_ICON).replace("['", "").replace("']", ""));

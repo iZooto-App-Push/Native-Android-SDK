@@ -90,6 +90,15 @@ public class Payload {
     private String mediaContentUrl;
     private String category;
     private boolean isLike;
+    String tl;
+
+    public String getTl() {
+        return tl;
+    }
+
+    public void setTl(String tl) {
+        this.tl = tl;
+    }
 
     public Bitmap getIconBitmap() {
         return iconBitmap;

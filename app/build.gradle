@@ -16,7 +16,7 @@ android {
         multiDexEnabled true
 
         manifestPlaceholders = [
-                izooto_app_id: "aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"//"aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640"
+                izooto_app_id: "aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
         ]
 
     }

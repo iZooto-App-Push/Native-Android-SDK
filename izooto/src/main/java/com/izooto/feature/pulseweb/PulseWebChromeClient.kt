@@ -1,7 +1,6 @@
 package com.izooto.feature.pulseweb
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.webkit.ConsoleMessage
 import android.webkit.WebChromeClient

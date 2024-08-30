@@ -9,6 +9,7 @@ import android.widget.ScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.izooto.OneTapCallback;
 import com.izooto.iZooto;
@@ -23,15 +24,23 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_TOGGLE_STATE = "toggle_state";
     private LinearLayout mainView;
     private ScrollView view;
+    private ScrollView scrollViewId;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mainView=findViewById(R.id.mainView);
 
+        // pulse web feature with scrollview & linear layout
+//        setContentView(R.layout.activity_main);
+//        scrollViewId=findViewById(R.id.scrollViewId);
+//        mainView=findViewById(R.id.mainView);
+//        iZooto.enablePulse(this,scrollViewId,mainView,true);
 
-        iZooto.enablePulse(this,mainView,true);
+        // pulse web feature with coordinate layout
+        setContentView(R.layout.activity_main_pulse);
+        coordinatorLayout = findViewById(R.id.coordinator);
+        iZooto.enablePulse(this,coordinatorLayout,true);
 
 //        iZooto.requestOneTapActivity(this, new OneTapCallback() {
 //            @Override
