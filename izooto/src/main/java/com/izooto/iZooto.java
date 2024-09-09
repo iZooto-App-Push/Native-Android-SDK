@@ -27,7 +27,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -100,6 +99,7 @@ public class iZooto {
     private static String titlePosition = "left";
     private static int titleMargin;
     private static String titleEnable;
+    static String pulseHeader = "";
 
     static boolean isInitCompleted() {
         return initCompleted;
@@ -201,6 +201,7 @@ public class iZooto {
             String newsHub = jsonObject.optString(AppConstant.JSON_NEWS_HUB);
             boolean isPrompt = jsonObject.optBoolean(AppConstant.PROMPT_ENABLE);
             preferenceUtil.setBooleanData(AppConstant.PROMPT_ENABLE, isPrompt);
+
             try {
                 if (!preferenceUtil.getBoolean(AppConstant.CHECK_SUBSCRIPTION) && preferenceUtil.getEnableState(AppConstant.NOTIFICATION_ENABLE_DISABLE)) {
                     setSubscription(true);
@@ -298,6 +299,7 @@ public class iZooto {
             iZooto.feedSrc = PulseURLManager.encodeFeedSource(feedSrc);
             String ads = pulseObject.optString(AppConstant.PW_ADS);
             String url = pulseObject.optString(AppConstant.PW_URL);
+            iZooto.pulseHeader = pulseObject.optString(AppConstant.PULSE_HEADER);
             JSONObject labelObject = pulseObject.optJSONObject("label");
             if (labelObject != null && labelObject.length() > 0) {
                 iZooto.pulseTitle = labelObject.optString("title", "Latest News");  // !=null ? labelObject.optString("title") : "Latest News";
@@ -319,9 +321,9 @@ public class iZooto {
                 return;
             }
             if (url.contains("?")) {
-                iZooto.pw_Url = url + "&pid=" + Util.getPid(context) + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" + iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" + iZooto.pw_Hash + "&feedSrc=" + iZooto.feedSrc + "&ads=" + ads;
+                iZooto.pw_Url = url + "&pid=" + Util.getPid(context) + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" + iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" + iZooto.pw_Hash + "&feedSrc=" + iZooto.feedSrc + "&ads="+ads+ "&sth="+ iZooto.pulseHeader;
             } else {
-                iZooto.pw_Url = url + "?pid=" + Util.getPid(context) + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" + iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" + iZooto.pw_Hash + "&feedSrc=" + iZooto.feedSrc + "&ads=" + ads;
+                iZooto.pw_Url = url + "?pid=" + Util.getPid(context) + "&bKey=" + Util.getAndroidId(appContext) + "&cid=" + iZooto.pw_Cid + "&rid=" + iZooto.pw_Rid + "&rfiIdHash=" + iZooto.pw_Hash + "&feedSrc=" + iZooto.feedSrc + "&ads="+ads+ "&sth="+ iZooto.pulseHeader;
             }
         } catch (Exception ex) {
             Util.handleExceptionOnce(context, ex.toString(), AppConstant.APP_NAME_TAG, "initializePulse");
@@ -2798,10 +2800,9 @@ public class iZooto {
                         pURL = pURL + "&article=" + PulseURLManager.encodedURL;
                     }
 
-                    pURL = pURL + "&df=0";
                     PWInterface pwInterface = PulseManager.INSTANCE.getInstance();
                     pwInterface.addConfiguration(context, pURL);
-                    pwInterface.createWebView(layout, shouldShowProgressBar, iZooto.pulseTitle, iZooto.titleEnable, iZooto.titleColor, iZooto.titleMargin, iZooto.titleSize, iZooto.titlePosition, pURL);
+                    pwInterface.createWebView(layout, shouldShowProgressBar, iZooto.pulseTitle, iZooto.titleEnable, iZooto.titleColor, iZooto.titleMargin, iZooto.titleSize, iZooto.titlePosition, pURL + "&df=0");
                     registerPulseActivityName(context);
 
                 } catch (Exception e) {
@@ -2833,11 +2834,9 @@ public class iZooto {
                     if (!Utilities.isNullOrEmpty(PulseURLManager.encodedURL)) {
                         pURL = pURL + "&article=" + PulseURLManager.encodedURL;
                     }
-
-                    pURL = pURL + "&df=1";
                     PWInterface pwInterface = PulseManager.INSTANCE.getInstance();
                     pwInterface.addConfiguration(context, pURL);
-                    pwInterface.createWebView(scrollViewId, layout, shouldShowProgressBar, iZooto.pulseTitle, iZooto.titleEnable, iZooto.titleColor, iZooto.titleMargin, iZooto.titleSize, iZooto.titlePosition, pURL);
+                    pwInterface.createWebView(scrollViewId, layout, shouldShowProgressBar, iZooto.pulseTitle, iZooto.titleEnable, iZooto.titleColor, iZooto.titleMargin, iZooto.titleSize, iZooto.titlePosition, pURL + "&df=1");
                     registerPulseActivityName(context);
 
                 } catch (Exception e) {

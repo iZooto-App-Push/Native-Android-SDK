@@ -180,7 +180,7 @@ public interface AppConstant {
     String IS_HYBRID_SDK = "hybrid";
     String CURRENT_DATE_VIEW = "currentDateView";
     String CURRENT_DATE_CLICK = "currentDateClick";
-    String SDKVERSION = "2.6.4";
+    String SDKVERSION = "2.6.5";
     String QSDK_VERSION = "av";
     String SDK = "SDKVERSION";
     String AD_NETWORK = "an";
@@ -398,7 +398,7 @@ public interface AppConstant {
     String SUBS_MONTHS = "{~SUBAGEM~}";
     String SUBS_DAYS = "{~SUBAGED~}";
     String SUBS_TIMESTAMP = "{~SUBUTS~}";
-
+    String PULSE_HEADER = "sth";
 }
 
 

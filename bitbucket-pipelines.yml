@@ -113,7 +113,7 @@ pipelines:
                         echo "Skipping: No changes to commit."
                     else
                         git add .
-                        git commit -m "sending code to github master branch build number - $BITBUCKET_BUILD_NUMBER"
+                        git commit -m "SDK -Release -2.6.5 Bug Fixed"
                         git push origin master
                     fi
             

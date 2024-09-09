@@ -1,22 +1,23 @@
 package com.app.izoototest;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import com.izooto.OneTapCallback;
 import com.izooto.iZooto;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,21 +27,21 @@ public class MainActivity extends AppCompatActivity {
     private ScrollView view;
     private ScrollView scrollViewId;
     private CoordinatorLayout coordinatorLayout;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
         // pulse web feature with scrollview & linear layout
-//        setContentView(R.layout.activity_main);
-//        scrollViewId=findViewById(R.id.scrollViewId);
-//        mainView=findViewById(R.id.mainView);
-//        iZooto.enablePulse(this,scrollViewId,mainView,true);
+        scrollViewId=findViewById(R.id.scrollViewId);
+        mainView=findViewById(R.id.mainView);
+        iZooto.enablePulse(this,scrollViewId,mainView,true);
+
 
         // pulse web feature with coordinate layout
-        setContentView(R.layout.activity_main_pulse);
-        coordinatorLayout = findViewById(R.id.coordinator);
-        iZooto.enablePulse(this,coordinatorLayout,true);
+       // coordinatorLayout = findViewById(R.id.coordinator);
+       // iZooto.enablePulse(this,coordinatorLayout,true);
 
 //        iZooto.requestOneTapActivity(this, new OneTapCallback() {
 //            @Override
@@ -78,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
 //        SharedPreferences sharedPrefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 //        return sharedPrefs.getBoolean(KEY_TOGGLE_STATE, false);
 //    }
+
+
+
+
 
 }
 

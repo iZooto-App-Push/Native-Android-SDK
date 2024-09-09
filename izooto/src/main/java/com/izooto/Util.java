@@ -1080,6 +1080,15 @@ public class Util {
             return false;
         }
     }
+    static boolean hasAdMobLibrary() {
+        try {
+            Class.forName("com.google.android.gms.ads.MobileAds");
+            return true;
+        } catch (ClassNotFoundException e) {
+
+            return false;
+        }
+    }
 
     static String updateUrlParameter(String url) {
         if (iZooto.appContext == null) {

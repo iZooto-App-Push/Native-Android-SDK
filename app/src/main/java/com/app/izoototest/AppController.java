@@ -7,14 +7,11 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.izooto.AppConstant;
+import com.google.android.gms.ads.MobileAds;
 import com.izooto.NotificationHelperListener;
 import com.izooto.NotificationReceiveHybridListener;
 import com.izooto.NotificationWebViewListener;
 import com.izooto.Payload;
-import com.izooto.PreferenceUtil;
-import com.izooto.TokenReceivedListener;
-import com.izooto.core.SubscriptionInterval;
 import com.izooto.iZooto;
 
 public class AppController extends Application implements NotificationHelperListener, NotificationWebViewListener, NotificationReceiveHybridListener {
@@ -32,6 +29,12 @@ public class AppController extends Application implements NotificationHelperList
 
        iZooto.promptForPushNotifications();
 
+        new Thread(
+                () -> {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this, initializationStatus -> {});
+                })
+                .start();
     }
 
     @Override

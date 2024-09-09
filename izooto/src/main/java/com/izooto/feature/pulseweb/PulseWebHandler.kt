@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.NestedScrollView
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.appbar.AppBarLayout
 import com.izooto.AppConstant
 import com.izooto.PreferenceUtil
@@ -79,12 +80,13 @@ internal class PulseWebHandler : PWInterface {
                     layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
                     ).apply {
-                        setMargins(16, 16, 16, 16) // Set margins around the CardView
+                        setMargins(titleMargin, titleMargin, titleMargin, titleMargin) // Set margins around the CardView
                     }
                 } catch (ex: Exception) {
                     Log.d(AppConstant.APP_NAME_TAG, ex.toString())
                 }
             }
+
 
             // Create and configure the WebView
             val webView = WebView(context!!).apply {
@@ -92,7 +94,7 @@ internal class PulseWebHandler : PWInterface {
                     layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
                     ).apply {
-                        setMargins(5, 5, 5, 5) // Set margins around the CardView
+                        setMargins(topMargin, topMargin, topMargin, topMargin) // Set margins around the CardView
                     }
                     handleWebSettings(this)
                     clearWebViewSessionAndCookies(this)
@@ -100,9 +102,8 @@ internal class PulseWebHandler : PWInterface {
                     evaluateJavascript(
                         "(function() { localStorage.removeItem('__lsv__'); })();", null
                     )
-
                     webViewClient = PulseWebViewClient(context)
-                    loadUrl(pulseURL)
+                     loadUrl(pulseURL)
                     addJavascriptInterface(
                         PulseJsInterface(context, this, cardView, scrollView), "Android"
                     )
@@ -114,6 +115,11 @@ internal class PulseWebHandler : PWInterface {
             webView.clearFocus()
             webView.isFocusable = false
             webView.isFocusableInTouchMode = false
+            if(hasAdMobLibrary()){
+                 CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
+                 webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+                 MobileAds.registerWebView(webView)
+            }
 
             // Optionally, add a progress bar if needed
             if (shouldShowProgressBar) {
@@ -186,15 +192,18 @@ internal class PulseWebHandler : PWInterface {
             handleWebSettings(webView)
             clearWebViewSessionAndCookies(webView)
             webView.webChromeClient = WebChromeClient()
-            webView.evaluateJavascript(
-                "(function() { localStorage.removeItem('__lsv__'); })();", null
-            )
+            webView.evaluateJavascript("(function() { localStorage.removeItem('__lsv__'); })();", null)
             webView.webViewClient = PulseWebViewClient(context)
-            webView.loadUrl(url.toString())
+            webView.loadUrl(pulseURL.toString())
 
             webView.addJavascriptInterface(
                 PulseJsInterface(context, webView, null, null), "Android"
             )
+            if(hasAdMobLibrary()){
+                CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
+                webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+                MobileAds.registerWebView(webView)
+            }
             if (shouldShowProgressBar) {
                 progressBar = createAndReturnProgressBar(context)
                 webView.webChromeClient = progressBar?.let { PulseWebChromeClient(context!!, it) }
@@ -436,6 +445,14 @@ internal class PulseWebHandler : PWInterface {
             )
         }
         return null
+    }
+    fun hasAdMobLibrary(): Boolean {
+        return try {
+            Class.forName("com.google.android.gms.ads.MobileAds")
+            true
+        } catch (e: ClassNotFoundException) {
+            false
+        }
     }
 
 }
