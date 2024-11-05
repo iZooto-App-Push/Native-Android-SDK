@@ -1085,7 +1085,6 @@ public class Util {
             Class.forName("com.google.android.gms.ads.MobileAds");
             return true;
         } catch (ClassNotFoundException e) {
-
             return false;
         }
     }

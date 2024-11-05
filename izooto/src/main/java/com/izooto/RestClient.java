@@ -85,6 +85,7 @@ public class RestClient {
                 con.setUseCaches(false);
                 con.setConnectTimeout(timeout);
                 con.setReadTimeout(timeout);
+                con.setRequestProperty("Referer", Util.getPackageName(iZooto.appContext));
                 if (jsonBody != null) {
                     con.setDoInput(true);
                 }

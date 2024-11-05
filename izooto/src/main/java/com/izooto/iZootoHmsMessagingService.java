@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
 import org.json.JSONObject;
@@ -30,7 +31,6 @@ public class iZootoHmsMessagingService extends HmsMessageService {
         try {
             Runnable runnable = () -> {
                 try {
-                    if (iZooto.initialized()) {return;}
                     executeBackgroundTask(remoteMessage);
                     Thread.sleep(2000);
                 } catch (Exception e) {

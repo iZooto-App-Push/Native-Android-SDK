@@ -5,7 +5,6 @@ import static com.izooto.AppConstant.APPPID;
 import static com.izooto.AppConstant.APP_NAME_TAG;
 import static com.izooto.AppConstant.FCM_TOKEN_FROM_JSON;
 import static com.izooto.AppConstant.HUAWEI_TOKEN_FROM_JSON;
-import static com.izooto.AppConstant.PID;
 import static com.izooto.AppConstant.TAG;
 import static com.izooto.NewsHubAlert.newsHubDBHelper;
 
@@ -106,8 +105,6 @@ public class iZooto {
     }
 
     private static final OSTaskManager osTaskManager = new OSTaskManager();
-    private static int pageNumber;   // index handling for notification center data
-    private static String notificationData;  // notification data
     private static boolean iZootoInitialized = false;
     static String hms_appId;
 
@@ -193,7 +190,6 @@ public class iZooto {
             } else {
                 senderId = Util.getSenderId();
             }
-
             String pid = jsonObject.optString(AppConstant.APPPID);
             preferenceUtil.setStringData(AppConstant.APPPID, pid);
             serverClientId = jsonObject.optString(AppConstant.SERVER_CLIENT_ID);
@@ -2583,123 +2579,23 @@ public class iZooto {
         }
     }
 
+    // Notification Feed API Response
     public static String getNotificationFeed(boolean isPagination) {
-        Context context = iZooto.appContext;
-        String token;
+        final Context context = iZooto.appContext;
         try {
-
-            if (context != null) {
-                PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-                String pid = preferenceUtil.getStringData(AppConstant.APPPID);
-
-                if (preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN) != null && !preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN).isEmpty()) {
-                    token = preferenceUtil.getStringData(AppConstant.FCM_DEVICE_TOKEN);
-                } else if (preferenceUtil.getStringData(AppConstant.HMS_TOKEN) != null && !preferenceUtil.getStringData(AppConstant.HMS_TOKEN).isEmpty()) {
-                    token = preferenceUtil.getStringData(AppConstant.HMS_TOKEN);
-                } else {
-                    token = null;
-                }
-
-                if (pid != null && !pid.isEmpty() && token != null && !token.isEmpty()) {
-
-                    if (!isPagination) {
-                        pageNumber = 0;
-                        fetchNotificationData(context, pageNumber);
-                        Util.sleepTime(2000);
-                        notificationData = preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_DATA);
-                    } else {
-                        try {
-                            JSONArray array = new JSONArray(preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_DATA));
-                            if (array.length() >= 15) {
-                                pageNumber++;
-                                if (pageNumber < 5) {
-                                    fetchNotificationData(context, pageNumber);
-                                    Util.sleepTime(2000);
-                                    notificationData = preferenceUtil.getStringData(AppConstant.IZ_NOTIFICATION_DATA);
-                                } else {
-                                    return AppConstant.IZ_NO_MORE_DATA;
-                                }
-
-                            } else {
-                                return AppConstant.IZ_NO_MORE_DATA;
-                            }
-
-                        } catch (Exception e) {
-                            Util.handleExceptionOnce(context, e.toString(), AppConstant.APP_NAME_TAG, "getNotificationFeed");
-                            return AppConstant.IZ_NO_MORE_DATA;
-                        }
-                    }
-
-                } else {
-                    return AppConstant.IZ_ERROR_MESSAGE;
-                }
-
-                if (notificationData != null && !notificationData.isEmpty()) {
-                    return notificationData;
-                } else {
-                    return AppConstant.IZ_NO_MORE_DATA;
-                }
+            if (context == null) {
+                Log.d(AppConstant.APP_NAME_TAG, "Context is null. Unable to fetch notifications feed data.");
+                return AppConstant.IZ_NO_MORE_DATA;
             }
+
+            if (!Utilities.hasUserRegistered(context)) {
+                return AppConstant.IZ_ERROR_MESSAGE;
+            }
+            return NotificationFeedManager.returnFeedResponse(context, isPagination);
+
         } catch (Exception ex) {
             return AppConstant.IZ_NO_MORE_DATA;
         }
-        return AppConstant.IZ_NO_MORE_DATA;
-
-    }
-
-    private static void fetchNotificationData(Context context, int index) {
-        if (context == null) {
-            return;
-        }
-        PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
-        ArrayList<JSONObject> dataList = new ArrayList<>();
-        preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
-        try {
-            String encrypted_pid = Util.toSHA1(preferenceUtil.getStringData(PID));
-            RestClient.get("https://nh.iz.do/nh/" + encrypted_pid + "/" + index + ".json", new RestClient.ResponseHandler() {
-                @Override
-                void onSuccess(String response) {
-                    super.onSuccess(response);
-                    if (response != null && !response.isEmpty()) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject;
-                            JSONObject jsonObject1;
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                jsonObject = jsonArray.optJSONObject(i).optJSONObject(ShortPayloadConstant.NOTIFICATION_PAYLOAD);
-                                if (jsonObject == null) {
-                                    return;
-                                }
-                                jsonObject1 = new JSONObject();
-                                jsonObject1.put(AppConstant.IZ_TITLE_INFO, jsonObject.optString(ShortPayloadConstant.TITLE));
-                                jsonObject1.put(AppConstant.IZ_MESSAGE_INFO, jsonObject.optString(ShortPayloadConstant.NMESSAGE));
-                                jsonObject1.put(AppConstant.IZ_BANNER_INFO, jsonObject.optString(ShortPayloadConstant.BANNER));
-                                jsonObject1.put(AppConstant.IZ_LANDING_URL_INFO, jsonObject.optString(ShortPayloadConstant.LINK));
-                                jsonObject1.put(AppConstant.IZ_TIME_STAMP_INFO, jsonObject.optString(ShortPayloadConstant.CREATEDON));
-                                dataList.add(jsonObject1);
-                            }
-                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, dataList.toString());
-
-                        } catch (Exception e) {
-                            Log.e(AppConstant.APP_NAME_TAG, e.toString());
-                            preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
-                            Util.handleExceptionOnce(context, e.toString(), AppConstant.APP_NAME_TAG, AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION);
-                        }
-                    } else {
-                        preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
-                    }
-                }
-
-                @Override
-                void onFailure(int statusCode, String response, Throwable throwable) {
-                    super.onFailure(statusCode, response, throwable);
-                    preferenceUtil.setStringData(AppConstant.IZ_NOTIFICATION_DATA, null);
-                }
-            });
-        } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), AppConstant.APP_NAME_TAG, AppConstant.IZ_NOTIFICATION_FETCH_EXCEPTION);
-        }
-
     }
 
     // Sign-In with Google One Tap (Credential Manager API)

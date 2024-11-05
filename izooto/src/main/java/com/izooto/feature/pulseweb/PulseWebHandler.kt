@@ -116,9 +116,9 @@ internal class PulseWebHandler : PWInterface {
             webView.isFocusable = false
             webView.isFocusableInTouchMode = false
             if(hasAdMobLibrary()){
-                 CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
-                 webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-                 MobileAds.registerWebView(webView)
+                 CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
+                webView.getSettings().mediaPlaybackRequiresUserGesture = false
+                MobileAds.registerWebView(webView)
             }
 
             // Optionally, add a progress bar if needed
@@ -200,8 +200,8 @@ internal class PulseWebHandler : PWInterface {
                 PulseJsInterface(context, webView, null, null), "Android"
             )
             if(hasAdMobLibrary()){
-                CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
-                webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+                CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
+                webView.getSettings().mediaPlaybackRequiresUserGesture = false
                 MobileAds.registerWebView(webView)
             }
             if (shouldShowProgressBar) {

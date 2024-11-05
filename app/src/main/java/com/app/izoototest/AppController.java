@@ -19,7 +19,7 @@ public class AppController extends Application implements NotificationHelperList
     @Override
     public void onCreate() {
         super.onCreate();
-// iZooto initialisation code
+
         iZooto.initialize(this)
 //                .setAppId("f8908fd9817ad7f76dea934067955773a8f1c3d5")
                 .setNotificationReceiveListener(this)

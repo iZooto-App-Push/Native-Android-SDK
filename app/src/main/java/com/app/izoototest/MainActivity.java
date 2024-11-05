@@ -6,13 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.CookieManager;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
+import android.widget.Button;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ScrollView view;
     private ScrollView scrollViewId;
     private CoordinatorLayout coordinatorLayout;
-    private WebView webView;
+    private Button nextPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         // pulse web feature with coordinate layout
-       // coordinatorLayout = findViewById(R.id.coordinator);
-       // iZooto.enablePulse(this,coordinatorLayout,true);
+        setContentView(R.layout.activity_main_pulse);
+        nextPage = findViewById(R.id.nextPage);
+        nextPage.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            startActivity(intent);
+        });
+
+        coordinatorLayout = findViewById(R.id.coordinator);
+        iZooto.enablePulse(this,coordinatorLayout,true);
 
 //        iZooto.requestOneTapActivity(this, new OneTapCallback() {
 //            @Override
