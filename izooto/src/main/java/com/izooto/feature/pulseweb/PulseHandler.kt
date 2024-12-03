@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.izooto.AppConstant
@@ -33,6 +32,7 @@ import com.izooto.PulseFetchData
 import com.izooto.Util
 import com.izooto.pulseconfig.PulseAdConfiguration
 import com.izooto.pulseconfig.PulseManagerData
+import com.izooto.pulseconfig.PulseMargin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -76,7 +76,7 @@ internal class PulseHandler : PWInterface {
                 pulseData.pulse.label.text,
                 pulseData.pulse.label.isStatus,
                 pulseData.pulse.label.color,
-                pulseData.pulse.margin.top,
+                pulseData.pulse.label.margin,
                 pulseData.pulse.label.size,
                 pulseData.pulse.label.alignment
             )
@@ -200,7 +200,7 @@ internal class PulseHandler : PWInterface {
                     pulseData.pulse.label.text,
                     pulseData.pulse.label.isStatus,
                     pulseData.pulse.label.color,
-                    pulseData.pulse.margin.top,
+                    pulseData.pulse.label.margin,
                     pulseData.pulse.label.size,
                     pulseData.pulse.label.alignment
                 )  // Safely create and add the label
@@ -485,7 +485,7 @@ internal class PulseHandler : PWInterface {
         pulseTitle: String,
         titleEnable: Boolean,
         titleColor: String,
-        titleMargin: Int,
+        titleMargin: PulseMargin,
         titleSize: Int,
         titlePosition: String
     ): TextView? {
@@ -515,10 +515,10 @@ internal class PulseHandler : PWInterface {
                         else -> Gravity.START
                     }
                     setMargins(
-                        maxOf(0, titleMargin),
-                        maxOf(0, titleMargin),
-                        maxOf(0, titleMargin),
-                        maxOf(0, titleMargin)
+                        maxOf(0, titleMargin.left),
+                        maxOf(0, titleMargin.top),
+                        maxOf(0, titleMargin.right),
+                        maxOf(0, titleMargin.bottom)
                     )
                 }
                 text = pulseTitle
