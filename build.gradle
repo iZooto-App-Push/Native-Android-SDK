@@ -5,25 +5,28 @@ buildscript {
                 compileSdk: 34,
                 targetSdkVersion: 33
         ]
-        androidGradlePluginVersion = '7.3.0'
+        androidGradlePluginVersion = '7.4.0'
         googleServicesGradlePluginVersion = '4.3.15'
         huaweiAgconnectVersion = '1.6.3.300'
         huaweiHMSPushVersion = '6.7.0.300'
         googleAdVersion = '18.0.1'
         ktlintVersion = '11.0.0'
         detektVersion = '1.21.0'
+
     }
 
     repositories {
         google()
         mavenCentral()
+        jcenter() // If necessary
+
         maven {url 'https://developer.huawei.com/repo/'}
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
         classpath "com.google.gms:google-services:$googleServicesGradlePluginVersion"
         classpath "com.huawei.agconnect:agcp:$huaweiAgconnectVersion"
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20'
     }
 }
 allprojects {

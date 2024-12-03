@@ -38,6 +38,8 @@
 
     <dimen name="margin_1.5dp">1.5dp</dimen>
     <dimen name="margin_2dp">2dp</dimen>
+    <dimen name="margin_2dsp">2sp</dimen>
+    <dimen name="margin_15dsp">14sp</dimen>
     <dimen name="margin_3dp">3dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
     <dimen name="margin_6dp">6dp</dimen>
@@ -66,6 +68,10 @@
     <dimen name="height_width17">16sp</dimen>
     <dimen name="height_width14">13sp</dimen>
     <dimen name="height_width24">24sp</dimen>
+
+
+    <dimen name="margin_start">5dp</dimen>
+    <dimen name="margin_end">5dp</dimen>
 
 
 </resources>

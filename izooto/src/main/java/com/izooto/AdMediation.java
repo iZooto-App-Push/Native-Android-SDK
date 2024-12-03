@@ -7,6 +7,8 @@ import android.os.Build;
 import android.util.Log;
 
 
+import com.izooto.core.Utilities;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -1140,7 +1142,6 @@ public class AdMediation {
 
     }
 
-
     static void showFallBackResponse(String fallBackAPI, final Payload payload) {
         RestClient.get(fallBackAPI, new RestClient.ResponseHandler() {
             @Override
@@ -1153,8 +1154,29 @@ public class AdMediation {
                     payload.setLink(jsonObject.optString(ShortPayloadConstant.LINK));
                     payload.setIcon(jsonObject.optString(ShortPayloadConstant.ICON));
                     payload.setBanner(jsonObject.optString(ShortPayloadConstant.BANNER));
-                    payload.setAct1link(jsonObject.optString(ShortPayloadConstant.ACT1LINK));
-                    payload.setAct1name(jsonObject.optString(ShortPayloadConstant.ACT1NAME));
+                    String act1Link = jsonObject.optString(ShortPayloadConstant.ACT1LINK);
+                    String act1Name = jsonObject.optString(ShortPayloadConstant.ACT1NAME);
+                    if (!Utilities.isNullOrEmpty(act1Link)) {
+                        payload.setAct1link(act1Link);
+                    }
+                    else{
+                        payload.setAct1link(jsonObject.optString(ShortPayloadConstant.LINK));
+
+                    }
+                    if (!Utilities.isNullOrEmpty(act1Name)) {
+                        payload.setAct1name(act1Name);
+                    }
+                    String act2Link = jsonObject.optString(ShortPayloadConstant.ACT2LINK);
+                    String act2Name = jsonObject.optString(ShortPayloadConstant.ACT2NAME);
+                    if (!Utilities.isNullOrEmpty(act2Link)) {
+                        payload.setAct1link(act2Link);
+                    }
+                    else{
+                        payload.setAct2link(jsonObject.optString(ShortPayloadConstant.LINK));
+                    }
+                    if (!Utilities.isNullOrEmpty(act2Name)) {
+                        payload.setAct1name(act2Name);
+                    }
                     payload.setRid(payload.getRid());
                     NotificationEventManager.notificationPreview(iZooto.appContext, payload);
                     showClickAndImpressionData(payload);
@@ -1169,6 +1191,45 @@ public class AdMediation {
             }
         });
     }
+
+//    static void showFallBackResponse(String fallBackAPI, final Payload payload) {
+//        RestClient.get(fallBackAPI, new RestClient.ResponseHandler() {
+//            @Override
+//            void onSuccess(String response) {
+//                super.onSuccess(response);
+//                try {
+//                    JSONObject jsonObject = new JSONObject(response);
+//                    payload.setTitle(jsonObject.optString(ShortPayloadConstant.TITLE));
+//                    payload.setMessage(jsonObject.optString(ShortPayloadConstant.NMESSAGE));
+//                    payload.setLink(jsonObject.optString(ShortPayloadConstant.LINK));
+//                    payload.setIcon(jsonObject.optString(ShortPayloadConstant.ICON));
+//                    payload.setBanner(jsonObject.optString(ShortPayloadConstant.BANNER));
+//                   // payload.setAct1link(jsonObject.optString(ShortPayloadConstant.LINK));
+//                   // payload.setAct1name(jsonObject.optString(ShortPayloadConstant.ACT1NAME));
+//                    String act1Link = jsonObject.optString(ShortPayloadConstant.ACT1LINK);
+//                    String act1Name = jsonObject.optString(ShortPayloadConstant.ACT1NAME);
+//                    if (!Utilities.isNullOrEmpty(act1Link)) {
+//                        payload.setAct1link(act1Link);
+//                    }
+//                    if (!Utilities.isNullOrEmpty(act1Name)) {
+//                        payload.setAct1name(act1Name);
+//                    }
+//                    payload.setRid(payload.getRid());
+//                    NotificationEventManager.notificationPreview(iZooto.appContext, payload);
+//                    showClickAndImpressionData(payload);
+//                } catch (Exception ex) {
+//                    Util.handleExceptionOnce(iZooto.appContext, ex.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "ShowFallBackResponse");// need to one time sends exception
+//                }
+//            }
+//
+//            @Override
+//            void onFailure(int statusCode, String response, Throwable throwable) {
+//                super.onFailure(statusCode, response, throwable);
+//                Util.handleExceptionOnce(iZooto.appContext, "fallBackAPI", AppConstant.IZ_AD_MEDIATION_CLASS, "ShowFallBackResponse");// need to one time sends exception
+//
+//            }
+//        });
+//    }
 
 
     private static void showClickAndImpressionData(Payload payload) {
@@ -1207,7 +1268,7 @@ public class AdMediation {
             }
             finalData.put("served", servedObject);
             successList.addAll(failsList);
-            // JSONArray jsonArray = new JSONArray(successList);
+            // JSONArray jsonArray = new JSONArray(successList); fallback success list
             finalData.put("bids", "");
             String dataValue = finalData.toString().replaceAll("\\\\", " ");
             mediationImpression(dataValue, 0);

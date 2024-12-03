@@ -1,5 +1,7 @@
 package com.izooto;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -85,7 +87,7 @@ public class RestClient {
                 con.setUseCaches(false);
                 con.setConnectTimeout(timeout);
                 con.setReadTimeout(timeout);
-                con.setRequestProperty("Referer", Util.getPackageName(iZooto.appContext));
+                con.setRequestProperty("Referrer",Util.getPackageName(iZooto.appContext));
                 if (jsonBody != null) {
                     con.setDoInput(true);
                 }

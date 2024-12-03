@@ -1,7 +1,6 @@
 package com.izooto;
 
 import static com.izooto.AppConstant.APP_NAME_TAG;
-import static com.izooto.AppConstant.SUBS_DAYS;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -45,12 +44,19 @@ import androidx.core.view.ViewCompat;
 import com.google.firebase.FirebaseOptions;
 import com.izooto.core.SubscriptionInterval;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -81,6 +87,7 @@ public class Util {
     private static final String CIPHER_NAME = "AES/CBC/PKCS5PADDING";
     private static final int CIPHER_KEY_LEN = 16;
     private static final long TIME_OUT = 20 * 1000L;
+
 
     public enum SchemaType {
         DATA("data"),
@@ -633,11 +640,10 @@ public class Util {
                 break;
         }
         intent.addFlags(
-                Intent.FLAG_ACTIVITY_NO_HISTORY |
-                        Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET |
-                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                        Intent.FLAG_ACTIVITY_NEW_TASK
-        );
+                Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET | Intent.FLAG_ACTIVITY_MULTIPLE_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri referrerUri = Uri.parse("android-app://" + iZooto.appContext.getPackageName());
+        intent.putExtra(Intent.EXTRA_REFERRER_NAME, referrerUri);
+
         return intent;
     }
 
@@ -822,6 +828,8 @@ public class Util {
     public static String getTimeAgo(String timestamp) {
 
         try {
+
+
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
             Date date = dateFormat.parse(timestamp);
@@ -1080,6 +1088,7 @@ public class Util {
             return false;
         }
     }
+
     static boolean hasAdMobLibrary() {
         try {
             Class.forName("com.google.android.gms.ads.MobileAds");
@@ -1139,5 +1148,41 @@ public class Util {
         return false;
     }
 
+    // handle the pulse item click api
+    public static void pulseClickAPI(@NotNull Context context, String cid, String rid) {
+        try {
+            PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
+            HashMap<String, String> hashMap = new HashMap<>();
+            if (preferenceUtil != null) {
+                hashMap.put(AppConstant.PID, preferenceUtil.getiZootoID(AppConstant.APPPID));
+                hashMap.put(AppConstant.ANDROID_ID, Util.getAndroidId(context));
+                hashMap.put(AppConstant.VER_, AppConstant.SDKVERSION);
+                hashMap.put("cid", cid);
+                hashMap.put("rid", rid);
+                hashMap.put("cs", "1");
+                hashMap.put("op", "click");
+            }
+            RestClient.postRequest(RestClient.NOTIFICATION_CLICK, hashMap, null, new RestClient.ResponseHandler() {
+                @Override
+                void onSuccess(String response) {
+                    super.onSuccess(response);
+                }
+
+                @Override
+                void onFailure(int statusCode, String response, Throwable throwable) {
+                    super.onFailure(statusCode, response, throwable);
+
+                }
+            });
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "Util", "pulseClickAPI");
+        }
+    }
+
+
+    public static boolean isReachableApi(String urlString) {
+       return (urlString.startsWith("http") || urlString.startsWith("https"));
+    }
 }
+
 

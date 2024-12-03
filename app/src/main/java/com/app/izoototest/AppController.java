@@ -39,15 +39,14 @@ public class AppController extends Application implements NotificationHelperList
 
     @Override
     public void onNotificationReceived(Payload payload) {
-        Log.e("ABC", payload.getAct1link());
-        Log.e("ABC", payload.getAct2link());
-        Log.e("ABC", payload.getLink());
+//        Log.e("ABC", payload.getAct1link());
+//        Log.e("ABC", payload.getAct2link());
+//        Log.e("ABC", payload.getLink());
 
     }
 
     @Override
     public void onNotificationOpened(String data) {
-        Log.e("ABC",data);
         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(intent);

@@ -1393,6 +1393,7 @@ public class NotificationEventManager {
                         @Override
                         void onSuccess(final String response) {
                             super.onSuccess(response);
+                            Log.e("Impression",mapData.toString());
                         }
 
 

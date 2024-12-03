@@ -264,16 +264,31 @@ public class TargetActivity extends Activity {
                                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                                         browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
                                         browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        Uri referrerUri = Uri.parse("android-app://" + context.getPackageName());
+                                        browserIntent.putExtra(Intent.EXTRA_REFERRER_NAME, referrerUri);
+
                                         context.startActivity(browserIntent);
                                         finish();
 
 
                                     } else {
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                                        browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        context.startActivity(browserIntent);
-                                        finish();
+                                        try {
+                                            Log.e("First URL",mUrl);
+                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                                            browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                            browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                          //  Uri referrerUri = Uri.parse("android-app://" + context.getPackageName());
+                                           // browserIntent.putExtra(Intent.EXTRA_REFERRER, referrerUri);
+                                            context.startActivity(browserIntent);
+                                            Log.e("First URL1",mUrl);
+
+                                           // finish();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.e("First URL2",ex.toString());
+
+                                        }
                                     }
 
                                 } else {
