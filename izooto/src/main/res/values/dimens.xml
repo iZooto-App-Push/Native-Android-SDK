@@ -7,11 +7,13 @@
     <dimen name="width_17dp">17dp</dimen>
     <dimen name="width_21dp">21dp</dimen>
     <dimen name="width_25dp">25dp</dimen>
+    <dimen name="width_60dp">60dp</dimen>
     <dimen name="width_110dp">110dp</dimen>
     <!-- height -->
     <dimen name="height_17dp">17dp</dimen>
 
     <dimen name="height_18dp">18dp</dimen>
+    <dimen name="height_16dp">16dp</dimen>
     <dimen name="height_21dp">21dp</dimen>
     <dimen name="height_25dp">25dp</dimen>
     <dimen name="height_35dp">35dp</dimen>

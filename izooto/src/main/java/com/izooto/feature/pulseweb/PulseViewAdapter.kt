@@ -2,6 +2,7 @@ package com.izooto.feature.pulseweb
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabsIntent
@@ -56,6 +58,7 @@ class PulseViewAdapter(
         private val newsTitle: TextView = view.findViewById(R.id.nt_title)
         private val bannerImage: ImageView = view.findViewById(R.id.nt_banner_image)
         private val circleIcon: ImageView = view.findViewById(R.id.circle_icon)
+        private val outbrainView: RelativeLayout = view.findViewById(R.id.outbrain_view)
         private val dot: ImageView = view.findViewById(R.id.dot_)
         private val publisher: TextView = view.findViewById(R.id.publisher_)
         private val newsHubTime: TextView = view.findViewById(R.id.news_hub_time)
@@ -67,11 +70,26 @@ class PulseViewAdapter(
             try {
                 if (payload!!.isSponsored) {
                     sponsoredText.visibility = View.VISIBLE
+                    outbrainView.visibility = View.VISIBLE
                     sponsoredText.text = "Sponsored"
                     newsHubTime.visibility = View.GONE
                     dot.visibility = View.GONE
+                    outbrainView.setOnClickListener {
+                        try {
+                            if (PulseFetchData.outbrainAdsConfig.brandingLink.isNotEmpty()) {
+                                newsHubCheckIaKey(
+                                    PulseFetchData.outbrainAdsConfig.brandingLink,
+                                    position
+                                )
+                            }
+                        } catch (e: Exception) {
+                            Log.e("onBindViewHolder", "exception$e")
+                        }
+
+                    }
                 } else {
                     sponsoredText.visibility = View.GONE
+                    outbrainView.visibility = View.GONE
                     newsHubTime.visibility = View.VISIBLE
                     dot.visibility = View.VISIBLE
                 }
@@ -202,49 +220,58 @@ class PulseViewAdapter(
 
     override fun getItemCount(): Int = articleList.size
 
-
-    fun triggerSponsoredToPosition(newItems: List<Any?>, sponsoredItem: Article, interval: Int) { // List<article>
-        // Add only unique items to the list
+    fun triggerSponsoredToPosition(
+        newItems: List<Any?>,
+        sponsoredItems: List<Article?>,
+        interval: Int
+    ) {
         try {
-            val existingSize = articleList.size // 10
+            // Add only new items to the list
+            val existingSize = articleList.size
             val filteredNewItems = newItems.filter { it !in articleList }
-            articleList.addAll(filteredNewItems) //11
-            notifyItemRangeInserted(existingSize, filteredNewItems.size) //11
-            // Insert sponsored items dynamically, avoiding duplicates
-            insertSponsoredItemsDynamically(sponsoredItem, interval) //11
+            articleList.addAll(filteredNewItems)
+            notifyItemRangeInserted(existingSize, filteredNewItems.size)
+            // Dynamically insert sponsored items
+            insertSponsoredItemsDynamically(sponsoredItems, interval)
 
         } catch (e: Exception) {
-            Log.e("onBindViewHolder", "exception$e")
+            Log.e("triggerSponsored", "Exception: $e")
         }
     }
 
-    private fun insertSponsoredItemsDynamically(newItem: Article, interval: Int) {
+    private fun insertSponsoredItemsDynamically(
+        sponsoredItems: List<Article?>,
+        interval: Int
+    ) {
         try {
             if (interval <= 0 || articleList.isEmpty()) return
-            // Remove previously inserted sponsored items to prevent duplicates
-            articleList.removeAll { it is Article && it.isSponsored }
-            // Calculate positions for sponsored items
-            val sponsoredPositions = mutableListOf<Int>()
-            var index = interval - 1 // 0-based index for the first interval
+            var currentItemIndex = 0
+            val updatedSponsoredPositions =
+                mutableSetOf<Int>() // Avoid inserting at the same index repeatedly
+
+            var index = interval - 1 // Start inserting after the first interval
             while (index < articleList.size) {
-                sponsoredPositions.add(index)
-                index += interval
-            }
-
-            // Insert sponsored items at the calculated positions
-            for (position in sponsoredPositions.reversed()) {
-                articleList.add(position, newItem.copy(isSponsored = true))
-            }
-
-            // Notify RecyclerView about the inserted items
-            for (position in sponsoredPositions) {
-                notifyItemInserted(position)
+                // Check if the position already contains a sponsored item
+                if (!updatedSponsoredPositions.contains(index) &&
+                    (articleList[index] !is Article || !(articleList[index] as Article).isSponsored)
+                ) {
+                    // Insert a sponsored item if available
+                    if (currentItemIndex < sponsoredItems.size) {
+                        articleList.add(
+                            index,
+                            sponsoredItems[currentItemIndex]!!.copy(isSponsored = true)
+                        )
+                        updatedSponsoredPositions.add(index)
+                        currentItemIndex++
+                        notifyItemInserted(index)
+                    }
+                }
+                index += interval // Move to the next interval position
             }
         } catch (e: Exception) {
-            Log.e("onBindViewHolder", "exception$e")
+            Log.e("insertSponsoredItems", "Exception: $e")
         }
     }
-
 
     private fun getAdSizes(): AdSize {
         val displayMetrics = context.resources.displayMetrics

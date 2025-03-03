@@ -24,7 +24,7 @@ android {
 ```
 ```groovy
     dependencies {
-    implementation 'com.izooto:android-sdk:3.0.1'
+    implementation 'com.izooto:android-sdk:3.0.2'
     implementation("androidx.work:work-runtime:2.9.0")
     }
 ```
@@ -37,7 +37,7 @@ Add the Firebase Messaging library and Android Support Library v4 as dependencie
 
 ```groovy
      dependencies {
-         implementation 'com.izooto:android-sdk:3.0.1'
+         implementation 'com.izooto:android-sdk:3.0.2'
          implementation("androidx.work:work-runtime:2.9.0")
          implementation "com.google.firebase:firebase-messaging:23.0.6"
        

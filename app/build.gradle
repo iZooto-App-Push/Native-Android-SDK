@@ -15,9 +15,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
-        manifestPlaceholders = [
-                izooto_app_id: "09f06385e06cc10d0fc7a5e1c002cd9338a2c94f" //"85389e55241c176f45f9f324b2384c32ca56e1eb"//"aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640"//"aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640"//"09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
-        ]
+        manifestPlaceholders["izooto_app_id"] = "09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
+                //09f06385e06cc10d0fc7a5e1c002cd9338a2c94f 85389e55241c176f45f9f324b2384c32ca56e1eb aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640
+
 
     }
 
@@ -58,6 +58,5 @@ dependencies {
     implementation 'androidx.activity:activity:1.9.1'
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'com.google.android.gms:play-services-ads:23.0.0'
-
 
 }

@@ -575,7 +575,6 @@ public class TargetActivity extends Activity {
                             throw new RuntimeException(e);
                         }
                         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-
                         RestClient.postRequest(RestClient.MEDIATION_CLICKS, null, jsonObject, new RestClient.ResponseHandler() {
                             @SuppressLint("NewApi")
                             @Override

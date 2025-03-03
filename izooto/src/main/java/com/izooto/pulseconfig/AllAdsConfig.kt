@@ -22,5 +22,5 @@ class NativeAdsConfig(// Getters
 
 // outbrain Ads Configuration
 data class OutbrainAdsConfig(
-    var status: Boolean, var url: String, var position: Int, var impression: Boolean
+    var status: Boolean, var url: String, var position: Int, var impression: Boolean, var brandingLink: String
 )

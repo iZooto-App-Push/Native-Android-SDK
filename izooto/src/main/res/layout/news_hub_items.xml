@@ -14,6 +14,46 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:id="@+id/outbrain_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="@dimen/margin_12dp"
+            android:layout_marginEnd="@dimen/margin_12dp"
+            android:visibility="visible">
+
+
+            <ImageView
+                android:id="@+id/outbrain_logo"
+                android:layout_width="@dimen/width_60dp"
+                android:layout_height="@dimen/height_16dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/todo"
+                android:src="@drawable/outbrain_branding" />
+
+
+            <TextView
+                android:id="@+id/mid_line"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_15dp"
+                android:layout_marginStart="@dimen/margin_5dp"
+                android:layout_marginEnd="@dimen/margin_5dp"
+                android:layout_marginBottom="@dimen/margin_3dp"
+                android:layout_toEndOf="@id/outbrain_logo"
+                android:text="@string/margin_space" />
+
+
+            <ImageView
+                android:id="@+id/baseline_error_outline"
+                android:layout_width="@dimen/margin_10dp"
+                android:layout_height="@dimen/margin_10dp"
+                android:layout_marginTop="@dimen/margin_5dp"
+                android:layout_toEndOf="@id/mid_line"
+                android:contentDescription="@string/todo"
+                android:src="@drawable/achoice" />
+        </RelativeLayout>
+
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

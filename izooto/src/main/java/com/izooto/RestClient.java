@@ -1,7 +1,5 @@
 package com.izooto;
 
-import android.util.Log;
-
 import org.json.JSONObject;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,7 +36,6 @@ public class RestClient {
     static final String iZ_PULSE_FEATURE_CLICK = "https://osclk.izooto.com/osclk";
 
 
-
     static void get(final String url, final ResponseHandler responseHandler) {
         new Thread(() -> makeApiCall(url, null, null, null, responseHandler, GET_TIMEOUT)).start();
     }
@@ -66,7 +63,6 @@ public class RestClient {
         InputStream inputStream = null;
         Scanner scanner = null;
         do {
-
             try {
                 if (url.contains(AppConstant.HTTPS) || url.contains(AppConstant.HTTP) || url.contains(AppConstant.IMPR)) {
                     con = (HttpURLConnection) new URL(url).openConnection();

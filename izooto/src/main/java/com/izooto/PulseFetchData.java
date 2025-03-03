@@ -25,6 +25,7 @@ public class PulseFetchData {
     private static int pageNumber;  // index handling for notification feed data
     private static final Set<String> uniqueRids = new HashSet<>();
     public static Documents documentData = null;
+    public static ArrayList <Documents> documentList = new ArrayList<>();
     public static OutbrainAdsConfig outbrainAdsConfig = null;
     public static String pulseMainUrl = null;
 
@@ -192,6 +193,7 @@ public class PulseFetchData {
             }
             boolean pulseStatus = pulseObject.optBoolean(AppConstant.isPulseEnable);
             preferenceUtil.setBooleanData(AppConstant.PW_STATUS, pulseStatus);
+            Log.d(APP_NAME_TAG, "pulseConfigs:-> "+ pulseObject);
             if (pulseStatus) {
                 JSONObject adConfigObject = pulseObject.optJSONObject("adConf");
                 if (adConfigObject == null) {
@@ -206,14 +208,14 @@ public class PulseFetchData {
                     outbrainAdsConfig = new OutbrainAdsConfig(
                             outbrainConfigObject.optBoolean("status", false),
                             outbrainConfigObject.optString("url"),
-                            outbrainConfigObject.optInt("position", 5),
-                            outbrainConfigObject.optBoolean("imp", true)
-
+                            outbrainConfigObject.optInt("position", 4),
+                            outbrainConfigObject.optBoolean("imp", false),
+                            outbrainConfigObject.optString("pu")
                     );
                 }
 
                 if (outbrainAdsConfig != null && outbrainAdsConfig.getStatus() && !Utilities.isNullOrEmpty(outbrainAdsConfig.getUrl()) && Util.isReachableApi(outbrainAdsConfig.getUrl())) {
-                    RestClient.get(outbrainAdsConfig.getUrl(), new RestClient.ResponseHandler() {
+                    RestClient.get(Util.buildDynamicUrl(context, outbrainAdsConfig.getUrl()), new RestClient.ResponseHandler() {
                         @Override
                         void onSuccess(String response) {
                             super.onSuccess(response);
@@ -221,6 +223,7 @@ public class PulseFetchData {
                                 if (response == null) {
                                     return;
                                 }
+                                documentList.clear();
                                 JSONObject jsonObject = new JSONObject(response);
                                 JSONObject responseObject = jsonObject.optJSONObject("response");
                                 if (responseObject == null) {
@@ -250,8 +253,9 @@ public class PulseFetchData {
                                                 jsonData.optString("adv_name", "Unknown"),
                                                 thumbnail.optString("url", "")
                                         );
-
+                                          documentList.add(documentData);
                                     }
+
                                     if (!Utilities.isNullOrEmpty(pulseMainUrl) && Util.isReachableApi(pulseMainUrl)){
                                         iZooto.initializePulse(context, pulseObject);
                                         outbrainOnViewed(documentData);
@@ -269,7 +273,12 @@ public class PulseFetchData {
                         @Override
                         void onFailure(int statusCode, String response, Throwable throwable) {
                             super.onFailure(statusCode, response, throwable);
-                            Log.e(APP_NAME_TAG,"Outbrain failed:-> "+ response);
+                            Log.e(APP_NAME_TAG,"Outbrain failed:-> "+ statusCode);
+                            if (!Utilities.isNullOrEmpty(pulseMainUrl) && Util.isReachableApi(pulseMainUrl)){
+                                iZooto.initializePulse(context, pulseObject);
+                            }else {
+                                Log.i(APP_NAME_TAG, "Not reachable pulse url!");
+                            }
                         }
                     });
                 } else {

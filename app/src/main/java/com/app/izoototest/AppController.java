@@ -21,7 +21,6 @@ public class AppController extends Application implements NotificationHelperList
         super.onCreate();
 
         iZooto.initialize(this)
-//                .setAppId("f8908fd9817ad7f76dea934067955773a8f1c3d5")
                 .setNotificationReceiveListener(this)
                 .setLandingURLListener(this)
                 .setTokenReceivedListener(token -> {})

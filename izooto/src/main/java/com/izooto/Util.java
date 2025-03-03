@@ -828,8 +828,6 @@ public class Util {
     public static String getTimeAgo(String timestamp) {
 
         try {
-
-
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
             Date date = dateFormat.parse(timestamp);
@@ -1180,9 +1178,21 @@ public class Util {
     }
 
 
-    public static boolean isReachableApi(String urlString) {
+     static boolean isReachableApi(String urlString) {
        return (urlString.startsWith("http") || urlString.startsWith("https"));
     }
+
+
+     static String buildDynamicUrl(Context context, String baseUrl) {
+        if (context == null || baseUrl == null || baseUrl.isEmpty()) {
+            return null;
+        }
+         if (context.getPackageName() == null || context.getPackageName().isEmpty()){
+             return null;
+         }
+        return String.format(baseUrl, context.getPackageName());
+    }
+
 }
 
 

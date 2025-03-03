@@ -6,14 +6,12 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
-
 import com.izooto.core.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,7 @@ public class AdMediation {
     static final List<JSONObject> successList = new ArrayList<>();
     static List<String> storeList = new ArrayList<>();
     static int counterIndex = 0;
-    private static boolean isExecutionCompleted = false;
+    static boolean isExecutionCompleted = false;
     private static final long TIMEUNITS = 2;
 
 
@@ -324,7 +322,7 @@ public class AdMediation {
                     }
                     data.put("ln", "");
                     failsList.add(data);
-                    if (failsList.size() == payloadList.size() && successList.isEmpty()) {
+                    if (failsList.size() == payloadList.size() && successList.isEmpty() && passiveList.isEmpty()) {
                         String fallBackURL = callFallbackAPI(payload);
                         showFallBackResponse(fallBackURL, payload);
                     }
@@ -368,19 +366,24 @@ public class AdMediation {
                 payload.setCpc("-1");
                 payload.setReceived_bid("-1");
             } else {
-                payload.setCpc(getParsedValue(jsonObject, payload.getCpc()));
-                if (!Objects.equals(payload.getCtr(), "")) {
-                    payload.setCtr(getParsedValue(jsonObject, payload.getCtr()));
-                    payload.setCpm(getParsedValue(jsonObject, payload.getCpm()));
-                    if (!Objects.equals(payload.getCpm(), "")) {
-                        if (!Objects.equals(payload.getCtr(), "")) {
-                            float cpm = Float.parseFloat(payload.getCpm());
-                            float ctr = Float.parseFloat(payload.getCtr());
-                            float dat = 10 * ctr;
-                            float cpc = cpm / dat;
-                            payload.setCpc(String.valueOf(cpc));
+                try {
+                    payload.setCpc(getParsedValue(jsonObject, payload.getCpc()));
+                    if (!Objects.equals(payload.getCtr(), "")) {
+                        payload.setCtr(getParsedValue(jsonObject, payload.getCtr()));
+                        payload.setCpm(getParsedValue(jsonObject, payload.getCpm()));
+                        if (!Objects.equals(payload.getCpm(), "")) {
+                            if (!Objects.equals(payload.getCtr(), "")) {
+                                float cpm = Float.parseFloat(payload.getCpm());
+                                float ctr = Float.parseFloat(payload.getCtr());
+                                float dat = 10 * ctr;
+                                float cpc = cpm / dat;
+                                payload.setCpc(String.valueOf(cpc));
+                            }
                         }
                     }
+
+                } catch (Exception e) {
+                    Util.handleExceptionOnce(iZooto.appContext, e + "-> " + payload.getCpc(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseThoroughlyJson");
                 }
             }
             if (payload.getLink() != null && !payload.getLink().isEmpty()) {
@@ -490,90 +493,102 @@ public class AdMediation {
             Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "getAdNotificationData");
         }
 
-
     }
-
 
     private static void executingMediation() {
-        if (!AdMediation.adPayload.isEmpty()) {
-            try {
-                int winnerIndex = 0;
-                int passiveIndex = 0;
-                double passiveNetwork = 0.0;
-                double winnerNetwork = 0.0;
-                try {
-                    for (int index = 0; index < AdMediation.adPayload.size(); index++) {
-                        if (AdMediation.adPayload.get(index).getCpc() != null && !AdMediation.adPayload.get(index).getCpc().isEmpty()) {
-                            if (AdMediation.adPayload.get(index).getFloorPrice() != null && !AdMediation.adPayload.get(index).getFloorPrice().isEmpty()) {
-                                if (Float.parseFloat(AdMediation.adPayload.get(index).getCpc()) > Float.parseFloat(AdMediation.adPayload.get(index).getFloorPrice())) {
-                                    if (Float.parseFloat(AdMediation.adPayload.get(index).getCpc()) > winnerNetwork) {
-                                        winnerNetwork = Float.parseFloat(AdMediation.adPayload.get(index).getCpc());
-                                        winnerIndex = index;
-                                        isExecutionCompleted = true;
-
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                } catch (Exception e) {
-                    Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "executingMediation");
-                }
-
-                if (!passiveList.isEmpty()) {
-                    for (int index = 0; index < passiveList.size(); index++) {
-                        if (Float.parseFloat(passiveList.get(index).getCpc()) >= Float.parseFloat(passiveList.get(0).getCpc())) {
-                            passiveIndex = index;
-                            passiveNetwork = Float.parseFloat(passiveList.get(index).getCpc());
-                        }
-                    }
-                    if (passiveNetwork > winnerNetwork) {
-                        passivePayload(passiveList.get(passiveIndex));
-
-                    } else {
-                        if (AdMediation.adPayload.get(winnerIndex).getTitle() != null && !AdMediation.adPayload.get(winnerIndex).getTitle().equalsIgnoreCase("")) {
-                            defeaterPayload(AdMediation.adPayload.get(winnerIndex), 6);
-                            if (!passiveList.isEmpty()) {
-                                try {
-                                    JSONObject jsonObject1 = new JSONObject();
-                                    jsonObject1.put("b", -1);
-                                    jsonObject1.put("rb", Double.parseDouble(passiveList.get(passiveIndex).getReceived_bid()));
-                                    jsonObject1.put("a", payload.getAdID());
-                                    jsonObject1.put("t", payload.getResponseTime());
-                                    if (payload.getLink() != null && !payload.getLink().isEmpty()) {
-                                        jsonObject1.put("ln", payload.getLink());
-                                    } else {
-                                        jsonObject1.put("ln", "");
-
-                                    }
-                                    successList.add(jsonObject1);
-                                    passiveList.clear();
-
-                                } catch (Exception e) {
-                                    Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "executingMediation");
-
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    if (isExecutionCompleted) {
-                        defeaterPayload(AdMediation.adPayload.get(winnerIndex), 6);
-                    } else {
-                        String fallBackURL = callFallbackAPI(payload);
-                        showFallBackResponse(fallBackURL, payload);
-                    }
-                    isExecutionCompleted = false;
-                }
-
-            } catch (Exception ex) {
-                Util.handleExceptionOnce(iZooto.appContext, ex.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "bidingProcessing");
-            }
+        if (AdMediation.payloadList.isEmpty() && AdMediation.passiveList.isEmpty()) {
+            return;
         }
 
+        try {
+            int winnerIndex = -1;
+            int passiveIndex = -1;
+            double passiveNetwork = 0.0;
+            double winnerNetwork = 0.0;
+            long start = System.currentTimeMillis();
+            // Determine the highest winning bid
+            for (int index = 0; index < AdMediation.adPayload.size(); index++) {
+                String cpcStr = AdMediation.adPayload.get(index).getCpc();
+                String floorPrice = AdMediation.adPayload.get(index).getFloorPrice();
+
+                if (processValidBid(cpcStr, floorPrice)) {
+                    double cpc = Double.parseDouble(cpcStr);
+
+                    if (cpc > winnerNetwork) {
+                        winnerNetwork = cpc;
+                        winnerIndex = index;
+                        isExecutionCompleted = true;
+                    }
+                }
+            }
+
+            // Compare with passive list
+            if (!passiveList.isEmpty()) {
+                for (int index = 0; index < passiveList.size(); index++) {
+                    double cpc = Double.parseDouble(passiveList.get(index).getCpc());
+                    if (cpc >= Double.parseDouble(passiveList.get(0).getCpc())) {
+                        passiveIndex = index;
+                        passiveNetwork = cpc;
+                    }
+                }
+
+                if (passiveNetwork > winnerNetwork) {
+                    passivePayload(passiveList.get(passiveIndex));
+                    return;
+                }
+            }
+
+            // Handle winner ad payload
+            if (winnerIndex != -1 && isValidTitle(AdMediation.adPayload.get(winnerIndex).getTitle())) {
+                defeaterPayload(AdMediation.adPayload.get(winnerIndex), 6);
+                processPassiveList(passiveIndex, start);
+            }
+
+            isExecutionCompleted = false;
+
+        } catch (Exception ex) {
+            Util.handleExceptionOnce(iZooto.appContext, ex.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "bidingProcessing");
+        }
     }
 
+    /**
+     * 🔹 Helper method to check if CPC is valid
+     */
+    private static boolean processValidBid(String cpc, String floorPrice) {
+        if (cpc == null || cpc.isEmpty()) return false; // CPC must be present
+        double cpcValue = Double.parseDouble(cpc);
+        if (floorPrice != null && !floorPrice.isEmpty()) {
+            return cpcValue > Double.parseDouble(floorPrice);
+        }
+        return true;
+    }
+
+    /**
+     * 🔹 Helper method to check if title is valid
+     */
+    private static boolean isValidTitle(String title) {
+        return title != null && !title.trim().isEmpty();
+    }
+
+    /**
+     * 🔹 Handle Passive List Processing
+     */
+    private static void processPassiveList(int passiveIndex, long start) {
+        if (!passiveList.isEmpty() && passiveIndex != -1) {
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("b", Double.parseDouble(passiveList.get(passiveIndex).getCpc()));
+                jsonObject.put("a", passiveList.get(passiveIndex).getAdID());
+                jsonObject.put("t", (System.currentTimeMillis() - start));
+                jsonObject.put("rb", Double.parseDouble(passiveList.get(passiveIndex).getReceived_bid()));
+                successList.add(jsonObject);
+                passiveList.clear();
+
+            } catch (Exception e) {
+                Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "executingMediation");
+            }
+        }
+    }
 
     //handle gpl payload
     public static void mediationGPL(Context context, JSONObject payloadObj, String url) {
@@ -1158,8 +1173,7 @@ public class AdMediation {
                     String act1Name = jsonObject.optString(ShortPayloadConstant.ACT1NAME);
                     if (!Utilities.isNullOrEmpty(act1Link)) {
                         payload.setAct1link(act1Link);
-                    }
-                    else{
+                    } else {
                         payload.setAct1link(jsonObject.optString(ShortPayloadConstant.LINK));
 
                     }
@@ -1170,8 +1184,7 @@ public class AdMediation {
                     String act2Name = jsonObject.optString(ShortPayloadConstant.ACT2NAME);
                     if (!Utilities.isNullOrEmpty(act2Link)) {
                         payload.setAct1link(act2Link);
-                    }
-                    else{
+                    } else {
                         payload.setAct2link(jsonObject.optString(ShortPayloadConstant.LINK));
                     }
                     if (!Utilities.isNullOrEmpty(act2Name)) {
@@ -1192,45 +1205,6 @@ public class AdMediation {
         });
     }
 
-//    static void showFallBackResponse(String fallBackAPI, final Payload payload) {
-//        RestClient.get(fallBackAPI, new RestClient.ResponseHandler() {
-//            @Override
-//            void onSuccess(String response) {
-//                super.onSuccess(response);
-//                try {
-//                    JSONObject jsonObject = new JSONObject(response);
-//                    payload.setTitle(jsonObject.optString(ShortPayloadConstant.TITLE));
-//                    payload.setMessage(jsonObject.optString(ShortPayloadConstant.NMESSAGE));
-//                    payload.setLink(jsonObject.optString(ShortPayloadConstant.LINK));
-//                    payload.setIcon(jsonObject.optString(ShortPayloadConstant.ICON));
-//                    payload.setBanner(jsonObject.optString(ShortPayloadConstant.BANNER));
-//                   // payload.setAct1link(jsonObject.optString(ShortPayloadConstant.LINK));
-//                   // payload.setAct1name(jsonObject.optString(ShortPayloadConstant.ACT1NAME));
-//                    String act1Link = jsonObject.optString(ShortPayloadConstant.ACT1LINK);
-//                    String act1Name = jsonObject.optString(ShortPayloadConstant.ACT1NAME);
-//                    if (!Utilities.isNullOrEmpty(act1Link)) {
-//                        payload.setAct1link(act1Link);
-//                    }
-//                    if (!Utilities.isNullOrEmpty(act1Name)) {
-//                        payload.setAct1name(act1Name);
-//                    }
-//                    payload.setRid(payload.getRid());
-//                    NotificationEventManager.notificationPreview(iZooto.appContext, payload);
-//                    showClickAndImpressionData(payload);
-//                } catch (Exception ex) {
-//                    Util.handleExceptionOnce(iZooto.appContext, ex.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "ShowFallBackResponse");// need to one time sends exception
-//                }
-//            }
-//
-//            @Override
-//            void onFailure(int statusCode, String response, Throwable throwable) {
-//                super.onFailure(statusCode, response, throwable);
-//                Util.handleExceptionOnce(iZooto.appContext, "fallBackAPI", AppConstant.IZ_AD_MEDIATION_CLASS, "ShowFallBackResponse");// need to one time sends exception
-//
-//            }
-//        });
-//    }
-
 
     private static void showClickAndImpressionData(Payload payload) {
         if (iZooto.appContext == null) {
@@ -1244,7 +1218,7 @@ public class AdMediation {
             finalData.put("ta", (System.currentTimeMillis() - payload.getStartTime()));
             finalData.put("av", AppConstant.SDKVERSION);
             finalData.put("bKey", Util.getAndroidId(iZooto.appContext));
-            finalData.put("result", payload.getAdID());
+            finalData.put("result", 0);
             JSONObject servedObject = new JSONObject();
             servedObject.put("a", 0);
             servedObject.put("b", 0);
@@ -1267,9 +1241,10 @@ public class AdMediation {
                 servedObject.put("ln", "");
             }
             finalData.put("served", servedObject);
+
             successList.addAll(failsList);
-            // JSONArray jsonArray = new JSONArray(successList); fallback success list
-            finalData.put("bids", "");
+            JSONArray jsonArray = new JSONArray(successList); //fallback success list
+            finalData.put("bids", jsonArray);
             String dataValue = finalData.toString().replaceAll("\\\\", " ");
             mediationImpression(dataValue, 0);
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
@@ -1341,9 +1316,10 @@ public class AdMediation {
                 } else {
                     servedObject.put("ln", "");
                 }
+
                 finalData.put("served", servedObject);
-                failsList.addAll(successList);
-                JSONArray jsonArray = new JSONArray(failsList);
+                successList.addAll(failsList);
+                JSONArray jsonArray = new JSONArray(successList);
                 if (adIndex.length + 5 == 6) {
                     finalData.put("bids", jsonArray);
                 } else {
@@ -1422,14 +1398,11 @@ public class AdMediation {
             } else {
                 preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA, dataValue);
                 NotificationActionReceiver.medClick = dataValue;
-
-
             }
         } catch (Exception ex) {
             Util.handleExceptionOnce(iZooto.appContext, AppConstant.IZ_PAYLOAD_ERROR + ex + payload.getRid(), AppConstant.IZ_AD_MEDIATION_CLASS, "ShowClickAndImpressionData");
         }
     }
-
 
     static void mediationImpression(String finalData, int impNUmber) {
         if (iZooto.appContext == null) {
@@ -1468,62 +1441,53 @@ public class AdMediation {
         } catch (Exception ex) {
             Util.handleExceptionOnce(iZooto.appContext, ex + finalData, AppConstant.IZ_AD_MEDIATION_CLASS, "mediationImpression");
         }
-
     }
-
 
     static String getParsedValue(JSONObject jsonObject, String sourceString) {
         try {
             if (sourceString.matches("[0-9]{1,13}(\\.[0-9]*)?")) {
-                return sourceString;
+                return sourceString; // Directly return numeric values
             }
-            if (sourceString.startsWith("~"))
-                return sourceString.replace("~", "");
-            else {
-                if (sourceString.contains(".")) {
-                    JSONObject jsonObject1 = null;
-                    String[] linkArray = sourceString.split("\\.");
-                    if (linkArray.length == 2 || linkArray.length == 3) {
-                        for (int i = 0; i < linkArray.length; i++) {
-                            if (linkArray[i].contains("[")) {
-                                String[] linkArray1 = linkArray[i].split("\\[");
-                                if (jsonObject1 == null)
-                                    jsonObject1 = jsonObject.getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
-                                else {
-                                    jsonObject1 = jsonObject1.getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
-                                }
-
-                            } else {
-                                return Objects.requireNonNull(jsonObject1).optString(linkArray[i]);
-                            }
-
-                        }
-                    } else if (linkArray.length == 4) {
-                        if (linkArray[2].contains("[")) {
-                            String[] linkArray1 = linkArray[2].split("\\[");
-                            jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
-                            return jsonObject1.optString(linkArray[3]);
-                        }
-
-                    } else if (linkArray.length == 5) {
-                        if (linkArray[2].contains("[")) {
-                            String[] link1 = linkArray[2].split("\\[");
-                            jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(link1[0]).getJSONObject(Integer.parseInt(link1[1].replace("]", ""))).getJSONObject(linkArray[3]);
-                            return jsonObject1.optString(linkArray[4]);
-                        }
-                    } else {
-                        jsonObject.optString(sourceString);
-                    }
-
-                } else {
-                    return jsonObject.optString(sourceString);
-                }
+            if (sourceString.startsWith("~")) {
+                return sourceString.substring(1); // Remove "~" prefix
             }
+
+            String[] keys = sourceString.split("\\.");
+            return extractValue(jsonObject, keys, 0);
         } catch (Exception e) {
             Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "getParsedValue");
+            return "";
+        }
+    }
+
+    /**
+     * 🔹 Recursive method to extract nested values
+     */
+    private static String extractValue(JSONObject jsonObject, String[] keys, int index) {
+        if (jsonObject == null || index >= keys.length) {
+            return "";
+        }
+
+        String key = keys[index];
+
+        if (key.contains("[")) {  // Handling JSON arrays (e.g., `list[0]`)
+            String[] parts = key.split("\\[");
+            String arrayKey = parts[0];
+            int arrayIndex = Integer.parseInt(parts[1].replace("]", ""));
+
+            JSONArray jsonArray = jsonObject.optJSONArray(arrayKey);
+            if (jsonArray != null && arrayIndex < jsonArray.length()) {
+                JSONObject nextJson = jsonArray.optJSONObject(arrayIndex);
+                return (index == keys.length - 1) ? jsonArray.optString(arrayIndex) : extractValue(nextJson, keys, index + 1);
+            }
+        } else {
+            JSONObject nextJson = jsonObject.optJSONObject(key);
+            if (nextJson != null) {
+                return extractValue(nextJson, keys, index + 1);
+            }
+            return jsonObject.optString(key, ""); // Return value if last key
         }
         return "";
     }
-
 
 }

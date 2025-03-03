@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
        // scrollViewId = findViewById(R.id.scrollViewId);
         mainView = findViewById(R.id.mainView);
         iZooto.enablePulse(this,nestedScrollView,mainView,true);
-       // iZooto.enablePulse(this, coordinator, mainView, true);
     }
 
 

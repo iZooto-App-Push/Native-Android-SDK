@@ -25,10 +25,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.izooto.AppConstant
 import com.izooto.PulseFetchData
+import com.izooto.PulseFetchData.documentList
+import com.izooto.R
 import com.izooto.Util
 import com.izooto.pulseconfig.PulseAdConfiguration
 import com.izooto.pulseconfig.PulseManagerData
@@ -76,7 +79,7 @@ internal class PulseHandler : PWInterface {
                 pulseData.pulse.label.text,
                 pulseData.pulse.label.isStatus,
                 pulseData.pulse.label.color,
-                pulseData.pulse.label.margin,
+                pulseData.pulse.margin,
                 pulseData.pulse.label.size,
                 pulseData.pulse.label.alignment
             )
@@ -238,6 +241,7 @@ internal class PulseHandler : PWInterface {
                     it.visibility = View.GONE
                     mainLayout.addView(bottomProgressBar)
                 }
+
                 layout.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
                     try {
                         val view = v.getChildAt(v.childCount - 1)
@@ -247,7 +251,14 @@ internal class PulseHandler : PWInterface {
 
                         if (diff <= threshold && !isLoading && PulseFetchData.fetchPageIndex() <= 5) {
                             try {
+
+                                // if first progressbar is running then exit the further action
+                                if (progressBar?.visibility == View.VISIBLE) {
+                                    return@setOnScrollChangeListener
+                                }
+
                                 bottomProgressBar?.visibility = View.VISIBLE
+
                                 scrollRunnable?.let { handler.removeCallbacks(it) }
 
                                 // Schedule a new task to load more data after a brief delay
@@ -317,9 +328,9 @@ internal class PulseHandler : PWInterface {
                     // Notify adapter for newly inserted items
                     pulseViewAdapter.notifyDataSetChanged()
                     // Handle sponsored content
-                    PulseFetchData.documentData?.let { document ->
-                        addSponsoredContent(document)
-                    } ?: Log.v(AppConstant.APP_NAME_TAG, "")
+                    documentList?.let {
+                        addSponsoredContent(it)
+                    } ?: Log.i(AppConstant.APP_NAME_TAG, "No sponsored items to display!")
                 } else {
                     Log.d(AppConstant.APP_NAME_TAG, "No new items to display.")
                 }
@@ -364,13 +375,12 @@ internal class PulseHandler : PWInterface {
             // Add ads and determine the start position
             val mixed = occupyAdsViewList(newData, adConfDuplicate!!.bannerAds.position)
             dataList.addAll(mixed)
-
             // Update the adapter
             pulseViewAdapter.notifyDataSetChanged()
             // Handle Sponsored Content
-            PulseFetchData.documentData?.let { document ->
-                addSponsoredContent(document)
-            } ?: Log.i(AppConstant.APP_NAME_TAG, "No ad items to display!")
+            documentList?.let {
+                addSponsoredContent(it)
+            } ?: Log.i(AppConstant.APP_NAME_TAG, "No sponsored items to display!")
 
         } catch (e: Exception) {
             Log.e(AppConstant.APP_NAME_TAG, "Error loading more data: ${e.message}")
@@ -389,20 +399,29 @@ internal class PulseHandler : PWInterface {
     /**
      * Helper method to add sponsored content at the appropriate position.
      */
-    private fun addSponsoredContent(document: Documents) {
+
+    private fun addSponsoredContent(documentList: List<Documents>) {
+
+        val sponsoredArticles = documentList.map { document ->
+            context?.let {
+                Article(
+                    title = document.content,
+                    link = document.landingUrl,
+                    bannerImage = document.thumbnailUrl,
+                    time = it.getString(R.string.out_brain),
+                    publisherName = document.sourceName,
+                    publisherIcon = document.thumbnailUrl,
+                    isSponsored = true
+                )
+            }
+        }
+
         pulseViewAdapter.triggerSponsoredToPosition(
             dataList,
-            Article(
-                title = document.content,
-                link = document.landingUrl,
-                bannerImage = document.thumbnailUrl,
-                time = "",
-                publisherName = document.publisherName,
-                publisherIcon = document.thumbnailUrl,
-                isSponsored = true
-            ),
+            sponsoredArticles,
             PulseFetchData.outbrainAdsConfig.position
         )
+
     }
 
     private fun createCardView(context: Context?, titleMargin: Int): CardView? {
@@ -437,6 +456,7 @@ internal class PulseHandler : PWInterface {
         if (item is AdView) {
             item.adListener = object : AdListener() {
                 override fun onAdLoaded() {
+                    Log.d("PulseHandler", "Banner ad loaded at index: $index")
                     loadBannerAd(index + 3)
                 }
 
@@ -455,6 +475,23 @@ internal class PulseHandler : PWInterface {
         }
     }
 
+    private suspend fun addBannerAds(adUnitId: String?) = withContext(Dispatchers.IO) {
+        var i = 0
+        val finalAdUnitId = "ca-app-pub-3940256099942544/9214589741" // Handle nullability once
+        while (i < dataList.size) {
+            val adView = AdView(context!!).apply {
+                setAdSize(
+                    AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(
+                        context!!,
+                        getAdWidth()
+                    )
+                )
+                this.adUnitId = finalAdUnitId
+            }
+            dataList.add(i, adView)
+            i += 3
+        }
+    }
 
 
     private fun getAdWidth(): Int {
@@ -485,7 +522,7 @@ internal class PulseHandler : PWInterface {
         pulseTitle: String,
         titleEnable: Boolean,
         titleColor: String,
-        titleMargin: PulseMargin,
+        margin: PulseMargin,
         titleSize: Int,
         titlePosition: String
     ): TextView? {
@@ -515,10 +552,10 @@ internal class PulseHandler : PWInterface {
                         else -> Gravity.START
                     }
                     setMargins(
-                        maxOf(0, titleMargin.left),
-                        maxOf(0, titleMargin.top),
-                        maxOf(0, titleMargin.right),
-                        maxOf(0, titleMargin.bottom)
+                        maxOf(0, margin.left),
+                        maxOf(0, margin.top),
+                        maxOf(0, margin.right),
+                        maxOf(0, margin.bottom)
                     )
                 }
                 text = pulseTitle

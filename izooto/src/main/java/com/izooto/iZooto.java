@@ -1,4 +1,5 @@
 package com.izooto;
+
 import static com.izooto.AppConstant.ANDROID_ID;
 import static com.izooto.AppConstant.APPPID;
 import static com.izooto.AppConstant.APP_NAME_TAG;
@@ -351,7 +352,9 @@ public class iZooto {
                     pulseObject.optString("cid", ""),
                     pulseObject.optString("rid", ""),
                     pulseObject.optBoolean("status", false),
-                    adConf, margin, label
+                    adConf,
+                    margin,
+                    label
             );
 
             // Initialize PulseData in Singleton

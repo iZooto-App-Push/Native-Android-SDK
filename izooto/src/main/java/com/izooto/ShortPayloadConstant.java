@@ -76,5 +76,4 @@ public interface ShortPayloadConstant {
     String GCM_ID = "gcm.notification.OrganizationId";
     String PAYLOAD_FORMAT = "Unexpected data format for [MESSAGE]!";
 
-
 }
