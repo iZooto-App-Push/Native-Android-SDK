@@ -17,8 +17,6 @@ android {
 
         manifestPlaceholders["izooto_app_id"] = "09f06385e06cc10d0fc7a5e1c002cd9338a2c94f"
                 //09f06385e06cc10d0fc7a5e1c002cd9338a2c94f 85389e55241c176f45f9f324b2384c32ca56e1eb aeb7d82c8dcc0bcebc9684c2ad8a4a384980e640
-
-
     }
 
     buildTypes {

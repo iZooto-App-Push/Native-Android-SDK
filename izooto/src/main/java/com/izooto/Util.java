@@ -31,6 +31,7 @@ import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,9 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.aaid.HmsInstanceId;
 import com.izooto.core.SubscriptionInterval;
 
 import org.jetbrains.annotations.NotNull;
@@ -127,13 +131,13 @@ public class Util {
 
             String[] parts = data.split(":");
 
-            IvParameterSpec iv = new IvParameterSpec(android.util.Base64.decode(parts[1], android.util.Base64.DEFAULT));
+            IvParameterSpec iv = new IvParameterSpec(Base64.decode(parts[1], Base64.DEFAULT));
             SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.ISO_8859_1), "AES");
 
             Cipher cipher = Cipher.getInstance(CIPHER_NAME);
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 
-            byte[] decodedEncryptedData = android.util.Base64.decode(parts[0], android.util.Base64.DEFAULT);
+            byte[] decodedEncryptedData = Base64.decode(parts[0], Base64.DEFAULT);
 
             byte[] original = cipher.doFinal(decodedEncryptedData);
 
@@ -224,7 +228,7 @@ public class Util {
 
     boolean hasFCMLibrary() {
         try {
-            return com.google.firebase.messaging.FirebaseMessaging.class != null;
+            return FirebaseMessaging.class != null;
         } catch (Throwable e) {
             return false;
         }
@@ -237,7 +241,7 @@ public class Util {
 
     boolean checkForFcmDependency() {
         if (!hasFCMLibrary()) {
-            Lg.d(AppConstant.APP_NAME_TAG, AppConstant.CHECKFCMLIBRARY);
+            Lg.d(APP_NAME_TAG, AppConstant.CHECKFCMLIBRARY);
             return false;
         }
         return true;
@@ -375,7 +379,7 @@ public class Util {
 
     private static boolean hasHMSAGConnectLibrary() {
         try {
-            return com.huawei.agconnect.config.AGConnectServicesConfig.class != null;
+            return AGConnectServicesConfig.class != null;
         } catch (NoClassDefFoundError e) {
             return false;
         }
@@ -383,7 +387,7 @@ public class Util {
 
     private static boolean hasHMSPushKitLibrary() {
         try {
-            return com.huawei.hms.aaid.HmsInstanceId.class != null;
+            return HmsInstanceId.class != null;
         } catch (NoClassDefFoundError e) {
             return false;
         }
@@ -903,7 +907,7 @@ public class Util {
             Util.handleExceptionOnce(iZooto.appContext, ex.toString(), "FCMTokenGenerator", "getSenderId()");
 
         }
-        Log.v(AppConstant.APP_NAME_TAG, "Sender ID should not be null");
+        Log.v(APP_NAME_TAG, "Sender ID should not be null");
         return "";
     }
 
@@ -1028,8 +1032,7 @@ public class Util {
 
     @RequiresApi(api = 33)
     static boolean supportsNativePrompt(Context context) {
-        return Build.VERSION.SDK_INT > 32 &&
-                getTargetSdkVersion(context) > 32;
+        return getTargetSdkVersion(context) > 32;
     }
 
 
@@ -1178,19 +1181,56 @@ public class Util {
     }
 
 
-     static boolean isReachableApi(String urlString) {
-       return (urlString.startsWith("http") || urlString.startsWith("https"));
+    static boolean isReachableApi(String urlString) {
+        return (urlString.startsWith("http") || urlString.startsWith("https"));
     }
 
 
-     static String buildDynamicUrl(Context context, String baseUrl) {
+    static String buildDynamicUrl(Context context, String baseUrl) {
         if (context == null || baseUrl == null || baseUrl.isEmpty()) {
             return null;
         }
-         if (context.getPackageName() == null || context.getPackageName().isEmpty()){
-             return null;
-         }
+        if (context.getPackageName() == null || context.getPackageName().isEmpty()) {
+            return null;
+        }
         return String.format(baseUrl, context.getPackageName());
+    }
+
+    static double parseAndCalculate(String input) {
+        // If the string contains any invalid characters or symbols, return 0.0
+        if (!input.matches("^[0-9Ee+\\-\\.]+$")) {
+            return 0.0; // "^[0-9.]+$",
+        }
+        try {
+            return Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
+    }
+
+    static String setParsedRcAndRvValues(String payload, JSONObject jsonObject) {
+        String parsedValue = "";
+        try {
+            JSONArray jsonArray = new JSONArray(payload);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                // Clean up the path before passing it to getRvParseValues()
+                String path = jsonArray.getString(i)
+                        .replaceAll("\\[\\'", "")  // Remove leading `['`
+                        .replaceAll("\\'\\]", "")  // Remove trailing `']`
+                        .replaceAll("\\'", "");    // Remove any remaining single quotes
+                try {
+                    parsedValue = NotificationEventManager.getParsedRcAndRvValues(jsonObject, path);
+                    if (parsedValue != null && !parsedValue.isEmpty()) {
+                        return parsedValue;
+                    }
+                } catch (Exception e) {
+                    Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseThoroughlyJson");
+                }
+            }
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "rvRc");
+        }
+        return parsedValue;
     }
 
 }

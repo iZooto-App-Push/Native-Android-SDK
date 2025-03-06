@@ -41,7 +41,6 @@ import java.util.concurrent.Executors;
 public class NotificationEventManager {
     private static int badgeColor;
     private static int priority;
-    private static boolean addCheck;
     private static String lastView_Click = "0";
     private static boolean isCheck;
     public static String iZootoReceivedPayload;
@@ -50,14 +49,12 @@ public class NotificationEventManager {
     // Manage notification - Ads and cloud push
     public static void manageNotification(Payload payload) {
         if (payload.getFetchURL() == null || payload.getFetchURL().isEmpty()) {
-            addCheck = false;
             try {
                 allCloudPush(payload);
             } catch (Exception e) {
                 Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "manageNotification");
             }
         } else {
-            addCheck = true;
             allAdPush(payload);
         }
     }
@@ -362,107 +359,71 @@ public class NotificationEventManager {
     }
 
 
-    // handle the rc key
-    private static boolean isValidJson(String jsonStr) throws JSONException {
-        Object json = new JSONTokener(jsonStr).nextValue();
-        return json instanceof JSONObject || json instanceof JSONArray;
-    }
-
     static void parseRcValues(Payload payload, JSONObject jsonObject) {
         try {
-            String object;
             if (payload.getRc() != null && !payload.getRc().isEmpty()) {
-                JSONArray jsonArray = new JSONArray(payload.getRc());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    object = jsonArray.getString(i);
-                    payload.setRc(getRcParseValues(jsonObject, object));
-                    AdMediation.clicksData.add(payload.getRc());
+                try {
+                    String rc = Util.setParsedRcAndRvValues(payload.getRc(), jsonObject);
+                    if (!Utilities.isNullOrEmpty(rc)) {
+                        AdMediation.clicksData.add(rc);
+                    }
+
+                } catch (Exception e) {
+                    Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseThoroughlyJson");
                 }
             }
+
         } catch (Exception e) {
             Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "parseRcValues");
         }
     }
 
 
-    static String getRcParseValues(JSONObject jsonObject, String sourceString) {
-        try {
-            if (isValidJson(sourceString)) {
-                if (sourceString.startsWith("~")) return sourceString.replace("~", "");
-                else {
-                    if (sourceString.contains(".")) {
-                        JSONObject jsonObject1 = null;
-                        String[] linkArray = sourceString.split("\\.");
-                        if (linkArray.length == 2 || linkArray.length == 3) {
-                            for (String s : linkArray) {
-                                if (s.contains("[")) {
-                                    String[] linkArray1 = s.split("\\[");
-                                    jsonObject1 = jsonObject.getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
-                                } else {
-                                    jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]);
-                                }
-                                return jsonObject1.optString(linkArray[2]);
-                            }
-                        } else if (linkArray.length == 4) {
-                            if (linkArray[2].contains("[")) {
-                                String[] linkArray1 = linkArray[2].split("\\[");
-                                jsonObject1 = jsonObject.getJSONObject(linkArray[0]).getJSONObject(linkArray[1]).getJSONArray(linkArray1[0]).getJSONObject(Integer.parseInt(linkArray1[1].replace("]", "")));
-                                return jsonObject1.optString(linkArray[3]);
-                            }
-                        }
-                    }
-                }
-            } else {
-                return sourceString;
-            }
-        } catch (Exception e) {
-            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "getRcParseValues");
-        }
-        return null;
-    }
-
-
-    static String getRvParseValues(JSONObject jsonObject, String path) throws Exception {
+    static String getParsedRcAndRvValues(JSONObject jsonObject, String path) throws Exception {
         try {
             String[] parts = path.split("\\.");
-            JSONObject currentObject = jsonObject;
-            for (String part : parts) {
-                part = part.replaceAll("\\[|\\]|'", "");
+            Object currentObject = jsonObject;  // Can be JSONObject, JSONArray, or value
 
+            for (String part : parts) {
+                // Handle array indexes like doc[0]
                 if (part.contains("[")) {
                     String key = part.substring(0, part.indexOf("["));
                     int index = Integer.parseInt(part.substring(part.indexOf("[") + 1, part.indexOf("]")));
 
-                    if (currentObject.has(key)) {
-                        Object value = currentObject.get(key);
-                        if (value instanceof JSONArray) {
-                            JSONArray array = (JSONArray) value;
-                            if (index >= 0 && index < array.length()) {
-                                currentObject = array.getJSONObject(index);
+                    if (currentObject instanceof JSONObject) {
+                        JSONObject jsonObj = (JSONObject) currentObject;
+                        if (jsonObj.has(key)) {
+                            Object value = jsonObj.get(key);
+                            if (value instanceof JSONArray) {
+                                JSONArray jsonArray = (JSONArray) value;
+                                if (index >= 0 && index < jsonArray.length()) {
+                                    currentObject = jsonArray.get(index);
+                                } else {
+                                    throw new Exception("Index out of bounds for key '" + key + "'");
+                                }
                             } else {
-                                throw new Exception("Index out of bounds for key '" + key + "'");
+                                throw new Exception("Key '" + key + "' is not an array.");
                             }
                         } else {
-                            throw new Exception("Key '" + key + "' is not an array.");
+                            throw new Exception("Key '" + key + "' not found.");
                         }
-                    } else {
-                        throw new Exception("Key '" + key + "' not found.");
                     }
                 } else {
-                    if (currentObject.has(part)) {
-                        Object value = currentObject.get(part);
-                        if (value instanceof JSONObject) {
-                            currentObject = (JSONObject) value;
+                    // Regular JSON object key
+                    if (currentObject instanceof JSONObject) {
+                        JSONObject jsonObj = (JSONObject) currentObject;
+                        if (jsonObj.has(part)) {
+                            currentObject = jsonObj.get(part);
                         } else {
-                            return String.valueOf(value);
+                            throw new Exception("Key '" + part + "' not found.");
                         }
                     } else {
-                        throw new Exception("Key '" + part + "' not found.");
+                        throw new Exception("Unexpected data type encountered.");
                     }
                 }
             }
 
-            return currentObject.toString();
+            return (currentObject instanceof JSONArray) ? currentObject.toString() : String.valueOf(currentObject);
         } catch (Exception e) {
             throw new Exception("Error while fetching value: " + e.getMessage());
         }
@@ -471,45 +432,20 @@ public class NotificationEventManager {
     static void parseRvValues(Payload payload, JSONObject jsonObject) {
         try {
             if (payload.getRv() != null && !payload.getRv().isEmpty()) {
-                JSONArray jsonArray = new JSONArray(payload.getRv());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    String path = jsonArray.getString(i);
-                    try {
-                        if (getRvParseValues(jsonObject, path) != null && !getRvParseValues(jsonObject, path).isEmpty()) {
-                            payload.setRv(getRvParseValues(jsonObject, path));
-                            callRandomView(payload.getRv());
-                        }
-                    } catch (Exception e) {
-                        Log.i("parseRvValues", e.toString());
-                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "parseAgainJson");
+                try {
+                    String rv = Util.setParsedRcAndRvValues(payload.getRv(), jsonObject);
+                    if (!Utilities.isNullOrEmpty(rv)) {
+                        payload.setRv(rv);
+                        callRandomView(rv);
                     }
 
+                } catch (Exception e) {
+                    Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "parseAgainJson");
                 }
             }
+
         } catch (Exception e) {
             Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "parseRvValues");
-        }
-    }
-
-
-    static void callRandomView(String rv) {
-        try {
-            if (rv != null && !rv.isEmpty()) {
-                RestClient.get(rv, new RestClient.ResponseHandler() {
-                    @Override
-                    void onSuccess(String response) {
-                        super.onSuccess(response);
-                    }
-
-                    @Override
-                    void onFailure(int statusCode, String response, Throwable throwable) {
-                        super.onFailure(statusCode, response, throwable);
-                    }
-                });
-            }
-
-        } catch (Exception e) {
-            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "callRandomView");
         }
     }
 
@@ -576,9 +512,7 @@ public class NotificationEventManager {
                         pendingIntent = PendingIntent.getBroadcast(iZooto.appContext, (int) System.currentTimeMillis() /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                     }
 
-
                     notificationBuilder = new NotificationCompat.Builder(iZooto.appContext, channelId).setSmallIcon(getDefaultSmallIconId()).setContentTitle(payload.getTitle()).setContentText(payload.getMessage()).setContentIntent(pendingIntent).setStyle(new NotificationCompat.BigTextStyle().bigText(payload.getMessage())).setOngoing(Util.enableSticky(payload)) /*    Notification sticky   */.setTimeoutAfter(Util.getRequiredInteraction(payload)) /*    Required Interaction   */.setAutoCancel(true);
-
 
                     try {
                         BigInteger accentColor = Util.getAccentColor();
@@ -602,11 +536,7 @@ public class NotificationEventManager {
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
                         if (payload.getGroup() == 1) {
                             notificationBuilder.setGroup(payload.getGroupKey());
-
-
                             summaryNotification = new NotificationCompat.Builder(iZooto.appContext, channelId).setContentTitle(payload.getTitle()).setContentText(payload.getMessage()).setSmallIcon(getDefaultSmallIconId()).setColor(badgeColor).setStyle(new NotificationCompat.InboxStyle().addLine(payload.getMessage()).setBigContentTitle(payload.getGroupMessage())).setGroup(payload.getGroupKey()).setGroupSummary(true).setOngoing(Util.enableSticky(payload)) /*    Notification sticky   */.setTimeoutAfter(Util.getRequiredInteraction(payload)) /*    Required Interaction   */.build();
-
-
                         }
                     }
 
@@ -1393,7 +1323,6 @@ public class NotificationEventManager {
                         @Override
                         void onSuccess(final String response) {
                             super.onSuccess(response);
-                            Log.e("Impression",mapData.toString());
                         }
 
 
@@ -1479,9 +1408,9 @@ public class NotificationEventManager {
         }
     }
 
-    static void callRandomClick(String rc) {
-        if (rc != null && !rc.isEmpty()) {
-            RestClient.get(rc, new RestClient.ResponseHandler() {
+    static void callRandomClick(String string) {
+        if (string != null && !string.isEmpty()) {
+            RestClient.get(string, new RestClient.ResponseHandler() {
                 @Override
                 void onSuccess(String response) {
                     super.onSuccess(response);
@@ -1492,6 +1421,27 @@ public class NotificationEventManager {
                     super.onFailure(statusCode, response, throwable);
                 }
             });
+        }
+    }
+
+    static void callRandomView(String string) {
+        try {
+            if (string != null && !string.isEmpty()) {
+                RestClient.get(string, new RestClient.ResponseHandler() {
+                    @Override
+                    void onSuccess(String response) {
+                        super.onSuccess(response);
+                    }
+
+                    @Override
+                    void onFailure(int statusCode, String response, Throwable throwable) {
+                        super.onFailure(statusCode, response, throwable);
+                    }
+                });
+            }
+
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "callRandomView");
         }
     }
 

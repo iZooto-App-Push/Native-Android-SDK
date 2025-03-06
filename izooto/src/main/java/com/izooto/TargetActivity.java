@@ -258,7 +258,6 @@ public class TargetActivity extends Activity {
                         try {
                             if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                                 if (mUrl != null && !mUrl.isEmpty()) {
-
                                     if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
                                         String url = "https://" + mUrl;
                                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -266,29 +265,15 @@ public class TargetActivity extends Activity {
                                         browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         Uri referrerUri = Uri.parse("android-app://" + context.getPackageName());
                                         browserIntent.putExtra(Intent.EXTRA_REFERRER_NAME, referrerUri);
-
                                         context.startActivity(browserIntent);
-                                        finish();
-
+                                        this.finish();
 
                                     } else {
-                                        try {
-                                            Log.e("First URL",mUrl);
-                                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                                            browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                            browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                          //  Uri referrerUri = Uri.parse("android-app://" + context.getPackageName());
-                                           // browserIntent.putExtra(Intent.EXTRA_REFERRER, referrerUri);
-                                            context.startActivity(browserIntent);
-                                            Log.e("First URL1",mUrl);
-
-                                           // finish();
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Log.e("First URL2",ex.toString());
-
-                                        }
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+                                        browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        context.startActivity(browserIntent);
+                                        this.finish();
                                     }
 
                                 } else {

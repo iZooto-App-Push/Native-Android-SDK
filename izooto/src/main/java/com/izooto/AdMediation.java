@@ -149,7 +149,6 @@ public class AdMediation {
                         payload.setDefaultNotificationPreview(jsonObject.optInt(ShortPayloadConstant.TEXTOVERLAY));
                         payload.setMakeStickyNotification(jsonObject.optString(ShortPayloadConstant.MAKE_STICKY_NOTIFICATION));
 
-
                         if (payload.getPassive_flag().equalsIgnoreCase("1") && jsonObject.optString(AppConstant.AD_TYPE).equalsIgnoreCase("6")) {
                             passiveList.add(payload);
                         } else {
@@ -293,7 +292,7 @@ public class AdMediation {
                             }
                             if (failsList.size() - 1 == payloadList.size() - 1) {
                                 if (!successList.isEmpty()) {
-                                    Log.v("Fallback", "Data");
+                                    Log.v("iZooto", "data");
                                 } else {
                                     String fallBackURL = callFallbackAPI(payload);
                                     showFallBackResponse(fallBackURL, payload);
@@ -326,6 +325,7 @@ public class AdMediation {
                         String fallBackURL = callFallbackAPI(payload);
                         showFallBackResponse(fallBackURL, payload);
                     }
+
                     if (adIndex == 6) {
                         if (successList.size() == payloadList.size() - 1 && failsList.size() == 1) {
                             parseThoroughlyJson(payload, null, adIndex);
@@ -353,10 +353,41 @@ public class AdMediation {
             if (iZooto.appContext == null || jsonObject == null) {
                 return;
             }
+            try {
+                if (payload.getRv() != null && !payload.getRv().isEmpty()) {
+                    try {
+                        String rv = Util.setParsedRcAndRvValues(payload.getRv(), jsonObject);
+                        if (!Utilities.isNullOrEmpty(rv)) {
+                            payload.setRv(rv);
+                        }
+
+                    } catch (Exception e) {
+                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseThoroughlyJson");
+                    }
+                }
+
+                if (payload.getRc() != null && !payload.getRc().isEmpty()) {
+                    try {
+                        String rc = Util.setParsedRcAndRvValues(payload.getRc(), jsonObject);
+                        if (!Utilities.isNullOrEmpty(rc)) {
+                            clicksData.add(rc);
+                        }
+
+                    } catch (Exception e) {
+                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseThoroughlyJson");
+                    }
+                }
+
+            } catch (Exception e) {
+                Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseAgainJson");
+            }
+
             payload.setStartTime(System.currentTimeMillis());
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
-            if (payload.getTitle() != null && !payload.getTitle().isEmpty())
+            if (payload.getTitle() != null && !payload.getTitle().isEmpty()) {
                 payload.setTitle(getParsedValue(jsonObject, payload.getTitle()));
+            }
+
             if (payload.getReceived_bid().equalsIgnoreCase("-1")) {
                 payload.setReceived_bid(payload.getReceived_bid());
             } else {
@@ -501,19 +532,18 @@ public class AdMediation {
         }
 
         try {
+            long start = System.currentTimeMillis();
             int winnerIndex = -1;
             int passiveIndex = -1;
             double passiveNetwork = 0.0;
             double winnerNetwork = 0.0;
-            long start = System.currentTimeMillis();
             // Determine the highest winning bid
             for (int index = 0; index < AdMediation.adPayload.size(); index++) {
                 String cpcStr = AdMediation.adPayload.get(index).getCpc();
                 String floorPrice = AdMediation.adPayload.get(index).getFloorPrice();
 
                 if (processValidBid(cpcStr, floorPrice)) {
-                    double cpc = Double.parseDouble(cpcStr);
-
+                    double cpc = Util.parseAndCalculate(cpcStr);
                     if (cpc > winnerNetwork) {
                         winnerNetwork = cpc;
                         winnerIndex = index;
@@ -525,8 +555,8 @@ public class AdMediation {
             // Compare with passive list
             if (!passiveList.isEmpty()) {
                 for (int index = 0; index < passiveList.size(); index++) {
-                    double cpc = Double.parseDouble(passiveList.get(index).getCpc());
-                    if (cpc >= Double.parseDouble(passiveList.get(0).getCpc())) {
+                    double cpc = Util.parseAndCalculate(passiveList.get(index).getCpc());
+                    if (cpc >= Util.parseAndCalculate(passiveList.get(0).getCpc())) {
                         passiveIndex = index;
                         passiveNetwork = cpc;
                     }
@@ -540,8 +570,8 @@ public class AdMediation {
 
             // Handle winner ad payload
             if (winnerIndex != -1 && isValidTitle(AdMediation.adPayload.get(winnerIndex).getTitle())) {
-                defeaterPayload(AdMediation.adPayload.get(winnerIndex), 6);
                 processPassiveList(passiveIndex, start);
+                defeaterPayload(AdMediation.adPayload.get(winnerIndex), 6);
             }
 
             isExecutionCompleted = false;
@@ -924,50 +954,22 @@ public class AdMediation {
                 super.onFailure(statusCode, response, throwable);
                 String fallBackAPI = callFallbackAPI(payload);
                 showFallBackResponse(fallBackAPI, payload);
+
             }
         });
     }
 
 
-    private static void defeaterPayload(final Payload payloadData, int... adIndex) {
-        if (iZooto.appContext == null) {
-            return;
+    private static void defeaterPayload(final Payload payload, int... adIndex) {
+        try {
+            if (iZooto.appContext == null) {
+                return;
+            }
+            setDefeaterPayloadAppear(payload, adIndex);
+
+        } catch (Exception e) {
+            Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "defeaterPayload");
         }
-        String fetchURL = Util.updateUrlParameter(payloadData.getFetchURL());
-        RestClient.get(fetchURL, new RestClient.ResponseHandler() {
-            @Override
-            void onSuccess(String response) {
-                super.onSuccess(response);
-                if (response != null) {
-                    try {
-                        Object json = new JSONTokener(response).nextValue();
-                        if (json != null) {
-                            if (json instanceof JSONObject) {
-                                JSONObject jsonObject = new JSONObject(response);
-                                parseDefeaterJson(payloadData, jsonObject, adIndex);
-                            } else if (json instanceof JSONArray) {
-                                JSONArray jsonArray = new JSONArray(response);
-                                JSONObject jsonObject = new JSONObject();
-                                jsonObject.put("", jsonArray);
-                                parseDefeaterJson(payloadData, jsonObject, adIndex);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "finalAd_payload");
-                    }
-                }
-            }
-
-
-            @Override
-            void onFailure(int statusCode, String response, Throwable throwable) {
-                super.onFailure(statusCode, response, throwable);
-                String fallBackURL = callFallbackAPI(payloadData);
-                showFallBackResponse(fallBackURL, payloadData);
-            }
-        });
-
-
     }
 
 
@@ -995,6 +997,7 @@ public class AdMediation {
         if (iZooto.appContext == null) {
             return;
         }
+
         String dataValue;
         try {
             if (payload1.getTitle() != null && !payload1.getTitle().isEmpty())
@@ -1061,39 +1064,34 @@ public class AdMediation {
                     String url = payload1.getBanner();
                     url = "https://" + url;
                     payload1.setBanner(url);
-
                 }
-
             }
 
-
             try {
-                if (payload.getRv() != null && !payload.getRv().isEmpty()) {
-                    JSONArray jsonArray = new JSONArray(payload.getRv());
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        String path = jsonArray.getString(i);
-                        try {
-                            if (NotificationEventManager.getRvParseValues(jsonObject, path) != null && !NotificationEventManager.getRvParseValues(jsonObject, path).isEmpty()) {
-                                payload.setRv(NotificationEventManager.getRvParseValues(jsonObject, path));
-                                NotificationEventManager.callRandomView(payload.getRv());
-                            }
-                        } catch (Exception e) {
-                            Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseAgainJson");
-
+                if (payload1.getRv() != null && !payload1.getRv().isEmpty()) {
+                    try {
+                        String rv = Util.setParsedRcAndRvValues(payload1.getRv(), jsonObject);
+                        if (!Utilities.isNullOrEmpty(rv)) {
+                            payload1.setRv(rv);
                         }
-
+                    } catch (Exception e) {
+                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseThoroughlyJson");
                     }
+
                 }
             } catch (Exception e) {
                 Util.handleExceptionOnce(iZooto.appContext, e.toString(), "NotificationEventManager", "parseRvValues");
             }
             try {
                 if (payload1.getRc() != null && !payload1.getRc().isEmpty()) {
-                    JSONArray jsonArray = new JSONArray(payload1.getRc());
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        String rc = jsonArray.getString(i);
-                        payload1.setRc(NotificationEventManager.getRcParseValues(jsonObject, rc));
-                        clicksData.add(payload1.getRc());
+                    try {
+                        String rc = Util.setParsedRcAndRvValues(payload1.getRc(), jsonObject);
+                        if (!Utilities.isNullOrEmpty(rc)) {
+                            clicksData.add(rc);
+                        }
+
+                    } catch (Exception e) {
+                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseThoroughlyJson");
                     }
                 }
             } catch (Exception e) {
@@ -1243,7 +1241,7 @@ public class AdMediation {
             finalData.put("served", servedObject);
 
             successList.addAll(failsList);
-            JSONArray jsonArray = new JSONArray(successList); //fallback success list
+            JSONArray jsonArray = new JSONArray(successList);
             finalData.put("bids", jsonArray);
             String dataValue = finalData.toString().replaceAll("\\\\", " ");
             mediationImpression(dataValue, 0);
@@ -1263,56 +1261,31 @@ public class AdMediation {
     }
 
 
-    private static void parseDefeaterJson(Payload payload1, JSONObject jsonObject, int[] adIndex) {
+    private static void setDefeaterPayloadAppear(Payload payload, int[] adIndex) {
         String dataValue;
         try {
-            if (jsonObject == null) {
+            if (payload == null) {
                 return;
             }
-            if (payload1.getRv() != null && !payload1.getRv().isEmpty()) {
-                JSONArray jsonArray = new JSONArray(payload1.getRv());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    String path = jsonArray.getString(i);
-                    try {
-                        if (NotificationEventManager.getRvParseValues(jsonObject, path) != null && !NotificationEventManager.getRvParseValues(jsonObject, path).isEmpty()) {
-                            payload1.setRv(NotificationEventManager.getRvParseValues(jsonObject, path));
-                            NotificationEventManager.callRandomView(payload1.getRv());
-                        }
-                    } catch (Exception e) {
-                        Util.handleExceptionOnce(iZooto.appContext, e.toString(), AppConstant.IZ_AD_MEDIATION_CLASS, "parseAgainJson");
-                    }
-                }
-
-            }
-            if (payload1.getRc() != null && !payload1.getRc().isEmpty()) {
-                JSONArray jsonArray = new JSONArray(payload1.getRc());
-                for (int i = 0; i <= jsonArray.length() - 1; i++) {
-                    String rc = jsonArray.getString(i);
-                    payload1.setRc(NotificationEventManager.getRcParseValues(jsonObject, rc));
-                    clicksData.add(payload1.getRc());
-                }
-
-            }
-
-            if (payload1.getTitle() != null && !payload1.getTitle().equalsIgnoreCase("")) {
+            if (payload.getTitle() != null && !payload.getTitle().equalsIgnoreCase("")) {
                 JSONObject finalData = new JSONObject();
                 finalData.put("pid", PreferenceUtil.getInstance(iZooto.appContext).getiZootoID(AppConstant.APPPID));
-                finalData.put("rid", payload1.getRid());
-                finalData.put("type", payload1.getAd_type());
-                finalData.put("ta", (System.currentTimeMillis() - payload1.getStartTime()));
+                finalData.put("rid", payload.getRid());
+                finalData.put("type", payload.getAd_type());
+                finalData.put("ta", (System.currentTimeMillis() - payload.getStartTime()));
                 finalData.put("av", AppConstant.SDKVERSION);
                 finalData.put("bKey", Util.getAndroidId(iZooto.appContext));
-                finalData.put("result", payload1.getAdID());
+                finalData.put("result", payload.getAdID());
                 JSONObject servedObject = new JSONObject();
-                servedObject.put("a", payload1.getAdID());
-                servedObject.put("b", Double.parseDouble(payload1.getCpc()));
-                servedObject.put("t", payload1.getResponseTime());
-                if (payload1.getReceived_bid() != null && !payload1.getReceived_bid().isEmpty() && !Objects.equals(payload1.getReceived_bid(), "")) {
-                    servedObject.put("rb", Double.parseDouble(payload1.getReceived_bid()));
+                servedObject.put("a", payload.getAdID());
+                servedObject.put("b", Double.parseDouble(payload.getCpc()));
+                servedObject.put("t", payload.getResponseTime());
+                if (payload.getReceived_bid() != null && !payload.getReceived_bid().isEmpty() && !Objects.equals(payload.getReceived_bid(), "")) {
+                    servedObject.put("rb", Double.parseDouble(payload.getReceived_bid()));
                 }
-                servedObject.put("ti", payload1.getTitle());
-                if (payload1.getLink() != null && !payload1.getLink().isEmpty()) {
-                    servedObject.put("ln", payload1.getLink());
+                servedObject.put("ti", payload.getTitle());
+                if (payload.getLink() != null && !payload.getLink().isEmpty()) {
+                    servedObject.put("ln", payload.getLink());
                 } else {
                     servedObject.put("ln", "");
                 }
@@ -1325,23 +1298,26 @@ public class AdMediation {
                 } else {
                     finalData.put("bids", "");
                 }
+                if (payload.getRv() != null && !payload.getRv().isEmpty()) {
+                    NotificationEventManager.callRandomView(payload.getRv());
+                }
 
                 dataValue = finalData.toString().replaceAll("\\\\", " ");
                 mediationImpression(dataValue, 0);
-                NotificationEventManager.notificationPreview(iZooto.appContext, payload1);
+                NotificationEventManager.notificationPreview(iZooto.appContext, payload);
                 PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(iZooto.appContext);
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     TargetActivity.medClick = dataValue;
                     preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA, dataValue);
-
                 } else {
                     preferenceUtil.setStringData(AppConstant.IZ_MEDIATION_CLICK_DATA, dataValue);
                     NotificationActionReceiver.medClick = dataValue;
                 }
                 Log.v(AppConstant.NOTIFICATION_MESSAGE, AppConstant.YES);
             } else {
-                String fallBackAPI = callFallbackAPI(payload1);
-                showFallBackResponse(fallBackAPI, payload1);
+                String fallBackAPI = callFallbackAPI(payload);
+                showFallBackResponse(fallBackAPI, payload);
                 Log.v(AppConstant.NOTIFICATION_MESSAGE, AppConstant.NO);
             }
 
