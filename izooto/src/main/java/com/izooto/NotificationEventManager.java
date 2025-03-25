@@ -343,7 +343,7 @@ public class NotificationEventManager {
             parseRvValues(payload, jsonObject);
             parseRcValues(payload, jsonObject);
             payload.setAp("");
-            payload.setInapp(0);
+            payload.setInapp(payload.getInapp());
             if (payload.getTitle() != null && !payload.getTitle().isEmpty()) {
                 notificationPreview(iZooto.appContext, payload);
                 AdMediation.successList.clear();

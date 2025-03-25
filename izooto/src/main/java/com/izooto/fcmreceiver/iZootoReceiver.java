@@ -30,6 +30,7 @@ public class iZootoReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
+            Log.e("Push Notification","First");
             processIntent(context, intent);
         } catch (Exception e) {
             Util.handleExceptionOnce(context, e.toString(), "iZootoReceiver", "onReceive");
@@ -45,6 +46,8 @@ public class iZootoReceiver extends BroadcastReceiver {
             if (!Util.hasWorkManagerDependency()) {
                 return;
             }
+            Log.e("Push Notification","Second");
+
             iZooto.appContext = context;
             Bundle bundle = intent.getExtras();
             String notificationId = null;
@@ -53,6 +56,8 @@ public class iZootoReceiver extends BroadcastReceiver {
             }
             try {
                 if (bundle.containsKey(AppConstant.GLOBAL)) {
+                    Log.e("Push Notification","Three");
+
                     JSONObject jsonObject = new JSONObject(Util.setExtrasAsJson(context, bundle));
                     String globalKey = jsonObject.optString(AppConstant.GLOBAL);
                     JSONObject payload = new JSONObject(globalKey);
@@ -63,6 +68,8 @@ public class iZootoReceiver extends BroadcastReceiver {
                     notificationId = bundle.getString(ShortPayloadConstant.CREATEDON);
                 }
             } catch (Exception e) {
+                Log.e("Push Notification","Four");
+
                 Util.handleExceptionOnce(context, e.toString(), tagName, "onMessageReceived");
             }
 
@@ -71,6 +78,8 @@ public class iZootoReceiver extends BroadcastReceiver {
                 String finalNotificationId = notificationId;
                 executorService.execute(() -> {
                     try {
+                        Log.e("Push Notification","Five");
+
                         processNotification(context, bundle, finalNotificationId);
                     } catch (Exception e) {
                         Util.handleExceptionOnce(context, e.toString(), tagName, "processIntent");
@@ -98,6 +107,8 @@ public class iZootoReceiver extends BroadcastReceiver {
             return;
         }
         try {
+            Log.e("Push Notification","Six");
+
             PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
             if (notificationId == null || checkProcessedNotification(context, notificationId)) {
                 if (!preferenceUtil.getBoolean(AppConstant.IZ_TIME_OUT)) {

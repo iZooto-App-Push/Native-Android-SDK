@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
+import androidx.browser.customtabs.CustomTabsIntent;
 
 import com.izooto.core.Utilities;
 
@@ -258,23 +261,7 @@ public class TargetActivity extends Activity {
                         try {
                             if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                                 if (mUrl != null && !mUrl.isEmpty()) {
-                                    if (!mUrl.startsWith("http://") && !mUrl.startsWith("https://")) {
-                                        String url = "https://" + mUrl;
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                                        browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        Uri referrerUri = Uri.parse("android-app://" + context.getPackageName());
-                                        browserIntent.putExtra(Intent.EXTRA_REFERRER_NAME, referrerUri);
-                                        context.startActivity(browserIntent);
-                                        this.finish();
-
-                                    } else {
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
-                                        browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                        browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        context.startActivity(browserIntent);
-                                        this.finish();
-                                    }
+                                    iZUrlHandler.openUrl(context,mUrl,inApp);
 
                                 } else {
                                     if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
@@ -402,7 +389,6 @@ public class TargetActivity extends Activity {
                 notificationBannerImage = tempBundle.getString(AppConstant.P_BANNER_IMAGE);
             if (tempBundle.containsKey(AppConstant.KEY_LN))
                 lnKey = tempBundle.getString(AppConstant.KEY_LN);
-
             if (tempBundle.containsKey(AppConstant.KEY_NOTIFICITON_ID)) {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.cancel(tempBundle.getInt(AppConstant.KEY_NOTIFICITON_ID));
@@ -673,4 +659,6 @@ public class TargetActivity extends Activity {
             Util.handleExceptionOnce(context, ex.toString(), AppConstant.APPName_3, "launch App");
         }
     }
+
+
 }

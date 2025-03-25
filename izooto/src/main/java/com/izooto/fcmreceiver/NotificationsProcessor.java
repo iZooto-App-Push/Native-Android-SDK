@@ -98,6 +98,7 @@ class NotificationsProcessor {
     static void processingNotificationView(Context context, final Map<String, String> data) {
         PreferenceUtil preferenceUtil = PreferenceUtil.getInstance(context);
         try {
+            Log.e("Push Notification","Eight");
             if (data.get(AppConstant.AD_NETWORK) != null || data.get(AppConstant.GLOBAL) != null || data.get(AppConstant.GLOBAL_PUBLIC_KEY) != null) {
                 if (data.get(AppConstant.GLOBAL_PUBLIC_KEY) != null) {
                     try {
@@ -141,6 +142,7 @@ class NotificationsProcessor {
                         } else {
                             jsonObject1 = new JSONObject(data.toString());
                         }
+
                         AdMediation.getMediationData(context, jsonObject1, AppConstant.PUSH_FCM, "");
                         preferenceUtil.setBooleanData(AppConstant.MEDIATION, true);
                     } catch (Exception ex) {

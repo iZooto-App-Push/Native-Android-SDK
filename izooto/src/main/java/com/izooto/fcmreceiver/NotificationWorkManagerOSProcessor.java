@@ -58,6 +58,7 @@ public class NotificationWorkManagerOSProcessor extends Worker {
                 return Result.failure();
             }
             try {
+                Log.e("Push Notification", "seven");
                 JSONObject jsonObject = new JSONObject(Objects.requireNonNull(result.getString(AppConstant.IZ_JSON_PAYLOAD)));
                 if (isNotificationRestored) {
                     NotificationsProcessor.processNotificationService(context, jsonObject);

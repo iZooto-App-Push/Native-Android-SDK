@@ -113,7 +113,7 @@ pipelines:
                         echo "Skipping: No changes to commit."
                     else
                         git add .
-                        git commit -m "SDK -Pulse Feature Released 3.0.3"
+                        git commit -m "SDK -Supported -Custom Chrome browser for ad network-3.1.1"
                         git push origin master
                     fi
             

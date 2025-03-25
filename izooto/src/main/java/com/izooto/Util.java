@@ -1232,6 +1232,18 @@ public class Util {
         }
         return parsedValue;
     }
+    static  boolean checkCustomTabLibrary(Context context)
+    {
+        try {
+            Class.forName("androidx.browser.customtabs.CustomTabsIntent");
+            Log.d("iZooto LibraryCheck", "Custom Tabs is available");
+
+            return true;
+        } catch (ClassNotFoundException e) {
+            Log.e("iZooto LibraryCheck", "Custom Tabs library is missing");
+            return false;
+        }
+    }
 
 }
 

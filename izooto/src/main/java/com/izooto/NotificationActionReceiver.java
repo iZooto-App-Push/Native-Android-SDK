@@ -223,7 +223,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
                         try {
                             if (phoneNumber.equalsIgnoreCase(AppConstant.NO)) {
                                 if (mUrl != null && !mUrl.isEmpty()) {
-                                    openURLInBrowser(context, mUrl);
+                                    iZUrlHandler.openUrl(context,mUrl,inApp);
                                 } else {
                                     if (preferenceUtil.getBoolean(AppConstant.IS_HYBRID_SDK)) {
                                         Util.sleepTime(2000);
@@ -276,18 +276,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
     }
 
 
-    static void openURLInBrowser(Context context, @NonNull String url) {
-        openURLInBrowser(context, Uri.parse(url.trim()));
-    }
 
-    private static void openURLInBrowser(Context context, @NonNull Uri uri) {
-        try {
-            Intent intent = openURLInBrowserIntent(uri);
-            context.startActivity(intent);
-        } catch (Exception e) {
-            Util.handleExceptionOnce(context, e.toString(), "NotificationActionReceiver", "openURLInBrowser");
-        }
-    }
 
 
     static void lastClickAPI(Context context, String lciURL, String rid, int i) {

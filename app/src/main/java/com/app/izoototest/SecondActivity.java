@@ -145,7 +145,6 @@ public class SecondActivity extends AppCompatActivity {
 
     // Method to read JSON file from assets folder
     public static String loadJSONFromAsset(Context context, String fileName) {
-        Log.e("ABC","fileName >> "+fileName);
         String json;
         try {
             InputStream is = context.getAssets().open(fileName);

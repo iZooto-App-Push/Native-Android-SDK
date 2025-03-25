@@ -119,7 +119,7 @@ public class AdMediation {
                         payload.setAct2link(payloadObj.optString(ShortPayloadConstant.ACT2LINK).replace("['", "").replace("']", ""));
                         payload.setAct2icon(payloadObj.optString(ShortPayloadConstant.ACT2ICON));
                         payload.setAct2ID(payloadObj.optString(ShortPayloadConstant.ACT2ID));
-                        payload.setInapp(payloadObj.optInt(ShortPayloadConstant.INAPP));
+                        payload.setInapp(jsonObject.optInt(ShortPayloadConstant.INAPP));
                         payload.setTrayicon(payloadObj.optString(ShortPayloadConstant.TARYICON));
                         payload.setSmallIconAccentColor(payloadObj.optString(ShortPayloadConstant.ICONCOLOR));
                         payload.setSound(payloadObj.optString(ShortPayloadConstant.SOUND));
@@ -486,7 +486,7 @@ public class AdMediation {
             }
 
             payload.setAp("");
-            payload.setInapp(0);
+            payload.setInapp(payload.getInapp());
             JSONObject data = new JSONObject();
             data.put("b", Double.parseDouble(payload.getCpc()));
             data.put("a", payload.getAdID());
@@ -1167,6 +1167,7 @@ public class AdMediation {
                     payload.setLink(jsonObject.optString(ShortPayloadConstant.LINK));
                     payload.setIcon(jsonObject.optString(ShortPayloadConstant.ICON));
                     payload.setBanner(jsonObject.optString(ShortPayloadConstant.BANNER));
+                    payload.setInapp(payload.getInapp());
                     String act1Link = jsonObject.optString(ShortPayloadConstant.ACT1LINK);
                     String act1Name = jsonObject.optString(ShortPayloadConstant.ACT1NAME);
                     if (!Utilities.isNullOrEmpty(act1Link)) {
